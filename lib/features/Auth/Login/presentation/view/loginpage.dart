@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gap/gap.dart';
 import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/language/languageWidget.dart';
 import 'package:negmt_heliopolis/core/widgets/helioplis_logo.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/egypt_code_widget.dart';
 
@@ -16,6 +17,7 @@ class LoginScreen extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           title: const Text("Login"),
+          actions: const [Languagewidget(), Gap(20)],
         ),
         body: Container(
           alignment: Alignment.center,
@@ -54,7 +56,7 @@ class LoginScreen extends StatelessWidget {
                                 borderSide: const BorderSide(
                                     color: Colors.black87, width: 10),
                                 borderRadius: BorderRadius.circular(30)),
-                            labelText: 'Phone Number',
+                            labelText: 'Phone Number'.tr(context),
                           ),
                         ),
                       ),
