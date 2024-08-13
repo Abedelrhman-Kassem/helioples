@@ -1,8 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gap/gap.dart';
+import 'package:negmt_heliopolis/core/constants/colors.dart';
 import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language/languageWidget.dart';
+import 'package:negmt_heliopolis/core/widgets/CustomButton.dart';
 import 'package:negmt_heliopolis/core/widgets/helioplis_logo.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/egypt_code_widget.dart';
 
@@ -16,7 +19,7 @@ class LoginScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          title: const Text("Login"),
+          title: Text("Login".tr(context)),
           actions: const [Languagewidget(), Gap(20)],
         ),
         body: Container(
@@ -61,6 +64,53 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                  const Gap(20),
+                  Center(
+                      child: Text(
+                    'You will receive a verification code'.tr(context),
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  )),
+                  const Gap(20),
+                  CustomButton(
+                    text: "Continue".tr(context),
+                    onTap: () {},
+                    backgroundColor: MyColors.mainColor,
+                    textColor: MyColors.mainWhiteColor,
+                    verticalPadding: 15,
+                    borderRadius: 20,
+                  ),
+                  const Gap(10),
+                  Center(
+                    child: RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: "You don't Have account?".tr(context),
+                            style: const TextStyle(
+                              fontSize: 17.0,
+                              color: Color.fromARGB(255, 0, 0, 0),
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Create an account.".tr(context),
+                            style: const TextStyle(
+                              fontSize: 17.0,
+                              color: Colors.orange,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (ctx) => const LoginScreen(),
+                                  ),
+                                );
+                              },
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
