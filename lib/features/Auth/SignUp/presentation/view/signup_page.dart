@@ -1,3 +1,4 @@
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +11,8 @@ import 'package:negmt_heliopolis/core/widgets/helioplis_logo.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/egypt_code_widget.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/phone_number_input_widget.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class SignupPage extends StatelessWidget {
+  const SignupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +43,8 @@ class LoginScreen extends StatelessWidget {
                   const Gap(7),
                   Text(
                     "Enter Phone Number".tr(context),
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    // style: const TextStyle(
-                    //     fontSize: 28, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 28, fontWeight: FontWeight.bold),
                   ),
                   const Gap(10),
                   const PhoneNumberInputWidget(),
@@ -86,7 +86,7 @@ class LoginScreen extends StatelessWidget {
                               ..onTap = () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (ctx) => const LoginScreen(),
+                                    builder: (ctx) => const SignupPage(),
                                   ),
                                 );
                               },
