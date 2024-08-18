@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:negmt_heliopolis/core/constants/colors.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
+import 'package:negmt_heliopolis/features/Home_layout/presentation/view/widgets/gbutton.dart';
 
 class HomeLayout extends StatefulWidget {
   const HomeLayout({super.key});
@@ -13,98 +17,82 @@ class HomeLayout extends StatefulWidget {
 }
 
 class _HomeLayoutState extends State<HomeLayout> {
-  int _selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle());
+    return BlocProvider(
+      create: (context) => HomeLayoutCubit(),
+      child: BlocConsumer<HomeLayoutCubit, HomeLayoutState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          HomeLayoutCubit homeLayoutCubit =
+              BlocProvider.of<HomeLayoutCubit>(context);
 
-    return Scaffold(
-      // appBar: AppBar(),
-      body: const Center(child: Text('hello from home')),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(50),
-            topRight: Radius.circular(50),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2), // Shadow color
-              spreadRadius: 2, // Spread radius
-              blurRadius: 10, // Blur radius
-              offset: const Offset(0, 4), // Shadow position (x, y)
+          return Scaffold(
+            body: homeLayoutCubit.screens[homeLayoutCubit.selectedIndex],
+            bottomNavigationBar: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(75.r),
+                ),
+                boxShadow: [
+                  MyBoxShadows.gNavBoxSahdow,
+                ],
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.r, vertical: 20.r),
+                child: GNav(
+                  textStyle: Styles.styles12w500sFProTextFamily,
+                  selectedIndex: homeLayoutCubit.selectedIndex,
+                  padding: EdgeInsets.all(13.r),
+                  gap: 8.w,
+                  tabBackgroundColor: MyColors.mainColor,
+                  onTabChange: (index) {
+                    homeLayoutCubit.changeCurrentIndex(index);
+                  },
+                  tabs: [
+                    gButtonItem(
+                      context: context,
+                      activeSvgPath: 'assets/svg_icons/white-home.svg',
+                      outlinedSvgPath: 'assets/svg_icons/home.svg',
+                      text: 'home'.tr(context),
+                      index: 0,
+                    ),
+                    gButtonItem(
+                      context: context,
+                      activeSvgPath: 'assets/svg_icons/white-search-normal.svg',
+                      outlinedSvgPath: 'assets/svg_icons/search-normal.svg',
+                      text: 'explore'.tr(context),
+                      index: 1,
+                    ),
+                    gButtonItem(
+                      context: context,
+                      activeSvgPath: 'assets/svg_icons/white-heart.svg',
+                      outlinedSvgPath: 'assets/svg_icons/heart.svg',
+                      text: 'liked'.tr(context),
+                      index: 2,
+                    ),
+                    gButtonItem(
+                      context: context,
+                      activeSvgPath: 'assets/svg_icons/white-favorite-Cart.svg',
+                      outlinedSvgPath: 'assets/svg_icons/favorite-Cart.svg',
+                      text: 'cart'.tr(context),
+                      index: 3,
+                    ),
+                    gButtonItem(
+                      context: context,
+                      activeSvgPath: 'assets/svg_icons/white-user.svg',
+                      outlinedSvgPath: 'assets/svg_icons/user.svg',
+                      text: 'profile'.tr(context),
+                      index: 4,
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-          child: GNav(
-            selectedIndex: _selectedIndex,
-            padding: const EdgeInsets.all(16),
-            gap: 8,
-            backgroundColor: Colors.white,
-            color: MyColors.mainColor,
-            activeColor: Colors.white,
-            tabBackgroundColor: MyColors.mainColor,
-            onTabChange: (index) {
-              setState(() {
-                if (_selectedIndex != index) {
-                  _selectedIndex = index;
-                }
-              });
-            },
-            tabs: [
-              _buttonItem(
-                activeIcon: Icons.home,
-                outlinedIcon: Icons.home_outlined,
-                index: 0,
-                text: 'home'.tr(context),
-              ),
-              _buttonItem(
-                activeIcon: Icons.search,
-                outlinedIcon: Icons.search_outlined,
-                index: 1,
-                text: 'search'.tr(context),
-              ),
-              _buttonItem(
-                activeIcon: Icons.favorite,
-                outlinedIcon: Icons.favorite_border_outlined,
-                index: 2,
-                text: 'Liked'.tr(context),
-              ),
-              _buttonItem(
-                activeIcon: FontAwesomeIcons.cartArrowDown,
-                // outlinedIcon: Icons.inventory_2_outlined,
-                index: 3,
-                text: 'cart'.tr(context),
-              ),
-              _buttonItem(
-                activeIcon: Icons.person,
-                outlinedIcon: Icons.person_outline,
-                index: 4,
-                text: 'profile'.tr(context),
-              ),
-            ],
-          ),
-        ),
+          );
+        },
       ),
-    );
-  }
-
-  GButton _buttonItem({
-    required IconData activeIcon,
-    IconData? outlinedIcon,
-    required String text,
-    required int index,
-  }) {
-    outlinedIcon ??= activeIcon;
-    return GButton(
-      icon: _selectedIndex == index ? activeIcon : outlinedIcon,
-      text: text,
-      padding: const EdgeInsets.all(10),
-      gap: 10,
     );
   }
 }
