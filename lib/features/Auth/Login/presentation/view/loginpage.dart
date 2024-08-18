@@ -36,8 +36,9 @@ class LoginScreen extends StatelessWidget {
                   const Gap(7),
                   Text(
                     "Enter Phone Number".tr(context),
-                    style: const TextStyle(
-                        fontSize: 28, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    // style: const TextStyle(
+                    //     fontSize: 28, fontWeight: FontWeight.bold),
                   ),
                   const Gap(10),
                   Row(
