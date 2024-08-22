@@ -7,9 +7,7 @@ import 'package:negmt_heliopolis/core/widgets/svgAsset.dart';
 Widget specialOfferWidget({
   required BuildContext context,
   required String assetImagePath,
-  //
   required Widget Function() upToOfferWidget,
-  //
   required Widget Function() descriptionOfferWidget,
   void Function()? onTap,
   double? widgetWidth,
