@@ -93,4 +93,60 @@ class Styles {
     color: const Color.fromRGBO(55, 55, 55, 1),
     fontFamily: interFamily,
   );
+
+  static TextStyle styles16w700interFamily = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w700,
+    color: const Color.fromRGBO(40, 40, 40, 1),
+    fontFamily: interFamily,
+  );
+
+  static TextStyle styles12w400interFamily = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
+    color: const Color.fromRGBO(100, 100, 100, 1),
+    fontFamily: interFamily,
+  );
+
+  static TextStyle styles12w500interFamily = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w500,
+    color: const Color.fromRGBO(50, 50, 50, 1),
+    fontFamily: interFamily,
+  );
+
+  static TextStyle styles12w800interFamily = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w800,
+    color: const Color.fromRGBO(0, 0, 0, 1),
+    fontFamily: interFamily,
+  );
+
+  static TextStyle styles8w400interFamily = TextStyle(
+    fontSize: 8.sp,
+    fontWeight: FontWeight.w400,
+    color: const Color.fromRGBO(248, 147, 31, 1),
+    fontFamily: interFamily,
+  );
+
+  static TextStyle styles16w800interFamily = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w800,
+    fontFamily: interFamily,
+    color: const Color.fromRGBO(0, 0, 0, 1),
+  );
+
+  static TextStyle styles9w300interFamily = TextStyle(
+    fontSize: 9.sp,
+    fontWeight: FontWeight.w300,
+    fontFamily: interFamily,
+    color: const Color.fromRGBO(0, 0, 0, 1),
+  );
+
+  static TextStyle styles10w300interFamily = TextStyle(
+    fontSize: 10.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w300,
+    color: const Color.fromRGBO(40, 40, 40, 1),
+  );
 }

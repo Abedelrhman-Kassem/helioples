@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,8 +10,15 @@ import 'package:negmt_heliopolis/core/utlis/routing/routes.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/themes.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   AppRouter appRouter = AppRouter();
   Bloc.observer = MyBlocObserver();
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   runApp(
     MyApp(appRouter: appRouter),
@@ -35,30 +43,36 @@ class MyApp extends StatelessWidget {
         ],
         child: BlocBuilder<LocaleCubit, ChangeLocaleState>(
           builder: (context, state) {
-            return MaterialApp(
-              onGenerateRoute: appRouter.generate,
-              theme: lightTheme,
-              darkTheme: darkTheme,
-              themeMode: ThemeMode.light,
-              locale: state.locale,
-              supportedLocales: const [Locale('en'), Locale('ar')],
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate
-              ],
-              localeResolutionCallback: (deviceLocale, supportedLocales) {
-                for (var locale in supportedLocales) {
-                  if (deviceLocale != null &&
-                      deviceLocale.languageCode == locale.languageCode) {
-                    return deviceLocale;
+            TextDirection textDirection = state.locale.languageCode == 'ar'
+                ? TextDirection.rtl
+                : TextDirection.ltr;
+            return Directionality(
+              textDirection: textDirection,
+              child: MaterialApp(
+                onGenerateRoute: appRouter.generate,
+                theme: lightTheme,
+                darkTheme: darkTheme,
+                themeMode: ThemeMode.light,
+                locale: state.locale,
+                supportedLocales: const [Locale('en'), Locale('ar')],
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate
+                ],
+                localeResolutionCallback: (deviceLocale, supportedLocales) {
+                  for (var locale in supportedLocales) {
+                    if (deviceLocale != null &&
+                        deviceLocale.languageCode == locale.languageCode) {
+                      return deviceLocale;
+                    }
                   }
-                }
 
-                return supportedLocales.first;
-              },
-              debugShowCheckedModeBanner: false,
+                  return supportedLocales.first;
+                },
+                debugShowCheckedModeBanner: false,
+              ),
             );
           },
         ),

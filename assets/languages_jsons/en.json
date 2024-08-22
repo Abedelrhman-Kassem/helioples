@@ -1,16 +1,25 @@
 {
-  "hello_msg": "hello ",
   "Better": "Better ",
   "Prices,": "Prices, ",
   "Faster": "Faster ",
   "Delivery": "Delivery",
   "Start Shopping": "Start Shopping",
   "Already Have account?": "Already Have account? ",
+  "You don't Have account?": "You don't Have account? ",
   "Sign In.": "Sign In.",
+  "Create an account.": "Create an account.",
   "Enter Phone Number": "Enter Phone Number",
   "home": "Home",
   "explore": "Explore",
   "liked": "Liked",
   "cart": "Cart",
-  "profile": "Profile"
+  "profile": "Profile",
+  "Phone Number": "Phone Number",
+  "Login": "Login",
+  "Continue": "Continue",
+  "You will receive a verification code": "You will receive a verification code",
+  "Special Offers": "Special Offers",
+  "View All": "View All",
+  "Categories": "Categories",
+  "Delivery Duration:": "Delivery Duration: "
 }

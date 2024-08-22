@@ -1,16 +1,25 @@
 {
-  "hello_msg": "مرحبا ",
   "Better": "أفضل ",
   "Prices,": " الأسعار",
   "Faster": "أسرع ",
   "Delivery": "خدمة توصيل",
   "Start Shopping": "ابدأ التسوق",
   "Already Have account?": "لديك حساب بالفعل؟ ",
+  "You don't Have account?": "ليس مديك حساب؟ ",
   "Sign In.": "تسجيل دخول",
+  "Create an account.": "إنشاء حساب جديد",
   "Enter Phone Number": "ادخل الموبايل",
   "home": "الرئيسية",
   "explore": "بحث",
   "Liked": "المفضله",
   "cart": "العربه",
-  "profile": "الحساب"
+  "profile": "الحساب",
+  "Phone Number": "رقم الموبايل",
+  "Login": "تسجيل الدخول",
+  "Continue": "استمرار",
+  "You will receive a verification code": "سيتم إستلام رسالة تأكيد",
+  "Special Offers": "العروض",
+  "View All": "عروضنا",
+  "Categories": "الأصناف",
+  "Delivery Duration:": "مدة التوصيل"
 }
