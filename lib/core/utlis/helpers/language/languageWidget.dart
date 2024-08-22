@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:negmt_heliopolis/core/constants/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language/cubit/locale_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language/language_cache_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 
 class Languagewidget extends StatelessWidget {
   const Languagewidget({super.key});

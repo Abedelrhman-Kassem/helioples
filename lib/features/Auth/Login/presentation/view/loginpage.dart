@@ -2,12 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gap/gap.dart';
-import 'package:negmt_heliopolis/core/constants/colors.dart';
 import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language/languageWidget.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/widgets/CustomButton.dart';
 import 'package:negmt_heliopolis/core/widgets/helioplis_logo.dart';
-import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/egypt_code_widget.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/phone_number_input_widget.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -59,7 +58,7 @@ class LoginScreen extends StatelessWidget {
                     text: "Continue".tr(context),
                     onTap: () {},
                     backgroundColor: MyColors.mainColor,
-                    textColor: MyColors.mainWhiteColor,
+                    textColor: MyColors.mainScaffoldWhiteColor,
                     verticalPadding: 15,
                     borderRadius: 20,
                   ),

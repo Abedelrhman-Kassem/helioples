@@ -13,7 +13,10 @@ Widget specialOfferWidget({
   required Widget Function() descriptionOfferWidget,
   void Function()? onTap,
   double? widgetWidth,
+  double? imageHeight,
   String? brandImagePath,
+  String mainUrlImage = '',
+  String secondaryUrlImage = '',
 }) {
   final TextDirection textDirection = Directionality.of(context);
   final bool isRtl = textDirection == TextDirection.rtl;
@@ -21,7 +24,7 @@ Widget specialOfferWidget({
   return GestureDetector(
     onTap: onTap,
     child: SizedBox(
-      width: widgetWidth?.w ?? MediaQuery.of(context).size.width,
+      width: widgetWidth ?? MediaQuery.of(context).size.width,
       child: Column(
         children: [
           Container(
@@ -37,6 +40,8 @@ Widget specialOfferWidget({
                   alignment: Alignment.bottomLeft,
                   children: [
                     Helper.loadNetworkImage(
+                      url: mainUrlImage,
+                      imageHeight: imageHeight,
                       isRtl: isRtl,
                       assetsErrorPath: assetImagePath,
                     ),
@@ -49,6 +54,7 @@ Widget specialOfferWidget({
                         top: 13,
                         start: 10,
                         child: Helper.loadNetworkImage(
+                          url: secondaryUrlImage,
                           isRtl: isRtl,
                           assetsErrorPath: brandImagePath,
                         ),
@@ -93,8 +99,8 @@ Widget upToOfferWidget({
         children: [
           svgIcon(
             path: 'assets/svg_icons/discount-shape.svg',
-            width: iconWidth.w,
-            height: iconHeight.h,
+            width: iconWidth,
+            height: iconHeight,
             color: Colors.white,
           ),
           SizedBox(width: 3.w),
@@ -129,8 +135,8 @@ Widget descriptionOfferWidget({
                 SizedBox(width: 4.w),
                 svgIcon(
                   path: 'assets/svg_icons/clock.svg',
-                  width: iconWidth.w,
-                  height: iconHeight.h,
+                  width: iconWidth,
+                  height: iconHeight,
                   color: const Color.fromRGBO(50, 50, 50, 1),
                 ),
               ],

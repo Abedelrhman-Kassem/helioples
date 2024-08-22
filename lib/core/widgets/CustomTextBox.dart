@@ -1,5 +1,3 @@
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -145,13 +143,16 @@ class CustomTextBox extends StatelessWidget {
               suffixIcon: showEyeIcon == true
                   ? IconButton(
                       onPressed: onChangeVisability,
-                      icon: Icon(
-                        isPassword == true
-                            ? FontAwesomeIcons.eye
-                            : FontAwesomeIcons.eyeSlash,
-                        color: Colors.black,
-                        size: 24,
-                      ),
+                      icon: const SizedBox(),
+                      // icon: const Icon(
+
+                      //   // To Do add icons
+                      //   // isPassword == true
+                      //   //     ? FontAwesomeIcons.eye
+                      //   //     : FontAwesomeIcons.eyeSlash,
+                      //   // color: Colors.black,
+                      //   // size: 24,
+                      // ),
                     )
                   : suffixIcon,
               hintStyle: TextStyle(

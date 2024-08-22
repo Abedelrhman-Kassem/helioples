@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
@@ -148,7 +147,7 @@ class HomeScreen extends StatelessWidget {
                               return specialOfferWidget(
                                 context: context,
                                 assetImagePath: 'assets/test_images/offers.png',
-                                widgetWidth: 297,
+                                widgetWidth: 297.w,
                                 onTap: () {
                                   Navigator.pushNamed(
                                     context,
@@ -156,8 +155,8 @@ class HomeScreen extends StatelessWidget {
                                   );
                                 },
                                 upToOfferWidget: () => upToOfferWidget(
-                                  iconHeight: 13.74,
-                                  iconWidth: 13.74,
+                                  iconHeight: 13.74.h,
+                                  iconWidth: 13.74.w,
                                   context: context,
                                   text: Text(
                                     'Up to 20% off',
@@ -194,8 +193,8 @@ class HomeScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  iconWidth: 13.66,
-                                  iconHeight: 13.66,
+                                  iconWidth: 13.66.w,
+                                  iconHeight: 13.66.h,
                                 ),
                               );
                             },
@@ -260,49 +259,37 @@ class HomeScreen extends StatelessWidget {
                                           : Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    svgIcon(
-                                                      path:
-                                                          'assets/svg_icons/square-category.svg',
-                                                      width: 8.w,
-                                                      height: 8.h,
-                                                      color: MyColors.mainColor,
+                                              children: List.generate(
+                                                2,
+                                                (rowIndex) => Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: rowIndex < 1
+                                                          ? 1.h
+                                                          : 0), // Add space between rows
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: List.generate(
+                                                      2,
+                                                      (colIndex) => Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 1
+                                                                    .w), // Adjust horizontal spacing between icons
+                                                        child: svgIcon(
+                                                          path:
+                                                              'assets/svg_icons/square-category.svg',
+                                                          width: 8.w,
+                                                          height: 8.h,
+                                                          color: MyColors
+                                                              .mainColor,
+                                                        ),
+                                                      ),
                                                     ),
-                                                    svgIcon(
-                                                      path:
-                                                          'assets/svg_icons/square-category.svg',
-                                                      width: 8.w,
-                                                      height: 8.h,
-                                                      color: MyColors.mainColor,
-                                                    ),
-                                                  ],
+                                                  ),
                                                 ),
-                                                SizedBox(height: 1.h),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    svgIcon(
-                                                      path:
-                                                          'assets/svg_icons/square-category.svg',
-                                                      width: 8.w,
-                                                      height: 8.h,
-                                                      color: MyColors.mainColor,
-                                                    ),
-                                                    svgIcon(
-                                                      path:
-                                                          'assets/svg_icons/square-category.svg',
-                                                      width: 8.w,
-                                                      height: 8.h,
-                                                      color: MyColors.mainColor,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
+                                              ),
                                             ),
                                     ),
                                   ),

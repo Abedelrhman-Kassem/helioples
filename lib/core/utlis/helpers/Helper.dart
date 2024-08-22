@@ -32,11 +32,17 @@ class Helper {
     BoxFit fit = BoxFit.cover,
     double width = double.infinity,
     double minShimmerHeight = 50,
+    double? imageHeight,
   }) {
+    if (imageHeight != null) {
+      minShimmerHeight = imageHeight;
+    }
+
     Widget errorWidget() => Transform(
           alignment: Alignment.center,
           transform: Matrix4.rotationY(isRtl ? pi : 0),
           child: Image(
+            height: imageHeight,
             width: double.infinity,
             fit: BoxFit.cover,
             image: AssetImage(
@@ -52,6 +58,7 @@ class Helper {
           alignment: Alignment.center,
           transform: Matrix4.rotationY(isRtl ? pi : 0),
           child: CachedNetworkImage(
+            height: imageHeight,
             imageUrl: url,
             fit: fit,
             width: width,

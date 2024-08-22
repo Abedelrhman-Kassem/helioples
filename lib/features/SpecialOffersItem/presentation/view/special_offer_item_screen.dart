@@ -29,8 +29,8 @@ class SpecialOfferItemScreen extends StatelessWidget {
                 context: context,
                 assetImagePath: 'assets/test_images/offers.png',
                 upToOfferWidget: () => upToOfferWidget(
-                  iconHeight: 17,
-                  iconWidth: 17,
+                  iconHeight: 17.h,
+                  iconWidth: 17.w,
                   context: context,
                   text: Text(
                     'Up to 20% off',
@@ -68,8 +68,8 @@ class SpecialOfferItemScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  iconWidth: 13.66,
-                  iconHeight: 13.66,
+                  iconWidth: 13.66.w,
+                  iconHeight: 13.66.h,
                 ),
               ),
               SizedBox(height: 30.h),

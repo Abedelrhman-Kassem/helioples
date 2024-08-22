@@ -38,8 +38,33 @@ class AppRouter {
   }
 }
 
-class _CustomPageRouteBuilder extends MaterialPageRoute {
-  _CustomPageRouteBuilder({required Widget page}) : super(builder: (_) => page);
+// THIS CODE TO ANIMATE THE NAVIGATION AND CHANGE THE SYSTEMLAYOUT COLOR ABOVE THE APPBAR
+
+class _CustomPageRouteBuilder extends PageRouteBuilder {
+  final Widget page;
+
+  _CustomPageRouteBuilder({required this.page})
+      : super(
+          pageBuilder: (context, animation, secondaryAnimation) => page,
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0); // Start from the right
+            const end = Offset.zero; // End at the center
+            const curve = Curves.easeInOut; // Animation curve
+
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+          transitionDuration:
+              const Duration(milliseconds: 600), // Set transition duration here
+          reverseTransitionDuration: const Duration(
+              milliseconds: 600), // Optional: Set reverse transition duration
+        );
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
@@ -61,3 +86,30 @@ class _CustomPageRouteBuilder extends MaterialPageRoute {
         .buildTransitions(context, animation, secondaryAnimation, child);
   }
 }
+
+// THIS CODE TO CHANGE THE SYSTEMOVERLAY ABOVE THE APPBAR IN EVERY NAVIGATE 
+
+// class _CustomPageRouteBuilder extends MaterialPageRoute {
+//   _CustomPageRouteBuilder({required Widget page}) : super(builder: (_) => page);
+
+//   @override
+//   Widget buildTransitions(BuildContext context, Animation<double> animation,
+//       Animation<double> secondaryAnimation, Widget child) {
+        
+//     bool hasAppBar = false;
+//     if (child is Scaffold && child.appBar != null) {
+//       hasAppBar = true;
+//     }
+
+//     SystemChrome.setSystemUIOverlayStyle(
+//       SystemUiOverlayStyle(
+//         statusBarColor: hasAppBar ? Colors.white : Colors.transparent,
+//         statusBarIconBrightness: Brightness.dark,
+//         statusBarBrightness: Brightness.dark,
+//       ),
+//     );
+
+//     return super
+//         .buildTransitions(context, animation, secondaryAnimation, child);
+//   }
+// }

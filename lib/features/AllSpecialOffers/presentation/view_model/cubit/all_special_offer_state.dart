@@ -4,3 +4,5 @@ part of 'all_special_offer_cubit.dart';
 sealed class AllSpecialOfferState {}
 
 final class AllSpecialOfferInitial extends AllSpecialOfferState {}
+
+final class ChangeGridAllSpecialOffer extends AllSpecialOfferState {}
