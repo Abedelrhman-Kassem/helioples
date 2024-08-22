@@ -87,7 +87,7 @@ class _CustomPageRouteBuilder extends PageRouteBuilder {
   }
 }
 
-// THIS CODE TO CHANGE THE SYSTEMOVERLAY ABOVE THE APPBAR IN EVERY NAVIGATE 
+// THIS CODE TO CHANGE THE SYSTEMOVERLAY ABOVE THE APPBAR IN EVERY NAVIGATE
 
 // class _CustomPageRouteBuilder extends MaterialPageRoute {
 //   _CustomPageRouteBuilder({required Widget page}) : super(builder: (_) => page);
@@ -95,7 +95,7 @@ class _CustomPageRouteBuilder extends PageRouteBuilder {
 //   @override
 //   Widget buildTransitions(BuildContext context, Animation<double> animation,
 //       Animation<double> secondaryAnimation, Widget child) {
-        
+
 //     bool hasAppBar = false;
 //     if (child is Scaffold && child.appBar != null) {
 //       hasAppBar = true;
