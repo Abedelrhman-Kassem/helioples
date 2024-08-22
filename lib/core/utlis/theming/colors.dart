@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 class MyColors {
-  static Color mainColor = HexColor('#007E8F');
-  static Color mainWhiteColor = HexColor('#fbfeff');
+  static Color mainColor = const Color.fromRGBO(0, 126, 143, 1);
+  static Color mainScaffoldWhiteColor = const Color.fromRGBO(251, 254, 255, 1);
 }

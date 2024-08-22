@@ -1,5 +1,4 @@
 {
-  "hello_msg": "hello ",
   "Better": "Better ",
   "Prices,": "Prices, ",
   "Faster": "Faster ",
@@ -14,13 +13,13 @@
   "explore": "Explore",
   "liked": "Liked",
   "cart": "Cart",
-  "profile": "Profile"
-}
-
-
-
+  "profile": "Profile",
   "Phone Number": "Phone Number",
   "Login": "Login",
   "Continue": "Continue",
-  "You will receive a verification code": "You will receive a verification code"
+  "You will receive a verification code": "You will receive a verification code",
+  "Special Offers": "Special Offers",
+  "View All": "View All",
+  "Categories": "Categories",
+  "Delivery Duration:": "Delivery Duration: "
 }

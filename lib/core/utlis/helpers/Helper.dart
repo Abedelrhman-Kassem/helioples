@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/widgets/CustomButton.dart';
@@ -24,40 +26,55 @@ class Helper {
   }
 
   static Widget loadNetworkImage({
+    required bool isRtl,
     String url = "",
     String assetsErrorPath = "",
     BoxFit fit = BoxFit.cover,
-    double width = 50,
-    double height = 50,
+    double width = double.infinity,
+    double minShimmerHeight = 50,
   }) {
+    Widget errorWidget() => Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.rotationY(isRtl ? pi : 0),
+          child: Image(
+            width: double.infinity,
+            fit: BoxFit.cover,
+            image: AssetImage(
+              assetsErrorPath,
+            ),
+          ),
+        );
+
     if (url.isNotEmpty) {
       bool validUrl = Uri.parse(url).isAbsolute;
       if (validUrl) {
-        return CachedNetworkImage(
-          imageUrl: url,
-          fit: fit,
-          width: width,
-          height: height,
-          placeholder: (ctx, str) => Shimmer(
-            gradient: LinearGradient(
-              colors: [
-                Colors.grey.shade300,
-                Colors.grey.shade400,
-              ],
+        return Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.rotationY(isRtl ? pi : 0),
+          child: CachedNetworkImage(
+            imageUrl: url,
+            fit: fit,
+            width: width,
+            placeholder: (ctx, str) => Container(
+              constraints: BoxConstraints(minHeight: minShimmerHeight.h),
+              child: Shimmer(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.grey.shade300,
+                    Colors.grey.shade400,
+                  ],
+                ),
+                child: const SizedBox(),
+              ),
             ),
-            child: CircleAvatar(
-              radius: width,
-              backgroundColor: Colors.grey,
-            ),
+            errorWidget: (ctx, str, obj) => errorWidget(),
           ),
-          errorWidget: (ctx, str, obj) =>
-              Image.asset("assets/images/$assetsErrorPath"),
         );
       } else {
-        return Image.asset("assets/images/$assetsErrorPath");
+        return errorWidget();
       }
     } else {
-      return Image.asset("assets/images/$assetsErrorPath");
+      return errorWidget();
     }
   }
 

@@ -1,7 +1,13 @@
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/Helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
@@ -9,7 +15,7 @@ import 'package:negmt_heliopolis/core/widgets/SvgAsset.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/category_builder.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/location_widget.dart';
-import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/special_offer_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view_model/cubit/home_screen_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,6 +23,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isRtl = TextDirection.rtl == Directionality.of(context);
+
     return BlocProvider(
       create: (context) => HomeScreenCubit(),
       child: BlocConsumer<HomeScreenCubit, HomeScreenState>(
@@ -36,18 +44,17 @@ class HomeScreen extends StatelessWidget {
                       CarouselSlider(
                         items: [1, 2, 3, 4, 5].map(
                           (ele) {
-                            return const SizedBox(
-                              child: Image(
-                                fit: BoxFit.cover,
-                                image: AssetImage(
-                                  'assets/test_images/home.png',
-                                ),
+                            return SizedBox(
+                              child: Helper.loadNetworkImage(
+                                isRtl: isRtl,
+                                url: '',
+                                assetsErrorPath: 'assets/test_images/home.png',
                               ),
                             );
                           },
                         ).toList(),
                         options: CarouselOptions(
-                          height: 422.h,
+                          aspectRatio: 438 / 424,
                           autoPlay: true,
                           initialPage: 0,
                           viewportFraction: 1,
@@ -75,38 +82,53 @@ class HomeScreen extends StatelessWidget {
                             },
                             icon: svgIcon(
                               path: 'assets/svg_icons/search-normal.svg',
-                              width: 30.w,
-                              height: 30.h,
+                              width: 26.44.w,
+                              height: 26.44.h,
                               color: MyColors.mainColor,
                             ),
                           ),
                         ),
                       ),
-                      locationWidget(),
+                      locationWidget(context),
                     ],
                   ),
-                  SizedBox(height: 70.h),
+                  SizedBox(height: 45.h),
                   Column(
                     children: [
                       Padding(
                         padding: EdgeInsets.all(18.0.r),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Special Offers',
+                              'Special Offers'.tr(context),
                               style: Styles.styles17w600interFamily,
                             ),
-                            const Spacer(),
-                            Text(
-                              'View All',
-                              style: Styles.styles14w500interFamily,
-                            ),
-                            SizedBox(width: 4.w),
-                            svgIcon(
-                              path: 'assets/svg_icons/arrow-right.svg',
-                              width: 10,
-                              height: 9,
-                              color: const Color.fromRGBO(0, 126, 143, 1),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, allspecialOffersScreen);
+                              },
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'View All'.tr(context),
+                                    style: Styles.styles14w500interFamily,
+                                  ),
+                                  SizedBox(width: 4.w),
+                                  Transform(
+                                    transform:
+                                        Matrix4.rotationY(isRtl ? pi : 0),
+                                    child: svgIcon(
+                                      path: 'assets/svg_icons/arrow-right.svg',
+                                      width: 10,
+                                      height: 9,
+                                      color:
+                                          const Color.fromRGBO(0, 126, 143, 1),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -114,84 +136,175 @@ class HomeScreen extends StatelessWidget {
                       // SizedBox(height: 10.h),
                       Padding(
                         padding: EdgeInsetsDirectional.only(start: 18.w),
-                        child: SizedBox(
-                          height: 180.h,
+                        child: AspectRatio(
+                          aspectRatio: 297 / 140,
+                          // constraints: BoxConstraints(
+                          //   maxHeight: 240.r,
+                          // ),
                           child: ListView.separated(
                             physics: const BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) =>
-                                specialOfferWidget(),
+                            itemBuilder: (context, index) {
+                              return specialOfferWidget(
+                                context: context,
+                                assetImagePath: 'assets/test_images/offers.png',
+                                widgetWidth: 297,
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    specialOfferItemScreen,
+                                  );
+                                },
+                                upToOfferWidget: () => upToOfferWidget(
+                                  iconHeight: 13.74,
+                                  iconWidth: 13.74,
+                                  context: context,
+                                  text: Text(
+                                    'Up to 20% off',
+                                    style: Styles.styles7w500interFamily,
+                                  ),
+                                ),
+                                descriptionOfferWidget: () =>
+                                    descriptionOfferWidget(
+                                  titleText: Text(
+                                    'Mango Season',
+                                    style: Styles.styles13w700interFamily,
+                                  ),
+                                  offerRichText: RichText(
+                                    text: TextSpan(
+                                      text: 'Offer Ends At ',
+                                      style: Styles.styles9w400interFamily,
+                                      children: [
+                                        TextSpan(
+                                          text: '1 Day 16 Hours',
+                                          style: Styles.styles12w500interFamily,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  beneficiaryText: RichText(
+                                    text: TextSpan(
+                                      text: 'Beneficiary ',
+                                      style: Styles.styles9w400interFamily,
+                                      children: [
+                                        TextSpan(
+                                          text: '33',
+                                          style: Styles.styles9w800interFamily,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  iconWidth: 13.66,
+                                  iconHeight: 13.66,
+                                ),
+                              );
+                            },
                             separatorBuilder: (context, index) =>
                                 SizedBox(width: 20.w),
                             itemCount: 10,
                           ),
                         ),
                       ),
-                      SizedBox(height: 30.h),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 18.w),
-                        child: Column(
-                          children: [
-                            Row(
+                      // SizedBox(height: 20.h),
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 18.w),
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Categories',
+                                  'Categories'.tr(context),
                                   style: Styles.styles17w600interFamily,
                                 ),
                                 IconButton(
-                                  icon: Container(
-                                    width: 36.w,
-                                    height: 36.h,
-                                    padding: EdgeInsets.all(1.r),
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromRGBO(
-                                          237, 237, 237, 1),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(8.r),
+                                  icon: SizedBox.square(
+                                    dimension: 36.r,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 1.r,
+                                        vertical: 0.r,
                                       ),
-                                      boxShadow: [
-                                        MyBoxShadows.iconsIsCategoryBoxShadow
-                                      ],
-                                    ),
-                                    child: homeScreenCubit.isCategoryRow
-                                        ? Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: List.generate(
-                                              3,
-                                              (index) {
-                                                return svgIcon(
-                                                  path:
-                                                      'assets/svg_icons/square-category.svg',
-                                                  width: 12.w,
-                                                  height: 12.h,
-                                                  color: MyColors.mainColor,
-                                                );
-                                              },
-                                            ),
-                                          )
-                                        : Wrap(
-                                            alignment: WrapAlignment.center,
-                                            runAlignment: WrapAlignment.center,
-                                            spacing: 2.r,
-                                            runSpacing: 2.r,
-                                            children: List.generate(
-                                              4,
-                                              (index) {
-                                                return SizedBox(
-                                                  child: svgIcon(
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(
+                                          237,
+                                          237,
+                                          237,
+                                          1,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8.r),
+                                        ),
+                                        boxShadow: [
+                                          MyBoxShadows.iconsIsCategoryBoxShadow
+                                        ],
+                                      ),
+                                      child: homeScreenCubit.isCategoryRow
+                                          ? Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: List.generate(
+                                                3,
+                                                (index) {
+                                                  return svgIcon(
                                                     path:
                                                         'assets/svg_icons/square-category.svg',
-                                                    width: 12.w,
-                                                    height: 12.h,
+                                                    width: 8.w,
+                                                    height: 8.h,
                                                     color: MyColors.mainColor,
-                                                  ),
-                                                );
-                                              },
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                          : Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    svgIcon(
+                                                      path:
+                                                          'assets/svg_icons/square-category.svg',
+                                                      width: 8.w,
+                                                      height: 8.h,
+                                                      color: MyColors.mainColor,
+                                                    ),
+                                                    svgIcon(
+                                                      path:
+                                                          'assets/svg_icons/square-category.svg',
+                                                      width: 8.w,
+                                                      height: 8.h,
+                                                      color: MyColors.mainColor,
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(height: 1.h),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    svgIcon(
+                                                      path:
+                                                          'assets/svg_icons/square-category.svg',
+                                                      width: 8.w,
+                                                      height: 8.h,
+                                                      color: MyColors.mainColor,
+                                                    ),
+                                                    svgIcon(
+                                                      path:
+                                                          'assets/svg_icons/square-category.svg',
+                                                      width: 8.w,
+                                                      height: 8.h,
+                                                      color: MyColors.mainColor,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
-                                          ),
+                                    ),
                                   ),
                                   onPressed: () {
                                     homeScreenCubit.changeCategory();
@@ -199,38 +312,53 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            homeScreenCubit.isCategoryRow
-                                ? SizedBox(
+                          ),
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 250),
+                            reverseDuration: const Duration(milliseconds: 250),
+                            transitionBuilder: (child, animation) {
+                              return FadeTransition(
+                                  opacity: animation, child: child);
+                            },
+                            child: homeScreenCubit.isCategoryRow
+                                ? Container(
+                                    padding:
+                                        EdgeInsetsDirectional.only(start: 18.w),
                                     height: 200,
                                     child: ListView.separated(
-                                      padding: EdgeInsets.only(top: 30.h),
+                                      padding: EdgeInsets.only(top: 5.h),
                                       physics: const BouncingScrollPhysics(),
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, state) =>
-                                          categoryBuilder(),
+                                          categoryBuilder(context, isRtl),
                                       separatorBuilder: (context, state) =>
                                           const SizedBox(width: 14),
                                       itemCount: 17,
                                     ),
                                   )
-                                : GridView.builder(
-                                    padding: EdgeInsets.only(top: 30.h),
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: 17,
-                                    gridDelegate:
-                                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                                      maxCrossAxisExtent: 124,
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10,
-                                      childAspectRatio: 1 / 1.4,
+                                : Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 18.w),
+                                    child: GridView.builder(
+                                      padding: EdgeInsets.only(top: 5.h),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: 17,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                                        maxCrossAxisExtent: 125,
+                                        mainAxisSpacing: 10,
+                                        crossAxisSpacing: 10,
+                                        // childAspectRatio: 1 / 1.5,
+                                        mainAxisExtent: 135,
+                                      ),
+                                      itemBuilder: (context, index) =>
+                                          categoryBuilder(context, isRtl),
                                     ),
-                                    itemBuilder: (context, index) =>
-                                        categoryBuilder(),
                                   ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

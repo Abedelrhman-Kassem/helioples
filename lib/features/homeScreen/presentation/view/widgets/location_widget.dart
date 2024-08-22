@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/svgAsset.dart';
 
-Widget locationWidget() {
+Widget locationWidget(BuildContext context) {
   return FractionalTranslation(
     translation: const Offset(0, 0.5),
     child: Container(
@@ -31,13 +32,18 @@ Widget locationWidget() {
                 height: 18,
                 color: MyColors.mainColor,
               ),
-              Text(
-                'Delivery Duration: ',
-                style: Styles.styles13w300interFamily,
-              ),
-              Text(
-                '35 min',
-                style: Styles.styles13w400interFamily,
+              RichText(
+                text: TextSpan(
+                  text: 'Delivery Duration:'.tr(context),
+                  style: Styles.styles13w300interFamily,
+                  children: [
+                    TextSpan(
+                      text: '35 min',
+                      style: Styles.styles13w400interFamily,
+                    ),
+                  ],
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
@@ -45,13 +51,18 @@ Widget locationWidget() {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Home, ',
-                style: Styles.styles17w700interFamily,
-              ),
-              Text(
-                'Cairo Salah Salem 12518',
-                style: Styles.styles17w400interFamily,
+              RichText(
+                text: TextSpan(
+                  text: 'Home, ',
+                  style: Styles.styles17w700interFamily,
+                  children: [
+                    TextSpan(
+                      text: 'Cairo Salah Salem 12518',
+                      style: Styles.styles17w400interFamily,
+                    ),
+                  ],
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(width: 4.w),
               svgIcon(
