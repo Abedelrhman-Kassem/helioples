@@ -112,36 +112,47 @@ Widget upToOfferWidget({
 Widget descriptionOfferWidget({
   required Text titleText,
   required RichText offerRichText,
-  required RichText beneficiaryText,
+  RichText? beneficiaryText,
+  RichText? offerOrderedText,
   required double iconWidth,
   required double iconHeight,
 }) {
   return Container(
-    padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 15.w),
+    padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 5.w),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            titleText,
-            SizedBox(height: 5.h),
-            Row(
-              children: [
-                offerRichText,
-                SizedBox(width: 4.w),
-                svgIcon(
-                  path: 'assets/svg_icons/clock.svg',
-                  width: iconWidth,
-                  height: iconHeight,
-                  color: const Color.fromRGBO(50, 50, 50, 1),
-                ),
-              ],
-            ),
-          ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  titleText,
+                  if (offerOrderedText != null) offerOrderedText,
+                ],
+              ),
+              SizedBox(height: 5.h),
+              Row(
+                children: [
+                  offerRichText,
+                  SizedBox(width: 4.w),
+                  if (beneficiaryText == null) const Spacer(),
+                  svgIcon(
+                    path: 'assets/svg_icons/clock.svg',
+                    width: iconWidth,
+                    height: iconHeight,
+                    color: const Color.fromRGBO(50, 50, 50, 1),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-        beneficiaryText,
+        if (beneficiaryText != null) beneficiaryText,
       ],
     ),
   );

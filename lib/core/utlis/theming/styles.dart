@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 
 class Styles {
   static TextStyle styles12w500sFProTextFamily = TextStyle(
@@ -148,5 +149,40 @@ class Styles {
     fontFamily: interFamily,
     fontWeight: FontWeight.w300,
     color: const Color.fromRGBO(40, 40, 40, 1),
+  );
+
+  static TextStyle styles10w700interFamily = TextStyle(
+    fontSize: 10.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w700,
+    color: const Color.fromRGBO(0, 0, 0, 1),
+  );
+
+  static TextStyle styles10w400interFamily = TextStyle(
+    fontSize: 10.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w400,
+    color: const Color.fromRGBO(100, 100, 100, 1),
+  );
+
+  static TextStyle styles10w500interFamily = TextStyle(
+    fontSize: 10.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w500,
+    color: const Color.fromRGBO(50, 50, 50, 1),
+  );
+
+  static TextStyle styles8w500interFamily = TextStyle(
+    fontSize: 8.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w500,
+    color: MyColors.mainColor,
+  );
+
+  static TextStyle styles8w800interFamily = TextStyle(
+    fontSize: 8.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w800,
+    color: MyColors.mainColor,
   );
 }
