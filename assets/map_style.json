@@ -1,0 +1,18 @@
+[
+    {
+      "featureType": "administrative",
+      "stylers": [
+        {
+          "color": "#f3f3f3"
+        }
+      ]
+    },
+    {
+      "featureType": "road",
+      "stylers": [
+        {
+          "color": "#ffffff"
+        }
+      ]
+    }
+  ]
