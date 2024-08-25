@@ -21,5 +21,14 @@
   "Special Offers": "العروض",
   "View All": "عروضنا",
   "Categories": "الأصناف",
-  "Delivery Duration:": "مدة التوصيل"
+  "Delivery Duration:": "مدة التوصيل",
+ 
+  "Register": "التسجيل",
+  "First Name": "الاسم الأول",
+  "Last Name": "اسم العائلة",
+
+  "Birthday Date": "تاريخ الميلاد",
+
+  "Login Now": "تسجيل الدخول الآن",
+  "Already Have An Account?": "هل لديك حساب بالفعل؟"
 }

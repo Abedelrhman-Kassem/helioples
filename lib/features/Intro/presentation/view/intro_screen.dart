@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/loginpage.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/signup_screen.dart';
 
 class IntroScreen extends StatelessWidget {
   const IntroScreen({super.key});
@@ -124,7 +125,7 @@ class IntroScreen extends StatelessWidget {
                         ..onTap = () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (ctx) => const LoginScreen(),
+                              builder: (ctx) => const SignupScreen(),
                             ),
                           );
                         },

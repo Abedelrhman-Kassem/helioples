@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/features/AllSpecialOffers/presentation/view/all_special_offers_screen.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/loginpage.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/data/repo/maps_repo.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/data/web%20services/places_web_services.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/set_location_cubit/set_location_cubit.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/confirmation_screen.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/notification_screen.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/set_location.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/signup_screen.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/verfication_screen.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view/home_layout.dart';
 import 'package:negmt_heliopolis/features/Intro/presentation/view/intro_screen.dart';
 import 'package:negmt_heliopolis/features/PageNotFound/presentation/view/page_not_found_screen.dart';
@@ -29,6 +38,28 @@ class AppRouter {
       case allspecialOffersScreen:
         page = const AllSpecialOffersScreen();
         break;
+      case signUp2Screen :
+         page = const SignupScreen();
+         break ;
+      case verficationScreen :
+        final args = settings.arguments as Map<String, dynamic> ; 
+        page =VerificationScreen(phoneNumber: args['phoneNumber'],);
+        break ; 
+      case confirmationScreen :
+        page = const ConfirmationScreen() ;
+        break ;  
+      case setLocationScreen: 
+      page = BlocProvider(
+          create: (BuildContext context) =>
+                     MapsCubit(MapsRepository(PlacesWebservices())),
+          child: const SetLocationScreen(),
+                    
+        );
+        break;
+      case notificationScreen :
+         page = const NotificationScreen() ; 
+         break;
+        
       default:
         page = const PageNotFoundScreen();
         break;

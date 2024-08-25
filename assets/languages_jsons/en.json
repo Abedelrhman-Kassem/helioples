@@ -21,5 +21,14 @@
   "Special Offers": "Special Offers",
   "View All": "View All",
   "Categories": "Categories",
-  "Delivery Duration:": "Delivery Duration: "
+  "Delivery Duration:": "Delivery Duration: ",
+
+  "Register": "Register",
+  "First Name": "First Name",
+  "Last Name": "Last Name",
+
+  "Birthday Date": "Birthday Date",
+
+  "Login Now": "Login Now",
+  "Already Have An Account?": "Already Have An Account?"
 }
