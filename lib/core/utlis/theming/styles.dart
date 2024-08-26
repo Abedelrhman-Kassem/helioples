@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 
 class Styles {
   static TextStyle styles12w500sFProTextFamily = TextStyle(
@@ -150,6 +151,9 @@ class Styles {
     color: const Color.fromRGBO(40, 40, 40, 1),
   );
 
+  static TextStyle styles10w700interFamily = TextStyle(
+    fontSize: 10.sp,
+  );
   static TextStyle styles11w600Black = TextStyle(
     fontSize: 11.sp,
     fontFamily: interFamily,
@@ -226,23 +230,51 @@ class Styles {
     fontWeight: FontWeight.w400,
     color: const Color.fromRGBO(101, 101, 101, 1),
   );
-    static TextStyle styles12w400black = TextStyle(
+  static TextStyle styles12w400black = TextStyle(
     fontSize: 12.sp,
     fontFamily: interFamily,
     fontWeight: FontWeight.w400,
     color: const Color.fromRGBO(40, 40, 40, 1),
   );
 
-      static TextStyle styles25w600black = TextStyle(
+  static TextStyle styles25w600black = TextStyle(
     fontSize: 25.sp,
     fontFamily: interFamily,
     fontWeight: FontWeight.w600,
     color: const Color.fromRGBO(40, 40, 40, 1),
   );
-        static TextStyle styles21w700black = TextStyle(
+  static TextStyle styles21w700black = TextStyle(
     fontSize: 21.sp,
     fontFamily: interFamily,
     fontWeight: FontWeight.w700,
     color: const Color.fromRGBO(0, 0, 0, 1),
+  );
+
+  static TextStyle styles10w400interFamily = TextStyle(
+    fontSize: 10.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w400,
+    color: const Color.fromRGBO(100, 100, 100, 1),
+  );
+
+  static TextStyle styles10w500interFamily = TextStyle(
+    fontSize: 10.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w500,
+    color: const Color.fromRGBO(50, 50, 50, 1),
+  );
+
+  static TextStyle styles8w500interFamily = TextStyle(
+    fontSize: 8.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w500,
+    color: MyColors.mainColor,
+  );
+
+  static TextStyle styles8w800interFamily = TextStyle(
+    fontSize: 8.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w800,
+    color: MyColors.mainColor,
   );
 }

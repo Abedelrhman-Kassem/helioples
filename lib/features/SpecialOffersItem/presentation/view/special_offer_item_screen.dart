@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
-import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/widgets/item_widget.dart';
 
 class SpecialOfferItemScreen extends StatelessWidget {
   const SpecialOfferItemScreen({super.key});

@@ -78,9 +78,9 @@ class _CustomPageRouteBuilder extends PageRouteBuilder {
       : super(
           pageBuilder: (context, animation, secondaryAnimation) => page,
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(1.0, 0.0); // Start from the right
-            const end = Offset.zero; // End at the center
-            const curve = Curves.easeInOut; // Animation curve
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
 
             var tween =
                 Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
@@ -91,10 +91,12 @@ class _CustomPageRouteBuilder extends PageRouteBuilder {
               child: child,
             );
           },
-          transitionDuration:
-              const Duration(milliseconds: 600), // Set transition duration here
+          transitionDuration: const Duration(
+            milliseconds: 600,
+          ),
           reverseTransitionDuration: const Duration(
-              milliseconds: 600), // Optional: Set reverse transition duration
+            milliseconds: 600,
+          ),
         );
 
   @override

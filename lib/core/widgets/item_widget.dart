@@ -12,8 +12,7 @@ class ItemWidget extends StatefulWidget {
   State<ItemWidget> createState() => _ItemWidgetState();
 }
 
-class _ItemWidgetState extends State<ItemWidget>
-    with SingleTickerProviderStateMixin {
+class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
   bool isFavorite = false;
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
