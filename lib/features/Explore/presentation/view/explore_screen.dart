@@ -1,33 +1,91 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:negmt_heliopolis/core/widgets/svgAsset.dart';
-import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    HomeLayoutCubit homeLayoutCubit = BlocProvider.of<HomeLayoutCubit>(context);
+  State<ExploreScreen> createState() => _ExploreScreenState();
+}
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: svgIcon(
-            path: 'assets/svg_icons/arrow-left.svg',
-            width: 29,
-            height: 29,
-            color: const Color.fromRGBO(41, 45, 50, 1),
-          ),
-          onPressed: () {
-            homeLayoutCubit.returnIndex();
-          },
-        ),
-        title: const Text('Likes'),
-        actions: const [
-          // to pull Cart Component
-        ],
-      ),
+class _ExploreScreenState extends State<ExploreScreen> {
+  List<String> categories = [
+    "Croissant",
+    "Toast",
+    "Muffins",
+    "Donuts",
+  ];
+  List<String> images = [
+    "assets/Icons_logos/Croissant.png",
+    "assets/Icons_logos/Toast.png",
+    "assets/Icons_logos/Muffins.png",
+    "assets/Icons_logos/Donuts.png",
+  ];
+
+  // Keys for each section
+  final List<GlobalKey> sectionKeys = [
+    GlobalKey(),
+    GlobalKey(),
+    GlobalKey(),
+    GlobalKey(),
+  ];
+
+  // ScrollController to listen to scrolling events
+  late ScrollController scrollController;
+  BuildContext? tabContext;
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController = ScrollController();
+    scrollController.addListener(_handleScroll);
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  void _handleScroll() {
+    // bool tabChanged = false ;
+    for (int i = 0; i < sectionKeys.length; i++) {
+      final RenderBox? box =
+          sectionKeys[i].currentContext!.findRenderObject() as RenderBox?;
+      if (box != null) {
+        final position = box.localToGlobal(Offset.zero);
+        if (position.dy <= 300 && position.dy + box.size.height > 300) {
+          DefaultTabController.of(tabContext!)?.animateTo(i);
+          // tabChanged = true;
+          break;
+        }
+      }
+    }
+
+    // if(!tabChanged)
+    // {
+    //   final scrollableBottom  = scrollController.position.maxScrollExtent ;
+    //   if(scrollController.position.pixels >= scrollableBottom)
+    //   {
+    //      DefaultTabController.of(tabContext!)?.animateTo(sectionKeys.length - 1);
+    //   }
+
+    // }
+  }
+
+  void _scrollToSection(int index) {
+    scrollController.removeListener(_handleScroll);
+    final context = sectionKeys[index].currentContext!;
+    Scrollable.ensureVisible(
+      context,
+      duration: const Duration(milliseconds: 500),
+    ).then((value) {
+      scrollController.addListener(_handleScroll);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
       body: Center(
         child: Text('hello from explore screen'),
       ),
