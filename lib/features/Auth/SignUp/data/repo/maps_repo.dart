@@ -1,5 +1,4 @@
 
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/model/place.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/model/place_suggestion.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/web%20services/places_web_services.dart';

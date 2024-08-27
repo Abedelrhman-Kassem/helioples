@@ -7,10 +7,11 @@ const String signUpScreen = '/signup_screen';
 const String specialOfferItemScreen = '/special_offer_item_screen';
 const String allspecialOffersScreen = '/all_special_offer_screen';
 const String signUp2Screen = '/sign_up_screen';
-const String verficationScreen ='/verfication_screen';
+const String verficationScreen = '/verfication_screen';
 const String confirmationScreen = '/confirmation_screen';
 const String setLocationScreen = '/set_location_screen';
 const String notificationScreen = '/notification_screen';
+const String likedScreen = '/liked_screen';
 // fontfamily
 const String sFProTextFamily = 'SFProText';
 const String interFamily = 'Inter';

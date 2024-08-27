@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 
 final ThemeData lightTheme = ThemeData(
   primaryColor: MyColors.mainColor,
   textTheme: TextTheme(bodyMedium: TextStyle(fontSize: 20.w)),
   scaffoldBackgroundColor: MyColors.mainScaffoldWhiteColor,
-  appBarTheme: const AppBarTheme(
+  appBarTheme: AppBarTheme(
     elevation: 20,
-    backgroundColor: Color.fromRGBO(250, 250, 250, 1),
+    backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
     centerTitle: true,
-    shadowColor: Color.fromRGBO(0, 0, 0, 0.2),
+    titleTextStyle: Styles.styles17w700interFamily,
+    shadowColor: const Color.fromRGBO(0, 0, 0, 0.2),
     surfaceTintColor: Colors.transparent,
-    systemOverlayStyle: SystemUiOverlayStyle(
+    systemOverlayStyle: const SystemUiOverlayStyle(
       // Android
-      statusBarColor: Color.fromRGBO(250, 250, 250, 1),
+      statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
       // IOS
       statusBarBrightness: Brightness.dark,

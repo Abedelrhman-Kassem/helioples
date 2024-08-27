@@ -14,6 +14,7 @@ import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/signup_s
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/verfication_screen.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view/home_layout.dart';
 import 'package:negmt_heliopolis/features/Intro/presentation/view/intro_screen.dart';
+import 'package:negmt_heliopolis/features/Liked/presentation/view/liked_screen.dart';
 import 'package:negmt_heliopolis/features/PageNotFound/presentation/view/page_not_found_screen.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/special_offer_item_screen.dart';
 
@@ -29,6 +30,9 @@ class AppRouter {
       case homeLayout:
         page = const HomeLayout();
         break;
+      case likedScreen:
+        page = const LikedScreen();
+        break;
       case signInScreen:
         page = const LoginScreen();
         break;
@@ -38,28 +42,29 @@ class AppRouter {
       case allspecialOffersScreen:
         page = const AllSpecialOffersScreen();
         break;
-      case signUp2Screen :
-         page = const SignupScreen();
-         break ;
-      case verficationScreen :
-        final args = settings.arguments as Map<String, dynamic> ; 
-        page =VerificationScreen(phoneNumber: args['phoneNumber'],);
-        break ; 
-      case confirmationScreen :
-        page = const ConfirmationScreen() ;
-        break ;  
-      case setLocationScreen: 
-      page = BlocProvider(
-          create: (BuildContext context) =>
-                     MapsCubit(MapsRepository(PlacesWebservices())),
-          child: const SetLocationScreen(),
-                    
+      case signUp2Screen:
+        page = const SignupScreen();
+        break;
+      case verficationScreen:
+        final args = settings.arguments as Map<String, dynamic>;
+        page = VerificationScreen(
+          phoneNumber: args['phoneNumber'],
         );
         break;
-      case notificationScreen :
-         page = const NotificationScreen() ; 
-         break;
-        
+      case confirmationScreen:
+        page = const ConfirmationScreen();
+        break;
+      case setLocationScreen:
+        page = BlocProvider(
+          create: (BuildContext context) =>
+              MapsCubit(MapsRepository(PlacesWebservices())),
+          child: const SetLocationScreen(),
+        );
+        break;
+      case notificationScreen:
+        page = const NotificationScreen();
+        break;
+
       default:
         page = const PageNotFoundScreen();
         break;
@@ -92,28 +97,28 @@ class _CustomPageRouteBuilder extends PageRouteBuilder {
             );
           },
           transitionDuration: const Duration(
-            milliseconds: 600,
+            milliseconds: 300,
           ),
           reverseTransitionDuration: const Duration(
-            milliseconds: 600,
+            milliseconds: 300,
           ),
         );
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation, Widget child) {
-    bool hasAppBar = false;
-    if (child is Scaffold && child.appBar != null) {
-      hasAppBar = true;
-    }
+    // bool hasAppBar = false;
+    // if (child is Scaffold && child.appBar != null) {
+    //   hasAppBar = true;
+    // }
 
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: hasAppBar ? Colors.white : Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.dark,
-      ),
-    );
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   SystemUiOverlayStyle(
+    //     statusBarColor: hasAppBar ? Colors.white : Colors.transparent,
+    //     statusBarIconBrightness: Brightness.dark,
+    //     statusBarBrightness: Brightness.dark,
+    //   ),
+    // );
 
     return super
         .buildTransitions(context, animation, secondaryAnimation, child);
