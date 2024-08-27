@@ -12,6 +12,7 @@ const String confirmationScreen = '/confirmation_screen';
 const String setLocationScreen = '/set_location_screen';
 const String notificationScreen = '/notification_screen';
 const String likedScreen = '/liked_screen';
+const String categoriesScreen = '/categories_screen';
 // fontfamily
 const String sFProTextFamily = 'SFProText';
 const String interFamily = 'Inter';

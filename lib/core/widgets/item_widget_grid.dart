@@ -10,7 +10,7 @@ Widget itemWidgetGridView({bool isFavorite = false, int counter = 0}) {
       maxCrossAxisExtent: 150,
       crossAxisSpacing: 7,
       mainAxisSpacing: 10,
-      childAspectRatio: 1.25 / 2.25,
+      childAspectRatio: 1.2 / 2.25,
     ),
     itemBuilder: (context, index) => ItemWidget(
       counter: counter,

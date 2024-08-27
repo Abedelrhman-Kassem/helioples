@@ -12,6 +12,7 @@ import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/notifica
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/set_location.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/signup_screen.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/verfication_screen.dart';
+import 'package:negmt_heliopolis/features/Categories/presentation/view/categories_screen.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view/home_layout.dart';
 import 'package:negmt_heliopolis/features/Intro/presentation/view/intro_screen.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/liked_screen.dart';
@@ -63,6 +64,10 @@ class AppRouter {
         break;
       case notificationScreen:
         page = const NotificationScreen();
+        break;
+
+      case categoriesScreen:
+        page = const CategoriesScreen();
         break;
 
       default:
