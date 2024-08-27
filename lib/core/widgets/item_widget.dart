@@ -6,7 +6,9 @@ import 'package:negmt_heliopolis/core/widgets/svgAsset.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/widgets/discount_widget.dart';
 
 class ItemWidget extends StatefulWidget {
-  const ItemWidget({super.key});
+  final Color? color;
+
+  const ItemWidget({super.key, this.color});
 
   @override
   State<ItemWidget> createState() => _ItemWidgetState();
@@ -63,7 +65,7 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
         horizontal: 10,
       ),
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(241, 241, 241, 1),
+        color: widget.color ?? const Color.fromRGBO(241, 241, 241, 1), 
         borderRadius: BorderRadius.circular(15.5),
       ),
       child: Column(
