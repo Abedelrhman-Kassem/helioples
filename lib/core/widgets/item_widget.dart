@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/Helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/svgAsset.dart';
+import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/widgets/discount_widget.dart';
 
 // ignore: must_be_immutable
@@ -120,7 +120,7 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
             alignment: Alignment.center,
             duration: const Duration(milliseconds: 300),
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-            width: isExpanded ? 78 : 25,
+            width: isExpanded ? 85 : 30,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: isExpanded ? MyColors.mainColor : Colors.transparent,

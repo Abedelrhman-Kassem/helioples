@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/cart_screen.dart';
 import 'package:negmt_heliopolis/features/Explore/presentation/view/explore_screen.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/liked_screen.dart';
@@ -15,7 +16,6 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
 
   void changeHomeScreen() {
     isHomeScreen = !isHomeScreen;
-    print(isHomeScreen);
     emit(HomeLayoutChangeHomeScreen());
   }
 
@@ -32,7 +32,12 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
 
   List<int> previousIndexList = [0];
 
-  void changeCurrentIndex(int index) {
+  void changeCurrentIndex(BuildContext context, int index) {
+    if (index == 3) {
+      Navigator.pushNamed(context, cartScreen);
+      return;
+    }
+
     isHomeScreen = true;
     emit(HomeLayoutChangeHomeScreen());
     if (selectedIndex != index) {
@@ -44,10 +49,10 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
     }
   }
 
-  void returnIndex() {
+  void returnIndex(BuildContext context) {
     previousIndexList.removeLast();
     previousIndex = previousIndexList.removeLast();
 
-    changeCurrentIndex(previousIndex);
+    changeCurrentIndex(context, previousIndex);
   }
 }

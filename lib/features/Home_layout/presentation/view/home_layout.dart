@@ -75,7 +75,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                   gap: 8.w,
                   tabBackgroundColor: MyColors.mainColor,
                   onTabChange: (index) {
-                    homeLayoutCubit.changeCurrentIndex(index);
+                    homeLayoutCubit.changeCurrentIndex(context, index);
                   },
                   tabs: [
                     gButtonItem(

@@ -43,7 +43,7 @@ class SpecialOfferItemScreen extends StatelessWidget {
                 descriptionOfferWidget: () => descriptionOfferWidget(
                   titleText: Text(
                     'Seasonal Offers',
-                    style: Styles.styles17w700interFamily,
+                    style: Styles.styles17w700Black,
                   ),
                   offerRichText: RichText(
                     text: TextSpan(

@@ -6,11 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/Helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/SvgAsset.dart';
+import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/category_builder.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/location_widget.dart';
@@ -77,7 +77,7 @@ class HomeScreen extends StatelessWidget {
                           child: IconButton(
                             onPressed: () {
                               BlocProvider.of<HomeLayoutCubit>(context)
-                                  .changeCurrentIndex(1);
+                                  .changeCurrentIndex(context, 1);
                             },
                             icon: svgIcon(
                               path: 'assets/svg_icons/search-normal.svg',

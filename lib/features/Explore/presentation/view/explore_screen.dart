@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:negmt_heliopolis/core/widgets/svgAsset.dart';
+import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 
 class ExploreScreen extends StatelessWidget {
@@ -12,16 +12,11 @@ class ExploreScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: svgIcon(
-            path: 'assets/svg_icons/arrow-left.svg',
-            width: 29,
-            height: 29,
-            color: const Color.fromRGBO(41, 45, 50, 1),
-          ),
-          onPressed: () {
-            homeLayoutCubit.returnIndex();
+        leading: returnHomeLayoutArrow(
+          onTap: () {
+            homeLayoutCubit.returnIndex(context);
           },
+          context: context,
         ),
         title: const Text('Explore'),
         actions: const [

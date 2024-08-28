@@ -12,12 +12,14 @@ import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/notifica
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/set_location.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/signup_screen.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/verfication_screen.dart';
+import 'package:negmt_heliopolis/features/Cart/presentation/view/cart_screen.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view/categories_screen.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view/home_layout.dart';
 import 'package:negmt_heliopolis/features/Intro/presentation/view/intro_screen.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/liked_screen.dart';
 import 'package:negmt_heliopolis/features/PageNotFound/presentation/view/page_not_found_screen.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/special_offer_item_screen.dart';
+import 'package:negmt_heliopolis/test.dart';
 
 class AppRouter {
   Route generate(RouteSettings settings) {
@@ -25,7 +27,6 @@ class AppRouter {
     switch (settings.name) {
       case intialRoute:
       case introScreen:
-      case signUpScreen:
         page = const IntroScreen();
         break;
       case homeLayout:
@@ -68,6 +69,10 @@ class AppRouter {
 
       case categoriesScreen:
         page = const CategoriesScreen();
+        break;
+
+      case cartScreen:
+        page = const CartScreen();
         break;
 
       default:

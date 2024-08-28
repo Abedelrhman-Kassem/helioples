@@ -12,7 +12,7 @@ final ThemeData lightTheme = ThemeData(
     elevation: 20,
     backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
     centerTitle: true,
-    titleTextStyle: Styles.styles17w700interFamily,
+    titleTextStyle: Styles.styles17w700Black,
     shadowColor: const Color.fromRGBO(0, 0, 0, 0.2),
     surfaceTintColor: Colors.transparent,
     systemOverlayStyle: const SystemUiOverlayStyle(

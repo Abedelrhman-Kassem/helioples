@@ -8,7 +8,7 @@ import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cu
 Widget cartCounter({required BuildContext context, int counter = 3}) {
   return IconButton(
     onPressed: () {
-      BlocProvider.of<HomeLayoutCubit>(context).changeCurrentIndex(3);
+      BlocProvider.of<HomeLayoutCubit>(context).changeCurrentIndex(context, 3);
     },
     icon: Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
