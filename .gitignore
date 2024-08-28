@@ -78,13 +78,6 @@ pom.properties
 *.zip
 *.tar.gz
 
-# Generated Assets
-*.sourcemap
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.svg
 
 # Generated Binary
 *.bin
