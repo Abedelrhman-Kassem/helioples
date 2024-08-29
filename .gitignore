@@ -110,3 +110,4 @@ Thumbs.db
 *.keystore
 local.properties
 .env
+lib/test.dart

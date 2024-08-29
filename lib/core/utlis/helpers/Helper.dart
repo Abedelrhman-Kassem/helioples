@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/widgets/CustomButton.dart';
@@ -55,7 +54,7 @@ class Helper {
           fit: fit,
           width: width,
           placeholder: (ctx, str) => Container(
-            constraints: BoxConstraints(minHeight: minShimmerHeight.h),
+            constraints: BoxConstraints(minHeight: minShimmerHeight),
             child: Shimmer(
               gradient: LinearGradient(
                 colors: [

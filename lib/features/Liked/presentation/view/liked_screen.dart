@@ -15,7 +15,7 @@ class LikedScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: returnHomeLayoutArrow(
+        leading: returnArrow(
           onTap: () {
             homeLayoutCubit.returnIndex(context);
           },

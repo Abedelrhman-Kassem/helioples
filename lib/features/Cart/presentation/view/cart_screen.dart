@@ -17,7 +17,7 @@ class CartScreen extends StatelessWidget {
         title: const Text('Cart'),
         backgroundColor: MyColors.mainScaffoldWhiteColor,
         elevation: 0,
-        leading: returnHomeLayoutArrow(
+        leading: returnArrow(
           context: context,
           onTap: () {
             Navigator.pop(context);

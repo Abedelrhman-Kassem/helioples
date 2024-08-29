@@ -20,7 +20,7 @@ class AllSpecialOffersScreen extends StatelessWidget {
       create: (context) => AllSpecialOfferCubit(),
       child: Scaffold(
         appBar: AppBar(
-          leading: returnHomeLayoutArrow(
+          leading: returnArrow(
             context: context,
             onTap: () {
               homeLayoutCubit.changeHomeScreen();
@@ -174,7 +174,7 @@ class AllSpecialOffersScreen extends StatelessWidget {
                                   offerRichText: RichText(
                                     text: TextSpan(
                                       text: 'Offer Ends At ',
-                                      style: Styles.styles12w400interFamily
+                                      style: Styles.styles12w400Gray
                                           .copyWith(fontSize: 12),
                                       children: [
                                         TextSpan(
@@ -188,7 +188,7 @@ class AllSpecialOffersScreen extends StatelessWidget {
                                   beneficiaryText: RichText(
                                     text: TextSpan(
                                       text: 'Beneficiary ',
-                                      style: Styles.styles12w400interFamily
+                                      style: Styles.styles12w400Gray
                                           .copyWith(fontSize: 12),
                                       children: [
                                         TextSpan(

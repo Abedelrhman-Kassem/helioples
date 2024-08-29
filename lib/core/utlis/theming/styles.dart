@@ -102,10 +102,17 @@ class Styles {
     fontFamily: interFamily,
   );
 
-  static TextStyle styles12w400interFamily = TextStyle(
+  static TextStyle styles12w400Gray = TextStyle(
     fontSize: 12.sp,
     fontWeight: FontWeight.w400,
     color: const Color.fromRGBO(100, 100, 100, 1),
+    fontFamily: interFamily,
+  );
+
+  static TextStyle styles12w400NormalWhite = TextStyle(
+    fontSize: 12.36.sp,
+    fontWeight: FontWeight.w400,
+    color: const Color.fromRGBO(255, 255, 255, 1),
     fontFamily: interFamily,
   );
 
@@ -183,6 +190,13 @@ class Styles {
     color: const Color.fromRGBO(255, 255, 255, 1),
   );
 
+  static TextStyle styles14w400Gold = TextStyle(
+    fontSize: 14.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w400,
+    color: const Color.fromRGBO(228, 144, 42, 1),
+  );
+
   static TextStyle styles17w500NormalBlack = TextStyle(
     fontSize: 17.sp,
     fontFamily: interFamily,
@@ -218,6 +232,20 @@ class Styles {
     color: const Color.fromRGBO(40, 40, 40, 1),
   );
 
+  static TextStyle styles25w900MainColor = TextStyle(
+    fontSize: 25.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w900,
+    color: MyColors.mainColor,
+  );
+
+  static TextStyle styles25w500MainColor = TextStyle(
+    fontSize: 25.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w500,
+    color: MyColors.mainColor,
+  );
+
   static TextStyle styles15w400Black = TextStyle(
     fontSize: 15.sp,
     fontFamily: interFamily,
@@ -250,13 +278,6 @@ class Styles {
     fontSize: 12.sp,
     fontFamily: interFamily,
     fontWeight: FontWeight.w400,
-    color: const Color.fromRGBO(40, 40, 40, 1),
-  );
-
-  static TextStyle styles25w600black = TextStyle(
-    fontSize: 25.sp,
-    fontFamily: interFamily,
-    fontWeight: FontWeight.w600,
     color: const Color.fromRGBO(40, 40, 40, 1),
   );
 
@@ -330,6 +351,13 @@ class Styles {
     color: const Color.fromRGBO(255, 255, 255, 1),
   );
 
+  static TextStyle styles18w500BlackWhite = TextStyle(
+    fontSize: 18.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w500,
+    color: const Color.fromRGBO(40, 40, 40, 1),
+  );
+
   static TextStyle styles17w500MainColor = TextStyle(
     fontSize: 17.sp,
     fontFamily: interFamily,
@@ -342,5 +370,26 @@ class Styles {
     fontFamily: interFamily,
     fontWeight: FontWeight.w700,
     color: MyColors.mainColor,
+  );
+
+  static TextStyle styles16w600NormalBlack = TextStyle(
+    fontSize: 16.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w600,
+    color: const Color.fromRGBO(0, 0, 0, 1),
+  );
+
+  static TextStyle styles12w600Gold = TextStyle(
+    fontSize: 12.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w600,
+    color: const Color.fromRGBO(248, 147, 31, 1),
+  );
+
+  static TextStyle styles12w600Black = TextStyle(
+    fontSize: 12.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w600,
+    color: const Color.fromRGBO(40, 40, 40, 1),
   );
 }

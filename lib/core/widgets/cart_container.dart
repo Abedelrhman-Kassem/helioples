@@ -30,7 +30,7 @@ class CartContainer extends StatelessWidget {
         child: Container(
           height: 64.h,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(15.r),
             color: MyColors.mainColor,
             boxShadow: [
               BoxShadow(

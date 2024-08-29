@@ -5,6 +5,7 @@ class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _TestScreenState createState() => _TestScreenState();
 }
 
@@ -14,7 +15,6 @@ class _TestScreenState extends State<TestScreen> {
   void _onItemTapped(int index) {
     if (index == 3) {
       // Store the current index
-      int previousIndex = _selectedIndex;
 
       // Navigator.push(
       //   context,
@@ -42,7 +42,7 @@ class _TestScreenState extends State<TestScreen> {
       bottomNavigationBar: GNav(
         selectedIndex: _selectedIndex,
         onTabChange: _onItemTapped,
-        tabs: [
+        tabs: const [
           GButton(icon: Icons.home, text: 'Home'),
           GButton(icon: Icons.search, text: 'Search'),
           GButton(icon: Icons.notifications, text: 'Notifications'),
@@ -54,18 +54,20 @@ class _TestScreenState extends State<TestScreen> {
 }
 
 class AnotherScreen extends StatelessWidget {
+  const AnotherScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Another Screen'),
+        title: const Text('Another Screen'),
       ),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('Go Back'),
+          child: const Text('Go Back'),
         ),
       ),
     );

@@ -18,8 +18,8 @@ import 'package:negmt_heliopolis/features/Home_layout/presentation/view/home_lay
 import 'package:negmt_heliopolis/features/Intro/presentation/view/intro_screen.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/liked_screen.dart';
 import 'package:negmt_heliopolis/features/PageNotFound/presentation/view/page_not_found_screen.dart';
+import 'package:negmt_heliopolis/features/Product/presentation/view/product_screen.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/special_offer_item_screen.dart';
-import 'package:negmt_heliopolis/test.dart';
 
 class AppRouter {
   Route generate(RouteSettings settings) {
@@ -75,6 +75,10 @@ class AppRouter {
         page = const CartScreen();
         break;
 
+      case productScreen:
+        page = const ProductScreen();
+        break;
+
       default:
         page = const PageNotFoundScreen();
         break;
@@ -117,47 +121,7 @@ class _CustomPageRouteBuilder extends PageRouteBuilder {
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation, Widget child) {
-    // bool hasAppBar = false;
-    // if (child is Scaffold && child.appBar != null) {
-    //   hasAppBar = true;
-    // }
-
-    // SystemChrome.setSystemUIOverlayStyle(
-    //   SystemUiOverlayStyle(
-    //     statusBarColor: hasAppBar ? Colors.white : Colors.transparent,
-    //     statusBarIconBrightness: Brightness.dark,
-    //     statusBarBrightness: Brightness.dark,
-    //   ),
-    // );
-
     return super
         .buildTransitions(context, animation, secondaryAnimation, child);
   }
 }
-
-// THIS CODE TO CHANGE THE SYSTEMOVERLAY ABOVE THE APPBAR IN EVERY NAVIGATE
-
-// class _CustomPageRouteBuilder extends MaterialPageRoute {
-//   _CustomPageRouteBuilder({required Widget page}) : super(builder: (_) => page);
-
-//   @override
-//   Widget buildTransitions(BuildContext context, Animation<double> animation,
-//       Animation<double> secondaryAnimation, Widget child) {
-
-//     bool hasAppBar = false;
-//     if (child is Scaffold && child.appBar != null) {
-//       hasAppBar = true;
-//     }
-
-//     SystemChrome.setSystemUIOverlayStyle(
-//       SystemUiOverlayStyle(
-//         statusBarColor: hasAppBar ? Colors.white : Colors.transparent,
-//         statusBarIconBrightness: Brightness.dark,
-//         statusBarBrightness: Brightness.dark,
-//       ),
-//     );
-
-//     return super
-//         .buildTransitions(context, animation, secondaryAnimation, child);
-//   }
-// }

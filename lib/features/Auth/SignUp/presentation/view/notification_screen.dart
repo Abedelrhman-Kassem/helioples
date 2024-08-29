@@ -26,14 +26,15 @@ class NotificationScreen extends StatelessWidget {
               SizedBox(
                 height: 50.h,
               ),
-              Image.asset("assets/Icons_logos/notification_logo.png",),
-
+              Image.asset(
+                "assets/Icons_logos/notification_logo.png",
+              ),
               SizedBox(
                 height: 20.h,
               ),
               Text(
                 "Allow Us To Send You ",
-                style: Styles.styles25w600black,
+                style: Styles.styles25w600Black,
               ),
               SizedBox(
                 height: 5.h,
@@ -50,15 +51,12 @@ class NotificationScreen extends StatelessWidget {
               SizedBox(
                 height: 15.h,
               ),
-                 SignUpCustomButton(
-                  buttonText: "Maybe Later",
-                  onPressed: () {
-                  
-                  },
-                  buttonColor: const Color.fromRGBO(0, 126, 143, 0.1),
-                  textColor: const Color.fromRGBO(0, 126, 143, 1),
-                )
-      
+              SignUpCustomButton(
+                buttonText: "Maybe Later",
+                onPressed: () {},
+                buttonColor: const Color.fromRGBO(0, 126, 143, 0.1),
+                textColor: const Color.fromRGBO(0, 126, 143, 1),
+              )
             ],
           ),
         ),
