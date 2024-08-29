@@ -24,67 +24,93 @@ import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/sp
 class AppRouter {
   Route generate(RouteSettings settings) {
     Widget page;
+    bool fromRight;
     switch (settings.name) {
       case intialRoute:
       case introScreen:
         page = const IntroScreen();
+        fromRight = true;
         break;
+
       case homeLayout:
         page = const HomeLayout();
+        fromRight = true;
         break;
+
       case likedScreen:
         page = const LikedScreen();
+        fromRight = true;
         break;
+
       case signInScreen:
         page = const LoginScreen();
+        fromRight = true;
         break;
+
       case specialOfferItemScreen:
         page = const SpecialOfferItemScreen();
+        fromRight = true;
         break;
+
       case allspecialOffersScreen:
         page = const AllSpecialOffersScreen();
+        fromRight = true;
         break;
+
       case signUp2Screen:
         page = const SignupScreen();
+        fromRight = true;
         break;
+
       case verficationScreen:
         final args = settings.arguments as Map<String, dynamic>;
         page = VerificationScreen(
           phoneNumber: args['phoneNumber'],
         );
+        fromRight = true;
         break;
+
       case confirmationScreen:
         page = const ConfirmationScreen();
+        fromRight = true;
         break;
+
       case setLocationScreen:
         page = BlocProvider(
           create: (BuildContext context) =>
               MapsCubit(MapsRepository(PlacesWebservices())),
           child: const SetLocationScreen(),
         );
+        fromRight = true;
         break;
+
       case notificationScreen:
         page = const NotificationScreen();
+        fromRight = true;
         break;
 
       case categoriesScreen:
         page = const CategoriesScreen();
+        fromRight = true;
         break;
 
       case cartScreen:
         page = const CartScreen();
+        fromRight = true;
         break;
 
       case productScreen:
         page = const ProductScreen();
+        fromRight = true;
         break;
 
       default:
         page = const PageNotFoundScreen();
+        fromRight = true;
         break;
     }
 
-    return _CustomPageRouteBuilder(page: page);
+    return _CustomPageRouteBuilder(page: page, fromRight: fromRight);
   }
 }
 
@@ -92,12 +118,15 @@ class AppRouter {
 
 class _CustomPageRouteBuilder extends PageRouteBuilder {
   final Widget page;
+  final bool fromRight;
 
-  _CustomPageRouteBuilder({required this.page})
-      : super(
+  _CustomPageRouteBuilder({
+    required this.page,
+    required this.fromRight,
+  }) : super(
           pageBuilder: (context, animation, secondaryAnimation) => page,
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(1.0, 0.0);
+            var begin = fromRight ? const Offset(1, 0) : const Offset(0, 1);
             const end = Offset.zero;
             const curve = Curves.easeInOut;
 
