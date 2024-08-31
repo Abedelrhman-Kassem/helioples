@@ -392,4 +392,39 @@ class Styles {
     fontWeight: FontWeight.w600,
     color: const Color.fromRGBO(40, 40, 40, 1),
   );
+
+  static TextStyle styles40w800NormalWhite = TextStyle(
+    fontSize: 40.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w800,
+    color: const Color.fromRGBO(255, 255, 255, 1),
+  );
+
+  static TextStyle styles40w400NormalWhite = TextStyle(
+    fontSize: 40.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w400,
+    color: const Color.fromRGBO(255, 255, 255, 1),
+  );
+
+  static TextStyle styles20w500NormalWhite = TextStyle(
+    fontSize: 20.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w500,
+    color: const Color.fromRGBO(255, 255, 255, 1),
+  );
+
+  static TextStyle styles16w500NormalWhite = TextStyle(
+    fontSize: 16.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w500,
+    color: const Color.fromRGBO(255, 255, 255, 1),
+  );
+
+  static TextStyle styles16w400White = TextStyle(
+    fontSize: 16.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w400,
+    color: const Color.fromRGBO(235, 235, 235, 1),
+  );
 }

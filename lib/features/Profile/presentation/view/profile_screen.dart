@@ -4,6 +4,7 @@ import 'package:negmt_heliopolis/core/utlis/helpers/language/cubit/locale_cubit.
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 
+// ignore: must_be_immutable
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
 
@@ -27,7 +28,7 @@ class ProfileScreen extends StatelessWidget {
               },
               context: context,
             ),
-            title: const Text('Likes'),
+            title: const Text('Profile'),
             actions: const [
               // to pull Cart Component
             ],

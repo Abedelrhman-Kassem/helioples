@@ -14,88 +14,88 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          title: Text("Login".tr(context)),
-          actions: const [Languagewidget(), Gap(20)],
-        ),
-        body: Container(
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(
-                    "assets/screens_background/grocery_itemsback_ground.png"),
-                fit: BoxFit.cover),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        title: Text("Login".tr(context)),
+        actions: const [Languagewidget(), Gap(20)],
+      ),
+      body: Container(
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              "assets/screens_background/grocery_itemsback_ground.png",
+            ),
+            fit: BoxFit.cover,
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(13.0),
-            child: Align(
-              alignment: Alignment.center,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const HelioplisLogo(),
-                  const Gap(7),
-                  Text(
-                    "Enter Phone Number".tr(context),
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    // style: const TextStyle(
-                    //     fontSize: 28, fontWeight: FontWeight.bold),
-                  ),
-                  const Gap(10),
-                  const PhoneNumberInputWidget(),
-                  const Gap(20),
-                  Center(
-                      child: Text(
-                    'You will receive a verification code'.tr(context),
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  )),
-                  const Gap(20),
-                  CustomButton(
-                    text: "Continue".tr(context),
-                    onTap: () {},
-                    backgroundColor: MyColors.mainColor,
-                    textColor: MyColors.mainScaffoldWhiteColor,
-                    verticalPadding: 15,
-                    borderRadius: 20,
-                  ),
-                  const Gap(10),
-                  Center(
-                    child: RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: "You don't Have account?".tr(context),
-                            style: const TextStyle(
-                              fontSize: 17.0,
-                              color: Color.fromARGB(255, 0, 0, 0),
-                            ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(13.0),
+          child: Align(
+            alignment: Alignment.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const HelioplisLogo(),
+                const Gap(7),
+                Text(
+                  "Enter Phone Number".tr(context),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  // style: const TextStyle(
+                  //     fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+                const Gap(10),
+                const PhoneNumberInputWidget(),
+                const Gap(20),
+                Center(
+                    child: Text(
+                  'You will receive a verification code'.tr(context),
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                )),
+                const Gap(20),
+                CustomButton(
+                  text: "Continue".tr(context),
+                  onTap: () {},
+                  backgroundColor: MyColors.mainColor,
+                  textColor: MyColors.mainScaffoldWhiteColor,
+                  verticalPadding: 15,
+                  borderRadius: 20,
+                ),
+                const Gap(10),
+                Center(
+                  child: RichText(
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: "You don't Have account?".tr(context),
+                          style: const TextStyle(
+                            fontSize: 17.0,
+                            color: Color.fromARGB(255, 0, 0, 0),
                           ),
-                          TextSpan(
-                            text: "Create an account.".tr(context),
-                            style: const TextStyle(
-                              fontSize: 17.0,
-                              color: Colors.orange,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (ctx) => const LoginScreen(),
-                                  ),
-                                );
-                              },
+                        ),
+                        TextSpan(
+                          text: "Create an account.".tr(context),
+                          style: const TextStyle(
+                            fontSize: 17.0,
+                            color: Colors.orange,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                      ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (ctx) => const LoginScreen(),
+                                ),
+                              );
+                            },
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
