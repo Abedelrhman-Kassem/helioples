@@ -28,7 +28,7 @@ class _ItemWidgetState extends State<ItemWidget> {
         Navigator.pushNamed(context, productScreen);
       },
       child: Container(
-        width: 110,
+        width: 113,
         padding: const EdgeInsets.symmetric(
           vertical: 8,
           horizontal: 10,
@@ -99,7 +99,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                   ),
                 ),
                 discountWidget(
-                  discount: '80',
+                  discount: '80.00',
                   alignBottom: 6,
                   color: const Color.fromRGBO(204, 42, 40, 1),
                   textStyle: const TextStyle(

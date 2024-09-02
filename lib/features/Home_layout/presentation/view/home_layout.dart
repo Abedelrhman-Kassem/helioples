@@ -38,7 +38,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                 Tween<Offset> myTween;
                 if (state is HomeLayoutChangeHomeScreen) {
                   myTween = Tween<Offset>(
-                    begin: const Offset(0, 1),
+                    begin: const Offset(0, -1),
                     end: const Offset(0, 0),
                   );
                 } else {
@@ -56,64 +56,70 @@ class _HomeLayoutState extends State<HomeLayout> {
                   ? homeLayoutCubit.screens[homeLayoutCubit.selectedIndex]
                   : const AllSpecialOffersScreen(),
             ),
-            bottomNavigationBar: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(75.r),
-                ),
-                boxShadow: [
-                  MyBoxShadows.gNavBoxSahdow,
-                ],
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.r, vertical: 20.r),
-                child: GNav(
-                  textStyle: Styles.styles12w500sFProTextFamily,
-                  selectedIndex: homeLayoutCubit.selectedIndex,
-                  padding: EdgeInsets.all(13.r),
-                  gap: 8.w,
-                  tabBackgroundColor: MyColors.mainColor,
-                  onTabChange: (index) {
-                    homeLayoutCubit.changeCurrentIndex(context, index);
-                  },
-                  tabs: [
-                    gButtonItem(
-                      context: context,
-                      activeSvgPath: 'assets/svg_icons/white-home.svg',
-                      outlinedSvgPath: 'assets/svg_icons/home.svg',
-                      text: 'home'.tr(context),
-                      index: 0,
-                    ),
-                    gButtonItem(
-                      context: context,
-                      activeSvgPath: 'assets/svg_icons/white-search-normal.svg',
-                      outlinedSvgPath: 'assets/svg_icons/search-normal.svg',
-                      text: 'explore'.tr(context),
-                      index: 1,
-                    ),
-                    gButtonItem(
-                      context: context,
-                      activeSvgPath: 'assets/svg_icons/white-heart.svg',
-                      outlinedSvgPath: 'assets/svg_icons/heart.svg',
-                      text: 'liked'.tr(context),
-                      index: 2,
-                    ),
-                    gButtonItem(
-                      context: context,
-                      activeSvgPath: 'assets/svg_icons/white-favorite-Cart.svg',
-                      outlinedSvgPath: 'assets/svg_icons/favorite-Cart.svg',
-                      text: 'cart'.tr(context),
-                      index: 3,
-                    ),
-                    gButtonItem(
-                      context: context,
-                      activeSvgPath: 'assets/svg_icons/white-user.svg',
-                      outlinedSvgPath: 'assets/svg_icons/user.svg',
-                      text: 'profile'.tr(context),
-                      index: 4,
-                    ),
+            bottomNavigationBar: Offstage(
+              offstage: homeLayoutCubit.selectedIndex == 3,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(75.r),
+                  ),
+                  boxShadow: [
+                    MyBoxShadows.gNavBoxSahdow,
                   ],
+                ),
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 15.r, vertical: 20.r),
+                  child: GNav(
+                    textStyle: Styles.styles12w500sFProTextFamily,
+                    selectedIndex: homeLayoutCubit.selectedIndex,
+                    padding: EdgeInsets.all(13.r),
+                    gap: 8.w,
+                    tabBackgroundColor: MyColors.mainColor,
+                    onTabChange: (index) {
+                      homeLayoutCubit.changeCurrentIndex(context, index);
+                    },
+                    tabs: [
+                      gButtonItem(
+                        context: context,
+                        activeSvgPath: 'assets/svg_icons/white-home.svg',
+                        outlinedSvgPath: 'assets/svg_icons/home.svg',
+                        text: 'home'.tr(context),
+                        index: 0,
+                      ),
+                      gButtonItem(
+                        context: context,
+                        activeSvgPath:
+                            'assets/svg_icons/white-search-normal.svg',
+                        outlinedSvgPath: 'assets/svg_icons/search-normal.svg',
+                        text: 'explore'.tr(context),
+                        index: 1,
+                      ),
+                      gButtonItem(
+                        context: context,
+                        activeSvgPath: 'assets/svg_icons/white-heart.svg',
+                        outlinedSvgPath: 'assets/svg_icons/heart.svg',
+                        text: 'liked'.tr(context),
+                        index: 2,
+                      ),
+                      gButtonItem(
+                        context: context,
+                        activeSvgPath:
+                            'assets/svg_icons/white-favorite-Cart.svg',
+                        outlinedSvgPath: 'assets/svg_icons/favorite-Cart.svg',
+                        text: 'cart'.tr(context),
+                        index: 3,
+                      ),
+                      gButtonItem(
+                        context: context,
+                        activeSvgPath: 'assets/svg_icons/white-user.svg',
+                        outlinedSvgPath: 'assets/svg_icons/user.svg',
+                        text: 'profile'.tr(context),
+                        index: 4,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

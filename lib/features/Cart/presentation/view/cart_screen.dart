@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
@@ -6,12 +7,22 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/cart_item_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
+import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    bool isInHomeLayoutCubit(BuildContext context) {
+      try {
+        BlocProvider.of<HomeLayoutCubit>(context);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cart'),
@@ -20,7 +31,9 @@ class CartScreen extends StatelessWidget {
         leading: returnArrow(
           context: context,
           onTap: () {
-            Navigator.pop(context);
+            isInHomeLayoutCubit(context)
+                ? BlocProvider.of<HomeLayoutCubit>(context).returnIndex(context)
+                : Navigator.pop(context);
           },
         ),
       ),
@@ -41,6 +54,7 @@ class CartScreen extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 25.h),
         width: double.infinity,
@@ -141,7 +155,7 @@ class CartScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      
     );
   }
 }

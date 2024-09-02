@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gap/gap.dart';
+import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language/languageWidget.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
@@ -84,11 +85,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (ctx) => const LoginScreen(),
-                                ),
-                              );
+                              Navigator.pushNamed(context, signUpScreen);
                             },
                         ),
                       ],

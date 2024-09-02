@@ -16,8 +16,7 @@ Widget discountWidget({
       Positioned(
         left: 0,
         right: 0,
-        bottom:
-            alignBottom, // Adjust this to control the vertical position of the line
+        bottom: alignBottom,
         child: Container(
           height: 1,
           color: color,

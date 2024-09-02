@@ -27,10 +27,10 @@ class IntroScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TweenAnimationBuilder(
-                duration: const Duration(milliseconds: 5000),
+                duration: const Duration(seconds: 2),
                 tween: Tween<Offset>(
-                  begin: const Offset(0, 0),
-                  end: const Offset(0, 200),
+                  begin: const Offset(-200, 0),
+                  end: const Offset(0, 0),
                 ),
                 curve: Curves.elasticOut,
                 child: svgIcon(
@@ -53,9 +53,9 @@ class IntroScreen extends StatelessWidget {
                 },
               ),
               TweenAnimationBuilder(
-                duration: const Duration(milliseconds: 5000),
+                duration: const Duration(seconds: 2),
                 tween: Tween<Offset>(
-                  begin: const Offset(0, 100),
+                  begin: const Offset(0, 350),
                   end: const Offset(0, 0),
                 ),
                 curve: Curves.elasticOut,
@@ -123,7 +123,8 @@ class IntroScreen extends StatelessWidget {
                             SizedBox(height: 20.h),
                             IconButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, homeLayout);
+                                Navigator.pushReplacementNamed(
+                                    context, homeLayout);
                               },
                               icon: Container(
                                 width: 268.w,

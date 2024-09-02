@@ -33,15 +33,18 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
   List<int> previousIndexList = [0];
 
   void changeCurrentIndex(BuildContext context, int index) {
-    if (index == 3) {
-      Navigator.pushNamed(context, cartScreen);
-      return;
+    if (isHomeScreen == false) {
+      isHomeScreen = true;
+      emit(HomeLayoutChangeHomeScreen());
     }
 
-    isHomeScreen = true;
-    emit(HomeLayoutChangeHomeScreen());
     if (selectedIndex != index) {
+      previousIndex = selectedIndex;
       selectedIndex = index;
+
+      if (index == 0) {
+        previousIndexList = [];
+      }
 
       previousIndexList.add(index);
 

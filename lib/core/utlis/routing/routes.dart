@@ -19,6 +19,7 @@ import 'package:negmt_heliopolis/features/Liked/presentation/view/liked_screen.d
 import 'package:negmt_heliopolis/features/PageNotFound/presentation/view/page_not_found_screen.dart';
 import 'package:negmt_heliopolis/features/Product/presentation/view/product_screen.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/special_offer_item_screen.dart';
+import 'package:negmt_heliopolis/test.dart';
 
 class AppRouter {
   Route generate(RouteSettings settings) {
@@ -27,6 +28,7 @@ class AppRouter {
     switch (settings.name) {
       case intialRoute:
       case introScreen:
+        page = const TestScreen();
         page = const IntroScreen();
         fromRight = true;
         break;
@@ -56,7 +58,7 @@ class AppRouter {
         fromRight = true;
         break;
 
-      case signUp2Screen:
+      case signUpScreen:
         page = const SignupScreen();
         fromRight = true;
         break;
@@ -145,11 +147,4 @@ class _CustomPageRouteBuilder extends PageRouteBuilder {
             milliseconds: 300,
           ),
         );
-
-  @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
-    return super
-        .buildTransitions(context, animation, secondaryAnimation, child);
-  }
 }

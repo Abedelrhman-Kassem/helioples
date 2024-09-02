@@ -24,7 +24,6 @@ class Helper {
   }
 
   static Widget loadNetworkImage({
-    bool? isRtl,
     String url = '',
     required String assetsErrorPath,
     BoxFit fit = BoxFit.cover,

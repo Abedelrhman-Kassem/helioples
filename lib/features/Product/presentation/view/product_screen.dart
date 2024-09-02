@@ -22,7 +22,7 @@ class ProductScreen extends StatelessWidget {
           },
         ),
         title: categoriesButtonTitleWidet(
-          onTap: () {},
+          context: context,
           title: 'Bakeries And Pastries',
         ),
         actions: [
@@ -31,35 +31,38 @@ class ProductScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const ProductWidget(),
-            SizedBox(height: 30.h),
-            Text(
-              'Related Products',
-              style: Styles.styles16w600NormalBlack,
-            ),
-            SizedBox(height: 10.h),
-            SizedBox(
-              height: 200,
-              child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => ItemWidget(
-                  counter: 0,
-                  isFavorite: false,
-                ),
-                separatorBuilder: (context, index) => SizedBox(width: 15.w),
-                itemCount: 10,
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const ProductWidget(),
+              SizedBox(height: 30.h),
+              Text(
+                'Related Products',
+                style: Styles.styles16w600NormalBlack,
               ),
-            )
-            //             maxCrossAxisExtent: 150,
-            // crossAxisSpacing: 7,
-            // mainAxisSpacing: 10,
-            // childAspectRatio: 1.2 / 2.25,
-          ],
+              SizedBox(height: 10.h),
+              SizedBox(
+                height: 200,
+                child: ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => ItemWidget(
+                    counter: 0,
+                    isFavorite: false,
+                  ),
+                  separatorBuilder: (context, index) => SizedBox(width: 15.w),
+                  itemCount: 10,
+                ),
+              )
+              //             maxCrossAxisExtent: 150,
+              // crossAxisSpacing: 7,
+              // mainAxisSpacing: 10,
+              // childAspectRatio: 1.2 / 2.25,
+            ],
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

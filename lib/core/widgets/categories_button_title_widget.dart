@@ -2,14 +2,85 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/category_builder.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
 Widget categoriesButtonTitleWidet({
-  required Function() onTap,
+  required BuildContext context,
   required title,
 }) {
   return TextButton(
-    onPressed: onTap,
+    onPressed: () async {
+      return showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: 0.7,
+            maxChildSize: 0.9,
+            minChildSize: 0.5,
+            builder: (context, scrollController) {
+              return Container(
+                padding: EdgeInsets.all(20.r),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50.r),
+                    topRight: Radius.circular(50.r),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Categories',
+                          style: Styles.styles15w700NormalBlack,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Transform.rotate(
+                            angle: 40,
+                            child: svgIcon(
+                              path: 'assets/svg_icons/empty-plus.svg',
+                              width: 20.w,
+                              height: 20.h,
+                              color: Colors.black.withOpacity(0.5),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20.h),
+                    Expanded(
+                      child: GridView.builder(
+                        controller:
+                            scrollController, // Use the controller to sync with the DraggableScrollableSheet
+                        padding: EdgeInsets.only(top: 5.h),
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: 17,
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 125,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          mainAxisExtent: 135,
+                        ),
+                        itemBuilder: (context, index) =>
+                            categoryBuilder(context),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      );
+    },
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [

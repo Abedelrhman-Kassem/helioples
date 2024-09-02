@@ -17,7 +17,6 @@ Widget specialOfferWidget({
   String secondaryUrlImage = '',
 }) {
   final TextDirection textDirection = Directionality.of(context);
-  final bool isRtl = textDirection == TextDirection.rtl;
 
   return GestureDetector(
     onTap: onTap,
@@ -52,7 +51,6 @@ Widget specialOfferWidget({
                         start: 10,
                         child: Helper.loadNetworkImage(
                           url: secondaryUrlImage,
-                          isRtl: isRtl,
                           assetsErrorPath: brandImagePath,
                         ),
                       ),

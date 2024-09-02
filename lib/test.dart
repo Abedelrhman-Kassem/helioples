@@ -5,70 +5,52 @@ class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _TestScreenState createState() => _TestScreenState();
 }
 
 class _TestScreenState extends State<TestScreen> {
   int _selectedIndex = 0;
+  int _previousIndex = 0;
 
-  void _onItemTapped(int index) {
-    if (index == 3) {
-      // Store the current index
+  void _onTabChange(int index) {
+    print("Tab clicked: $index");
+    print("Current selected index: $_selectedIndex");
+    print("Previous index: $_previousIndex");
 
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => AnotherScreen()),
-      // ).then((_) {
-      //   // Reset the selected index to the previous index when returning
-      //   setState(() {
-      //     _selectedIndex = previousIndex;
-      //   });
-      // });
+    if (index == 1) {
+      // Disabled tab logic
+      print("Disabled tab clicked, reverting to previous index.");
+      _onTabChange(0);
     } else {
-      // Update the selected index
       setState(() {
+        // Update previous index before changing to the new one
+        _previousIndex = _selectedIndex;
         _selectedIndex = index;
       });
     }
+
+    // Ensure the UI updates correctly
+    print("Updated selected index: $_selectedIndex");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Selected Index: $_selectedIndex'),
+        child: Text('Selected index: $_selectedIndex'),
       ),
       bottomNavigationBar: GNav(
+        gap: 8,
         selectedIndex: _selectedIndex,
-        onTabChange: _onItemTapped,
-        tabs: const [
-          GButton(icon: Icons.home, text: 'Home'),
-          GButton(icon: Icons.search, text: 'Search'),
-          GButton(icon: Icons.notifications, text: 'Notifications'),
-          GButton(icon: Icons.person, text: 'Profile'),
+        onTabChange: _onTabChange,
+        tabs: [
+          GButton(icon: Icons.home, text: _selectedIndex == 0 ? 'Home' : ''),
+          GButton(icon: Icons.favorite, text: ''), // Disabled Tab
+          GButton(
+              icon: Icons.search, text: _selectedIndex == 2 ? 'Search' : ''),
+          GButton(
+              icon: Icons.person, text: _selectedIndex == 3 ? 'Profile' : ''),
         ],
-      ),
-    );
-  }
-}
-
-class AnotherScreen extends StatelessWidget {
-  const AnotherScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Another Screen'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Go Back'),
-        ),
       ),
     );
   }
