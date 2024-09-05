@@ -105,8 +105,8 @@ class HomeScreen extends StatelessWidget {
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(
-                                    context, allspecialOffersScreen);
+                                BlocProvider.of<HomeLayoutCubit>(context)
+                                    .changeHomeScreen();
                               },
                               child: Row(
                                 children: [

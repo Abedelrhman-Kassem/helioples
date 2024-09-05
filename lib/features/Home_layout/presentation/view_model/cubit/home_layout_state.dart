@@ -6,3 +6,5 @@ sealed class HomeLayoutState {}
 final class HomeLayoutInitial extends HomeLayoutState {}
 
 final class HomeLayoutChangeBottomNav extends HomeLayoutState {}
+
+final class HomeLayoutChangeHomeScreen extends HomeLayoutState {}

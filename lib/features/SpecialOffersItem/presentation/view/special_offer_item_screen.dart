@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/item_widget_grid.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
 
 class SpecialOfferItemScreen extends StatelessWidget {
@@ -73,18 +74,7 @@ class SpecialOfferItemScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 30.h),
-              GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 5,
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 150,
-                  crossAxisSpacing: 7,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 1.25 / 2.25,
-                ),
-                itemBuilder: (context, index) => const ItemWidget(),
-              ),
+              itemWidgetGridView(),
             ],
           ),
         ),

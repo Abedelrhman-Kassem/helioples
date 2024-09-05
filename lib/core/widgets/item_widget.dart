@@ -5,31 +5,37 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/svgAsset.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/widgets/discount_widget.dart';
 
+// ignore: must_be_immutable
 class ItemWidget extends StatefulWidget {
   final Color? color;
 
-  const ItemWidget({super.key, this.color});
+  int counter;
+  bool isFavorite;
+  ItemWidget({
+    super.key, this.color,
+    required this.counter,
+    required this.isFavorite,
+  });
 
   @override
   State<ItemWidget> createState() => _ItemWidgetState();
 }
 
 class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
-  bool isFavorite = false;
-  late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
+  late AnimationController _favoriteAnimationController;
+  late Animation<double> _favoriteScaleAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    _animationController = AnimationController(
+    _favoriteAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 100),
     );
-    _scaleAnimation = Tween<double>(begin: 1, end: 1.2).animate(
+    _favoriteScaleAnimation = Tween<double>(begin: 1, end: 1.2).animate(
       CurvedAnimation(
-        parent: _animationController,
+        parent: _favoriteAnimationController,
         curve: Curves.easeInOut,
       ),
     );
@@ -38,19 +44,19 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
   @override
   void dispose() {
     super.dispose();
-    _animationController.dispose();
+    _favoriteAnimationController.dispose();
   }
 
   void _toggleFavorite() {
     setState(() {
-      isFavorite = !isFavorite;
+      widget.isFavorite = !widget.isFavorite;
 
-      if (isFavorite) {
-        _animationController
+      if (widget.isFavorite) {
+        _favoriteAnimationController
             .forward()
-            .then((_) => _animationController.reverse());
+            .then((_) => _favoriteAnimationController.reverse());
       } else {
-        _animationController.reverse();
+        _favoriteAnimationController.reverse();
       }
     });
   }
@@ -58,6 +64,7 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final bool isRtl = Directionality.of(context) == TextDirection.rtl;
+    bool isExpanded = widget.counter > 0;
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -69,6 +76,8 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
         borderRadius: BorderRadius.circular(15.5),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,12 +97,12 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
                 ),
               ),
               ScaleTransition(
-                scale: _scaleAnimation,
+                scale: _favoriteScaleAnimation,
                 child: InkWell(
                   onTap: _toggleFavorite,
                   child: svgIcon(
                     path: 'assets/svg_icons/white-heart.svg',
-                    color: isFavorite
+                    color: widget.isFavorite
                         ? MyColors.mainColor
                         : const Color.fromRGBO(181, 185, 190, 1),
                     width: 22,
@@ -109,19 +118,58 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
             assetsErrorPath: 'assets/test_images/mango-category.png',
           ),
           const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              InkWell(
-                onTap: () {},
-                child: svgIcon(
-                  path: 'assets/svg_icons/empty-plus.svg',
-                  width: 18.5,
-                  height: 18.5,
-                  color: MyColors.mainColor,
+          AnimatedContainer(
+            alignment: Alignment.center,
+            duration: const Duration(milliseconds: 300),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+            width: isExpanded ? 78 : 25,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: isExpanded ? MyColors.mainColor : Colors.transparent,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (isExpanded) ...[
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        if (widget.counter > 0) {
+                          widget.counter--;
+                        }
+                      });
+                    },
+                    child: svgIcon(
+                      path: 'assets/svg_icons/empty-minus.svg',
+                      width: 18.5,
+                      height: 18.5,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    '${widget.counter}',
+                    style: Styles.styles12w400interFamily
+                        .copyWith(color: Colors.white),
+                  ),
+                  const SizedBox(width: 10),
+                ],
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      widget.counter++;
+                    });
+                  },
+                  child: svgIcon(
+                    path: 'assets/svg_icons/empty-plus.svg',
+                    width: 18.5,
+                    height: 18.5,
+                    color: isExpanded ? Colors.white : MyColors.mainColor,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 10),
           Row(

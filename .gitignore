@@ -41,3 +41,79 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+.gradle/
+build/
+local.properties
+
+# Kotlin/Java build files
+/out/
+
+# IntelliJ/Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Keystore files
+*.jks
+
+# Log files
+*.log
+
+# Generated files
+*.apk
+*.ap_
+*.dex
+*.class
+
+# Maven files
+pom.xml
+pom.properties
+
+# Cache files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+
+# Generated Assets
+*.sourcemap
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+
+# Generated Binary
+*.bin
+
+# Dependency directories
+node_modules/
+.cocoapods/
+vendor/
+
+# Android/IntelliJ specific
+*.idea/
+*.gradle/
+build/
+captures/
+.externalNativeBuild/
+
+# Ignore Gradle Wrapper files
+.gradle/
+gradle/wrapper/gradle-wrapper.properties
+gradle/wrapper/gradle-wrapper.jar
+
+# Exclude personal IDE configuration
+*.iml
+.idea/
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Other files
+*.keystore
+local.properties
+.env

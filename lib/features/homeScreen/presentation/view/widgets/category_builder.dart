@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/Helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 
 Widget categoryBuilder(BuildContext context, bool isRtl) {
   return GestureDetector(
-    onTap: () {},
+    onTap: () {
+      Navigator.pushNamed(context, categoriesScreen);
+    },
     child: SizedBox(
       width: 100,
       child: Column(

@@ -5,17 +5,32 @@ import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/svgAsset.dart';
 import 'package:negmt_heliopolis/features/AllSpecialOffers/presentation/view_model/cubit/all_special_offer_cubit.dart';
+import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 
 class AllSpecialOffersScreen extends StatelessWidget {
   const AllSpecialOffersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    HomeLayoutCubit homeLayoutCubit = BlocProvider.of<HomeLayoutCubit>(context);
+
     return BlocProvider(
       create: (context) => AllSpecialOfferCubit(),
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: svgIcon(
+              path: 'assets/svg_icons/arrow-left.svg',
+              width: 29,
+              height: 29,
+              color: const Color.fromRGBO(41, 45, 50, 1),
+            ),
+            onPressed: () {
+              homeLayoutCubit.changeHomeScreen();
+            },
+          ),
           title: Text(
             'Special Offers',
             style: Styles.styles16w700interFamily,
@@ -38,7 +53,9 @@ class AllSpecialOffersScreen extends StatelessWidget {
                       splashRadius: 2,
                       onPressed: () {
                         allSpecialOffersCubit.changeGrid(
-                            context, allspecialOffersScreen);
+                          context,
+                          allspecialOffersScreen,
+                        );
                       },
                       icon: Container(
                         width: 37.w,
