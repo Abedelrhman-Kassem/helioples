@@ -21,6 +21,7 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
 
   int selectedIndex = 0;
   int previousIndex = 0;
+  
 
   List<Widget> screens = [
     const HomeScreen(),
