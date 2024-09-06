@@ -11,6 +11,7 @@ Widget cartItemIconWidget({
 }) {
   return InkWell(
     onTap: onTap,
+    borderRadius: BorderRadius.circular(39.55.r),
     child: Container(
       padding: EdgeInsets.symmetric(
         horizontal: 9.84.w,

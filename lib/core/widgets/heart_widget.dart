@@ -7,6 +7,7 @@ class HeartWidget extends StatefulWidget {
   bool isFavorite;
   final double width;
   final double height;
+
   HeartWidget({
     super.key,
     required this.isFavorite,

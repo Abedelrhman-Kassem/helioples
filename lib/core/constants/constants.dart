@@ -14,6 +14,7 @@ const String likedScreen = '/liked_screen';
 const String categoriesScreen = '/categories_screen';
 const String cartScreen = '/cart_screen';
 const String productScreen = '/product_screen';
+const String checkoutScreen = '/checkout_screen';
 
 // fontfamily
 const String sFProTextFamily = 'SFProText';

@@ -7,6 +7,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/cart_item_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
+import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/modal_bottom_sheet.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 
 class CartScreen extends StatelessWidget {
@@ -49,13 +50,12 @@ class CartScreen extends StatelessWidget {
               itemCount: 6,
             ),
             SizedBox(
-              height: 259.h,
+              height: 293.h,
             ),
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Container(
+      bottomSheet: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 25.h),
         width: double.infinity,
         height: 259.h,
@@ -116,7 +116,14 @@ class CartScreen extends StatelessWidget {
             ),
             SizedBox(height: 20.h),
             InkWell(
-              onTap: () {},
+              onTap: () async {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return const ModalBottomSheet();
+                  },
+                );
+              },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 84.w, vertical: 16.h),
                 decoration: BoxDecoration(
@@ -155,7 +162,6 @@ class CartScreen extends StatelessWidget {
           ],
         ),
       ),
-      
     );
   }
 }

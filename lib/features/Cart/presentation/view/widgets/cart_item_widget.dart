@@ -14,6 +14,8 @@ class CartItemWidget extends StatefulWidget {
 }
 
 class _CartItemWidgetState extends State<CartItemWidget> {
+  int counter = 1;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -64,20 +66,29 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   children: [
                     cartItemIconWidget(
                       svgPath: 'assets/svg_icons/trash.svg',
-                      onTap: () {},
-                      isBiggerThanOne: false,
+                      onTap: () {
+                        if (counter > 1) {
+                          setState(() {
+                            counter--;
+                          });
+                        }
+                      },
+                      isBiggerThanOne: counter > 1,
                       minusSvgPath: 'assets/svg_icons/empty-minus.svg',
                     ),
                     SizedBox(width: 10.w),
                     Text(
-                      '1',
+                      '$counter',
                       style: Styles.styles15w400NormalBlack,
                     ),
                     SizedBox(width: 10.w),
                     cartItemIconWidget(
                       svgPath: 'assets/svg_icons/empty-plus.svg',
-                      onTap: () {},
-                      isBiggerThanOne: true,
+                      onTap: () {
+                        setState(() {
+                          counter++;
+                        });
+                      },
                     ),
                   ],
                 ),

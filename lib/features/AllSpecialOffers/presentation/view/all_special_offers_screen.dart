@@ -1,4 +1,3 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,21 +40,15 @@ class AllSpecialOffersScreen extends StatelessWidget {
                 AllSpecialOfferCubit allSpecialOffersCubit =
                     BlocProvider.of<AllSpecialOfferCubit>(context);
 
-                return PageTransitionSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  reverse: !allSpecialOffersCubit.isGrid,
-                  transitionBuilder:
-                      (child, primaryAnimation, secondaryAnimation) {
-                    return SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(1, 0),
-                        end: const Offset(0, 0),
-                      ).animate(primaryAnimation),
-                      child: child,
-                    );
-                  },
-                  child: allSpecialOffersCubit.isGrid
-                      ? Column(
+                return Stack(
+                  children: [
+                    Offstage(
+                      offstage: allSpecialOffersCubit.isGrid,
+                      child: AnimatedSlide(
+                        duration: const Duration(milliseconds: 300),
+                        offset: Offset(allSpecialOffersCubit.initialOffset, 0),
+                        curve: Curves.easeInOutSine,
+                        child: Column(
                           key: const ValueKey(1),
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -63,10 +56,7 @@ class AllSpecialOffersScreen extends StatelessWidget {
                             IconButton(
                               splashRadius: 2,
                               onPressed: () {
-                                allSpecialOffersCubit.changeGrid(
-                                  context,
-                                  allspecialOffersScreen,
-                                );
+                                allSpecialOffersCubit.changeOffset();
                               },
                               icon: Container(
                                 width: 37.w,
@@ -206,130 +196,135 @@ class AllSpecialOffersScreen extends StatelessWidget {
                               },
                             ),
                           ],
-                        )
-                      : Column(
-                          key: const ValueKey(2),
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            IconButton(
-                              splashRadius: 2,
-                              onPressed: () {
-                                allSpecialOffersCubit.changeGrid(
-                                  context,
-                                  allspecialOffersScreen,
-                                );
-                              },
-                              icon: Container(
-                                width: 37.w,
-                                height: 36.w,
-                                decoration: BoxDecoration(
-                                  color: const Color.fromRGBO(237, 237, 237, 1),
-                                  borderRadius: BorderRadius.circular(8.r),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(
-                                    3,
-                                    (index) {
-                                      return Container(
-                                        width: 20.77.w,
-                                        height: 2.38.h,
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 2.h),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12.r),
-                                          color: MyColors.mainColor,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                            GridView.builder(
-                              key: const ValueKey(2),
-                              gridDelegate:
-                                  const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 250,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 0,
-                                mainAxisExtent: 220,
-                              ),
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: 10,
-                              itemBuilder: (context, index) {
-                                return specialOfferWidget(
-                                  context: context,
-                                  assetImagePath:
-                                      'assets/test_images/nestle-offer.png',
-                                  brandImagePath:
-                                      'assets/test_images/offer-brand.png',
-                                  imageHeight: 145,
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, specialOfferItemScreen);
-                                  },
-                                  upToOfferWidget: () => upToOfferWidget(
-                                    iconHeight: 13,
-                                    iconWidth: 13,
-                                    context: context,
-                                    text: Text(
-                                      'Up to 20% off',
-                                      style: Styles.styles7w500interFamily
-                                          .copyWith(
-                                        fontSize: 9,
-                                      ),
-                                    ),
-                                  ),
-                                  descriptionOfferWidget: () =>
-                                      descriptionOfferWidget(
-                                    titleText: Text(
-                                      'Nestle Pure Life',
-                                      style: Styles.styles10w700interFamily
-                                          .copyWith(fontSize: 10),
-                                    ),
-                                    offerOrderedText: RichText(
-                                      text: TextSpan(
-                                        text: '33 ',
-                                        style: Styles.styles8w800interFamily
-                                            .copyWith(fontSize: 8),
-                                        children: [
-                                          TextSpan(
-                                            text: 'Offer Ordered',
-                                            style: Styles.styles8w500interFamily
-                                                .copyWith(fontSize: 8),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    offerRichText: RichText(
-                                      text: TextSpan(
-                                        text: 'Offer Ends At ',
-                                        style: Styles.styles10w400interFamily
-                                            .copyWith(fontSize: 10),
-                                        children: [
-                                          TextSpan(
-                                            text: '1 Day 16 Hours',
-                                            style: Styles
-                                                .styles10w500interFamily
-                                                .copyWith(fontSize: 10),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    beneficiaryText:
-                                        RichText(text: const TextSpan()),
-                                    iconWidth: 15,
-                                    iconHeight: 15,
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
                         ),
+                      ),
+                    ),
+                    AnimatedSlide(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOutSine,
+                      offset:
+                          Offset(allSpecialOffersCubit.initialOffset + 1.5, 0),
+                      child: Column(
+                        key: const ValueKey(2),
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          IconButton(
+                            splashRadius: 2,
+                            onPressed: () {
+                              allSpecialOffersCubit.changeOffset();
+                            },
+                            icon: Container(
+                              width: 37.w,
+                              height: 36.w,
+                              decoration: BoxDecoration(
+                                color: const Color.fromRGBO(237, 237, 237, 1),
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List.generate(
+                                  3,
+                                  (index) {
+                                    return Container(
+                                      width: 20.77.w,
+                                      height: 2.38.h,
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 2.h),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(12.r),
+                                        color: MyColors.mainColor,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          GridView.builder(
+                            key: const ValueKey(2),
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 250,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 0,
+                              mainAxisExtent: 220,
+                            ),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: 10,
+                            itemBuilder: (context, index) {
+                              return specialOfferWidget(
+                                context: context,
+                                assetImagePath:
+                                    'assets/test_images/nestle-offer.png',
+                                brandImagePath:
+                                    'assets/test_images/offer-brand.png',
+                                imageHeight: 145,
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, specialOfferItemScreen);
+                                },
+                                upToOfferWidget: () => upToOfferWidget(
+                                  iconHeight: 13,
+                                  iconWidth: 13,
+                                  context: context,
+                                  text: Text(
+                                    'Up to 20% off',
+                                    style:
+                                        Styles.styles7w500interFamily.copyWith(
+                                      fontSize: 9,
+                                    ),
+                                  ),
+                                ),
+                                descriptionOfferWidget: () =>
+                                    descriptionOfferWidget(
+                                  titleText: Text(
+                                    'Nestle Pure Life',
+                                    style: Styles.styles10w700interFamily
+                                        .copyWith(fontSize: 10),
+                                  ),
+                                  offerOrderedText: RichText(
+                                    text: TextSpan(
+                                      text: '33 ',
+                                      style: Styles.styles8w800interFamily
+                                          .copyWith(fontSize: 8),
+                                      children: [
+                                        TextSpan(
+                                          text: 'Offer Ordered',
+                                          style: Styles.styles8w500interFamily
+                                              .copyWith(fontSize: 8),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  offerRichText: RichText(
+                                    text: TextSpan(
+                                      text: 'Offer Ends At ',
+                                      style: Styles.styles10w400interFamily
+                                          .copyWith(fontSize: 10),
+                                      children: [
+                                        TextSpan(
+                                          text: '1 Day 16 Hours',
+                                          style: Styles.styles10w500interFamily
+                                              .copyWith(fontSize: 10),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  beneficiaryText:
+                                      RichText(text: const TextSpan()),
+                                  iconWidth: 15,
+                                  iconHeight: 15,
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 );
               },
             ),

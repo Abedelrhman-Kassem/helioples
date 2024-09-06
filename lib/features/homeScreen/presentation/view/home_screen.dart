@@ -13,9 +13,11 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/core/widgets/category_builder.dart';
+
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/location_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view_model/cubit/home_screen_cubit.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -25,7 +27,7 @@ class HomeScreen extends StatelessWidget {
     final bool isRtl = TextDirection.rtl == Directionality.of(context);
 
     return BlocProvider(
-      create: (context) => HomeScreenCubit(),
+      create: (context) => HomeScreenCubit()..getAllCategories(),
       child: BlocConsumer<HomeScreenCubit, HomeScreenState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -38,8 +40,12 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Stack(
-                    alignment: Alignment.bottomCenter,
+                    alignment: Alignment.topCenter,
                     children: [
+                      Container(
+                        color: Colors.transparent,
+                        height: 450.h,
+                      ),
                       CarouselSlider(
                         items: [1, 2, 3, 4, 5].map(
                           (ele) {
@@ -53,6 +59,7 @@ class HomeScreen extends StatelessWidget {
                         ).toList(),
                         options: CarouselOptions(
                           aspectRatio: 438 / 424,
+                          // height: 430.h,
                           autoPlay: true,
                           initialPage: 0,
                           viewportFraction: 1,
@@ -87,10 +94,13 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      locationWidget(context),
+                      const Positioned(
+                        bottom: 0,
+                        child: LocationWidget(),
+                      ),
                     ],
                   ),
-                  SizedBox(height: 45.h),
+                  SizedBox(height: 5.h),
                   Column(
                     children: [
                       Padding(
@@ -299,53 +309,121 @@ class HomeScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 250),
-                            reverseDuration: const Duration(milliseconds: 250),
-                            transitionBuilder: (child, animation) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
-                            child: homeScreenCubit.isCategoryRow
-                                ? Container(
-                                    padding:
-                                        EdgeInsetsDirectional.only(start: 18.w),
-                                    height: 200,
-                                    child: ListView.separated(
-                                      padding: EdgeInsets.only(top: 5.h),
-                                      physics: const BouncingScrollPhysics(),
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, state) =>
-                                          categoryBuilder(context),
-                                      separatorBuilder: (context, state) =>
-                                          const SizedBox(width: 14),
-                                      itemCount: 17,
-                                    ),
-                                  )
-                                : Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 18.w),
-                                    child: GridView.builder(
-                                      padding: EdgeInsets.only(top: 5.h),
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: 17,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                                        maxCrossAxisExtent: 125,
-                                        mainAxisSpacing: 10,
-                                        crossAxisSpacing: 10,
-                                        // childAspectRatio: 1 / 1.5,
-                                        mainAxisExtent: 135,
+                          if (homeScreenCubit.allCategoriesModel.categories !=
+                              null)
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 250),
+                              reverseDuration:
+                                  const Duration(milliseconds: 250),
+                              transitionBuilder: (child, animation) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                              child: homeScreenCubit.isCategoryRow
+                                  ? Container(
+                                      padding: EdgeInsetsDirectional.only(
+                                          start: 18.w),
+                                      height: 200,
+                                      child: ListView.separated(
+                                        padding: EdgeInsets.only(top: 5.h),
+                                        physics: const BouncingScrollPhysics(),
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) =>
+                                            categoryBuilder(
+                                          context: context,
+                                          category: homeScreenCubit
+                                              .allCategoriesModel
+                                              .categories![index],
+                                        ),
+                                        separatorBuilder: (context, index) =>
+                                            const SizedBox(width: 14),
+                                        itemCount: homeScreenCubit
+                                            .allCategoriesModel
+                                            .categories!
+                                            .length,
                                       ),
-                                      itemBuilder: (context, index) =>
-                                          categoryBuilder(context),
+                                    )
+                                  : Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 18.w,
+                                      ),
+                                      child: GridView.builder(
+                                        padding: EdgeInsets.only(top: 5.h),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: homeScreenCubit
+                                            .allCategoriesModel
+                                            .categories!
+                                            .length,
+                                        gridDelegate:
+                                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                                          maxCrossAxisExtent: 125,
+                                          mainAxisSpacing: 10,
+                                          crossAxisSpacing: 10,
+                                          // childAspectRatio: 1 / 1.5,
+                                          mainAxisExtent: 135,
+                                        ),
+                                        itemBuilder: (context, index) =>
+                                            categoryBuilder(
+                                          context: context,
+                                          category: homeScreenCubit
+                                              .allCategoriesModel
+                                              .categories![index],
+                                        ),
+                                      ),
+                                    ),
+                            )
+                          else
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 18.w,
+                              ),
+                              child: GridView.builder(
+                                padding: EdgeInsets.only(top: 5.h),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: 9,
+                                gridDelegate:
+                                    const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 125,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                  // childAspectRatio: 1 / 1.5,
+                                  mainAxisExtent: 135,
+                                ),
+                                itemBuilder: (context, index) => Skeletonizer(
+                                  child: SizedBox(
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(25),
+                                            ),
+                                          ),
+                                          child: Helper.loadNetworkImage(
+                                            assetsErrorPath:
+                                                'assets/screens_background/home-category.png',
+                                          ),
+                                        ),
+                                        Text(
+                                          'hello how',
+                                          style: Styles.styles11w700interFamily
+                                              .copyWith(fontSize: 11),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
                                     ),
                                   ),
-                          ),
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     ],

@@ -13,13 +13,13 @@ import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/signup_s
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/verfication_screen.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/cart_screen.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view/categories_screen.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_screen.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view/home_layout.dart';
 import 'package:negmt_heliopolis/features/Intro/presentation/view/intro_screen.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/liked_screen.dart';
 import 'package:negmt_heliopolis/features/PageNotFound/presentation/view/page_not_found_screen.dart';
 import 'package:negmt_heliopolis/features/Product/presentation/view/product_screen.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/special_offer_item_screen.dart';
-import 'package:negmt_heliopolis/test.dart';
 
 class AppRouter {
   Route generate(RouteSettings settings) {
@@ -28,14 +28,14 @@ class AppRouter {
     switch (settings.name) {
       case intialRoute:
       case introScreen:
-        page = const TestScreen();
+        // page = const TestScreen();
         page = const IntroScreen();
-        fromRight = true;
+        fromRight = false;
         break;
 
       case homeLayout:
         page = const HomeLayout();
-        fromRight = true;
+        fromRight = false;
         break;
 
       case likedScreen:
@@ -45,7 +45,7 @@ class AppRouter {
 
       case signInScreen:
         page = const LoginScreen();
-        fromRight = true;
+        fromRight = false;
         break;
 
       case specialOfferItemScreen:
@@ -102,7 +102,12 @@ class AppRouter {
 
       case productScreen:
         page = const ProductScreen();
-        fromRight = true;
+        fromRight = false;
+        break;
+
+      case checkoutScreen:
+        page = const CheckoutScreen();
+        fromRight = false;
         break;
 
       default:
