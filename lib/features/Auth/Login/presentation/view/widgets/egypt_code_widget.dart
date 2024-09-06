@@ -15,7 +15,7 @@ class EgyptionCodeWidget extends StatelessWidget {
           color: const Color.fromRGBO(239, 239, 239, 1),
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
-            color: Colors.black,
+            color:const  Color.fromRGBO(210, 210, 210, 1),
             width: 1, // Set the border width
           ),
         ),

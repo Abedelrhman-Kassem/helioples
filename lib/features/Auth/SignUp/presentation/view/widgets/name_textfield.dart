@@ -6,11 +6,13 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 class NameTextField extends StatelessWidget {
   final String labelText;
   final TextEditingController controller;
+  final bool isEnabled ; 
 
   const NameTextField({
     Key? key,
     required this.labelText,
     required this.controller,
+    required this.isEnabled,
   }) : super(key: key);
 
   @override
@@ -28,6 +30,7 @@ class NameTextField extends StatelessWidget {
         SizedBox(height: 8.h),
         TextField(
           controller: controller,
+          enabled: isEnabled,
           decoration: InputDecoration(
             filled: true,
             fillColor: const Color.fromRGBO(246, 246, 246, 1),

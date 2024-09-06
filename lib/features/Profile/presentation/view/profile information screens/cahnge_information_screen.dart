@@ -5,27 +5,28 @@ import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/egypt_code_widget.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/Date_picker.dart';
-
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/background_image.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/name_textfield.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/nh_logo.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_app_bar.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+class CahngeInformationScreen extends StatefulWidget {
+  const CahngeInformationScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  State<CahngeInformationScreen> createState() =>
+      _CahngeInformationScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
-  bool isEn = true;
-
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController birthdayDateController = TextEditingController();
+class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
+  final TextEditingController firstNameController =
+      TextEditingController(text: "Omar");
+  final TextEditingController lastNameController =
+      TextEditingController(text: "Salah");
+  final TextEditingController phoneNumberController =
+      TextEditingController(text: "01116026564");
+  final TextEditingController birthdayDateController =
+      TextEditingController(text: "17/5/2002");
+  final DateTime initialDate = DateTime(2002, 5, 17);
 
   @override
   void dispose() {
@@ -48,18 +49,33 @@ class _SignupScreenState extends State<SignupScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SignUpAppBar(
-                    title: "Register".tr(context),
-                    isEn: isEn,
-                    onLanguageChange: (bool value) {
-                      setState(() {
-                        isEn = value;
-                      });
-                    },
+                  Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: const Icon(Icons.arrow_back)),
+                      SizedBox(
+                        width: 70.w,
+                      ),
+                      Text(
+                        "Profile Information",
+                        style: Styles.styles16w400grey
+                            .copyWith(color: Colors.black),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 5.h),
-                  const LogoWidget(),
-                  SizedBox(height: 15.h),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Text(
+                    "Edit Your Personal Information",
+                    style: Styles.styles25w600black,
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -121,7 +137,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                 width: 1.5,
                               ),
                             ),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16.w, vertical: 14.h),
                           ),
                           style: Styles.styles17w500NormalBlack,
                         ),
@@ -137,14 +154,14 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                   SizedBox(height: 15.h),
-                  const DatePicker(labelText: " "),
+                  DatePicker(labelText: " ", initialDate: initialDate),
                   SizedBox(height: 20.h),
                   Center(
                     child: SignUpCustomButton(
-                      buttonText: "Continue".tr(context),
+                      buttonText: "Save",
                       onPressed: () {
                         Navigator.of(context).pushNamed(
-                          verficationScreen,
+                          verficationChangesScreen,
                           arguments: {
                             'phoneNumber': phoneNumberController.text,
                           },
@@ -152,31 +169,13 @@ class _SignupScreenState extends State<SignupScreen> {
                       },
                     ),
                   ),
-                  SizedBox(height: 10.h),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Already Have An Account?".tr(context),
-                          style: Styles.styles15w400NormalBlack,
-                        ),
-                        SizedBox(width: 5.w),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Text(
-                            "Login Now".tr(context),
-                            style: Styles.styles15w700Gold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 300.h),
+                  SizedBox(
+                    height: 300.h,
+                  )
                 ],
               ),
             ),
-          ),
+          )
         ],
       ),
     );
