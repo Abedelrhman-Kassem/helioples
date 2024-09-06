@@ -94,7 +94,7 @@ class FeatureWidget extends StatelessWidget {
                               )
                             ]
                           ),
-                          child: ItemWidget(color: Colors.white)),
+                          child: ItemWidget(color: Colors.white, counter: 0, isFavorite: false ,)),
                       ),
                     );
                   },

@@ -10,12 +10,14 @@ class DatePicker extends StatefulWidget {
   final String labelText;
   //final void Function(DateTime) onDateSelected;
   final String? Function(String?)? validator;
+  final DateTime? initialDate ; 
 
   const DatePicker({
     super.key,
     required this.labelText,
     //required this.onDateSelected,
     this.validator,
+    this.initialDate,
   });
 
   @override
@@ -29,7 +31,8 @@ class _DatePickerState extends State<DatePicker> {
   @override
   void initState() {
     super.initState();
-    selectedDate = '';
+     selectedDate = widget.initialDate != null ? DateFormat('M/d/yyyy').format(widget.initialDate!) : '';
+     _dateController.text = selectedDate;
   }
 
   @override
@@ -84,9 +87,10 @@ class _DatePickerState extends State<DatePicker> {
   }
 
   Future<void> _selectDate() async {
+    DateTime initialDate = widget.initialDate ?? DateTime.now(); 
     DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: initialDate,
       firstDate: DateTime(2000),
       lastDate: DateTime.now(),
       builder: (context, child) => Theme(

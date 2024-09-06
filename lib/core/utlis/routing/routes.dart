@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/features/AllSpecialOffers/presentation/view/all_special_offers_screen.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/loginpage.dart';
@@ -17,6 +18,14 @@ import 'package:negmt_heliopolis/features/Home_layout/presentation/view/home_lay
 import 'package:negmt_heliopolis/features/Intro/presentation/view/intro_screen.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/liked_screen.dart';
 import 'package:negmt_heliopolis/features/PageNotFound/presentation/view/page_not_found_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/alerts%20screens/alerts_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/help%20center%20screens/help_center_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/help%20center%20screens/report_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/history%20screens/history_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/history%20screens/order_details_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/profile%20information%20screens/cahnge_information_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/profile%20information%20screens/verfication_changes_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/settings%20screens/settings_screen.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/special_offer_item_screen.dart';
 
 class AppRouter {
@@ -69,6 +78,33 @@ class AppRouter {
       case categoriesScreen:
         page = const CategoriesScreen();
         break;
+      case cahngeInformationScreen :
+        page = const CahngeInformationScreen();
+        break ;
+      case verficationChangesScreen :
+      final args = settings.arguments as Map<String,dynamic> ; 
+        page =  VerficationChangesScreen(
+          phoneNumber:  args['phoneNumber'],
+        );
+        break ; 
+       case historyScreen :
+        page = const HistoryScreen();
+        break ;
+        case orderDetailsScreen :
+        page = const OrderDetailsScreen();
+        break ;
+        case alertsScreen :
+        page = const AlertsScreen();
+        break ;
+        case settingsScreen :
+        page = const SettingsScreen();
+        break ;
+        case helpCenterScreen :
+        page = const HelpCenterScreen();
+        break ;
+        case reportScreen :
+        page = const ReportScreen();
+        break ;
 
       default:
         page = const PageNotFoundScreen();

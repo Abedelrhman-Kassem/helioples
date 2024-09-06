@@ -67,6 +67,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: NameTextField(
                           labelText: "First Name",
                           controller: firstNameController,
+                          isEnabled: true,
                         ),
                       ),
                       SizedBox(width: 20.w),
@@ -74,6 +75,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: NameTextField(
                           labelText: "Last Name",
                           controller: lastNameController,
+                          isEnabled: true,
                         ),
                       ),
                     ],

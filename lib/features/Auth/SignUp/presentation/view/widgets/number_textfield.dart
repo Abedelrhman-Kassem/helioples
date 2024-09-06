@@ -20,6 +20,7 @@ class NumberTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+
       keyboardType: TextInputType.number,
       inputFormatters: [
         LengthLimitingTextInputFormatter(1),
