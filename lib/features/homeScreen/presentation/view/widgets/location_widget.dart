@@ -4,7 +4,7 @@ import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/svgAsset.dart';
+import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
 Widget locationWidget(BuildContext context) {
   return FractionalTranslation(
@@ -54,7 +54,7 @@ Widget locationWidget(BuildContext context) {
               RichText(
                 text: TextSpan(
                   text: 'Home, ',
-                  style: Styles.styles17w700interFamily,
+                  style: Styles.styles17w700Black,
                   children: [
                     TextSpan(
                       text: 'Cairo Salah Salem 12518',

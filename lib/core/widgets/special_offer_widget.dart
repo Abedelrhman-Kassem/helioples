@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/Helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/widgets/overlay.dart';
-import 'package:negmt_heliopolis/core/widgets/svgAsset.dart';
+import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
 Widget specialOfferWidget({
   required BuildContext context,
@@ -17,7 +17,6 @@ Widget specialOfferWidget({
   String secondaryUrlImage = '',
 }) {
   final TextDirection textDirection = Directionality.of(context);
-  final bool isRtl = textDirection == TextDirection.rtl;
 
   return GestureDetector(
     onTap: onTap,
@@ -40,10 +39,9 @@ Widget specialOfferWidget({
                     Helper.loadNetworkImage(
                       url: mainUrlImage,
                       imageHeight: imageHeight,
-                      isRtl: isRtl,
                       assetsErrorPath: assetImagePath,
                     ),
-                    overlay(isRtl),
+                    overlay(),
                     upToOfferWidget(),
                     if (brandImagePath is String)
                       Positioned.directional(
@@ -53,7 +51,6 @@ Widget specialOfferWidget({
                         start: 10,
                         child: Helper.loadNetworkImage(
                           url: secondaryUrlImage,
-                          isRtl: isRtl,
                           assetsErrorPath: brandImagePath,
                         ),
                       ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/svgAsset.dart';
+import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
 class CartContainer extends StatelessWidget {
   final String svgIconPath;
@@ -21,13 +22,15 @@ class CartContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(context, cartScreen);
+      },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 42.w),
         child: Container(
           height: 64.h,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(15.r),
             color: MyColors.mainColor,
             boxShadow: [
               BoxShadow(

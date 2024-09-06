@@ -6,13 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/Helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/SvgAsset.dart';
+import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
-import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/category_builder.dart';
+import 'package:negmt_heliopolis/core/widgets/category_builder.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/location_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view_model/cubit/home_screen_cubit.dart';
@@ -45,7 +45,6 @@ class HomeScreen extends StatelessWidget {
                           (ele) {
                             return SizedBox(
                               child: Helper.loadNetworkImage(
-                                isRtl: isRtl,
                                 url: '',
                                 assetsErrorPath: 'assets/test_images/home.png',
                               ),
@@ -77,7 +76,7 @@ class HomeScreen extends StatelessWidget {
                           child: IconButton(
                             onPressed: () {
                               BlocProvider.of<HomeLayoutCubit>(context)
-                                  .changeCurrentIndex(1);
+                                  .changeCurrentIndex(context, 1);
                             },
                             icon: svgIcon(
                               path: 'assets/svg_icons/search-normal.svg',
@@ -305,7 +304,9 @@ class HomeScreen extends StatelessWidget {
                             reverseDuration: const Duration(milliseconds: 250),
                             transitionBuilder: (child, animation) {
                               return FadeTransition(
-                                  opacity: animation, child: child);
+                                opacity: animation,
+                                child: child,
+                              );
                             },
                             child: homeScreenCubit.isCategoryRow
                                 ? Container(
@@ -317,7 +318,7 @@ class HomeScreen extends StatelessWidget {
                                       physics: const BouncingScrollPhysics(),
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, state) =>
-                                          categoryBuilder(context, isRtl),
+                                          categoryBuilder(context),
                                       separatorBuilder: (context, state) =>
                                           const SizedBox(width: 14),
                                       itemCount: 17,
@@ -341,7 +342,7 @@ class HomeScreen extends StatelessWidget {
                                         mainAxisExtent: 135,
                                       ),
                                       itemBuilder: (context, index) =>
-                                          categoryBuilder(context, isRtl),
+                                          categoryBuilder(context),
                                     ),
                                   ),
                           ),

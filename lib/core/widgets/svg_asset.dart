@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 SvgPicture svgIcon({
@@ -10,8 +9,8 @@ SvgPicture svgIcon({
 }) {
   return SvgPicture.asset(
     path,
-    width: width.w,
-    height: height.h,
+    width: width,
+    height: height,
     colorFilter: ColorFilter.mode(
       color,
       BlendMode.srcIn,

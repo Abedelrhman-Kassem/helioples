@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/widgets/CustomButton.dart';
@@ -26,9 +24,8 @@ class Helper {
   }
 
   static Widget loadNetworkImage({
-    required bool isRtl,
-    String url = "",
-    String assetsErrorPath = "",
+    String url = '',
+    required String assetsErrorPath,
     BoxFit fit = BoxFit.cover,
     double width = double.infinity,
     double minShimmerHeight = 50,
@@ -38,44 +35,36 @@ class Helper {
       minShimmerHeight = imageHeight;
     }
 
-    Widget errorWidget() => Transform(
-          alignment: Alignment.center,
-          transform: Matrix4.rotationY(isRtl ? pi : 0),
-          child: Image(
-            height: imageHeight,
-            width: double.infinity,
-            fit: BoxFit.cover,
-            image: AssetImage(
-              assetsErrorPath,
-            ),
+    Widget errorWidget() => Image(
+          height: imageHeight,
+          width: width,
+          fit: fit,
+          image: AssetImage(
+            assetsErrorPath,
           ),
         );
 
     if (url.isNotEmpty) {
       bool validUrl = Uri.parse(url).isAbsolute;
       if (validUrl) {
-        return Transform(
-          alignment: Alignment.center,
-          transform: Matrix4.rotationY(isRtl ? pi : 0),
-          child: CachedNetworkImage(
-            height: imageHeight,
-            imageUrl: url,
-            fit: fit,
-            width: width,
-            placeholder: (ctx, str) => Container(
-              constraints: BoxConstraints(minHeight: minShimmerHeight.h),
-              child: Shimmer(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.grey.shade300,
-                    Colors.grey.shade400,
-                  ],
-                ),
-                child: const SizedBox(),
+        return CachedNetworkImage(
+          height: imageHeight,
+          imageUrl: url,
+          fit: fit,
+          width: width,
+          placeholder: (ctx, str) => Container(
+            constraints: BoxConstraints(minHeight: minShimmerHeight),
+            child: Shimmer(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.grey.shade300,
+                  Colors.grey.shade400,
+                ],
               ),
+              child: const SizedBox(),
             ),
-            errorWidget: (ctx, str, obj) => errorWidget(),
           ),
+          errorWidget: (ctx, str, obj) => errorWidget(),
         );
       } else {
         return errorWidget();

@@ -5,8 +5,11 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_container.dart';
-import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
-import 'package:negmt_heliopolis/core/widgets/feature_widget.dart'; // Import your FeatureWidget
+import 'package:negmt_heliopolis/core/widgets/cart_counter.dart';
+import 'package:negmt_heliopolis/core/widgets/categories_button_title_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/category_builder.dart';
+import 'package:negmt_heliopolis/core/widgets/item_widget_grid.dart';
+import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -106,9 +109,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       },
                       icon: const Icon(Icons.arrow_back),
                     ),
-                    title: Text(
-                      "Bakeries and Pastries",
-                      style: Styles.styles16w700interFamily,
+                    title: categoriesButtonTitleWidet(
+                      context: context,
+                      title: 'Bakeries And Pastries',
                     ),
                     actions: [
                       Padding(
@@ -166,10 +169,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                           color: MyColors.mainColor),
                       borderColor: Colors.transparent,
                       borderWidth: 1.sp,
-                      unselectedLabelStyle: Styles.styles15w400NormalBlack
-                          .copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: const Color.fromRGBO(150, 150, 150, 1)),
+                      unselectedLabelStyle:
+                          Styles.styles15w400NormalBlack.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: const Color.fromRGBO(150, 150, 150, 1),
+                      ),
                       radius: 30.r,
                       buttonMargin: EdgeInsets.all(10.sp),
                       contentCenter: true,

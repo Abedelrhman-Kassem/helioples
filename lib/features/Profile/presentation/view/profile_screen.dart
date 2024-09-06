@@ -5,6 +5,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/background_image.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/Widgets/profile_item.dart';
 
+// ignore: must_be_immutable
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
 

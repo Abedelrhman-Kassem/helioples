@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_container.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_counter.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget_grid.dart';
-import 'package:negmt_heliopolis/core/widgets/svgAsset.dart';
+import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 
 class LikedScreen extends StatelessWidget {
@@ -15,16 +15,11 @@ class LikedScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: svgIcon(
-            path: 'assets/svg_icons/arrow-left.svg',
-            width: 29,
-            height: 29,
-            color: const Color.fromRGBO(41, 45, 50, 1),
-          ),
-          onPressed: () {
-            homeLayoutCubit.returnIndex();
+        leading: returnArrow(
+          onTap: () {
+            homeLayoutCubit.returnIndex(context);
           },
+          context: context,
         ),
         title: const Text('Likes'),
         actions: [

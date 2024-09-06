@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
+import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
 Widget cartCounter({required BuildContext context, int counter = 3}) {
   return IconButton(
     onPressed: () {
-      BlocProvider.of<HomeLayoutCubit>(context).changeCurrentIndex(3);
+      Navigator.pushNamed(context, cartScreen);
     },
     icon: Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -21,10 +20,11 @@ Widget cartCounter({required BuildContext context, int counter = 3}) {
               top: 10.h,
               child: GestureDetector(
                 onTap: () {},
-                child: SvgPicture.asset(
-                  "assets/svg_icons/favorite-Cart.svg",
-                  height: 35.h,
+                child: svgIcon(
+                  path: 'assets/svg_icons/favorite-Cart.svg',
                   width: 35.w,
+                  height: 35.h,
+                  color: const Color.fromRGBO(41, 45, 50, 1),
                 ),
               ),
             ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget_grid.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
 
@@ -43,12 +42,12 @@ class SpecialOfferItemScreen extends StatelessWidget {
                 descriptionOfferWidget: () => descriptionOfferWidget(
                   titleText: Text(
                     'Seasonal Offers',
-                    style: Styles.styles17w700interFamily,
+                    style: Styles.styles17w700Black,
                   ),
                   offerRichText: RichText(
                     text: TextSpan(
                       text: 'Offer Ends At ',
-                      style: Styles.styles12w400interFamily,
+                      style: Styles.styles12w400Gray,
                       children: [
                         TextSpan(
                           text: '1 Day 16 Hours',
@@ -60,7 +59,7 @@ class SpecialOfferItemScreen extends StatelessWidget {
                   beneficiaryText: RichText(
                     text: TextSpan(
                       text: 'Beneficiary ',
-                      style: Styles.styles12w400interFamily,
+                      style: Styles.styles12w400Gray,
                       children: [
                         TextSpan(
                           text: '33',

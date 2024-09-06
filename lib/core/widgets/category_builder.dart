@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/Helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 
-Widget categoryBuilder(BuildContext context, bool isRtl) {
+Widget categoryBuilder(BuildContext context) {
   return GestureDetector(
     onTap: () {
       Navigator.pushNamed(context, categoriesScreen);
@@ -21,7 +21,6 @@ Widget categoryBuilder(BuildContext context, bool isRtl) {
               ),
             ),
             child: Helper.loadNetworkImage(
-              isRtl: isRtl,
               assetsErrorPath: 'assets/screens_background/home-category.png',
             ),
           ),
