@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart';
@@ -15,7 +14,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   String selectedLang = "English";
-  String selectedMode = "Light Mode"; 
+  String selectedMode = "Light Mode";
 
   @override
   Widget build(BuildContext context) {
@@ -111,13 +110,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       setState(() {
                                         selectedLang = value!;
                                       });
-                            
+
                                       this.setState(() {
                                         selectedLang = value!;
                                       });
                                     },
                                     child: Text(
-                                      "English", 
+                                      "English",
                                       style: Styles.styles15w400Black,
                                     ),
                                   ),
@@ -128,7 +127,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       setState(() {
                                         selectedLang = value!;
                                       });
-                                
+
                                       this.setState(() {
                                         selectedLang = value!;
                                       });
@@ -179,8 +178,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         return Theme(
                           data: Theme.of(context).copyWith(
                             radioTheme: RadioThemeData(
-                              fillColor: MaterialStateProperty.all(MyColors
-                                  .mainColor), 
+                              fillColor:
+                                  MaterialStateProperty.all(MyColors.mainColor),
                               overlayColor: MaterialStateProperty.all(
                                   const Color.fromRGBO(110, 110, 110, 1)),
                             ),
@@ -230,19 +229,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           setState(() {
                                             selectedMode = value!;
                                           });
-                                                             
+
                                           this.setState(() {
                                             selectedMode = value!;
                                           });
                                         },
                                         child: Text(
-                                          "Light Mode", 
+                                          "Light Mode",
                                           style: Styles.styles15w400Black,
                                         ),
                                       ),
                                       const Spacer(),
-
-                                      Image.asset("assets/Icons_logos/white_circle.png"),
+                                      Image.asset(
+                                          "assets/Icons_logos/white_circle.png"),
                                     ],
                                   ),
                                   Row(
@@ -254,7 +253,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           setState(() {
                                             selectedMode = value!;
                                           });
-                                                  
+
                                           this.setState(() {
                                             selectedMode = value!;
                                           });
@@ -265,7 +264,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         ),
                                       ),
                                       const Spacer(),
-                                      Image.asset("assets/Icons_logos/black_circle.png"),
+                                      Image.asset(
+                                          "assets/Icons_logos/black_circle.png"),
                                     ],
                                   ),
                                   SizedBox(

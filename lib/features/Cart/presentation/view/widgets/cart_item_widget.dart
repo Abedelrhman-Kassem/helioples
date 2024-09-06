@@ -50,7 +50,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
               children: [
                 Text(
                   'Nestle Pure Life 1.5 Litres',
-                  style: Styles.styles15w500interFamily,
+                  style: Styles.styles15w500Black,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
