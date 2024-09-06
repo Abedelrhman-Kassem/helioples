@@ -8,6 +8,7 @@ import 'package:negmt_heliopolis/core/widgets/cart_container.dart';
 import 'package:negmt_heliopolis/core/widgets/categories_button_title_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/feature_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/item_widget_grid.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -201,10 +202,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           body: Stack(
             children: [
               SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
                 controller: scrollController,
                 child: Padding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                      EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -232,25 +234,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                               style: Styles.styles21w700black,
                             ),
                             SizedBox(height: 16.h),
-                            GridView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 150,
-                                crossAxisSpacing: 7,
-                                mainAxisSpacing: 10,
-                                childAspectRatio: 1.25 / 2.25,
-                              ),
-                              itemCount: categories.length,
-                              itemBuilder: (context, i) {
-                                return ItemWidget(
-                                  counter: 0,
-                                  isFavorite: false,
-                                );
-                              },
-                            ),
-                            SizedBox(height: 20.h),
+                            itemWidgetGridView(),
+                            SizedBox(height: 60.h),
                           ],
                         );
                       }),

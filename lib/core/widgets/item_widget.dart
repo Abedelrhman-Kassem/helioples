@@ -10,13 +10,13 @@ import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/wi
 class ItemWidget extends StatefulWidget {
   final Color? color;
 
-  int counter  ;
-  bool isFavorite ;
+  int counter;
+  bool isFavorite;
   ItemWidget({
-    super.key, 
-     this.color,
-     required this.counter,
-     required this.isFavorite,
+    super.key,
+    this.color,
+    required this.counter,
+    required this.isFavorite,
   });
 
   @override
@@ -33,11 +33,11 @@ class _ItemWidgetState extends State<ItemWidget> {
       child: Container(
         width: 113,
         padding: const EdgeInsets.symmetric(
-          vertical: 8,
+          vertical: 7,
           horizontal: 10,
         ),
         decoration: BoxDecoration(
-          color: widget.color ?? const Color.fromRGBO(241, 241, 241, 1), 
+          color: widget.color ?? const Color.fromRGBO(241, 241, 241, 1),
           borderRadius: BorderRadius.circular(15.5),
         ),
         child: Column(
