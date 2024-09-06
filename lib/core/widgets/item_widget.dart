@@ -9,12 +9,13 @@ import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/wi
 class ItemWidget extends StatefulWidget {
   final Color? color;
 
-  int counter;
-  bool isFavorite;
+  int counter  ;
+  bool isFavorite ;
   ItemWidget({
-    super.key, this.color,
-    required this.counter,
-    required this.isFavorite,
+    super.key, 
+     this.color,
+     required this.counter,
+     required this.isFavorite,
   });
 
   @override
