@@ -46,7 +46,9 @@ class HelpCenterScreen extends StatelessWidget {
             ),
             HelpCenterWidget(
               title: "FAQS",
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(faqsScreen);
+              },
             ),
             SizedBox(
               height: 15.h,

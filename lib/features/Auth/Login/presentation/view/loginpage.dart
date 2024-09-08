@@ -15,24 +15,30 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        title: Text("Login".tr(context)),
-        actions: const [Languagewidget(), Gap(20)],
-      ),
-      body: Container(
-        alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-              "assets/screens_background/grocery_itemsback_ground.png",
-            ),
-            fit: BoxFit.cover,
+    return Container(
+      alignment: Alignment.center,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+            "assets/screens_background/grocery_itemsback_ground.png",
           ),
+          fit: BoxFit.cover,
         ),
-        child: Padding(
+        color: Colors.white,
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          title: Text("Login".tr(context)),
+          centerTitle: false,
+          actions: const [
+            Languagewidget(),
+            Gap(20),
+          ],
+        ),
+        body: Padding(
           padding: const EdgeInsets.all(13.0),
           child: Align(
             alignment: Alignment.center,
@@ -58,7 +64,9 @@ class LoginScreen extends StatelessWidget {
                 const Gap(20),
                 CustomButton(
                   text: "Continue".tr(context),
-                  onTap: () {},
+                  onTap: () {
+                    // Navigator.pushNamed(context, verficationScreen);
+                  },
                   backgroundColor: MyColors.mainColor,
                   textColor: MyColors.mainScaffoldWhiteColor,
                   verticalPadding: 15,

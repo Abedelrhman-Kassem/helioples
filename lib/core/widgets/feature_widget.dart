@@ -18,7 +18,8 @@ class FeatureWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(30.r),
               color: Colors.white,
             ),
-            padding: EdgeInsets.only(bottom: 100.h), // Adjust the padding to ensure no overlap
+            padding: EdgeInsets.only(
+                bottom: 100.h), // Adjust the padding to ensure no overlap
             child: Column(
               children: [
                 Padding(
@@ -73,28 +74,31 @@ class FeatureWidget extends StatelessWidget {
             child: SizedBox(
               height: 260.h,
               child: Padding(
-                padding:  EdgeInsetsDirectional.fromSTEB(16.0.w, 0.0, 0.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(16.0.w, 0.0, 0.0, 0.0),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: 3,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w , vertical: 10.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
                       child: SizedBox(
                         height: 180.h,
                         width: 140.w,
                         child: Container(
-                          
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(0.0, 6.0),
-                        color: Colors.grey.withOpacity(0.3),
-                        blurRadius: 5.0.sp,
-                              )
-                            ]
+                          decoration: BoxDecoration(boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0.0, 6.0),
+                              color: Colors.grey.withOpacity(0.3),
+                              blurRadius: 5.0.sp,
+                            )
+                          ]),
+                          child: ItemWidget(
+                            color: Colors.white,
+                            counter: 0,
+                            isFavorite: false,
                           ),
-                          child: ItemWidget(color: Colors.white, counter: 0, isFavorite: false ,)),
+                        ),
                       ),
                     );
                   },
