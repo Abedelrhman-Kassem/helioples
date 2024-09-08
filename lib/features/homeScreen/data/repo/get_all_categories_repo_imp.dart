@@ -7,28 +7,24 @@ import 'package:negmt_heliopolis/features/homeScreen/data/repo/get_all_categorie
 
 class GetCategoriesImp extends GetCategories {
   @override
-  Future<Either<Failure,AllCategoriesModel>> getAllCategories() async {
+  Future<Either<Failure, AllCategoriesModel>> getAllCategories() async {
     ApiService apiService = ApiService();
     AllCategoriesModel allCategoriesModel = AllCategoriesModel.fromJson({});
     try {
       allCategoriesModel = AllCategoriesModel.fromJson(
-        await apiService.get(endpoint: 'api/categories'));
-        print("--------");
-        print(allCategoriesModel.categories?[0].name);
-          print("--------");
+          await apiService.get(endpoint: 'api/categories'));
+      print("--------");
+      print(allCategoriesModel.categories?[0].name);
+      print("--------");
 
-    return right(allCategoriesModel);
-      
+      return right(allCategoriesModel);
     } catch (e) {
       if (e is DioException) {
-  
         return left(ServerFailure.fromDioError(e));
       }
-     
+
       return left(ServerFailure(e.toString()));
     }
-
-    
   }
 }
 

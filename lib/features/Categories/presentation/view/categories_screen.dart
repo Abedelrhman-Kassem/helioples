@@ -5,13 +5,9 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_container.dart';
-import 'package:negmt_heliopolis/core/widgets/cart_counter.dart';
 import 'package:negmt_heliopolis/core/widgets/categories_button_title_widget.dart';
-import 'package:negmt_heliopolis/core/widgets/category_builder.dart';
 import 'package:negmt_heliopolis/core/widgets/feature_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
-import 'package:negmt_heliopolis/core/widgets/item_widget_grid.dart';
-import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -207,7 +203,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               SingleChildScrollView(
                 controller: scrollController,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -247,7 +244,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                               ),
                               itemCount: categories.length,
                               itemBuilder: (context, i) {
-                                return  ItemWidget(counter: 0, isFavorite: false,);
+                                return ItemWidget(
+                                  counter: 0,
+                                  isFavorite: false,
+                                );
                               },
                             ),
                             SizedBox(height: 20.h),
@@ -259,7 +259,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 ),
               ),
               const Positioned(
-                bottom: 10, 
+                bottom: 10,
                 left: 0,
                 right: 0,
                 child: CartContainer(
@@ -276,4 +276,3 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     );
   }
 }
-
