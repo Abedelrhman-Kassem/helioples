@@ -5,13 +5,13 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/background_image.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/Widgets/profile_item.dart';
 
-// ignore: must_be_immutable
+
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Define the items list inside the build method so you can use `context`
+
     List<ProfileItem> items = [
       ProfileItem(
         imagePath: "assets/svg_icons/profile_icon.svg",
@@ -100,9 +100,9 @@ class ProfileScreen extends StatelessWidget {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing:
-                        8.0, // Optional: Add spacing between items
+                        8.0, 
                     mainAxisSpacing:
-                        12.0, // Optional: Add spacing between items
+                        12.0, 
                   ),
                 ),
               ),

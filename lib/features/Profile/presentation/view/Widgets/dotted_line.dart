@@ -6,12 +6,12 @@ class DottedLine extends StatelessWidget {
   final double spacing;
   final Color color;
   const DottedLine({
-    Key? key,
+    super.key,
     this.height = 1.0,
     this.dotWidth = 5.0,
     this.spacing = 3.0,
     this.color = Colors.black,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

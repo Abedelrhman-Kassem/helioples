@@ -22,6 +22,8 @@ const String helpCenterScreen = '/help_center_screen';
 const String reportScreen = '/report_screen';
 const String cartScreen = '/cart_screen';
 const String productScreen = '/product_screen';
+const String checkoutScreen = '/checkout_screen';
+const String faqsScreen = '/faqs_screen';
 
 // fontfamily
 const String sFProTextFamily = 'SFProText';

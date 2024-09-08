@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
 
-Widget categoryBuilder(BuildContext context) {
+Widget categoryBuilder(
+    {required BuildContext context, required CategoryModel category}) {
   return GestureDetector(
     onTap: () {
       Navigator.pushNamed(context, categoriesScreen);
@@ -30,7 +32,7 @@ Widget categoryBuilder(BuildContext context) {
               horizontal: 16,
             ),
             child: Text(
-              'Deals And Offers',
+              category.name,
               style: Styles.styles11w700interFamily.copyWith(fontSize: 11),
               textAlign: TextAlign.center,
               maxLines: 2,

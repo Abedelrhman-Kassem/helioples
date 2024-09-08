@@ -52,7 +52,9 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> {
             const SizedBox(width: 10),
             Text(
               '${widget.counter}',
-              style: Styles.styles12w400NormalWhite,
+              style: Styles.styles12w400NormalWhite.copyWith(
+                fontSize: 12,
+              ),
             ),
             const SizedBox(width: 10),
           ],
