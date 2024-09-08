@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/svgAsset.dart';
+import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
+
 
 class ProfileItem extends StatelessWidget {
   final String imagePath ; 
@@ -36,6 +37,7 @@ class ProfileItem extends StatelessWidget {
                 label,
                 style: Styles.styles12w400black.copyWith(color: const Color.fromRGBO(41, 45, 50, 1),fontSize: 14.sp),
                 textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
         
               ),
             )

@@ -15,7 +15,7 @@ class ProfileScreen extends StatelessWidget {
     List<ProfileItem> items = [
       ProfileItem(
         imagePath: "assets/svg_icons/profile_icon.svg",
-        label: "Profile Information",
+        label: "Profile \n Information",
         onTap: () {
           Navigator.of(context).pushNamed(cahngeInformationScreen);
         },

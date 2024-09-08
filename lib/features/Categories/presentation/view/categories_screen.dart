@@ -8,6 +8,8 @@ import 'package:negmt_heliopolis/core/widgets/cart_container.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_counter.dart';
 import 'package:negmt_heliopolis/core/widgets/categories_button_title_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/category_builder.dart';
+import 'package:negmt_heliopolis/core/widgets/feature_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget_grid.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
