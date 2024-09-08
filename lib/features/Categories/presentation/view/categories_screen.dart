@@ -7,7 +7,6 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_container.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_counter.dart';
 import 'package:negmt_heliopolis/core/widgets/categories_button_title_widget.dart';
-import 'package:negmt_heliopolis/core/widgets/category_builder.dart';
 import 'package:negmt_heliopolis/core/widgets/feature_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget_grid.dart';
@@ -104,13 +103,19 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   toolbarHeight: 200.h,
                   elevation: 20,
                   backgroundColor: Colors.white,
-                  leading: returnArrow(context: context, onTap: (){Navigator.of(context).pop();}),
+                  leading: returnArrow(
+                      context: context,
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      }),
                   title: categoriesButtonTitleWidet(
                     context: context,
                     title: 'Bakeries And Pastries',
                   ),
                   actions: [
-                    cartCounter(context: context , )
+                    cartCounter(
+                      context: context,
+                    )
                   ],
                   bottom: ButtonsTabBar(
                     splashColor: MyColors.mainColor,
@@ -120,8 +125,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     unselectedBorderColor:
                         const Color.fromRGBO(170, 170, 170, 1),
                     labelStyle: Styles.styles15w400NormalBlack.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: MyColors.mainColor),
+                        fontWeight: FontWeight.w600, color: MyColors.mainColor),
                     borderColor: Colors.transparent,
                     borderWidth: 1.sp,
                     unselectedLabelStyle:
@@ -161,8 +165,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               physics: const BouncingScrollPhysics(),
               controller: scrollController,
               child: Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
