@@ -19,6 +19,14 @@ import 'package:negmt_heliopolis/features/Intro/presentation/view/intro_screen.d
 import 'package:negmt_heliopolis/features/Liked/presentation/view/liked_screen.dart';
 import 'package:negmt_heliopolis/features/PageNotFound/presentation/view/page_not_found_screen.dart';
 import 'package:negmt_heliopolis/features/Product/presentation/view/product_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/alerts%20screens/alerts_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/help%20center%20screens/help_center_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/help%20center%20screens/report_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/history%20screens/history_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/history%20screens/order_details_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/profile%20information%20screens/cahnge_information_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/profile%20information%20screens/verfication_changes_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/settings%20screens/settings_screen.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/special_offer_item_screen.dart';
 
 class AppRouter {
@@ -108,6 +116,49 @@ class AppRouter {
       case checkoutScreen:
         page = const CheckoutScreen();
         fromRight = false;
+        break;
+
+      case cahngeInformationScreen:
+        page = const CahngeInformationScreen();
+        fromRight = true;
+        break;
+
+      case verficationChangesScreen:
+        final args = settings.arguments as Map<String, dynamic>;
+        page = VerficationChangesScreen(
+          phoneNumber: args['phoneNumber'],
+        );
+        fromRight = true;
+        break;
+
+      case historyScreen:
+        page = const HistoryScreen();
+        fromRight = true;
+        break;
+
+      case orderDetailsScreen:
+        page = const OrderDetailsScreen();
+        fromRight = true;
+        break;
+
+      case alertsScreen:
+        page = const AlertsScreen();
+        fromRight = true;
+        break;
+
+      case settingsScreen:
+        page = const SettingsScreen();
+        fromRight = true;
+        break;
+
+      case helpCenterScreen:
+        page = const HelpCenterScreen();
+        fromRight = true;
+        break;
+
+      case reportScreen:
+        page = const ReportScreen();
+        fromRight = true;
         break;
 
       default:

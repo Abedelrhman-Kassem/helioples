@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/cart_screen.dart';
 import 'package:negmt_heliopolis/features/Explore/presentation/view/explore_screen.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/liked_screen.dart';
@@ -21,7 +20,6 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
 
   int selectedIndex = 0;
   int previousIndex = 0;
-  
 
   List<Widget> screens = [
     const HomeScreen(),
