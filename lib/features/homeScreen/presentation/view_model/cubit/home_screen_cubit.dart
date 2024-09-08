@@ -15,18 +15,12 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
     emit(ChangeHomeScreenCategory());
   }
 
-  String address = 'Hello';
-  void changeAdress(String text) {
-    address = text;
-    emit(ChangeHomeScreenCategory());
-  }
-
   GetCategoriesImp getCategoriesImp = GetCategoriesImp();
   AllCategoriesModel allCategoriesModel = AllCategoriesModel.fromJson({});
 
   getAllCategories() async {
     var response = await getCategoriesImp.getAllCategories();
-    allCategoriesModel = AllCategoriesModel.fromJson(response);
+    allCategoriesModel = response;
     print(allCategoriesModel.categories);
     emit(ChangeHomeScreenCategory());
   }

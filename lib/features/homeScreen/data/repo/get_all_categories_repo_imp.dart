@@ -1,12 +1,17 @@
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
+import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/repo/get_all_categories_repo.dart';
 
 class GetCategoriesImp extends GetCategories {
   @override
-  Future<Map<String, dynamic>> getAllCategories() {
+  Future<AllCategoriesModel> getAllCategories() async {
     ApiService apiService = ApiService();
+    AllCategoriesModel allCategoriesModel = AllCategoriesModel.fromJson({});
 
-    return apiService.get(endpoint: 'api/categories');
+    allCategoriesModel = AllCategoriesModel.fromJson(
+        await apiService.get(endpoint: 'api/categories'));
+
+    return allCategoriesModel;
   }
 }
 

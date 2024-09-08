@@ -15,7 +15,7 @@ Widget categoriesButtonTitleWidet({
   AllCategoriesModel allCategoriesModel = AllCategoriesModel.fromJson({});
 
   getCategoriesImp.getAllCategories().then((value) {
-    allCategoriesModel = AllCategoriesModel.fromJson(value);
+    allCategoriesModel = value;
   });
 
   return TextButton(

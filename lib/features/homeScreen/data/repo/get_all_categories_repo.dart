@@ -7,6 +7,8 @@
 //       WalkingRequest walkingRequest);
 // }
 
+import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
+
 abstract class GetCategories {
-  Future<Map<String, dynamic>> getAllCategories();
+  Future<AllCategoriesModel> getAllCategories();
 }
