@@ -5,6 +5,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_container.dart';
+import 'package:negmt_heliopolis/core/widgets/cart_counter.dart';
 import 'package:negmt_heliopolis/core/widgets/categories_button_title_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/feature_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
