@@ -21,7 +21,8 @@ class ServerFailure extends Failure {
         if (dioError.response?.statusCode == 401 ||
             dioError.response?.statusCode == 400 ||
             dioError.response?.statusCode == 404 ||
-            dioError.response?.statusCode == 403) {
+            dioError.response?.statusCode == 403 ||
+            dioError.response?.statusCode == 405) {
           // print(dioError.response!.data['message']);
           return ServerFailure(dioError.response!.data['message']);
         } else {
@@ -46,8 +47,8 @@ class ServerFailure extends Failure {
         return ServerFailure('Forbidden!');
       case 404:
         return ServerFailure('Not Found!');
-      case 405 :
-         return ServerFailure('Banned');
+      case 405:
+        return ServerFailure('Banned');
       case 500:
         return ServerFailure('Internal Server Error!');
       default:

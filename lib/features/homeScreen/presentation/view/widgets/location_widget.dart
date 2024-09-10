@@ -123,49 +123,52 @@ class AddressModalBottomSheet extends StatefulWidget {
 class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
   @override
   Widget build(BuildContext context) {
-    print(widget.title);
-    return Container(
-      height: 200.h,
-      padding: EdgeInsets.all(20.r),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20.r),
-          topRight: Radius.circular(20.r),
+    return Wrap(
+      children: [
+        Container(
+          // height: 200.h,
+          padding: EdgeInsets.all(20.r),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r),
+              topRight: Radius.circular(20.r),
+            ),
+          ),
+          child: Column(
+            children: [
+              deliveryAddressWidget(
+                title: 'Home',
+                location: 'Salah Salem Street 44C, Maadi, Cairo',
+                addressTitleRadioValue: widget.title,
+                onTap: () {
+                  setState(() {
+                    widget.title = 'Home';
+                    Navigator.pop(context, {
+                      'title': 'Home',
+                      'location': 'Salah Salem Street 44C, Maadi, Cairo',
+                    });
+                  });
+                },
+              ),
+              deliveryAddressWidget(
+                title: 'Work',
+                location: 'Salah Salem Street 44C, Maadi',
+                addressTitleRadioValue: widget.title,
+                onTap: () {
+                  setState(() {
+                    widget.title = 'Work';
+                    Navigator.pop(context, {
+                      'title': 'Work',
+                      'location': 'Salah Salem Street 44C, Maadi',
+                    });
+                  });
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-      child: Column(
-        children: [
-          deliveryAddressWidget(
-            title: 'Home',
-            location: 'Salah Salem Street 44C, Maadi, Cairo',
-            addressTitleRadioValue: widget.title,
-            onTap: () {
-              setState(() {
-                widget.title = 'Home';
-                Navigator.pop(context, {
-                  'title': 'Home',
-                  'location': 'Salah Salem Street 44C, Maadi, Cairo',
-                });
-              });
-            },
-          ),
-          deliveryAddressWidget(
-            title: 'Work',
-            location: 'Salah Salem Street 44C, Maadi',
-            addressTitleRadioValue: widget.title,
-            onTap: () {
-              setState(() {
-                widget.title = 'Work';
-                Navigator.pop(context, {
-                  'title': 'Work',
-                  'location': 'Salah Salem Street 44C, Maadi',
-                });
-              });
-            },
-          ),
-        ],
-      ),
+      ],
     );
   }
 }
