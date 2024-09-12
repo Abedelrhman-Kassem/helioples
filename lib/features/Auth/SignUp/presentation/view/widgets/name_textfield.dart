@@ -9,11 +9,11 @@ class NameTextField extends StatelessWidget {
   final bool isEnabled ; 
 
   const NameTextField({
-    Key? key,
+    super.key,
     required this.labelText,
     required this.controller,
     required this.isEnabled,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

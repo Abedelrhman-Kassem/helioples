@@ -10,11 +10,11 @@ class PhoneNumberRow extends StatelessWidget {
   final EdgeInsets? padding;
 
   const PhoneNumberRow({
-    Key? key,
+    super.key,
     required this.controller,
     this.labelText = "Phone Number",
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

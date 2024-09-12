@@ -7,10 +7,10 @@ class HelpCenterWidget extends StatelessWidget {
   final VoidCallback? onTap;
 
   const HelpCenterWidget({
-    Key? key,
+    super.key,
     required this.title,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -88,7 +88,7 @@ class FeatureWidget extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(boxShadow: [
                             BoxShadow(
-                              offset: Offset(0.0, 6.0),
+                              offset: const Offset(0.0, 6.0),
                               color: Colors.grey.withOpacity(0.3),
                               blurRadius: 5.0.sp,
                             )

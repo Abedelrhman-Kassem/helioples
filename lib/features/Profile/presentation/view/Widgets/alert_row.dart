@@ -8,11 +8,11 @@ class AlertRow extends StatelessWidget {
   final String description;
 
   const AlertRow({
-    Key? key,
+    super.key,
     required this.imagePath,
     required this.title,
     required this.description,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

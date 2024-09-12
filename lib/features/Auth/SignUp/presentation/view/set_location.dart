@@ -33,10 +33,10 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
   final TextEditingController searchController = TextEditingController();
   final FocusNode focusNode = FocusNode();
   bool isSuggestionsVisible = false;
-  Completer<GoogleMapController> _mapController = Completer();
+  final Completer<GoogleMapController> _mapController = Completer();
 
   // these variables for getPlaceLocation
-  Set<Marker> markers = Set();
+  Set<Marker> markers = {};
   late PlaceSuggestion placeSuggestion;
   late Place selectedPlace;
   late Marker searchedPlaceMarker;
@@ -102,10 +102,10 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
 
       setState(() {
         currentLocationMarker = Marker(
-          markerId: MarkerId("current_location"),
+          markerId: const MarkerId("current_location"),
           position: LatLng(position.latitude, position.longitude),
           icon: customIcon,
-          infoWindow: InfoWindow(title: "My Location"),
+          infoWindow: const InfoWindow(title: "My Location"),
         );
 
         markers.add(currentLocationMarker);
@@ -163,7 +163,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
             blurRadius: 6,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -194,13 +194,13 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
   }
 
   void getPlacesSuggestions(String query) {
-    final sessionToken = Uuid().v4();
+    final sessionToken = const Uuid().v4();
     BlocProvider.of<MapsCubit>(context)
         .emitPlaceSuggestions(query, sessionToken);
   }
 
   void getSelectedPlaceLocation() {
-    final sessionToken = Uuid().v4();
+    final sessionToken = const Uuid().v4();
     BlocProvider.of<MapsCubit>(context)
         .emitPlaceLocation(placeSuggestion.placeId, sessionToken);
   }
@@ -229,8 +229,8 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
   buildSearchedPlaceMarker() {
     searchedPlaceMarker = Marker(
       position: goToSearchedForPlace.target,
-      markerId: MarkerId('1'),
-      infoWindow: InfoWindow(title: "${placeSuggestion.description}"),
+      markerId: const MarkerId('1'),
+      infoWindow: InfoWindow(title: placeSuggestion.description),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
     );
     addMarkerToMarkersAndUpdateUI(searchedPlaceMarker);
@@ -294,8 +294,8 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
               
               searchedPlaceMarker = Marker(
       position: latlng,
-      markerId: MarkerId('1'),
-      infoWindow: InfoWindow(title: "${placeSuggestion.description}"),
+      markerId: const MarkerId('1'),
+      infoWindow: InfoWindow(title: placeSuggestion.description),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
      
     );
@@ -367,7 +367,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
                           blurRadius: 6,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
@@ -378,8 +378,8 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                         hintText: 'Find a place...',
                         hintStyle: Styles.styles14w400NormalBlack.copyWith(
                             color: const Color.fromRGBO(141, 145, 150, 1)),
-                        prefixIcon: Icon(Icons.search,
-                            color: const Color.fromRGBO(41, 45, 50, 1)),
+                        prefixIcon: const Icon(Icons.search,
+                            color: Color.fromRGBO(41, 45, 50, 1)),
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(
                             horizontal: 16.w, vertical: 12.h),

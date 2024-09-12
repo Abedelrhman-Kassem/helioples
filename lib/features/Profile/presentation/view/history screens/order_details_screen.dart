@@ -197,7 +197,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       SizedBox(
                         height: 8.h,
                       ),
-                      const DottedLine(color: const  Color.fromRGBO(0, 0, 0, 0.7), dotWidth: 11.0, spacing: 8.0 ,height: 0.5,),
+                      const DottedLine(color: Color.fromRGBO(0, 0, 0, 0.7), dotWidth: 11.0, spacing: 8.0 ,height: 0.5,),
                        SizedBox(
                         height: 8.h,
                        ),

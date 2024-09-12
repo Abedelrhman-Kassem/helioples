@@ -9,12 +9,12 @@ class SignUpCustomButton extends StatelessWidget {
   final Color? textColor;
 
   const SignUpCustomButton({
-    Key? key,
+    super.key,
     required this.buttonText,
     required this.onPressed,
     this.buttonColor,
     this.textColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

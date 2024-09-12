@@ -13,6 +13,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/core/widgets/category_builder.dart';
+import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
 
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/location_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
@@ -25,11 +26,18 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isRtl = TextDirection.rtl == Directionality.of(context);
-
+    bool getCategories = false;
+    List<CategoryModel> categories = [];
     return BlocProvider(
       create: (context) => HomeScreenCubit()..getAllCategories(),
       child: BlocConsumer<HomeScreenCubit, HomeScreenState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is FetchCategoriesSuccess)
+          {
+            getCategories = true;
+            categories = state.categories.categories! ; 
+          }
+        },
         builder: (context, state) {
           HomeScreenCubit homeScreenCubit =
               BlocProvider.of<HomeScreenCubit>(context);
@@ -309,7 +317,7 @@ class HomeScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          if (state is FetchCategoriesSuccess)
+                          if (getCategories = true)
                             AnimatedSwitcher(
                               duration: const Duration(milliseconds: 250),
                               reverseDuration:
@@ -332,11 +340,11 @@ class HomeScreen extends StatelessWidget {
                                         itemBuilder: (context, index) =>
                                             categoryBuilder(
                                           context: context,
-                                          category : state.categories.categories![index],
+                                          category : categories[index],
                                         ),
                                         separatorBuilder: (context, index) =>
                                             const SizedBox(width: 14),
-                                        itemCount: state.categories.categories!.length,
+                                        itemCount: categories.length,
                                       ),
                                     )
                                   : Padding(
@@ -348,7 +356,7 @@ class HomeScreen extends StatelessWidget {
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
-                                        itemCount: state.categories.categories!.length,
+                                        itemCount: categories.length,
                                         gridDelegate:
                                             const SliverGridDelegateWithMaxCrossAxisExtent(
                                           maxCrossAxisExtent: 125,
@@ -360,7 +368,7 @@ class HomeScreen extends StatelessWidget {
                                         itemBuilder: (context, index) =>
                                             categoryBuilder(
                                           context: context,
-                                          category: state.categories.categories![index],
+                                          category: categories[index],
                                         ),
                                       ),
                                     ),

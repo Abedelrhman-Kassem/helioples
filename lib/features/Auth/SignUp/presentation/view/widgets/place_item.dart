@@ -7,7 +7,7 @@ import '../../../data/model/place_suggestion.dart';
 class PlaceItem extends StatelessWidget {
   final PlaceSuggestion suggestion;
 
-  const PlaceItem({Key? key, required this.suggestion}) : super(key: key);
+  const PlaceItem({super.key, required this.suggestion});
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,9 @@ class PlaceItem extends StatelessWidget {
             leading: Container(
               width: 40,
               height: 40,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   shape: BoxShape.circle, color: Colors.lightBlue),
-              child: Icon(
+              child: const Icon(
                 Icons.place,
                 color: Colors.blue,
               ),
@@ -37,14 +37,14 @@ class PlaceItem extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: '${suggestion.description.split(',')[0]}\n',
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.black,
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
                   ),
                   TextSpan(
                     text: subTitle.substring(2),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 16,
                     ),

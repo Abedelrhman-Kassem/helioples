@@ -10,12 +10,12 @@ class OrderStatusWidget extends StatelessWidget {
   final bool isDone; 
 
   const OrderStatusWidget({
-    Key? key,
+    super.key,
     required this.iconPath,
     required this.title,
     required this.date,
     this.isDone = false, 
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

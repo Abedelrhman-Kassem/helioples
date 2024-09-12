@@ -10,12 +10,12 @@ class SettingsItem extends StatelessWidget {
   final VoidCallback onTap;
 
   const SettingsItem({
-    Key? key,
+    super.key,
     required this.leadingIconPath,
     required this.title,
     required this.trailingIconPath,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -61,9 +61,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         return Theme(
                           data: Theme.of(context).copyWith(
                             radioTheme: RadioThemeData(
-                              fillColor: MaterialStateProperty.all(MyColors
+                              fillColor: WidgetStateProperty.all(MyColors
                                   .mainColor), // Customize the radio button color
-                              overlayColor: MaterialStateProperty.all(
+                              overlayColor: WidgetStateProperty.all(
                                   const Color.fromRGBO(110, 110, 110, 1)),
                             ),
                           ),
@@ -179,8 +179,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           data: Theme.of(context).copyWith(
                             radioTheme: RadioThemeData(
                               fillColor:
-                                  MaterialStateProperty.all(MyColors.mainColor),
-                              overlayColor: MaterialStateProperty.all(
+                                  WidgetStateProperty.all(MyColors.mainColor),
+                              overlayColor: WidgetStateProperty.all(
                                   const Color.fromRGBO(110, 110, 110, 1)),
                             ),
                           ),

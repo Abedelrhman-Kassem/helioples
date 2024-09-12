@@ -7,7 +7,7 @@ import 'package:negmt_heliopolis/features/Profile/presentation/view/Widgets/prof
 
 
 class ProfileScreen extends StatelessWidget {
-  ProfileScreen({super.key});
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +48,9 @@ class ProfileScreen extends StatelessWidget {
           Navigator.of(context).pushNamed(helpCenterScreen);
         },
       ),
-      ProfileItem(
+      const ProfileItem(
           imagePath: "assets/svg_icons/chat_icon.svg", label: "Chat with Us"),
-      ProfileItem(
+      const ProfileItem(
           imagePath: "assets/svg_icons/logout_icon.svg", label: "Logout"),
     ];
 

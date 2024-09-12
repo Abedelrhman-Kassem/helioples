@@ -1,9 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
+import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/loading_button.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/egypt_code_widget.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/data/model/user.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/data/repo/sing_up_repo_imp.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/sign_up_cubit/sign_up_cubit.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/sign_up_cubit/sign_up_states.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/Date_picker.dart';
 
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/background_image.dart';
@@ -36,6 +46,7 @@ class _SignupScreenState extends State<SignupScreen> {
     super.dispose();
   }
 
+  DateTime dateTime = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +132,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                 width: 1.5,
                               ),
                             ),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16.w, vertical: 14.h),
                           ),
                           style: Styles.styles17w500NormalBlack,
                         ),
@@ -136,19 +148,138 @@ class _SignupScreenState extends State<SignupScreen> {
                       style: Styles.styles14w400NormalBlack,
                     ),
                   ),
-                  SizedBox(height: 15.h),
-                  const DatePicker(labelText: " "),
-                  SizedBox(height: 20.h),
-                  Center(
-                    child: SignUpCustomButton(
-                      buttonText: "Continue".tr(context),
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(
-                          verficationScreen,
-                          arguments: {
-                            'phoneNumber': phoneNumberController.text,
-                          },
-                        );
+                  SizedBox(
+                    height: 15.h,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color.fromRGBO(246, 246, 246, 1),
+                      iconColor: MyColors.mainColor,
+                      focusColor: MyColors.mainColor,
+                      hintText:
+                          '${dateTime.day}/${dateTime.month}/${dateTime.year}',
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: SvgPicture.asset(
+                          'assets/svg_icons/calendar.svg',
+                          width: 30.w,
+                          height: 30.h,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.r),
+                        borderSide: const BorderSide(
+                          color: Color.fromRGBO(210, 210, 210, 1),
+                          width: 1.5,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.r),
+                        borderSide: const BorderSide(
+                          color: Color.fromRGBO(210, 210, 210, 1),
+                          width: 1.5,
+                        ),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.w, vertical: 14.h),
+                    ),
+                    style: Styles.styles17w500NormalBlack,
+                    readOnly: true, 
+                    onTap: () {
+
+                      showCupertinoModalPopup(
+                        context: context,
+                        builder: (BuildContext context) => Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30.r),
+                              topRight: Radius.circular(30.r),
+                            ),
+                          ),
+                          height:
+                              MediaQuery.of(context).size.height * 0.3,
+                          width: MediaQuery.of(context).size.width,
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              color: Colors.white,
+                              child: SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height *
+                                        0.25,
+                                child: CupertinoDatePicker(
+                                  backgroundColor: Colors.white,
+                                  onDateTimeChanged: (DateTime newDate) {
+                                    setState(() {
+                                      dateTime = newDate;
+                                    });
+                                  },
+                                  use24hFormat: true,
+                                  mode: CupertinoDatePickerMode.date,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 15.h,
+                  ),
+                  BlocProvider(
+                    create: (context) =>
+                        SignUpCubit(SignUpRepoImp(apiService: ApiService())),
+                    child: BlocConsumer<SignUpCubit, SignUpState>(
+                      builder: (context, state) {
+                        var cubit = BlocProvider.of<SignUpCubit>(context);
+                        if (state is SignUpLoading) {
+                          return const LoadingButton(
+                            height: 60,
+                            radius: 10,
+                          );
+                        } else {
+                          return Center(
+                            child: SignUpCustomButton(
+                              buttonText: "Continue".tr(context),
+                              onPressed: () {
+                                // User user = User(
+                                //     firstName: firstNameController.text,
+                                //     lastName: lastNameController.text,
+                                //     phone: phoneNumberController.text,
+                                //     password: "123456",
+                                //     birthdate: "${dateTime.year}-${dateTime.month}-${dateTime.day}",
+                                //     email: "omarsal@gmail.com");
+
+                                // cubit.singUp(user);
+                                Navigator.of(context).pushNamed(
+                            verficationScreen,
+                            arguments: {
+                              'phoneNumber': phoneNumberController.text,
+                            },
+                          );
+                              },
+                            ),
+                          );
+                        }
+                      },
+                      listener: (context, state) {
+                        if (state is SignUpFailure) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(state.errorMessage)));
+                        } else if (state is SignUpSuccess) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text('Please Enter Validaition code')));
+                          Navigator.of(context).pushNamed(
+                            verficationScreen,
+                            arguments: {
+                              'phoneNumber': phoneNumberController.text,
+                            },
+                          );
+                        }
                       },
                     ),
                   ),

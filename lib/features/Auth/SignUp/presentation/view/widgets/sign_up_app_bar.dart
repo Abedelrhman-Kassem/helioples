@@ -10,11 +10,11 @@ class SignUpAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Function(bool) onLanguageChange;
 
   const SignUpAppBar({
-    Key? key,
+    super.key,
     required this.title,
     required this.isEn,
     required this.onLanguageChange,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
