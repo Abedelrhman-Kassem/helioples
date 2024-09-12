@@ -21,11 +21,11 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
   AllCategoriesModel allCategoriesModel = AllCategoriesModel.fromJson({});
 
   Future<void> getAllCategories() async {
-    Either<Failure,AllCategoriesModel> res = await getCategoriesImp.getAllCategories();
+    Either<Failure, AllCategoriesModel> res =
+        await getCategoriesImp.getAllCategories();
     res.fold(
       (failure) => emit(FetchCategoriesFailure(failure.errorMessage)),
-      (categories) => emit(FetchCategoriesSuccess(categories))
-       );
-
+      (categories) => emit(FetchCategoriesSuccess(categories)),
+    );
   }
 }

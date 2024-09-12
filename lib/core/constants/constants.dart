@@ -12,11 +12,11 @@ const String setLocationScreen = '/set_location_screen';
 const String notificationScreen = '/notification_screen';
 const String likedScreen = '/liked_screen';
 const String categoriesScreen = '/categories_screen';
-const String cahngeInformationScreen = '/change_information_screen' ; 
+const String cahngeInformationScreen = '/change_information_screen';
 const String verficationChangesScreen = '/verfication_change_screen';
 const String historyScreen = '/history_screen';
 const String orderDetailsScreen = '/order_details_screen';
-const String alertsScreen ='/alerts_screen';
+const String alertsScreen = '/alerts_screen';
 const String settingsScreen = '/settings_screen';
 const String helpCenterScreen = '/help_center_screen';
 const String reportScreen = '/report_screen';
@@ -24,6 +24,8 @@ const String cartScreen = '/cart_screen';
 const String productScreen = '/product_screen';
 const String checkoutScreen = '/checkout_screen';
 const String faqsScreen = '/faqs_screen';
+const String reOrderScreen = '/reorder_screen';
+const String checkoutDetailsScreen = '/checkout_details_screen';
 
 // fontfamily
 const String sFProTextFamily = 'SFProText';

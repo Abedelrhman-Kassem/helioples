@@ -13,7 +13,9 @@ import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/signup_s
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/verfication_screen.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/cart_screen.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view/categories_screen.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_screen.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_delivery_screen.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_details_screen.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view/re_order_screen.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view/home_layout.dart';
 import 'package:negmt_heliopolis/features/Intro/presentation/view/intro_screen.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/liked_screen.dart';
@@ -142,6 +144,11 @@ class AppRouter {
         fromRight = true;
         break;
 
+      case checkoutDetailsScreen:
+        page = const CheckoutDetailsScreen();
+        fromRight = true;
+        break;
+
       case alertsScreen:
         page = const AlertsScreen();
         fromRight = true;
@@ -161,10 +168,16 @@ class AppRouter {
         page = const ReportScreen();
         fromRight = true;
         break;
-      case faqsScreen :
+
+      case faqsScreen:
         page = const FaqsScreen();
-        fromRight = false ;
-        break ;
+        fromRight = false;
+        break;
+
+      case reOrderScreen:
+        page = const ReOrderScreen();
+        fromRight = false;
+        break;
 
       default:
         page = const PageNotFoundScreen();
