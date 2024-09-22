@@ -13,6 +13,7 @@ import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/signup_s
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/verfication_screen.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/cart_screen.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view/categories_screen.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view/card_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_delivery_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_details_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/re_order_screen.dart';
@@ -71,6 +72,11 @@ class AppRouter {
 
       case signUpScreen:
         page = const SignupScreen();
+        fromRight = true;
+        break;
+
+      case cardScreen:
+        page = const CardScreen();
         fromRight = true;
         break;
 

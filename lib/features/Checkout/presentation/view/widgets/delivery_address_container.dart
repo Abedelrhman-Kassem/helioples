@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/add_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/delivery_address_widget.dart';
-import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
 class DeliveryAddressContainer extends StatefulWidget {
   const DeliveryAddressContainer({super.key});
@@ -35,28 +34,11 @@ class _DeliveryAddressContainerState extends State<DeliveryAddressContainer> {
                 'Delivery Address',
                 style: Styles.styles17w700Black,
               ),
-              Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, setLocationScreen);
-                  },
-                  child: Row(
-                    children: [
-                      svgIcon(
-                        path: 'assets/svg_icons/empty-plus.svg',
-                        width: 18.w,
-                        height: 18.h,
-                        color: MyColors.mainColor,
-                      ),
-                      SizedBox(width: 5.w),
-                      Text(
-                        'Add Address',
-                        style: Styles.styles12w400MainColor,
-                      ),
-                    ],
-                  ),
-                ),
+              addWidget(
+                text: 'Add Address',
+                onTap: () {
+                  Navigator.pushNamed(context, setLocationScreen);
+                },
               ),
             ],
           ),

@@ -26,6 +26,7 @@ const String checkoutScreen = '/checkout_screen';
 const String faqsScreen = '/faqs_screen';
 const String reOrderScreen = '/reorder_screen';
 const String checkoutDetailsScreen = '/checkout_details_screen';
+const String cardScreen = '/card_screen';
 
 // fontfamily
 const String sFProTextFamily = 'SFProText';

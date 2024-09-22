@@ -185,9 +185,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           horizontal: 16.w, vertical: 14.h),
                     ),
                     style: Styles.styles17w500NormalBlack,
-                    readOnly: true, 
+                    readOnly: true,
                     onTap: () {
-
                       showCupertinoModalPopup(
                         context: context,
                         builder: (BuildContext context) => Container(
@@ -197,8 +196,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               topRight: Radius.circular(30.r),
                             ),
                           ),
-                          height:
-                              MediaQuery.of(context).size.height * 0.3,
+                          height: MediaQuery.of(context).size.height * 0.3,
                           width: MediaQuery.of(context).size.width,
                           child: Align(
                             alignment: Alignment.bottomCenter,
@@ -206,8 +204,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               color: Colors.white,
                               child: SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height *
-                                        0.25,
+                                    MediaQuery.of(context).size.height * 0.25,
                                 child: CupertinoDatePicker(
                                   backgroundColor: Colors.white,
                                   onDateTimeChanged: (DateTime newDate) {
@@ -254,11 +251,11 @@ class _SignupScreenState extends State<SignupScreen> {
 
                                 // cubit.singUp(user);
                                 Navigator.of(context).pushNamed(
-                            verficationScreen,
-                            arguments: {
-                              'phoneNumber': phoneNumberController.text,
-                            },
-                          );
+                                  verficationScreen,
+                                  arguments: {
+                                    'phoneNumber': phoneNumberController.text,
+                                  },
+                                );
                               },
                             ),
                           );

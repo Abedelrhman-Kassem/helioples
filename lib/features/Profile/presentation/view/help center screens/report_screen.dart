@@ -88,40 +88,40 @@ class _ReportScreenState extends State<ReportScreen> {
               minLines: 6,
               maxLines: 9,
               decoration: InputDecoration(
-                
                 hintText: "Enter Your Message In Details",
-                hintStyle: Styles.styles17w500NormalBlack.copyWith(color: const Color.fromRGBO(50, 50, 50, 1)),
+                hintStyle: Styles.styles17w500NormalBlack
+                    .copyWith(color: const Color.fromRGBO(50, 50, 50, 1)),
                 filled: true,
                 fillColor: const Color.fromRGBO(246, 246, 246, 1),
                 border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30.r),
-              borderSide: const BorderSide(
-                color: Color.fromRGBO(210, 210, 210, 1),
-                width: 1.5,
+                  borderRadius: BorderRadius.circular(30.r),
+                  borderSide: const BorderSide(
+                    color: Color.fromRGBO(210, 210, 210, 1),
+                    width: 1.5,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.r),
+                  borderSide: const BorderSide(
+                    color: Color.fromRGBO(210, 210, 210, 1),
+                    width: 1.5,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.r),
+                  borderSide: const BorderSide(
+                    color: Color.fromRGBO(210, 210, 210, 1),
+                    width: 1.5,
+                  ),
+                ),
               ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(25.r),
-              borderSide: const BorderSide(
-                color: Color.fromRGBO(210, 210, 210, 1),
-                width: 1.5,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30.r),
-              borderSide: const BorderSide(
-                color: Color.fromRGBO(210, 210, 210, 1),
-                width: 1.5,
-              ),
-            ),
-                   
-              ),
-              
             ),
             SizedBox(
               height: 15.h,
             ),
-            Center(child: SignUpCustomButton(buttonText: "Submit Message", onPressed: (){}))
+            Center(
+                child: SignUpCustomButton(
+                    buttonText: "Submit Message", onPressed: () {}))
           ],
         ),
       ),

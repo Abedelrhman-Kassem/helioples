@@ -8,7 +8,7 @@ Widget radioItem({
   required String iconPath,
   required int index,
   required int radioValue,
-  required void Function() onTap,
+  required Function() onTap,
 }) {
   return AnimatedContainer(
     duration: const Duration(milliseconds: 300),
