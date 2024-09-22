@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_item.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/cards_container.dart';
 
 class DeliveryPaymentContianer extends StatefulWidget {
   const DeliveryPaymentContianer({super.key});
@@ -20,7 +21,7 @@ class _DeliveryPaymentContianerState extends State<DeliveryPaymentContianer> {
       padding: EdgeInsets.all(20.r),
       margin: EdgeInsets.symmetric(vertical: 10.h),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(15.r),
       ),
       child: Column(
@@ -58,10 +59,17 @@ class _DeliveryPaymentContianerState extends State<DeliveryPaymentContianer> {
             iconPath: 'credit-or-debit-card',
             index: 2,
             radioValue: radioValue,
-            onTap: () {
+            onTap: () async {
               setState(() {
                 radioValue = 2;
               });
+
+              return showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return const CardsContainer();
+                },
+              );
             },
           ),
         ],

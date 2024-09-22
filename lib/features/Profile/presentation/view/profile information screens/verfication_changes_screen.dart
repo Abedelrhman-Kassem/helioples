@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
@@ -174,7 +172,6 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                               builder: (context) {
                                 confetti.play();
                                 return Stack(
-                       
                                   children: [
                                     Container(
                                       height:
@@ -212,23 +209,23 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                                           SignUpCustomButton(
                                               buttonText: "Done",
                                               onPressed: () {
-                                                Navigator.of(context).pushNamed(homeLayout);
+                                                Navigator.of(context)
+                                                    .pushNamed(homeLayout);
                                               })
                                         ],
                                       ),
                                     ),
                                     Positioned(
-                                      right: MediaQuery.of(context).size.width*0.5,
+                                      right: MediaQuery.of(context).size.width *
+                                          0.5,
                                       top: 60.h,
                                       child: ConfettiWidget(
-                                          confettiController: confetti,
-                                    
-                                          blastDirectionality: BlastDirectionality.explosive,
-                                          numberOfParticles: 12,
-                                          gravity: 0.4,
-
-
-                                          ),
+                                        confettiController: confetti,
+                                        blastDirectionality:
+                                            BlastDirectionality.explosive,
+                                        numberOfParticles: 12,
+                                        gravity: 0.4,
+                                      ),
                                     ),
                                   ],
                                 );

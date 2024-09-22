@@ -14,7 +14,6 @@ import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/core/widgets/category_builder.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
-
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/location_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view_model/cubit/home_screen_cubit.dart';
@@ -32,10 +31,9 @@ class HomeScreen extends StatelessWidget {
       create: (context) => HomeScreenCubit()..getAllCategories(),
       child: BlocConsumer<HomeScreenCubit, HomeScreenState>(
         listener: (context, state) {
-          if (state is FetchCategoriesSuccess)
-          {
+          if (state is FetchCategoriesSuccess) {
             getCategories = true;
-            categories = state.categories.categories! ; 
+            categories = state.categories.categories!;
           }
         },
         builder: (context, state) {
@@ -317,7 +315,7 @@ class HomeScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          if (getCategories = true)
+                          if (getCategories == true)
                             AnimatedSwitcher(
                               duration: const Duration(milliseconds: 250),
                               reverseDuration:
@@ -340,7 +338,7 @@ class HomeScreen extends StatelessWidget {
                                         itemBuilder: (context, index) =>
                                             categoryBuilder(
                                           context: context,
-                                          category : categories[index],
+                                          category: categories[index],
                                         ),
                                         separatorBuilder: (context, index) =>
                                             const SizedBox(width: 14),

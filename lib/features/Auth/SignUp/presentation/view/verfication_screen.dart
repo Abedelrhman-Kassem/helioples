@@ -12,8 +12,6 @@ import 'widgets/number_textfield.dart';
 import 'widgets/sign_up_app_bar.dart';
 import 'widgets/sign_up_custom_button.dart';
 
-
-
 class VerificationScreen extends StatefulWidget {
   final String? phoneNumber;
 
@@ -25,15 +23,20 @@ class VerificationScreen extends StatefulWidget {
 
 class _VerificationScreenState extends State<VerificationScreen> {
   bool isEn = true;
-  final TextEditingController _verificationCodeController1 = TextEditingController();
-  final TextEditingController _verificationCodeController2 = TextEditingController();
-  final TextEditingController _verificationCodeController3 = TextEditingController();
-  final TextEditingController _verificationCodeController4 = TextEditingController();
+  final TextEditingController _verificationCodeController1 =
+      TextEditingController();
+  final TextEditingController _verificationCodeController2 =
+      TextEditingController();
+  final TextEditingController _verificationCodeController3 =
+      TextEditingController();
+  final TextEditingController _verificationCodeController4 =
+      TextEditingController();
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
   final FocusNode _focusNode3 = FocusNode();
   final FocusNode _focusNode4 = FocusNode();
-  final CountdownController _countdownController = CountdownController(autoStart: true);
+  final CountdownController _countdownController =
+      CountdownController(autoStart: true);
 
   void _focusNextField(FocusNode currentFocus, FocusNode nextFocus) {
     if (!currentFocus.hasFocus) {
@@ -110,7 +113,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         child: NumberTextField(
                           controller: _verificationCodeController1,
                           focusNode: _focusNode1,
-                          onNext: () => _focusNextField(_focusNode1, _focusNode2),
+                          onNext: () =>
+                              _focusNextField(_focusNode1, _focusNode2),
                         ),
                       ),
                       SizedBox(width: 10.w),
@@ -118,7 +122,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         child: NumberTextField(
                           controller: _verificationCodeController2,
                           focusNode: _focusNode2,
-                          onNext: () => _focusNextField(_focusNode2, _focusNode3),
+                          onNext: () =>
+                              _focusNextField(_focusNode2, _focusNode3),
                         ),
                       ),
                       SizedBox(width: 10.w),
@@ -126,7 +131,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         child: NumberTextField(
                           controller: _verificationCodeController3,
                           focusNode: _focusNode3,
-                          onNext: () => _focusNextField(_focusNode3, _focusNode4),
+                          onNext: () =>
+                              _focusNextField(_focusNode3, _focusNode4),
                         ),
                       ),
                       SizedBox(width: 10.w),
@@ -144,10 +150,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     child: SignUpCustomButton(
                       buttonText: "Verify Now",
                       onPressed: () {
-                        Navigator.of(context).pushNamed(
-                          confirmationScreen
-                      
-                        );
+                        Navigator.of(context).pushNamed(confirmationScreen);
                       },
                     ),
                   ),
@@ -159,12 +162,15 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       build: (BuildContext context, double time) {
                         final int minutes = (time / 60).floor();
                         final int seconds = (time % 60).toInt();
-                        final String formattedMinutes = minutes.toString().padLeft(2, '0');
-                        final String formattedSeconds = seconds.toString().padLeft(2, '0');
+                        final String formattedMinutes =
+                            minutes.toString().padLeft(2, '0');
+                        final String formattedSeconds =
+                            seconds.toString().padLeft(2, '0');
 
                         return Text(
                           '$formattedMinutes : $formattedSeconds',
-                          style: Styles.styles12w500Black.copyWith(fontSize: 15),
+                          style:
+                              Styles.styles12w500Black.copyWith(fontSize: 15),
                         );
                       },
                     ),
