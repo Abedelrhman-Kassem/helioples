@@ -4,5 +4,5 @@ import 'package:negmt_heliopolis/features/Auth/SignUp/data/model/user.dart';
 
 abstract class LogInRepo
 {
-  Future<Either<Failure,String>> signIn(String phone);
+  Future<Either<Failure,String>> signIn(String phone , String password);
 }

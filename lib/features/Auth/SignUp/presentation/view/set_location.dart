@@ -7,12 +7,20 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/loading_button.dart';
+import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/model/place.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/model/place_suggestion.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/data/repo/sing_up_repo_imp.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/send_location_cubit/send_location_cubit.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/send_location_cubit/send_location_states.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/set_location_cubit/set_location_cubit.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/sign_up_cubit/sign_up_cubit.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/sign_up_cubit/sign_up_states.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/place_item.dart';
 
 import 'package:uuid/uuid.dart';
@@ -43,6 +51,10 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
   late Marker currentLocationMarker;
   late CameraPosition goToSearchedForPlace;
   static Position? position;
+  late Position cur;
+  late Position lastPositon;
+  double? long;
+  double? lat;
   static final CameraPosition _myCurrentLocationCameraPosition = CameraPosition(
     bearing: 0.0,
     target: LatLng(position?.latitude ?? 30.0, position?.longitude ?? 31.0),
@@ -51,7 +63,6 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
   );
 
   late Future<String> locationFuture = Future.value('');
-
 
 // Future<void> customMarker() async {
 //   try {
@@ -91,6 +102,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
       Position position = await Geolocator.getCurrentPosition();
+      cur = position;
       print("Latitude: ${position.latitude}");
       print("Longitude: ${position.longitude}");
 
@@ -282,25 +294,23 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
               _mapController.complete(controller);
               googleMapController = controller;
               //customMarker();
-              
+
               String style = await DefaultAssetBundle.of(context)
                   .loadString('assets/map_style.json');
               googleMapController.setMapStyle(style);
             },
             markers: markers,
             onTap: (LatLng latlng) {
- 
-              
-              
+              long = latlng.longitude;
+              lat = latlng.latitude;
               searchedPlaceMarker = Marker(
-      position: latlng,
-      markerId: const MarkerId('1'),
-      infoWindow: InfoWindow(title: placeSuggestion.description),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-     
-    );
-     addMarkerToMarkersAndUpdateUI(searchedPlaceMarker);
-              
+                position: latlng,
+                markerId: const MarkerId('1'),
+                infoWindow: InfoWindow(title: placeSuggestion.description),
+                icon: BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueBlue),
+              );
+              addMarkerToMarkersAndUpdateUI(searchedPlaceMarker);
             },
           ),
           Column(
@@ -313,25 +323,24 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back,
-                            size: 36, color: Color.fromRGBO(41, 45, 50, 1)),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
+                      returnArrow(
+                          context: context,
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          }),
                       TextButton(
                         onPressed: () {
                           // Handle skip action
                         },
                         child: GestureDetector(
-                          onTap: (){
-                             Navigator.of(context).pushNamed(notificationScreen);
+                          onTap: () {
+                            Navigator.of(context).pushNamed(notificationScreen);
                           },
                           child: Text(
                             "Skip",
                             style: Styles.styles16w400grey.copyWith(
-                                color: const Color.fromRGBO(0, 126, 143, 1) , fontSize: 18.sp),
+                                color: const Color.fromRGBO(0, 126, 143, 1),
+                                fontSize: 18.sp),
                           ),
                         ),
                       ),
@@ -389,8 +398,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                       },
                     ),
                   ),
-                  if (isSuggestionsVisible) 
-                  buildSuggestionBloc(),
+                  if (isSuggestionsVisible) buildSuggestionBloc(),
                   buildSelectedPlaceLocationBloc(),
                 ],
               ),
@@ -406,16 +414,13 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
               child: Material(
                 elevation: 8.0.sp,
                 shape: const OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30)
-                  ),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                    strokeAlign: 3 ,
-                  )
-                ),
-
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30)),
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                      strokeAlign: 3,
+                    )),
                 color: Colors.white,
                 shadowColor: Colors.grey,
                 child: Column(
@@ -424,33 +429,46 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                     Row(
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left: 25.w , top: 15.h),
+                          padding: EdgeInsets.only(left: 25.w, top: 15.h),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 "Location Info",
-                                style: Styles.styles14w400NormalBlack.copyWith(fontWeight: FontWeight.w500),
+                                style: Styles.styles14w400NormalBlack
+                                    .copyWith(fontWeight: FontWeight.w500),
                               ),
                               SizedBox(
                                 height: 10.h,
                               ),
                               Text(
                                 "Cairo, Egypt",
-                                style: Styles.styles11w600Black
-                                    .copyWith(fontSize: 26 , color: const  Color.fromRGBO(40, 40, 40, 1)),
+                                style: Styles.styles11w600Black.copyWith(
+                                    fontSize: 26,
+                                    color: const Color.fromRGBO(40, 40, 40, 1)),
                               ),
                             ],
                           ),
                         ),
                         const Spacer(),
-                        Image.asset("assets/Icons_logos/location.png")
+                        GestureDetector(
+                            onTap: () {
+                              if (cur != null) {
+                                CameraPosition cameraPosition = CameraPosition(
+                                    target: LatLng(cur.latitude, cur.longitude),
+                                    zoom: 14);
+                                googleMapController.animateCamera(
+                                    CameraUpdate.newCameraPosition(
+                                        cameraPosition));
+                              }
+                            },
+                            child:
+                                Image.asset("assets/Icons_logos/location.png"))
                       ],
                     ),
-
                     Padding(
-                      padding:  EdgeInsets.only(left: 25.w),
+                      padding: EdgeInsets.only(left: 25.w),
                       child: FutureBuilder<String>(
                           future: locationFuture,
                           builder: (context, snapshot) {
@@ -470,7 +488,8 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                             } else if (snapshot.hasData) {
                               return Text(
                                 snapshot.data!,
-                                style: Styles.styles14w400NormalBlack.copyWith(color: const Color.fromRGBO(70, 70, 70, 1)),
+                                style: Styles.styles14w400NormalBlack.copyWith(
+                                    color: const Color.fromRGBO(70, 70, 70, 1)),
                               );
                             } else {
                               return Padding(
@@ -481,12 +500,47 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                             }
                           }),
                     ),
-                        SizedBox(
-                          height: 16.h,
-                        ),
-                      Center(child: SignUpCustomButton(buttonText: "Continue", onPressed: (){
-                         Navigator.of(context).pushNamed(notificationScreen);
-                      }))
+                    SizedBox(
+                      height: 16.h,
+                    ),
+                    BlocProvider(
+                      create: (context) => SendLocationCubit(
+                          SignUpRepoImp(apiService: ApiService())),
+                      child: BlocConsumer<SendLocationCubit, SendLocationState>(
+                          builder: (context, state) {
+                        var cubit = BlocProvider.of<SendLocationCubit>(context);
+                        if (state is SendLocationLoading) {
+                          return const LoadingButton(
+                            height: 60,
+                            radius: 10,
+                          );
+                        } else {
+                          return Center(
+                              child: SignUpCustomButton(
+                                  buttonText: "Continue",
+                                  onPressed: () {
+                                    print(long);
+                                    print("==============");
+                                    print(lat);
+                                    if (lat != null && long != null) {
+                                      cubit.sendLocation(long!, lat!);
+                                    }
+
+                                    // Navigator.of(context)
+                                    //     .pushNamed(notificationScreen);
+                                  }));
+                        }
+                      }, listener: (context, state) {
+                        if (state is SendLocationFailure) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(state.errorMessage)));
+                        } else if (state is SendLocationSuccess) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('location sent ')));
+                          Navigator.of(context).pushNamed(notificationScreen);
+                        }
+                      }),
+                    ),
                   ],
                 ),
               ),

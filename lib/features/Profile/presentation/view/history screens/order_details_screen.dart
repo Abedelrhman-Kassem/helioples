@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/Widgets/dotted_line.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/Widgets/invoice_item.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/Widgets/order_states.dart';
@@ -23,12 +24,9 @@ class OrderDetailsScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: const Icon(Icons.arrow_back),
-                  ),
+                  returnArrow(context: context, onTap: (){
+                Navigator.of(context).pop();
+              }),
                   SizedBox(width: 100.w),
                   Text(
                     "Order Details",

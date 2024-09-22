@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 // import 'package:negmt_heliopolis/features/Profile/presentation/view/Widgets/alert_row.dart';
 
 class AlertsScreen extends StatefulWidget {
@@ -27,11 +28,11 @@ class _AlertsScreenState extends State<AlertsScreen> {
               SizedBox(
                 child: Row(
                   children: [
-                    IconButton(
-                        onPressed: () {
+                    returnArrow(
+                        context: context,
+                        onTap: () {
                           Navigator.of(context).pop();
-                        },
-                        icon: const Icon(Icons.arrow_back)),
+                        }),
                     SizedBox(
                       width: 125.w,
                     ),
@@ -84,7 +85,9 @@ class _AlertsScreenState extends State<AlertsScreen> {
                                         Text(
                                           "Order Confirmed Successfully",
                                           style: Styles.styles16w500Black36
-                                              .copyWith(fontSize: 16.sp , fontWeight: FontWeight.w700),
+                                              .copyWith(
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.w700),
                                         ),
                                         SizedBox(
                                           width: 250.w,

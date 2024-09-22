@@ -65,6 +65,7 @@ dependencies:
   equatable: ^2.0.5
   sqflite: ^2.3.3+1
   path: ^1.9.0
+  easy_localization: ^3.0.7
 
 dev_dependencies:
   flutter_lints: ^3.0.0
@@ -112,3 +113,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_intl:
+  enabled: true

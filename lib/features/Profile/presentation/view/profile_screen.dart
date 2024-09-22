@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/background_image.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/Widgets/profile_item.dart';
-
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     List<ProfileItem> items = [
       ProfileItem(
         imagePath: "assets/svg_icons/profile_icon.svg",
@@ -71,12 +70,11 @@ class ProfileScreen extends StatelessWidget {
                     [
                       Row(
                         children: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            icon: const Icon(Icons.arrow_back),
-                          ),
+                          returnArrow(
+                              context: context,
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              }),
                           SizedBox(width: 100.w),
                           Text(
                             "User Profile",
@@ -99,10 +97,8 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    crossAxisSpacing:
-                        8.0, 
-                    mainAxisSpacing:
-                        12.0, 
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 12.0,
                   ),
                 ),
               ),
