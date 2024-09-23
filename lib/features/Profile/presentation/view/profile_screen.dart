@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/background_image.dart';
+import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/Widgets/profile_item.dart';
-
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     List<ProfileItem> items = [
       ProfileItem(
         imagePath: "assets/svg_icons/profile_icon.svg",
@@ -53,6 +54,7 @@ class ProfileScreen extends StatelessWidget {
       const ProfileItem(
           imagePath: "assets/svg_icons/logout_icon.svg", label: "Logout"),
     ];
+    HomeLayoutCubit homeLayoutCubit = BlocProvider.of<HomeLayoutCubit>(context);
 
     return Scaffold(
       body: Stack(
@@ -71,11 +73,11 @@ class ProfileScreen extends StatelessWidget {
                     [
                       Row(
                         children: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
+                          returnArrow(
+                            context: context,
+                            onTap: () {
+                              homeLayoutCubit.returnIndex(context);
                             },
-                            icon: const Icon(Icons.arrow_back),
                           ),
                           SizedBox(width: 100.w),
                           Text(
@@ -99,10 +101,8 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    crossAxisSpacing:
-                        8.0, 
-                    mainAxisSpacing:
-                        12.0, 
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 12.0,
                   ),
                 ),
               ),

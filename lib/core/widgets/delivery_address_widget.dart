@@ -38,7 +38,6 @@ Widget deliveryAddressWidget({
                       style: Styles.styles16w400NormalBlack,
                     ),
                     Text(
-                      // i want the width of this text or the parent column become 80% of availbe space or 100% - 20
                       location,
                       style: Styles.styles12w400black,
                       overflow: TextOverflow.ellipsis,

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/add_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/delivery_address_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
@@ -24,6 +27,7 @@ class _LocationWidgetState extends State<LocationWidget> {
     return InkWell(
       onTap: () async {
         final Map? result = await showModalBottomSheet(
+          isScrollControlled: true,
           context: context,
           builder: (context) => AddressModalBottomSheet(title: addressTitle),
         );
@@ -123,10 +127,11 @@ class AddressModalBottomSheet extends StatefulWidget {
 class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.width); // 800
     return Wrap(
       children: [
         Container(
-          // height: 200.h,
+          width: double.infinity,
           padding: EdgeInsets.all(20.r),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -163,6 +168,29 @@ class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
                       'location': 'Salah Salem Street 44C, Maadi',
                     });
                   });
+                },
+              ),
+              SizedBox(height: 10.h),
+              addWidget(
+                text: 'Add Address',
+                onTap: () {
+                  Navigator.pushNamed(context, setLocationScreen);
+                },
+              ),
+              SizedBox(height: 20.h),
+              buttonWidget(
+                color: MyColors.mainColor,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 30.w,
+                  vertical: 20.h,
+                ),
+                borderRadius: 53.r,
+                child: Text(
+                  'Save Address',
+                  style: Styles.styles17w600White,
+                ),
+                onTap: () {
+                  Navigator.pop(context);
                 },
               ),
             ],

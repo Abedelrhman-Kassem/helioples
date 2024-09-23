@@ -32,6 +32,7 @@ import 'package:negmt_heliopolis/features/Profile/presentation/view/profile%20in
 import 'package:negmt_heliopolis/features/Profile/presentation/view/profile%20information%20screens/verfication_changes_screen.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/settings%20screens/settings_screen.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/special_offer_item_screen.dart';
+import 'package:negmt_heliopolis/test.dart';
 
 class AppRouter {
   Route generate(RouteSettings settings) {
@@ -40,8 +41,8 @@ class AppRouter {
     switch (settings.name) {
       case intialRoute:
       case introScreen:
-        // page = const TestScreen();
-        page = const IntroScreen();
+        page = const TestScreen();
+        // page = const IntroScreen();
         fromRight = false;
         break;
 
@@ -67,7 +68,7 @@ class AppRouter {
 
       case allspecialOffersScreen:
         page = const AllSpecialOffersScreen();
-        fromRight = true;
+        fromRight = false;
         break;
 
       case signUpScreen:

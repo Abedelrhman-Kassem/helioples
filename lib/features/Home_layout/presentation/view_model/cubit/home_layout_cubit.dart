@@ -11,32 +11,20 @@ part 'home_layout_state.dart';
 class HomeLayoutCubit extends Cubit<HomeLayoutState> {
   HomeLayoutCubit() : super(HomeLayoutInitial());
 
-  bool isHomeScreen = true;
-
-  void changeHomeScreen() {
-    isHomeScreen = !isHomeScreen;
-    emit(HomeLayoutChangeHomeScreen());
-  }
-
   int selectedIndex = 0;
   int previousIndex = 0;
 
   List<Widget> screens = [
-    const HomeScreen(),
+    HomeScreen(),
     const ExploreScreen(),
     const LikedScreen(),
     const CartScreen(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
 
   List<int> previousIndexList = [0];
 
   void changeCurrentIndex(BuildContext context, int index) {
-    if (isHomeScreen == false) {
-      isHomeScreen = true;
-      emit(HomeLayoutChangeHomeScreen());
-    }
-
     if (selectedIndex != index) {
       previousIndex = selectedIndex;
       selectedIndex = index;
