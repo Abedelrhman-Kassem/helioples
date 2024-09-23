@@ -41,8 +41,8 @@ class AppRouter {
     switch (settings.name) {
       case intialRoute:
       case introScreen:
-        page = const TestScreen();
-        // page = const IntroScreen();
+        // page = const TestScreen();
+        page = const IntroScreen();
         fromRight = false;
         break;
 
