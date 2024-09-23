@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/background_image.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/number_textfield.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart';
@@ -87,11 +88,9 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                   children: [
                     Row(
                       children: [
-                        IconButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            icon: const Icon(Icons.arrow_back)),
+                        returnArrow(context: context, onTap: (){
+                Navigator.of(context).pop();
+              }),
                         SizedBox(
                           width: 65.w,
                         ),

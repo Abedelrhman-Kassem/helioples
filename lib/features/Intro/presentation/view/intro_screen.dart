@@ -164,7 +164,7 @@ class IntroScreen extends StatelessWidget {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context, signUpScreen);
+                                    Navigator.pushNamed(context, signInScreen);
                                   },
                                   child: Text(
                                     'Sign In.'.tr(context),

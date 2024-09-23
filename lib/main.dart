@@ -25,6 +25,7 @@ void main() {
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
       statusBarBrightness: Brightness.dark,
+      
     ),
   );
 

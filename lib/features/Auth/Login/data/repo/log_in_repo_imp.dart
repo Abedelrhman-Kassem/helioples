@@ -9,10 +9,13 @@ class LogInRepoImp extends LogInRepo
  LogInRepoImp({required this.apiService});
 
   @override
-  Future<Either<Failure, String>> signIn(String phone) async {
+  Future<Either<Failure, String>> signIn(String phone , String password) async {
     try {
        // await apiService.setAuthorizationHeader();
-       final data = {'phone': phone};
+       final data = {
+        'phone': phone , 
+        'password':password,
+        };
        var response = await apiService.post(endPoints: 'auth/login', data: data );
        if (response.statusCode == 200) {
         return right(response.data['msg']);

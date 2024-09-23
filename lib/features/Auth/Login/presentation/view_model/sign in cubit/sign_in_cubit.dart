@@ -8,9 +8,9 @@ class SignInCubit extends Cubit<SignInState> {
   final LogInRepo signInRepo;
   SignInCubit(this.signInRepo) : super(SignInInitial());
 
-  Future<void> signIn(String phone) async {
+  Future<void> signIn(String phone , String password) async {
     emit(SignInLoading());
-    Either<Failure, String> result = await signInRepo.signIn(phone);
+    Either<Failure, String> result = await signInRepo.signIn(phone , password);
     result.fold((failure) => emit(SignInFailure(failure.errorMessage)),
         (status) => emit(SignInSuccess(status)));
   }
