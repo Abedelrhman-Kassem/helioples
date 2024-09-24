@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 
 class NameTextField extends StatelessWidget {
   final String labelText;
   final TextEditingController controller;
-  final bool isEnabled ; 
+  final bool isEnabled;
 
   const NameTextField({
     super.key,
@@ -23,7 +22,7 @@ class NameTextField extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 10.w),
           child: Text(
-            labelText.tr(context),
+            labelText,
             style: Styles.styles14w400NormalBlack,
           ),
         ),
@@ -55,7 +54,8 @@ class NameTextField extends StatelessWidget {
                 width: 1.5,
               ),
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
           ),
           style: Styles.styles17w500NormalBlack,
         ),

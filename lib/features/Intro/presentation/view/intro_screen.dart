@@ -1,7 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/language_cache_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
@@ -10,7 +11,7 @@ class IntroScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final isAr = isRtl(context);
 
     return Scaffold(
       body: Container(
@@ -98,11 +99,11 @@ class IntroScreen extends StatelessWidget {
                             RichText(
                               textAlign: TextAlign.center,
                               text: TextSpan(
-                                text: 'Better'.tr(context),
+                                text: 'Better'.tr(),
                                 style: Styles.styles40w800NormalWhite,
                                 children: [
                                   TextSpan(
-                                    text: 'Prices,'.tr(context),
+                                    text: 'Prices,'.tr(),
                                     style: Styles.styles40w400NormalWhite,
                                   ),
                                   TextSpan(
@@ -110,11 +111,11 @@ class IntroScreen extends StatelessWidget {
                                     style: Styles.styles40w400NormalWhite,
                                   ),
                                   TextSpan(
-                                    text: 'Faster'.tr(context),
+                                    text: 'Faster'.tr(),
                                     style: Styles.styles40w400NormalWhite,
                                   ),
                                   TextSpan(
-                                    text: 'Delivery'.tr(context),
+                                    text: 'Delivery'.tr(),
                                     style: Styles.styles40w800NormalWhite,
                                   ),
                                 ],
@@ -124,7 +125,9 @@ class IntroScreen extends StatelessWidget {
                             IconButton(
                               onPressed: () {
                                 Navigator.pushReplacementNamed(
-                                    context, homeLayout);
+                                  context,
+                                  homeLayout,
+                                );
                               },
                               icon: Container(
                                 width: 268.w,
@@ -137,12 +140,12 @@ class IntroScreen extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Start Shopping'.tr(context),
+                                      'Start Shopping'.tr(),
                                       style: Styles.styles20w500NormalWhite,
                                     ),
                                     SizedBox(width: 10.w),
                                     Transform.rotate(
-                                      angle: isRtl ? 135 : 0,
+                                      angle: isAr ? 135 : 0,
                                       child: svgIcon(
                                         path:
                                             'assets/svg_icons/arrow-circle-right.svg',
@@ -159,7 +162,7 @@ class IntroScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Already Have account?'.tr(context),
+                                  'Already Have account?'.tr(),
                                   style: Styles.styles16w400White,
                                 ),
                                 TextButton(
@@ -167,7 +170,7 @@ class IntroScreen extends StatelessWidget {
                                     Navigator.pushNamed(context, signInScreen);
                                   },
                                   child: Text(
-                                    'Sign In.'.tr(context),
+                                    'Sign In.'.tr(),
                                     style: Styles.styles16w500NormalWhite,
                                   ),
                                 ),

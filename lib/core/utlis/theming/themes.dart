@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 
 final ThemeData lightTheme = ThemeData(
   primaryColor: MyColors.mainColor,
-  textTheme: TextTheme(bodyMedium: TextStyle(fontSize: 20.w)),
   scaffoldBackgroundColor: MyColors.mainScaffoldWhiteColor,
   appBarTheme: AppBarTheme(
     elevation: 20,

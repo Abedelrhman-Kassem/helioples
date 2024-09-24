@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
@@ -74,7 +73,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                           context: context,
                           activeSvgPath: 'assets/svg_icons/white-home.svg',
                           outlinedSvgPath: 'assets/svg_icons/home.svg',
-                          text: 'home'.tr(context),
+                          text: 'home',
                           index: 0,
                         ),
                         gButtonItem(
@@ -82,14 +81,14 @@ class _HomeLayoutState extends State<HomeLayout> {
                           activeSvgPath:
                               'assets/svg_icons/white-search-normal.svg',
                           outlinedSvgPath: 'assets/svg_icons/search-normal.svg',
-                          text: 'explore'.tr(context),
+                          text: 'explore',
                           index: 1,
                         ),
                         gButtonItem(
                           context: context,
                           activeSvgPath: 'assets/svg_icons/white-heart.svg',
                           outlinedSvgPath: 'assets/svg_icons/heart.svg',
-                          text: 'liked'.tr(context),
+                          text: 'liked',
                           index: 2,
                         ),
                         gButtonItem(
@@ -97,14 +96,14 @@ class _HomeLayoutState extends State<HomeLayout> {
                           activeSvgPath:
                               'assets/svg_icons/white-favorite-Cart.svg',
                           outlinedSvgPath: 'assets/svg_icons/favorite-Cart.svg',
-                          text: 'cart'.tr(context),
+                          text: 'cart',
                           index: 3,
                         ),
                         gButtonItem(
                           context: context,
                           activeSvgPath: 'assets/svg_icons/white-user.svg',
                           outlinedSvgPath: 'assets/svg_icons/user.svg',
-                          text: 'profile'.tr(context),
+                          text: 'profile',
                           index: 4,
                         ),
                       ],

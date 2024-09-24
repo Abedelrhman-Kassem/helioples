@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/language_cache_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isRtl = TextDirection.rtl == Directionality.of(context);
+    final bool isAr = isRtl(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -102,7 +102,7 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Special Offers'.tr(context),
+                        'Special Offers',
                         style: Styles.styles17w600interFamily,
                       ),
                       TextButton(
@@ -115,12 +115,12 @@ class HomeScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              'View All'.tr(context),
+                              'View All',
                               style: Styles.styles14w500interFamily,
                             ),
                             SizedBox(width: 4.w),
                             Transform(
-                              transform: Matrix4.rotationY(isRtl ? pi : 0),
+                              transform: Matrix4.rotationY(isAr ? pi : 0),
                               child: svgIcon(
                                 path: 'assets/svg_icons/arrow-right.svg',
                                 width: 10,
@@ -225,7 +225,7 @@ class HomeScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Categories'.tr(context),
+                                'Categories',
                                 style: Styles.styles17w600interFamily,
                               ),
                               IconButton(

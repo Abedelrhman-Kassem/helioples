@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/language_cache_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
@@ -14,11 +15,12 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  String selectedLang = "English";
   String selectedMode = "Light Mode";
 
   @override
   Widget build(BuildContext context) {
+    String selectedLang = getLocale(context);
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsetsDirectional.only(
@@ -27,9 +29,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             Row(
               children: [
-                returnArrow(context: context, onTap: (){
-                Navigator.of(context).pop();
-              }),
+                returnArrow(
+                    context: context,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    }),
                 SizedBox(
                   width: 100.w,
                 ),
@@ -103,7 +107,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     ],
                                   ),
                                   RadioMenuButton<String>(
-                                    value: 'English',
+                                    value: 'en',
                                     groupValue: selectedLang,
                                     onChanged: (value) {
                                       setState(() {
@@ -120,7 +124,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     ),
                                   ),
                                   RadioMenuButton<String>(
-                                    value: 'Arabic',
+                                    value: 'ar',
                                     groupValue: selectedLang,
                                     onChanged: (value) {
                                       setState(() {
@@ -140,10 +144,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     height: 10.h,
                                   ),
                                   SignUpCustomButton(
-                                      buttonText: "Update language",
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      }),
+                                    buttonText: "Update language",
+                                    onPressed: () {
+                                      if (selectedLang == 'en') {
+                                        changeLocal(context, 'en');
+                                      } else {
+                                        changeLocal(context, 'ar');
+                                      }
+
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
                                 ],
                               ),
                             ),

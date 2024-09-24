@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gap/gap.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/language/languageWidget.dart';
+import 'package:negmt_heliopolis/core/widgets/languageWidget.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/widgets/CustomButton.dart';
 import 'package:negmt_heliopolis/core/widgets/helioplis_logo.dart';
@@ -31,10 +30,11 @@ class LoginScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          title: Text("Login".tr(context)),
+          title: const Text("Login"),
           centerTitle: false,
           actions: const [
-            Languagewidget(),
+            // TO DO
+            // Languagewidget(),
             Gap(20),
           ],
         ),
@@ -48,7 +48,7 @@ class LoginScreen extends StatelessWidget {
                 const HelioplisLogo(),
                 const Gap(7),
                 Text(
-                  "Enter Phone Number".tr(context),
+                  "Enter Phone Number",
                   style: Theme.of(context).textTheme.bodyMedium,
                   // style: const TextStyle(
                   //     fontSize: 28, fontWeight: FontWeight.bold),
@@ -56,14 +56,15 @@ class LoginScreen extends StatelessWidget {
                 const Gap(10),
                 const PhoneNumberInputWidget(),
                 const Gap(20),
-                Center(
-                    child: Text(
-                  'You will receive a verification code'.tr(context),
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                )),
+                const Center(
+                  child: Text(
+                    'You will receive a verification code',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ),
                 const Gap(20),
                 CustomButton(
-                  text: "Continue".tr(context),
+                  text: "Continue",
                   onTap: () {
                     // Navigator.pushNamed(context, verficationScreen);
                   },
@@ -77,15 +78,15 @@ class LoginScreen extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                       children: <TextSpan>[
-                        TextSpan(
-                          text: "You don't Have account?".tr(context),
-                          style: const TextStyle(
+                        const TextSpan(
+                          text: "You don't Have account?",
+                          style: TextStyle(
                             fontSize: 17.0,
                             color: Color.fromARGB(255, 0, 0, 0),
                           ),
                         ),
                         TextSpan(
-                          text: "Create an account.".tr(context),
+                          text: "Create an account.",
                           style: const TextStyle(
                             fontSize: 17.0,
                             color: Colors.orange,
@@ -119,7 +120,7 @@ class LoginScreen extends StatelessWidget {
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: Text("settings".tr(context)),
+//         title: Text("settings"),
 //       ),
 //       body: Center(
 //         child: Padding(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget_grid.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
@@ -13,7 +12,7 @@ class SpecialOfferItemScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Special Offers'.tr(context),
+          'Special Offers',
           style: Styles.styles16w700interFamily,
         ),
       ),

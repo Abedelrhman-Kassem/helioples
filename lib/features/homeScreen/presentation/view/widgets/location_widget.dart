@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
@@ -65,7 +64,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                 ),
                 RichText(
                   text: TextSpan(
-                    text: 'Delivery Duration:'.tr(context),
+                    text: 'Delivery Duration:',
                     style: Styles.styles13w300interFamily,
                     children: [
                       TextSpan(

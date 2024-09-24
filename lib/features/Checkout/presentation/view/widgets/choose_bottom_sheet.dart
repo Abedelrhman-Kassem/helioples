@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/radio_animated_widget.dart';
 
 class ChooseBottomSheet extends StatefulWidget {
   const ChooseBottomSheet({super.key});
@@ -96,34 +97,7 @@ Widget userChoice({
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AnimatedContainer(
-            width: 17.w,
-            height: 17.h,
-            duration: const Duration(milliseconds: 300),
-            margin: EdgeInsets.only(top: 2.5.h),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle, // To make it look like a radio button
-              border: Border.all(
-                color: radioChoose == itemValue
-                    ? const Color.fromRGBO(248, 147, 31, 1)
-                    : const Color.fromRGBO(150, 150, 150, 1),
-                width: 0.88.r,
-              ),
-            ),
-            child: Align(
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                width: 6.38.w,
-                height: 6.38.h,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: radioChoose == itemValue
-                      ? const Color.fromRGBO(248, 147, 31, 1)
-                      : Colors.transparent,
-                ),
-              ),
-            ),
-          ),
+          radioAnimatedWidget(itemValue == radioChoose),
           SizedBox(width: 10.w),
           Expanded(
             child: Column(
