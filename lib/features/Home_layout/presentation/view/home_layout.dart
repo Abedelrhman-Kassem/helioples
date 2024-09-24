@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,7 +44,24 @@ class _HomeLayoutState extends State<HomeLayout> {
               homeLayoutCubit.returnIndex(context);
             },
             child: Scaffold(
-              body: homeLayoutCubit.screens[homeLayoutCubit.selectedIndex],
+              body: PageTransitionSwitcher(
+                duration: const Duration(milliseconds: 300),
+                reverse: homeLayoutCubit.selectedIndex <
+                    homeLayoutCubit.previousIndex,
+                transitionBuilder:
+                    (child, primaryAnimation, secondaryAnimation) {
+                  Tween<Offset> myTween = Tween<Offset>(
+                    begin: const Offset(1, 0),
+                    end: const Offset(0, 0),
+                  );
+
+                  return SlideTransition(
+                    position: myTween.animate(primaryAnimation),
+                    child: child,
+                  );
+                },
+                child: homeLayoutCubit.screens[homeLayoutCubit.selectedIndex],
+              ),
               bottomNavigationBar: Offstage(
                 offstage: homeLayoutCubit.selectedIndex == 3,
                 child: Container(
