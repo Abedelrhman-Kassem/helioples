@@ -36,17 +36,29 @@ class ExploreScreen extends StatelessWidget {
             appBar: AppBar(
               elevation: 0,
               backgroundColor: Colors.white,
-              leading: Container(
-                alignment: Alignment.centerRight,
-                child: returnArrow(
-                  context: context,
-                  onTap: () {
-                    homeLayoutCubit.returnIndex(context);
-                  },
-                ),
-              ),
+              leading: exploreCubit.isSearching
+                  ? null
+                  : Container(
+                      alignment: Alignment.centerRight,
+                      child: returnArrow(
+                        context: context,
+                        onTap: () {
+                          homeLayoutCubit.returnIndex(context);
+                        },
+                      ),
+                    ),
               titleSpacing: 0,
-              actions: [SizedBox(width: 25.r)],
+              actions: [
+                if (exploreCubit.isSearching)
+                  InkWell(
+                    onTap: () {
+                      exploreCubit.changeIsSearching(false);
+                    },
+                    child: Text('cancel'),
+                  )
+                else
+                  SizedBox(width: 25.r),
+              ],
               title: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
                 decoration: BoxDecoration(
@@ -55,6 +67,9 @@ class ExploreScreen extends StatelessWidget {
                 ),
                 child: TextField(
                   controller: exploreCubit.searchController,
+                  onTap: () {
+                    exploreCubit.changeIsSearching(true);
+                  },
                   decoration: InputDecoration(
                     hintText: 'Search for groceries and more',
                     border: InputBorder.none,

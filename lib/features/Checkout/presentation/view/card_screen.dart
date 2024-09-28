@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/radio_animated_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/card_text_field.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/card_cubit/card_cubit.dart';
@@ -113,6 +114,8 @@ class _CardScreenState extends State<CardScreen> {
                           ),
                         ],
                       ),
+                      SizedBox(height: 10.h),
+                      const SaveCardContainer(),
                       SizedBox(height: 50.h),
                       buttonWidget(
                         color: MyColors.mainColor,
@@ -133,6 +136,39 @@ class _CardScreenState extends State<CardScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class SaveCardContainer extends StatefulWidget {
+  const SaveCardContainer({super.key});
+
+  @override
+  State<SaveCardContainer> createState() => _SaveCardContainerState();
+}
+
+class _SaveCardContainerState extends State<SaveCardContainer> {
+  bool saveCard = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          saveCard = !saveCard;
+        });
+      },
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          radioAnimatedWidget(saveCard),
+          SizedBox(width: 10.w),
+          Text(
+            'Save Card to use later',
+            style: Styles.styles13w400interFamily,
+          ),
+        ],
       ),
     );
   }

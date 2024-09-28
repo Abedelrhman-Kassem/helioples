@@ -40,7 +40,7 @@ class ProfileItem extends StatelessWidget {
                     color: const Color.fromRGBO(41, 45, 50, 1),
                     fontSize: 14.sp),
                 textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
+                
               ),
             )
           ],

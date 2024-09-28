@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/egypt_code_widget.dart';
 
 class PhoneNumberInputWidget extends StatelessWidget {
@@ -24,7 +23,7 @@ class PhoneNumberInputWidget extends StatelessWidget {
                   borderSide:
                       const BorderSide(color: Colors.black87, width: 10),
                   borderRadius: BorderRadius.circular(30)),
-              labelText: 'Phone Number'.tr(context),
+              labelText: 'Phone Number',
             ),
           ),
         ),

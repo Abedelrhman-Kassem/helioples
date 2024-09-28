@@ -91,60 +91,60 @@ Widget addressContainer() {
           'Delivery Address',
           style: Styles.styles17w700Black,
         ),
-        SizedBox(
-          child: ListTile(
-            contentPadding: EdgeInsets.zero,
-            leading: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                svgIcon(
-                  path: 'assets/svg_icons/location.svg',
-                  width: 21.w,
-                  height: 21.h,
-                  color: const Color.fromRGBO(71, 71, 71, 1),
-                ),
-                SizedBox(width: 10.w),
-                SizedBox(
-                  width: 240.w,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Home',
-                        style: Styles.styles16w400NormalBlack,
-                      ),
-                      Text(
-                        'Omar Ibn Al Khatab Street 436A',
-                        style: Styles.styles12w400black,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            trailing: Container(
-              width: 17.w,
-              height: 17.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle, // To make it look like a radio button
-                border: Border.all(
-                  color: const Color.fromRGBO(248, 147, 31, 1),
-                  width: 0.88.r,
+        SizedBox(height: 10.h),
+        Container(
+          padding: EdgeInsets.all(15.r),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              svgIcon(
+                path: 'assets/svg_icons/location.svg',
+                width: 21.w,
+                height: 21.h,
+                color: const Color.fromRGBO(71, 71, 71, 1),
+              ),
+              SizedBox(width: 10.w),
+              SizedBox(
+                width: 240.w,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Home',
+                      style: Styles.styles16w400NormalBlack,
+                    ),
+                    Text(
+                      'Omar Ibn Al Khatab Street 436A',
+                      style: Styles.styles12w400black,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
               ),
-              child: Align(
-                child: Container(
-                  width: 6.38.w,
-                  height: 6.38.h,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromRGBO(248, 147, 31, 1),
+              const Spacer(),
+              Container(
+                width: 17.w,
+                height: 17.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle, // To make it look like a radio button
+                  border: Border.all(
+                    color: const Color.fromRGBO(248, 147, 31, 1),
+                    width: 0.88.r,
+                  ),
+                ),
+                child: Align(
+                  child: Container(
+                    width: 6.38.w,
+                    height: 6.38.h,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color.fromRGBO(248, 147, 31, 1),
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ],
@@ -169,6 +169,7 @@ Widget paymentContainer() {
         ),
         SizedBox(height: 20.h),
         Container(
+          padding: EdgeInsets.all(15.r),
           decoration: BoxDecoration(
             color: const Color.fromRGBO(248, 147, 31, 0.1),
             borderRadius: BorderRadius.circular(8.r),
@@ -177,24 +178,23 @@ Widget paymentContainer() {
               color: const Color.fromRGBO(248, 147, 31, 1),
             ),
           ),
-          child: ListTile(
-            leading: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                svgIcon(
-                  path: 'assets/svg_icons/cash-on-delivery.svg',
-                  width: 32.12.w,
-                  height: 32.12.h,
-                  color: const Color.fromRGBO(41, 41, 41, 1),
-                ),
-                SizedBox(width: 20.w),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              svgIcon(
+                path: 'assets/svg_icons/cash-on-delivery.svg',
+                width: 32.12.w,
+                height: 32.12.h,
+                color: const Color.fromRGBO(41, 41, 41, 1),
+              ),
+              SizedBox(width: 20.w),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Cash on delivery',
-                      style: Styles.styles15w400Black.copyWith(color: Colors.black),
+                  Text(
+                    'Cash on delivery',
+                    style: Styles.styles15w400Black.copyWith(color: Colors.black),
                     ),
                     SizedBox(
                       height: 5.h,
@@ -204,29 +204,29 @@ Widget paymentContainer() {
                       style: Styles.styles12w400black.copyWith(color: Colors.black),
                     )
                   ],
-                )
-              ],
-            ),
-            trailing: Container(
-              width: 17.w,
-              height: 17.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle, // To make it look like a radio button
-                border: Border.all(
-                  color: const Color.fromRGBO(248, 147, 31, 1),
-                  width: 0.88.r,
+              ),
+              const Spacer(),
+              Container(
+                width: 17.w,
+                height: 17.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle, // To make it look like a radio button
+                  border: Border.all(
+                    color: const Color.fromRGBO(248, 147, 31, 1),
+                    width: 0.88.r,
+                  ),
+                ),
+                child: Align(
+                  child: Container(
+                    width: 6.38.w,
+                    height: 6.38.h,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color.fromRGBO(248, 147, 31, 1)),
+                  ),
                 ),
               ),
-              child: Align(
-                child: Container(
-                  width: 6.38.w,
-                  height: 6.38.h,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color.fromRGBO(248, 147, 31, 1)),
-                ),
-              ),
-            ),
+            ],
           ),
         ),
       ],
@@ -251,6 +251,7 @@ Widget scheduleContainer() {
         ),
         SizedBox(height: 20.h),
         Container(
+          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
           decoration: BoxDecoration(
             color: const Color.fromRGBO(248, 147, 31, 0.1),
             borderRadius: BorderRadius.circular(8.r),
@@ -259,54 +260,53 @@ Widget scheduleContainer() {
               color: const Color.fromRGBO(248, 147, 31, 1),
             ),
           ),
-          child: ListTile(
-            leading: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                svgIcon(
-                  path: 'assets/svg_icons/hand-clock.svg',
-                  width: 18.w,
-                  height: 18.h,
-                  color: const Color.fromRGBO(41, 41, 41, 1),
-                ),
-                SizedBox(width: 5.w),
-                RichText(
-                  text: TextSpan(
-                    text: 'Instant, ',
-                    style: Styles.styles12w400black.copyWith(
-                      color: Colors.black,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              svgIcon(
+                path: 'assets/svg_icons/hand-clock.svg',
+                width: 18.w,
+                height: 18.h,
+                color: const Color.fromRGBO(41, 41, 41, 1),
+              ),
+              SizedBox(width: 5.w),
+              RichText(
+                text: TextSpan(
+                  text: 'Instant, ',
+                  style: Styles.styles12w400black.copyWith(
+                    color: Colors.black,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: 'Arrive at 7:30 PM',
+                      style: Styles.styles12w400Gold,
                     ),
-                    children: [
-                      TextSpan(
-                        text: 'Arrive at 7:30 PM',
-                        style: Styles.styles12w400Gold,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            trailing: Container(
-              width: 17.w,
-              height: 17.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle, // To make it look like a radio button
-                border: Border.all(
-                  color: const Color.fromRGBO(248, 147, 31, 1),
-                  width: 0.88.r,
+                  ],
                 ),
               ),
-              child: Align(
-                child: Container(
-                  width: 6.38.w,
-                  height: 6.38.h,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromRGBO(248, 147, 31, 1),
+              const Spacer(),
+              Container(
+                width: 17.w,
+                height: 17.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle, // To make it look like a radio button
+                  border: Border.all(
+                    color: const Color.fromRGBO(248, 147, 31, 1),
+                    width: 0.88.r,
+                  ),
+                ),
+                child: Align(
+                  child: Container(
+                    width: 6.38.w,
+                    height: 6.38.h,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color.fromRGBO(248, 147, 31, 1),
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ],

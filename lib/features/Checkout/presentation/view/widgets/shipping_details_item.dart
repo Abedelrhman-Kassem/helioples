@@ -9,6 +9,7 @@ Widget shippingDetailsItem({
   required String text,
   required String iconPath,
   required bool isLoading,
+  required bool isSuccess,
 }) {
   return Row(
     children: [
@@ -16,9 +17,11 @@ Widget shippingDetailsItem({
         padding: EdgeInsets.all(5.r),
         width: 24.w,
         height: 24.h,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Color.fromRGBO(217, 217, 217, 1),
+          color: isSuccess
+              ? MyColors.mainColor
+              : const Color.fromRGBO(217, 217, 217, 1),
         ),
         child: svgIcon(
           path: 'assets/svg_icons/checkmark_delivery.svg',
@@ -40,7 +43,12 @@ Widget shippingDetailsItem({
             ),
           ),
           SizedBox(height: 5.h),
-          if (isLoading) const SmoothLoadingIndicators(),
+          if (isLoading && !isSuccess) const SmoothLoadingIndicators(),
+          if (isSuccess)
+            Text(
+              '10 Dec 04:25 PM, ',
+              style: Styles.styles12w400intergrey121,
+            ),
         ],
       ),
       const Spacer(),

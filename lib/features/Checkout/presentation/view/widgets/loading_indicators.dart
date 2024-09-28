@@ -50,8 +50,9 @@ class _SmoothLoadingIndicatorsState extends State<SmoothLoadingIndicators> {
       effect: ScaleEffect(
         activeDotColor: const Color.fromRGBO(187, 187, 187, 1),
         dotColor: const Color.fromRGBO(217, 217, 217, 1),
-        dotWidth: 5.3.w,
-        dotHeight: 5.3.h,
+        dotWidth: 5.3.r,
+        dotHeight: 5.3.r,
+        radius: 200,
         spacing: 5.w,
         scale: 1.6,
       ),

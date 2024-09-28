@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget overlay({bool? isRtl}) {
+Widget overlay() {
   return Positioned.fill(
     child: FractionallySizedBox(
       widthFactor: 0.7,

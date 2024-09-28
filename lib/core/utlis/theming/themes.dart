@@ -6,9 +6,9 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 
 final ThemeData lightTheme = ThemeData(
   primaryColor: MyColors.mainColor,
-  textTheme: TextTheme(bodyMedium: TextStyle(fontSize: 20.w)),
   scaffoldBackgroundColor: MyColors.mainScaffoldWhiteColor,
   appBarTheme: AppBarTheme(
+    toolbarHeight: 67.h,
     elevation: 20,
     backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
     centerTitle: true,
@@ -28,8 +28,9 @@ final ThemeData lightTheme = ThemeData(
 final ThemeData darkTheme = ThemeData(
   primaryColor: MyColors.mainColor,
   scaffoldBackgroundColor: Colors.black,
-  appBarTheme: const AppBarTheme(
-    systemOverlayStyle: SystemUiOverlayStyle(
+  appBarTheme: AppBarTheme(
+    toolbarHeight: 67.h,
+    systemOverlayStyle: const SystemUiOverlayStyle(
       // Android
       statusBarIconBrightness: Brightness.light,
       statusBarColor: Colors.black,

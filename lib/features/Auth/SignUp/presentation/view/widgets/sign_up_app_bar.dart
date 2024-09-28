@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/language/cubit/locale_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 
 class SignUpAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -40,20 +39,23 @@ class SignUpAppBar extends StatelessWidget implements PreferredSizeWidget {
           GestureDetector(
             onTap: () {
               onLanguageChange(false);
-              context.read<LocaleCubit>().changeLanguage('ar');
+              // context.read<LocaleCubit>().changeLanguage('ar');
             },
             child: Container(
               width: 70.w,
               height: 35.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.r),
-                color: isEn ? Colors.white : const Color.fromRGBO(0, 126, 143, 1),
+                color:
+                    isEn ? Colors.white : const Color.fromRGBO(0, 126, 143, 1),
               ),
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               child: Center(
                 child: Text(
                   "عربي",
-                  style: isEn ? Styles.styles11w600Black : Styles.styles11w600White,
+                  style: isEn
+                      ? Styles.styles11w600Black
+                      : Styles.styles11w600White,
                 ),
               ),
             ),
@@ -62,20 +64,23 @@ class SignUpAppBar extends StatelessWidget implements PreferredSizeWidget {
           GestureDetector(
             onTap: () {
               onLanguageChange(true);
-              context.read<LocaleCubit>().changeLanguage('en');
+              // context.read<LocaleCubit>().changeLanguage('en');
             },
             child: Container(
               width: 70.w,
               height: 35.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.r),
-                color: isEn ? const Color.fromRGBO(0, 126, 143, 1) : Colors.white,
+                color:
+                    isEn ? const Color.fromRGBO(0, 126, 143, 1) : Colors.white,
               ),
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               child: Center(
                 child: Text(
                   "En",
-                  style: isEn ? Styles.styles11w600White : Styles.styles11w600Black,
+                  style: isEn
+                      ? Styles.styles11w600White
+                      : Styles.styles11w600Black,
                 ),
               ),
             ),

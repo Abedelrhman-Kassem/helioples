@@ -4,6 +4,7 @@ import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/radio_animated_widget.dart';
 
 Widget cancelOrderBottomSheet(BuildContext context , String route) {
   return Wrap(
@@ -188,33 +189,7 @@ Widget reasonItem({
       margin: EdgeInsets.symmetric(vertical: 10.h),
       child: Row(
         children: [
-          AnimatedContainer(
-            width: 17.w,
-            height: 17.h,
-            duration: const Duration(milliseconds: 300),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle, // To make it look like a radio button
-              border: Border.all(
-                color: radioValue == itemText
-                    ? const Color.fromRGBO(248, 147, 31, 1)
-                    : const Color.fromRGBO(150, 150, 150, 1),
-                width: 0.88.r,
-              ),
-            ),
-            child: Align(
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                width: 6.38.w,
-                height: 6.38.h,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: radioValue == itemText
-                      ? const Color.fromRGBO(248, 147, 31, 1)
-                      : Colors.transparent,
-                ),
-              ),
-            ),
-          ),
+          radioAnimatedWidget(radioValue == itemText),
           SizedBox(width: 5.w),
           Text(
             itemText,

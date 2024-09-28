@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/egypt_code_widget.dart';
 
@@ -25,7 +24,7 @@ class PhoneNumberRow extends StatelessWidget {
         Padding(
           padding: padding ?? EdgeInsets.only(left: 10.w),
           child: Text(
-            labelText.tr(context),
+            labelText,
             style: Styles.styles14w400NormalBlack,
           ),
         ),

@@ -31,7 +31,7 @@ class _ItemWidgetState extends State<ItemWidget> {
         Navigator.pushNamed(context, productScreen);
       },
       child: Container(
-        width: 113,
+        width: 120,
         padding: const EdgeInsets.symmetric(
           vertical: 7,
           horizontal: 10,
@@ -41,7 +41,7 @@ class _ItemWidgetState extends State<ItemWidget> {
           borderRadius: BorderRadius.circular(15.5),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Row(

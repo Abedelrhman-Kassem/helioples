@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/egypt_code_widget.dart';
@@ -52,9 +51,11 @@ class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
                 children: [
                   Row(
                     children: [
-                     returnArrow(context: context, onTap: (){
-                Navigator.of(context).pop();
-              }),
+                      returnArrow(
+                          context: context,
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          }),
                       SizedBox(
                         width: 70.w,
                       ),
@@ -99,7 +100,7 @@ class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: Text(
-                      "Phone Number".tr(context),
+                      "Phone Number",
                       style: Styles.styles14w400NormalBlack,
                     ),
                   ),
@@ -148,7 +149,7 @@ class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: Text(
-                      "Birthday Date".tr(context),
+                      "Birthday Date",
                       style: Styles.styles14w400NormalBlack,
                     ),
                   ),

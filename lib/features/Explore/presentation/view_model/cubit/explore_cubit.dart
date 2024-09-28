@@ -14,8 +14,10 @@ class ExploreCubit extends Cubit<ExploreState> {
 
   TextEditingController searchController = TextEditingController();
 
+  bool canSearch = false;
+
   void changeSearchExplore(String value) {
-    if (value.length > 3) {
+    if (value.length > 2) {
       canSearch = true;
     } else {
       canSearch = false;
@@ -25,5 +27,10 @@ class ExploreCubit extends Cubit<ExploreState> {
     emit(ChangeSearchExplore());
   }
 
-  bool canSearch = false;
+  bool isSearching = false;
+
+  void changeIsSearching(bool search) {
+    isSearching = search;
+    emit(SearchTapExplore());
+  }
 }

@@ -20,152 +20,164 @@ class ReOrderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: returnArrow(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        return await showModalBottomSheet(
           context: context,
-          onTap: () async {
-            return await showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return exitOrderBottomSheet(context);
-              },
-            );
+          builder: (context) {
+            return exitOrderBottomSheet(context);
           },
-        ),
-        title: const Text('Checkout'),
-        actions: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(100.r),
-                onTap: () async {
-                  return await showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return exitOrderBottomSheet(context);
-                    },
-                  );
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: returnArrow(
+            context: context,
+            onTap: () async {
+              return await showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return exitOrderBottomSheet(context);
                 },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 1.22.r,
-                      color: const Color.fromRGBO(0, 0, 0, 0.1),
+              );
+            },
+          ),
+          title: const Text('Checkout'),
+          actions: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(100.r),
+                  onTap: () async {
+                    return await showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return exitOrderBottomSheet(context);
+                      },
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1.22.r,
+                        color: const Color.fromRGBO(0, 0, 0, 0.1),
+                      ),
+                      shape: BoxShape.circle,
                     ),
-                    shape: BoxShape.circle,
-                  ),
-                  child: svgIcon(
-                    path: 'assets/svg_icons/x-close.svg',
-                    width: 22.93.w,
-                    height: 22.93.h,
-                    color: const Color.fromRGBO(36, 36, 36, 1),
+                    child: svgIcon(
+                      path: 'assets/svg_icons/x-close.svg',
+                      width: 22.93.w,
+                      height: 22.93.h,
+                      color: const Color.fromRGBO(36, 36, 36, 1),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-      body: Container(
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-              'assets/screens_background/grocery_itemsback_ground.png',
+          ],
+        ),
+        body: Container(
+          height: double.infinity,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                'assets/screens_background/grocery_itemsback_ground.png',
+              ),
             ),
           ),
-        ),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(20.r),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15.r),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      'You can edit order’s terms and re-order',
-                      style: Styles.styles17w400interFamily,
-                    ),
-                    SizedBox(height: 10.h),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 18.w),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, checkoutDetailsScreen);
-                          },
-                          borderRadius: BorderRadius.circular(40.r),
-                          splashColor: MyColors.mainColor.withOpacity(0.5),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 64.w,
-                              vertical: 20.h,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: MyColors.mainColor,
-                                width: 2.r,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(20.r),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        'You can edit order’s terms and re-order',
+                        style: Styles.styles17w400interFamily,
+                      ),
+                      SizedBox(height: 10.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 18.w),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, checkoutDetailsScreen);
+                            },
+                            borderRadius: BorderRadius.circular(40.r),
+                            splashColor: MyColors.mainColor.withOpacity(0.5),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 64.w,
+                                vertical: 20.h,
                               ),
-                              borderRadius: BorderRadius.circular(40.r),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                svgIcon(
-                                  path: 'assets/svg_icons/3d-rotate.svg',
-                                  width: 24.w,
-                                  height: 24.h,
+                              decoration: BoxDecoration(
+                                border: Border.all(
                                   color: MyColors.mainColor,
+                                  width: 2.r,
                                 ),
-                                SizedBox(width: 5.w),
-                                Text(
-                                  'Re-Order',
-                                  style: Styles.styles17w500MainColor,
-                                ),
-                              ],
+                                borderRadius: BorderRadius.circular(40.r),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  svgIcon(
+                                    path: 'assets/svg_icons/3d-rotate.svg',
+                                    width: 24.w,
+                                    height: 24.h,
+                                    color: MyColors.mainColor,
+                                  ),
+                                  SizedBox(width: 5.w),
+                                  Text(
+                                    'Re-Order',
+                                    style: Styles.styles17w500MainColor,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.all(20.r),
-                margin: EdgeInsets.symmetric(vertical: 20.h),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(15.r),
+                Container(
+                  padding: EdgeInsets.all(20.r),
+                  margin: EdgeInsets.symmetric(vertical: 20.h),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.9),
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                  child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return itemWidget();
+                    },
+                    itemCount: 4,
+                  ),
                 ),
-                child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return itemWidget();
-                  },
-                  itemCount: 4,
-                ),
-              ),
-              timeScheduleContainer(context , 'Delivery Time'),
-              const DeliveryAddressContainer(),
-              const DeliveryPaymentContianer(),
-              const DeliveryTipsContianer(),
-              const PromoCodeContainer(),
-              paymentDetails(),
-            ],
+                timeScheduleContainer(context , 'Delivery Time'),
+                const DeliveryAddressContainer(),
+                const DeliveryPaymentContianer(),
+                const DeliveryTipsContianer(),
+                const PromoCodeContainer(),
+                paymentDetails(),
+              ],
+            ),
           ),
         ),
       ),

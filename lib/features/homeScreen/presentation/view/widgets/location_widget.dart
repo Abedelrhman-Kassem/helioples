@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
+import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/add_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/delivery_address_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
@@ -24,6 +26,7 @@ class _LocationWidgetState extends State<LocationWidget> {
     return InkWell(
       onTap: () async {
         final Map? result = await showModalBottomSheet(
+          isScrollControlled: true,
           context: context,
           builder: (context) => AddressModalBottomSheet(title: addressTitle),
         );
@@ -61,7 +64,7 @@ class _LocationWidgetState extends State<LocationWidget> {
                 ),
                 RichText(
                   text: TextSpan(
-                    text: 'Delivery Duration:'.tr(context),
+                    text: 'Delivery Duration:',
                     style: Styles.styles13w300interFamily,
                     children: [
                       TextSpan(
@@ -97,8 +100,8 @@ class _LocationWidgetState extends State<LocationWidget> {
                 SizedBox(width: 4.w),
                 svgIcon(
                   path: 'assets/svg_icons/arrow-bottom.svg',
-                  width: 13,
-                  height: 6,
+                  width: 13.w,
+                  height: 6.h,
                   color: const Color.fromRGBO(115, 115, 115, 1),
                 ),
               ],
@@ -121,12 +124,17 @@ class AddressModalBottomSheet extends StatefulWidget {
 }
 
 class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
+  Map<String, String> address = {
+    'title': 'Home',
+    'location': 'Salah Salem Street 44C, Maadi, Cairo',
+  };
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
       children: [
         Container(
-          // height: 200.h,
+          width: double.infinity,
           padding: EdgeInsets.all(20.r),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -137,6 +145,22 @@ class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
           ),
           child: Column(
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Delivery Address',
+                    style: Styles.styles17w700Black,
+                  ),
+                  addWidget(
+                    text: 'Add Address',
+                    onTap: () {
+                      Navigator.pushNamed(context, setLocationScreen);
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.h),
               deliveryAddressWidget(
                 title: 'Home',
                 location: 'Salah Salem Street 44C, Maadi, Cairo',
@@ -144,13 +168,10 @@ class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
                 onTap: () {
                   setState(() {
                     widget.title = 'Home';
-                    Navigator.pop(context, {
-                      'title': 'Home',
-                      'location': 'Salah Salem Street 44C, Maadi, Cairo',
-                    });
                   });
                 },
               ),
+              // SizedBox(height: 10.h),
               deliveryAddressWidget(
                 title: 'Work',
                 location: 'Salah Salem Street 44C, Maadi',
@@ -158,11 +179,27 @@ class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
                 onTap: () {
                   setState(() {
                     widget.title = 'Work';
-                    Navigator.pop(context, {
+                    address = {
                       'title': 'Work',
                       'location': 'Salah Salem Street 44C, Maadi',
-                    });
+                    };
                   });
+                },
+              ),
+              SizedBox(height: 30.h),
+              buttonWidget(
+                color: MyColors.mainColor,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 30.w,
+                  vertical: 20.h,
+                ),
+                borderRadius: 53.r,
+                child: Text(
+                  'Done',
+                  style: Styles.styles17w600White,
+                ),
+                onTap: () {
+                  Navigator.pop(context, address);
                 },
               ),
             ],

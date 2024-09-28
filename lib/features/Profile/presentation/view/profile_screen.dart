@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/background_image.dart';
+import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/Widgets/profile_item.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -52,6 +54,8 @@ class ProfileScreen extends StatelessWidget {
       const ProfileItem(
           imagePath: "assets/svg_icons/logout_icon.svg", label: "Logout"),
     ];
+    
+    HomeLayoutCubit homeLayoutCubit = BlocProvider.of<HomeLayoutCubit>(context);
 
     return Scaffold(
       body: Stack(
@@ -71,10 +75,11 @@ class ProfileScreen extends StatelessWidget {
                       Row(
                         children: [
                           returnArrow(
-                              context: context,
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              }),
+                            context: context,
+                            onTap: () {
+                              homeLayoutCubit.returnIndex(context);
+                            },
+                          ),
                           SizedBox(width: 100.w),
                           Text(
                             "User Profile",

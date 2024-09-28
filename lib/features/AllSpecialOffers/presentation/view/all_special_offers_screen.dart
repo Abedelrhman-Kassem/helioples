@@ -7,15 +7,12 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
 import 'package:negmt_heliopolis/features/AllSpecialOffers/presentation/view_model/cubit/all_special_offer_cubit.dart';
-import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 
 class AllSpecialOffersScreen extends StatelessWidget {
   const AllSpecialOffersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    HomeLayoutCubit homeLayoutCubit = BlocProvider.of<HomeLayoutCubit>(context);
-
     return BlocProvider(
       create: (context) => AllSpecialOfferCubit(),
       child: Scaffold(
@@ -23,7 +20,7 @@ class AllSpecialOffersScreen extends StatelessWidget {
           leading: returnArrow(
             context: context,
             onTap: () {
-              homeLayoutCubit.changeHomeScreen();
+              Navigator.pop(context);
             },
           ),
           title: Text(

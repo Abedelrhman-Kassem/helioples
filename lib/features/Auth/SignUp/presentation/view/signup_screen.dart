@@ -4,17 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/models/language/app_localizations.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/loading_button.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/egypt_code_widget.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/data/model/user.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/repo/sing_up_repo_imp.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/sign_up_cubit/sign_up_cubit.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/sign_up_cubit/sign_up_states.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/Date_picker.dart';
 
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/background_image.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/name_textfield.dart';
@@ -60,7 +57,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SignUpAppBar(
-                    title: "Register".tr(context),
+                    title: "Register",
                     isEn: isEn,
                     onLanguageChange: (bool value) {
                       setState(() {
@@ -95,7 +92,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: Text(
-                      "Phone Number".tr(context),
+                      "Phone Number",
                       style: Styles.styles14w400NormalBlack,
                     ),
                   ),
@@ -144,7 +141,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: Text(
-                      "Birthday Date".tr(context),
+                      "Birthday Date",
                       style: Styles.styles14w400NormalBlack,
                     ),
                   ),
@@ -239,7 +236,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         } else {
                           return Center(
                             child: SignUpCustomButton(
-                              buttonText: "Continue".tr(context),
+                              buttonText: "Continue",
                               onPressed: () {
                                 // User user = User(
                                 //     firstName: firstNameController.text,
@@ -286,14 +283,14 @@ class _SignupScreenState extends State<SignupScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Already Have An Account?".tr(context),
+                          "Already Have An Account?",
                           style: Styles.styles15w400NormalBlack,
                         ),
                         SizedBox(width: 5.w),
                         GestureDetector(
                           onTap: () {},
                           child: Text(
-                            "Login Now".tr(context),
+                            "Login Now",
                             style: Styles.styles15w700Gold,
                           ),
                         ),

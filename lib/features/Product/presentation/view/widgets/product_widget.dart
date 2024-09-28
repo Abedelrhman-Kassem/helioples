@@ -54,8 +54,8 @@ class _ProductWidgetState extends State<ProductWidget> {
                 top: 0,
                 child: HeartWidget(
                   isFavorite: false,
-                  width: 23,
-                  height: 21,
+                  width: 23.w,
+                  height: 21.h,
                 ),
               ),
               Positioned.directional(
@@ -68,9 +68,9 @@ class _ProductWidgetState extends State<ProductWidget> {
                   effect: ExpandingDotsEffect(
                     activeDotColor: MyColors.mainColor,
                     dotColor: const Color.fromRGBO(217, 217, 217, 1),
-                    dotHeight: 4.84.h,
-                    dotWidth: 4.84.w,
-                    expansionFactor: 8.w,
+                    dotHeight: 4.84.r,
+                    dotWidth: 4.84.r,
+                    expansionFactor: 8,
                     spacing: 4.w,
                   ),
                   onDotClicked: (index) {
