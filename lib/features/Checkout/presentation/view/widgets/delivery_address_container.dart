@@ -42,7 +42,7 @@ class _DeliveryAddressContainerState extends State<DeliveryAddressContainer> {
               ),
             ],
           ),
-          SizedBox(height: 20.h),
+          SizedBox(height: 10.h),
           deliveryAddressWidget(
             addressTitleRadioValue: addressRadioValue,
             location: 'Salah Salem Street 44C, Maadi, Cairo',
@@ -53,6 +53,7 @@ class _DeliveryAddressContainerState extends State<DeliveryAddressContainer> {
               });
             },
           ),
+          SizedBox(height: 10.h),
           deliveryAddressWidget(
               addressTitleRadioValue: addressRadioValue,
               location: 'Omar Ibn Al Khatab Street 436A',

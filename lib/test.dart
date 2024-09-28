@@ -5,6 +5,8 @@ class TestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? result;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Custom Modal Example'),
@@ -12,24 +14,39 @@ class TestScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () async {
-            String? result = await showCustomModalBottomSheet(
+            result = await showCustomModalBottomSheet(
               context,
               Material(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pop(context, 'hello');
-                  },
-                  child: Container(
-                      color: Colors.white,
-                      width: double.infinity,
-                      height: 200,
-                      child: Text('hello')),
+                child: Container(
+                  color: Colors.white,
+                  width: double.infinity,
+                  height: 200,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: List.generate(
+                        30,
+                        (index) => ListTile(
+                          title: InkWell(
+                              onTap: () {
+                                Navigator.pop(context, 'Item ${index + 1}');
+                              },
+                              child: Text('Item ${index + 1}')),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             );
             print(result);
           },
-          child: Text('Show Custom Modal'),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Show Custom Modal'),
+              if (result is String) Text(result),
+            ],
+          ),
         ),
       ),
     );

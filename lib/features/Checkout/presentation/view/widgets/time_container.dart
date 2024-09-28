@@ -220,28 +220,29 @@ Widget radioTimeItem({
   required int radioValue,
   required void Function() onTap,
 }) {
-  return AnimatedContainer(
-    duration: const Duration(milliseconds: 300),
-    margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-    decoration: BoxDecoration(
-      color: radioValue == index
-          ? const Color.fromRGBO(248, 147, 31, 0.1)
-          : Colors.transparent,
-      borderRadius: BorderRadius.circular(8.r),
-      border: Border.all(
-        width: 0.5,
-        color: radioValue == index
-            ? const Color.fromRGBO(248, 147, 31, 1)
-            : const Color.fromRGBO(150, 150, 150, 1),
-      ),
-    ),
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: 8.h),
     child: Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         splashColor: const Color.fromRGBO(248, 147, 31, 0.1),
-        child: ListTile(
-          leading: Row(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          padding: EdgeInsets.all(15.r),
+          decoration: BoxDecoration(
+            color: radioValue == index
+                ? const Color.fromRGBO(248, 147, 31, 0.1)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(8.r),
+            border: Border.all(
+              width: 0.5,
+              color: radioValue == index
+                  ? const Color.fromRGBO(248, 147, 31, 1)
+                  : const Color.fromRGBO(150, 150, 150, 1),
+            ),
+          ),
+          child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               if (iconPath is String) ...[
@@ -254,9 +255,10 @@ Widget radioTimeItem({
                 SizedBox(width: 5.w),
               ],
               title,
+              const Spacer(),
+              radioAnimatedWidget(radioValue == index),
             ],
           ),
-          trailing: radioAnimatedWidget(radioValue == index),
         ),
       ),
     ),

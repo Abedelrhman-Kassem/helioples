@@ -54,6 +54,7 @@ class ProfileScreen extends StatelessWidget {
       const ProfileItem(
           imagePath: "assets/svg_icons/logout_icon.svg", label: "Logout"),
     ];
+    
     HomeLayoutCubit homeLayoutCubit = BlocProvider.of<HomeLayoutCubit>(context);
 
     return Scaffold(

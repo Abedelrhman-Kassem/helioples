@@ -118,7 +118,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   ],
                   bottom: ButtonsTabBar(
                     splashColor: MyColors.mainColor,
-                    height: 75.h,
+                    height: 79.h,
                     backgroundColor: const Color.fromRGBO(204, 229, 233, 1),
                     unselectedBackgroundColor: Colors.white,
                     unselectedBorderColor:

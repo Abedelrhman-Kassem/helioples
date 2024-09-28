@@ -100,8 +100,8 @@ class _LocationWidgetState extends State<LocationWidget> {
                 SizedBox(width: 4.w),
                 svgIcon(
                   path: 'assets/svg_icons/arrow-bottom.svg',
-                  width: 13,
-                  height: 6,
+                  width: 13.w,
+                  height: 6.h,
                   color: const Color.fromRGBO(115, 115, 115, 1),
                 ),
               ],
@@ -124,9 +124,13 @@ class AddressModalBottomSheet extends StatefulWidget {
 }
 
 class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
+  Map<String, String> address = {
+    'title': 'Home',
+    'location': 'Salah Salem Street 44C, Maadi, Cairo',
+  };
+
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.width); // 800
     return Wrap(
       children: [
         Container(
@@ -141,6 +145,22 @@ class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
           ),
           child: Column(
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Delivery Address',
+                    style: Styles.styles17w700Black,
+                  ),
+                  addWidget(
+                    text: 'Add Address',
+                    onTap: () {
+                      Navigator.pushNamed(context, setLocationScreen);
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.h),
               deliveryAddressWidget(
                 title: 'Home',
                 location: 'Salah Salem Street 44C, Maadi, Cairo',
@@ -148,13 +168,10 @@ class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
                 onTap: () {
                   setState(() {
                     widget.title = 'Home';
-                    Navigator.pop(context, {
-                      'title': 'Home',
-                      'location': 'Salah Salem Street 44C, Maadi, Cairo',
-                    });
                   });
                 },
               ),
+              // SizedBox(height: 10.h),
               deliveryAddressWidget(
                 title: 'Work',
                 location: 'Salah Salem Street 44C, Maadi',
@@ -162,21 +179,14 @@ class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
                 onTap: () {
                   setState(() {
                     widget.title = 'Work';
-                    Navigator.pop(context, {
+                    address = {
                       'title': 'Work',
                       'location': 'Salah Salem Street 44C, Maadi',
-                    });
+                    };
                   });
                 },
               ),
-              SizedBox(height: 10.h),
-              addWidget(
-                text: 'Add Address',
-                onTap: () {
-                  Navigator.pushNamed(context, setLocationScreen);
-                },
-              ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 30.h),
               buttonWidget(
                 color: MyColors.mainColor,
                 padding: EdgeInsets.symmetric(
@@ -185,11 +195,11 @@ class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
                 ),
                 borderRadius: 53.r,
                 child: Text(
-                  'Save Address',
+                  'Done',
                   style: Styles.styles17w600White,
                 ),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pop(context, address);
                 },
               ),
             ],

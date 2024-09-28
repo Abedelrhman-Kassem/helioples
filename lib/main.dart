@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/bloc_observer.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/language_cache_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/routing/routes.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/themes.dart';
 

@@ -11,28 +11,30 @@ Widget radioItem({
   required int radioValue,
   required Function() onTap,
 }) {
-  return AnimatedContainer(
-    duration: const Duration(milliseconds: 300),
-    margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-    decoration: BoxDecoration(
-      color: radioValue == index
-          ? const Color.fromRGBO(248, 147, 31, 0.1)
-          : Colors.transparent,
-      borderRadius: BorderRadius.circular(8.r),
-      border: Border.all(
-        width: 0.5,
-        color: radioValue == index
-            ? const Color.fromRGBO(248, 147, 31, 1)
-            : const Color.fromRGBO(150, 150, 150, 1),
-      ),
-    ),
+  return Padding(
+    padding: EdgeInsets.all(8.0.r),
     child: Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         splashColor: const Color.fromRGBO(248, 147, 31, 0.1),
-        child: ListTile(
-          leading: Row(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          // margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.h),
+          decoration: BoxDecoration(
+            color: radioValue == index
+                ? const Color.fromRGBO(248, 147, 31, 0.1)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(8.r),
+            border: Border.all(
+              width: 0.5,
+              color: radioValue == index
+                  ? const Color.fromRGBO(248, 147, 31, 1)
+                  : const Color.fromRGBO(150, 150, 150, 1),
+            ),
+          ),
+          child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               svgIcon(
@@ -45,10 +47,11 @@ Widget radioItem({
               Text(
                 title,
                 style: Styles.styles15w400Black,
-              )
+              ),
+              const Spacer(),
+              radioAnimatedWidget(radioValue == index),
             ],
           ),
-          trailing: radioAnimatedWidget(radioValue == index),
         ),
       ),
     ),

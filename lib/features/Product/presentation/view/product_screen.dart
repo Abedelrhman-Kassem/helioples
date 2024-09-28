@@ -29,40 +29,48 @@ class ProductScreen extends StatelessWidget {
           cartCounter(context: context),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const ProductWidget(),
-              SizedBox(height: 30.h),
-              Text(
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: ProductWidget(),
+            ),
+            SizedBox(height: 30.h),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text(
                 'Related Products',
                 style: Styles.styles16w600NormalBlack,
               ),
-              SizedBox(height: 10.h),
-              SizedBox(
-                height: 200,
-                child: ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => ItemWidget(
-                    counter: 0,
-                    isFavorite: false,
+            ),
+            SizedBox(height: 10.h),
+            SizedBox(
+              height: 210,
+              child: ListView(
+                physics: const BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                children: [
+                  const SizedBox(width: 20),
+                  ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) => ItemWidget(
+                      counter: 0,
+                      isFavorite: false,
+                    ),
+                    separatorBuilder: (context, index) => SizedBox(width: 10.w),
+                    itemCount: 10,
                   ),
-                  separatorBuilder: (context, index) => SizedBox(width: 15.w),
-                  itemCount: 10,
-                ),
-              )
-              //             maxCrossAxisExtent: 150,
-              // crossAxisSpacing: 7,
-              // mainAxisSpacing: 10,
-              // childAspectRatio: 1.2 / 2.25,
-            ],
-          ),
+                  const SizedBox(width: 20),
+                ],
+              ),
+            ),
+            SizedBox(height: 100.h),
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
