@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
@@ -17,6 +16,9 @@ class _BranchesRowState extends State<BranchesRow> {
   Color color1 = Colors.grey;
   Color color2 = Colors.grey;
   Color color3 = Colors.grey;
+
+  int selectedBranch = 1;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,8 +31,10 @@ class _BranchesRowState extends State<BranchesRow> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("PickUp Branch" ,
-          style: Styles.styles17w700Black.copyWith(color:  const Color.fromRGBO(41,41,41, 1)),
+          Text(
+            "PickUp Branch",
+            style: Styles.styles17w700Black
+                .copyWith(color: const Color.fromRGBO(41, 41, 41, 1)),
           ),
           SizedBox(
             height: 12.h,
@@ -38,77 +42,35 @@ class _BranchesRowState extends State<BranchesRow> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GestureDetector(
+              branchItem(
+                isSelected: 1 == selectedBranch,
                 onTap: () {
-                  color1 = Colors.white;
-                  color2 = Colors.grey;
-                  color3 = Colors.grey;
-                  setState(() {});
+                  setState(
+                    () {
+                      selectedBranch = 1;
+                    },
+                  );
                 },
-                child: Stack(
-                  children: [
-                    Image.asset("assets/Icons_logos/bracnh_image.png"),
-                    Positioned(
-                      left: 36.w,
-                      top: 30.h,
-                      child: svgIcon(
-                          path: "assets/svg_icons/branch_icon.svg",
-                          color: color1,
-                          width: 50.w,
-                          height: 50.h),
-                    )
-                  ],
-                ),
               ),
-              SizedBox(
-                width: 8.w,
-              ),
-              GestureDetector(
+              branchItem(
+                isSelected: 2 == selectedBranch,
                 onTap: () {
-                  color1 = Colors.grey;
-                  color2 = Colors.white;
-                  color3 = Colors.grey;
-                  setState(() {});
+                  setState(
+                    () {
+                      selectedBranch = 2;
+                    },
+                  );
                 },
-                child: Stack(
-                  children: [
-                    Image.asset("assets/Icons_logos/bracnh_image.png"),
-                    Positioned(
-                      left: 36.w,
-                      top: 30.h,
-                      child: svgIcon(
-                          path: "assets/svg_icons/branch_icon.svg",
-                          color: color2,
-                          width: 50.w,
-                          height: 50.h),
-                    )
-                  ],
-                ),
               ),
-              SizedBox(
-                width: 8.w,
-              ),
-              GestureDetector(
+              branchItem(
+                isSelected: 3 == selectedBranch,
                 onTap: () {
-                  color1 = Colors.grey;
-                  color2 = Colors.grey;
-                  color3 = Colors.white;
-                  setState(() {});
+                  setState(
+                    () {
+                      selectedBranch = 3;
+                    },
+                  );
                 },
-                child: Stack(
-                  children: [
-                    Image.asset("assets/Icons_logos/bracnh_image.png"),
-                    Positioned(
-                      left: 36.w,
-                      top: 30.h,
-                      child: svgIcon(
-                          path: "assets/svg_icons/branch_icon.svg",
-                          color: color3,
-                          width: 50.w,
-                          height: 50.h),
-                    )
-                  ],
-                ),
               ),
             ],
           ),
@@ -116,4 +78,28 @@ class _BranchesRowState extends State<BranchesRow> {
       ),
     );
   }
+}
+
+Widget branchItem({
+  required void Function() onTap,
+  required bool isSelected,
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Stack(
+      alignment: Alignment.center,
+      children: [
+        Image.asset(
+          "assets/Icons_logos/bracnh_image.png",
+          width: 125.w,
+        ),
+        svgIcon(
+          path: "assets/svg_icons/branch_icon.svg",
+          color: isSelected ? Colors.white : Colors.grey,
+          width: 50.w,
+          height: 50.h,
+        ),
+      ],
+    ),
+  );
 }

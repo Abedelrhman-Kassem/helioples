@@ -69,7 +69,7 @@ class CheckoutDetailsScreen extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: bottomSheet(context),
+      floatingActionButton: bottomSheet(context, reOrderScreen),
     );
   }
 }
@@ -466,10 +466,11 @@ Widget bottomSheet(BuildContext context, String route) {
             splashColor: MyColors.mainColor,
             onTap: () async {
               return showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return cancelOrderBottomSheet(context, route);
-                  });
+                context: context,
+                builder: (context) {
+                  return cancelOrderBottomSheet(context, route);
+                },
+              );
             },
             child: Container(
               width: 284.w,

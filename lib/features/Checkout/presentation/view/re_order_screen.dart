@@ -5,10 +5,9 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_delivery_screen.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/exit_order_bottom_sheet.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/delivery_address_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/delivery_payment_contianer.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/exit_order_bottom_sheet.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/time_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/delivery_tips_contianer.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/item_widget.dart';
@@ -46,40 +45,6 @@ class ReOrderScreen extends StatelessWidget {
             },
           ),
           title: const Text('Checkout'),
-          actions: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(100.r),
-                  onTap: () async {
-                    return await showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return exitOrderBottomSheet(context);
-                      },
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1.22.r,
-                        color: const Color.fromRGBO(0, 0, 0, 0.1),
-                      ),
-                      shape: BoxShape.circle,
-                    ),
-                    child: svgIcon(
-                      path: 'assets/svg_icons/x-close.svg',
-                      width: 22.93.w,
-                      height: 22.93.h,
-                      color: const Color.fromRGBO(36, 36, 36, 1),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
         ),
         body: Container(
           height: double.infinity,
@@ -170,7 +135,7 @@ class ReOrderScreen extends StatelessWidget {
                     itemCount: 4,
                   ),
                 ),
-                timeScheduleContainer(context , 'Delivery Time'),
+                timeScheduleContainer(context, 'Delivery Time'),
                 const DeliveryAddressContainer(),
                 const DeliveryPaymentContianer(),
                 const DeliveryTipsContianer(),
@@ -181,7 +146,6 @@ class ReOrderScreen extends StatelessWidget {
           ),
         ),
       ),
-      
     );
   }
 }
