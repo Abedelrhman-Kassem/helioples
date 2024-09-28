@@ -27,6 +27,9 @@ const String faqsScreen = '/faqs_screen';
 const String reOrderScreen = '/reorder_screen';
 const String checkoutDetailsScreen = '/checkout_details_screen';
 const String cardScreen = '/card_screen';
+const String pickUpScreen = '/pickUp_screen';
+const String pickupOrderDetails = '/pick_up_order_details';
+const String pickupReorderScreen = '/pick_up_re_order_screen';
 
 // fontfamily
 const String sFProTextFamily = 'SFProText';

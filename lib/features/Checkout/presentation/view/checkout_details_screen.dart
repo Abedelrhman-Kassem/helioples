@@ -186,9 +186,24 @@ Widget paymentContainer() {
                 color: const Color.fromRGBO(41, 41, 41, 1),
               ),
               SizedBox(width: 20.w),
-              Text(
-                'Cash on delivery',
-                style: Styles.styles15w400Black,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Cash on delivery',
+                    style:
+                        Styles.styles15w400Black.copyWith(color: Colors.black),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    "Total 210.00 EGP",
+                    style:
+                        Styles.styles12w400black.copyWith(color: Colors.black),
+                  )
+                ],
               ),
               const Spacer(),
               Container(
@@ -324,7 +339,16 @@ Widget paymentDetails(BuildContext context) {
       borderRadius: BorderRadius.circular(15.r),
     ),
     child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text(
+          "Order Summery",
+          style: Styles.styles17w700Black
+              .copyWith(color: const Color.fromRGBO(41, 41, 41, 1)),
+        ),
+        SizedBox(
+          height: 10.h,
+        ),
         Row(
           children: [
             Text(
@@ -397,7 +421,7 @@ Widget paymentDetails(BuildContext context) {
   );
 }
 
-Widget bottomSheet(BuildContext context) {
+Widget bottomSheet(BuildContext context, String route) {
   return Container(
     padding: EdgeInsets.all(20.r),
     decoration: BoxDecoration(
@@ -444,7 +468,7 @@ Widget bottomSheet(BuildContext context) {
               return showModalBottomSheet(
                   context: context,
                   builder: (context) {
-                    return cancelOrderBottomSheet(context);
+                    return cancelOrderBottomSheet(context, route);
                   });
             },
             child: Container(

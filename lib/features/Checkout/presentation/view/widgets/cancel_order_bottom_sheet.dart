@@ -6,7 +6,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_animated_widget.dart';
 
-Widget cancelOrderBottomSheet(BuildContext context) {
+Widget cancelOrderBottomSheet(BuildContext context , String route) {
   return Wrap(
     children: [
       Container(
@@ -46,7 +46,7 @@ Widget cancelOrderBottomSheet(BuildContext context) {
                       return showModalBottomSheet(
                         context: context,
                         builder: (context) {
-                          return const ReasonBottomSheet();
+                          return  ReasonBottomSheet(routee: route,);
                         },
                       );
                     },
@@ -85,7 +85,12 @@ Widget cancelOrderBottomSheet(BuildContext context) {
 }
 
 class ReasonBottomSheet extends StatefulWidget {
-  const ReasonBottomSheet({super.key});
+  String routee ; 
+   ReasonBottomSheet({
+    super.key,
+    required this.routee, 
+  });
+
 
   @override
   State<ReasonBottomSheet> createState() => _ReasonBottomSheetState();
@@ -159,7 +164,7 @@ class _ReasonBottomSheetState extends State<ReasonBottomSheet> {
                 onTap: () {
                   Navigator.pushNamedAndRemoveUntil(
                     context,
-                    reOrderScreen,
+                    widget.routee,
                     (route) => false,
                   );
                 },

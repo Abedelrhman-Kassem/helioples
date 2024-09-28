@@ -5,6 +5,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_item.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view/pick_up_screen.dart';
 
 class ModalBottomSheet extends StatefulWidget {
   const ModalBottomSheet({super.key});
@@ -79,7 +80,15 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
               InkWell(
                 borderRadius: BorderRadius.circular(36.77.r),
                 onTap: () {
-                  Navigator.pushNamed(context, checkoutScreen);
+                  if(0 == radioValue)
+                  {
+                    Navigator.pushNamed(context, checkoutScreen);
+
+                  } else if (1 == radioValue)
+                  {
+                    Navigator.pushNamed(context, pickUpScreen) ; 
+                  }
+                  
                 },
                 child: Container(
                   width: 284.w,
