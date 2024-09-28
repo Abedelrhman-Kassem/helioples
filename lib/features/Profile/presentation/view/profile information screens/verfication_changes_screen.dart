@@ -32,7 +32,7 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
   final FocusNode _focusNode3 = FocusNode();
-  final FocusNode _focusNode4 = FocusNode();
+  final FocusNode _focusNode4 = FocusNode();       
   final CountdownController _countdownController =
       CountdownController(autoStart: true);
 
@@ -88,9 +88,11 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                   children: [
                     Row(
                       children: [
-                        returnArrow(context: context, onTap: (){
-                Navigator.of(context).pop();
-              }),
+                        returnArrow(
+                            context: context,
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            }),
                         SizedBox(
                           width: 65.w,
                         ),
@@ -185,8 +187,27 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                                               topRight: Radius.circular(30.r))),
                                       child: Column(
                                         children: [
-                                          Image.asset(
-                                              "assets/Icons_logos/Property 1=Group 13.png"),
+                                          SizedBox(
+                                            height: 30.h,
+                                          ),
+                                          TweenAnimationBuilder(
+                                              tween: Tween<double>(
+                                                  begin: 10, end: 150),
+                                              duration:
+                                                  const Duration(seconds: 1),
+                                              child:Center(
+                                                child: Image.asset(
+                                                        "assets/Icons_logos/Property 1=Group 13.png"),
+                                              ), 
+                                              builder: (BuildContext context,
+                                                  double value, Widget? child) {
+                                                return Container(
+                                                  width: value,
+                                                  height: value,
+                                                  child: child,
+                                                );
+                                              }),
+                                          const Spacer(),
                                           Center(
                                             child: SizedBox(
                                               width: 340.w,
@@ -211,7 +232,10 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                                               onPressed: () {
                                                 Navigator.of(context)
                                                     .pushNamed(homeLayout);
-                                              })
+                                              }),
+                                        SizedBox(
+                                          height: 20.h,
+                                        )
                                         ],
                                       ),
                                     ),

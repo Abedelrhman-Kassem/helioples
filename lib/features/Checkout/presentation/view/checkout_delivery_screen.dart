@@ -57,7 +57,7 @@ class CheckoutScreen extends StatelessWidget {
                   itemCount: 4,
                 ),
               ),
-              timeScheduleContainer(context),
+              timeScheduleContainer(context , 'Delivery Time'),
               const DeliveryAddressContainer(),
               const DeliveryPaymentContianer(),
               const DeliveryTipsContianer(),
@@ -69,12 +69,12 @@ class CheckoutScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomSheet: bottomSheet(context),
+      bottomSheet: bottomSheet(context , checkoutDetailsScreen),
     );
   }
 }
 
-Widget bottomSheet(BuildContext context) {
+Widget bottomSheet(BuildContext context , String route) {
   return Container(
     padding: EdgeInsets.all(20.r),
     decoration: BoxDecoration(
@@ -118,7 +118,7 @@ Widget bottomSheet(BuildContext context) {
             borderRadius: BorderRadius.circular(36.77.r),
             splashColor: MyColors.mainColor,
             onTap: () {
-              Navigator.pushNamed(context, checkoutDetailsScreen);
+              Navigator.pushNamed(context, route);
             },
             child: Container(
               width: 284.w,

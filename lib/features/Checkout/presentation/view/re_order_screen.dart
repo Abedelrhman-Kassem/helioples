@@ -5,6 +5,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_delivery_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/exit_order_bottom_sheet.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/delivery_address_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/delivery_payment_contianer.dart';
@@ -158,7 +159,7 @@ class ReOrderScreen extends StatelessWidget {
                   itemCount: 4,
                 ),
               ),
-              timeScheduleContainer(context),
+              timeScheduleContainer(context , 'Delivery Time'),
               const DeliveryAddressContainer(),
               const DeliveryPaymentContianer(),
               const DeliveryTipsContianer(),
@@ -168,6 +169,7 @@ class ReOrderScreen extends StatelessWidget {
           ),
         ),
       ),
+      
     );
   }
 }

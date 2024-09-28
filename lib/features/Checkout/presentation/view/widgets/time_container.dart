@@ -4,7 +4,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
-Widget timeScheduleContainer(BuildContext context) {
+Widget timeScheduleContainer(BuildContext context , String title) {
   return Container(
     padding: EdgeInsets.all(20.r),
     margin: EdgeInsets.symmetric(vertical: 10.h),
@@ -20,7 +20,7 @@ Widget timeScheduleContainer(BuildContext context) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Delivery Time',
+              title,
               style: Styles.styles17w700Black,
             ),
             SizedBox(height: 20.h),

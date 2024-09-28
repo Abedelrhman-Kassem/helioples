@@ -16,6 +16,9 @@ import 'package:negmt_heliopolis/features/Categories/presentation/view/categorie
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/card_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_delivery_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_details_screen.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view/pick_up_screen.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view/pickup_order_details._screen.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view/pickup_reorder_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/re_order_screen.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view/home_layout.dart';
 import 'package:negmt_heliopolis/features/Intro/presentation/view/intro_screen.dart';
@@ -184,6 +187,18 @@ class AppRouter {
         page = const ReOrderScreen();
         fromRight = false;
         break;
+      case pickUpScreen :
+        page = const PickUpScreen() ;
+        fromRight = false ;
+        break ; 
+      case pickupOrderDetails : 
+        page = const PickupOrderDetails();
+        fromRight = false ;
+        break ;
+      case pickupReorderScreen : 
+        page = const PickupReorderScreen() ; 
+        fromRight = false ;
+        break ;  
 
       default:
         page = const PageNotFoundScreen();
