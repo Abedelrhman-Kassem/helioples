@@ -69,7 +69,8 @@ class CheckoutScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomSheet: bottomSheet(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: bottomSheet(context),
     );
   }
 }

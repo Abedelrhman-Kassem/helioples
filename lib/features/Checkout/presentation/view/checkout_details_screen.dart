@@ -68,7 +68,8 @@ class CheckoutDetailsScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomSheet: bottomSheet(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: bottomSheet(context),
     );
   }
 }
@@ -400,7 +401,7 @@ Widget bottomSheet(BuildContext context) {
   return Container(
     padding: EdgeInsets.all(20.r),
     decoration: BoxDecoration(
-      color: Colors.white.withOpacity(0.9),
+      color: Colors.white,
       borderRadius: BorderRadius.circular(15.r),
     ),
     child: Column(

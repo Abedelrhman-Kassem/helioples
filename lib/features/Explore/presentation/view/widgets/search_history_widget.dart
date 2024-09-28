@@ -10,7 +10,7 @@ Widget searchHistoryWidget(BuildContext context, String text) {
   return InkWell(
     onTap: () {
       print(text);
-      exploreCubit.changeSearchExplore(text);
+      exploreCubit.getSearchApi(text);
     },
     child: Container(
       padding: EdgeInsets.symmetric(
