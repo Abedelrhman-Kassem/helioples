@@ -93,11 +93,21 @@ Widget branchItem({
           "assets/Icons_logos/bracnh_image.png",
           width: 125.w,
         ),
-        svgIcon(
-          path: "assets/svg_icons/branch_icon.svg",
-          color: isSelected ? Colors.white : Colors.grey,
-          width: 50.w,
-          height: 50.h,
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            svgIcon(
+              path: "assets/svg_icons/branch_icon.svg",
+              color: isSelected ? Colors.white : Colors.white.withOpacity(0.3),
+              width: 50.w,
+              height: 50.h,
+            ),
+            SizedBox(height: 5.h),
+            Text(
+              'Eldabaa Branch',
+              style: Styles.styles11w600White,
+            ),
+          ],
         ),
       ],
     ),

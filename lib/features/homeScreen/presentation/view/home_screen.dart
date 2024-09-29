@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -207,6 +208,11 @@ class HomeScreen extends StatelessWidget {
                     if (state is FetchCategoriesSuccess) {
                       getCategories = true;
                       categories = state.categories.categories!;
+                    }
+                    if (state is FetchCategoriesFailure) {
+                      if (kDebugMode) {
+                        print(state.message);
+                      }
                     }
                   },
                   builder: (context, state) {
