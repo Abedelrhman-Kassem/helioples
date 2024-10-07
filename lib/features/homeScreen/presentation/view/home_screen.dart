@@ -220,7 +220,7 @@ class HomeScreen extends StatelessWidget {
                         BlocProvider.of<HomeScreenCubit>(context);
 
                     if (!getCategories) {
-                      homeScreenCubit.getAllCategories();
+                      // homeScreenCubit.getAllCategories();
                     }
 
                     return Column(

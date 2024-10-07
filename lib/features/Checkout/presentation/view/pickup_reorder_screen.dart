@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
-import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/banches_row.dart';
@@ -99,7 +97,6 @@ class PickupReorderScreen extends StatelessWidget {
               const BranchesRow(),
               const PromoCodeContainer(),
               paymentDetails(),
-              
             ],
           ),
         ),

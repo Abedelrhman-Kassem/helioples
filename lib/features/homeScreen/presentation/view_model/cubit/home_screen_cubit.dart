@@ -17,17 +17,22 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
     isCategoryRow = !isCategoryRow;
     emit(ChangeHomeScreenCategory());
   }
-  
 
-  GetCategoriesImp getCategoriesImp = GetCategoriesImp(apiService: ApiService());
+  GetCategoriesImp getCategoriesImp = GetCategoriesImp(
+    apiService: ApiService(),
+  );
   AllCategoriesModel allCategoriesModel = AllCategoriesModel.fromJson({});
 
   Future<void> getAllCategories() async {
     Either<Failure, AllCategoriesModel> res =
         await getCategoriesImp.getAllCategories();
     res.fold(
-      (failure) => emit(FetchCategoriesFailure(failure.errorMessage)),
-      (categories) => emit(FetchCategoriesSuccess(categories)),
+      (failure) => emit(
+        FetchCategoriesFailure(failure.errorMessage),
+      ),
+      (categories) => emit(
+        FetchCategoriesSuccess(categories),
+      ),
     );
   }
 }
