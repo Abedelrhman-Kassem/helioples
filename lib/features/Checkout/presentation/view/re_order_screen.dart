@@ -22,7 +22,7 @@ class ReOrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {
+      onPopInvoked: (didPop) async {
         return await showModalBottomSheet(
           context: context,
           builder: (context) {
