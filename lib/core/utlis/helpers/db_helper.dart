@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:negmt_heliopolis/core/constants/constants.dart';
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -9,18 +10,23 @@ class DBHelper {
 
   static init() async {
     var databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'inventory.db');
+    String path = join(databasesPath, DB_Name);
     database = await openDatabase(
       path,
       version: 1,
       onCreate: (db, version) async {
         try {
-          // await db.execute(
-          //     'CREATE TABLE ReceivedHeader (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, reference_no TEXT NOT NULL, store_no TEXT, location_code TEXT NOT NULL, counted_data TEXT, is_sent TEXT)');
-          // print('table 1 created');
-
-          await db.execute(
-              'CREATE TABLE table (id INTEGER PRIMARY KEY AUTOINCREMENT, document_no TEXT)');
+          await db.execute('''
+              CREATE TABLE $cartItemTable (
+              $cartItemId INTEGER PRIMARY KEY,
+              $cartItemName TEXT NOT NULL,
+              $cartItemDesc TEXT NOT NULL,
+              $cartItemQty INTEGER NOT NULL,
+              $cartItemImageUrl TEXT NOT NULL,
+              $cartItemPcs INTEGER NOT NULL,
+              $cartItemPrice REAL NOT NULL
+              )
+            ''');
         } catch (e) {
           if (kDebugMode) {
             print(e.toString());
@@ -37,7 +43,11 @@ class DBHelper {
     required String table,
     required Map<String, dynamic> values,
   }) async {
-    return await database.insert(table, values);
+    return await database.insert(
+      table,
+      values,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   static Future<List<Map<String, Object?>>> queryData({
@@ -80,12 +90,6 @@ class DBHelper {
     );
   }
 
-  // static void createTable(Database db) async {
-  //   await db.execute(
-  //       'CREATE TABLE ReceivedItems (id INTEGER PRIMARY KEY AUTOINCREMENT, document_no TEXT NOT NULL, barcode_value TEXT NOT NULL, description TEXT, quantity INTEGER)');
-  //   print('table 2 created');
-  // }
-
   static Future<List<String>> getTables(Database database) async {
     List<Map<String, Object?>> tables = await database
         .rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
@@ -98,7 +102,7 @@ class DBHelper {
 
   static Future<void> deleteDB() async {
     String databasePath = await getDatabasesPath();
-    String path = join(databasePath, 'inventory.db');
+    String path = join(databasePath, DB_Name);
     return await deleteDatabase(path);
   }
 }

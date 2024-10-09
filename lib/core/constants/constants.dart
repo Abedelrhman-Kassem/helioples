@@ -34,3 +34,17 @@ const String pickupReorderScreen = '/pick_up_re_order_screen';
 // fontfamily
 const String sFProTextFamily = 'SFProText';
 const String interFamily = 'Inter';
+
+// DB
+// ignore: constant_identifier_names
+const String DB_Name = 'negma.db';
+
+// DB CARTITEM TABLE
+const String cartItemTable = 'cartItems';
+const String cartItemId = 'id';
+const String cartItemName = 'name';
+const String cartItemDesc = 'desc';
+const String cartItemQty = 'quantity';
+const String cartItemImageUrl = 'imageUrl';
+const String cartItemPcs = 'pcs';
+const String cartItemPrice = 'price';

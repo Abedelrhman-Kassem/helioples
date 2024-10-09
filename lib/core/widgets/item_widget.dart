@@ -28,7 +28,11 @@ class _ItemWidgetState extends State<ItemWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, productScreen);
+        Navigator.pushNamed(
+          context,
+          productScreen,
+          arguments: {'productId': 1},
+        );
       },
       child: Container(
         width: 120,

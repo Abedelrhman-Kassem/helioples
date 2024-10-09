@@ -122,7 +122,10 @@ class AppRouter {
         break;
 
       case productScreen:
-        page = const ProductScreen();
+        final args = settings.arguments as Map<String, dynamic>;
+        page = ProductScreen(
+          productId: args['productId'],
+        );
         fromRight = false;
         break;
 
