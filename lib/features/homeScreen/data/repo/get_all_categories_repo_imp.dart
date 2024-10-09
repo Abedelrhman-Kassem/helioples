@@ -12,12 +12,11 @@ class GetCategoriesImp extends GetCategories {
 
   @override
   Future<Either<Failure, AllCategoriesModel>> getAllCategories() async {
-
     AllCategoriesModel allCategoriesModel = AllCategoriesModel.fromJson({});
     try {
       allCategoriesModel = AllCategoriesModel.fromJson(
-          await apiService.get(endpoint: 'api/categories'));
-
+        await apiService.get(endpoint: 'api/categories'),
+      );
 
       return right(allCategoriesModel);
     } catch (e) {

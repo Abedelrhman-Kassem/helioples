@@ -54,7 +54,13 @@ class ExploreScreen extends StatelessWidget {
                     onTap: () {
                       exploreCubit.changeIsSearching(false);
                     },
-                    child: Text('cancel'),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5.w),
+                      child: Text(
+                        'cancel',
+                        style: Styles.styles12w400MainColor,
+                      ),
+                    ),
                   )
                 else
                   SizedBox(width: 25.r),
@@ -92,7 +98,7 @@ class ExploreScreen extends StatelessWidget {
                   style: Styles.styles14w400MainColor,
                   onChanged: (value) {
                     if (value.isNotEmpty) {
-                      exploreCubit.changeSearchExplore(value.trim());
+                      exploreCubit.getSearchApi(value.trim());
                     }
                   },
                 ),

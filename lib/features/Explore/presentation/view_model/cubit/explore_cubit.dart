@@ -16,8 +16,8 @@ class ExploreCubit extends Cubit<ExploreState> {
 
   bool canSearch = false;
 
-  void changeSearchExplore(String value) {
-    if (value.length > 2) {
+  void getSearchApi(String value) {
+    if (value.length > 1) {
       canSearch = true;
     } else {
       canSearch = false;

@@ -8,7 +8,10 @@ class ApiService {
   Dio dio = Dio();
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
-  var headers = {'Content-Type': 'application/json'};
+  var mainHeader = {
+    'Content-Type': 'application/json',
+    'pass': 'GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+  };
 
   Future<void> setAuthorizationHeader() async {
     try {
@@ -34,14 +37,6 @@ class ApiService {
     }
   }
 
-  Future<Response> addPet({
-    required String endPoints,
-    required Map<String, dynamic> data,
-  }) async {
-    FormData formData = FormData.fromMap(data);
-    return await dio.post('$baseUrl$endPoints', data: formData);
-  }
-
   Future<Response> post(
       {required String endPoints, required Map<String, dynamic> data}) async {
     try {
@@ -50,7 +45,7 @@ class ApiService {
         data: data,
         options: Options(
           method: 'POST',
-          headers: headers,
+          headers: mainHeader,
         ),
       );
       return response;
@@ -60,13 +55,21 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> get({required String endpoint}) async {
+  Future<Map<String, dynamic>> get({
+    required String endpoint,
+    Map<String, String>? headers,
+  }) async {
     // await setAuthorizationHeader();
     // print('Request Headers: ${dio.options.headers}');
     // print(endpoint);
+
+    mainHeader.addAll(headers ?? {});
     try {
       var response = await dio.get(
         '$baseUrl$endpoint',
+        options: Options(
+          headers: mainHeader,
+        ),
       );
       return response.data;
     } catch (e) {
@@ -80,7 +83,7 @@ class ApiService {
         '$baseUrl$endPoints',
         options: Options(
           method: 'DELETE',
-          headers: headers,
+          headers: mainHeader,
         ),
       );
       return response;
@@ -102,7 +105,7 @@ class ApiService {
         data: data,
         options: Options(
           method: 'PUT',
-          headers: headers,
+          headers: mainHeader,
         ),
       );
       return response;

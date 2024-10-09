@@ -57,7 +57,7 @@ class CheckoutScreen extends StatelessWidget {
                   itemCount: 4,
                 ),
               ),
-              timeScheduleContainer(context , 'Delivery Time'),
+              timeScheduleContainer(context, 'Delivery Time'),
               const DeliveryAddressContainer(),
               const DeliveryPaymentContianer(),
               const DeliveryTipsContianer(),
@@ -69,16 +69,17 @@ class CheckoutScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomSheet: bottomSheet(context , checkoutDetailsScreen),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: bottomSheet(context, checkoutDetailsScreen),
     );
   }
 }
 
-Widget bottomSheet(BuildContext context , String route) {
+Widget bottomSheet(BuildContext context, String route) {
   return Container(
     padding: EdgeInsets.all(20.r),
     decoration: BoxDecoration(
-      color: Colors.white.withOpacity(0.9),
+      color: Colors.white,
       borderRadius: BorderRadius.circular(15.r),
     ),
     child: Column(

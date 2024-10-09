@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -208,13 +209,18 @@ class HomeScreen extends StatelessWidget {
                       getCategories = true;
                       categories = state.categories.categories!;
                     }
+                    if (state is FetchCategoriesFailure) {
+                      if (kDebugMode) {
+                        print(state.message);
+                      }
+                    }
                   },
                   builder: (context, state) {
                     HomeScreenCubit homeScreenCubit =
                         BlocProvider.of<HomeScreenCubit>(context);
 
                     if (!getCategories) {
-                      homeScreenCubit.getAllCategories();
+                      // homeScreenCubit.getAllCategories();
                     }
 
                     return Column(

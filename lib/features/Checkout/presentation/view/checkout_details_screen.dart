@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -71,7 +68,8 @@ class CheckoutDetailsScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomSheet: bottomSheet(context , reOrderScreen),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: bottomSheet(context, reOrderScreen),
     );
   }
 }
@@ -188,22 +186,24 @@ Widget paymentContainer() {
                 color: const Color.fromRGBO(41, 41, 41, 1),
               ),
               SizedBox(width: 20.w),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
                     'Cash on delivery',
-                    style: Styles.styles15w400Black.copyWith(color: Colors.black),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Text(
-                      "Total 210.00 EGP" , 
-                      style: Styles.styles12w400black.copyWith(color: Colors.black),
-                    )
-                  ],
+                    style:
+                        Styles.styles15w400Black.copyWith(color: Colors.black),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    "Total 210.00 EGP",
+                    style:
+                        Styles.styles12w400black.copyWith(color: Colors.black),
+                  )
+                ],
               ),
               const Spacer(),
               Container(
@@ -339,12 +339,12 @@ Widget paymentDetails(BuildContext context) {
       borderRadius: BorderRadius.circular(15.r),
     ),
     child: Column(
-      
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Order Summery", 
-          style: Styles.styles17w700Black.copyWith(color: const Color.fromRGBO(41,41,41,1)),
+          "Order Summery",
+          style: Styles.styles17w700Black
+              .copyWith(color: const Color.fromRGBO(41, 41, 41, 1)),
         ),
         SizedBox(
           height: 10.h,
@@ -421,11 +421,11 @@ Widget paymentDetails(BuildContext context) {
   );
 }
 
-Widget bottomSheet(BuildContext context , String route) {
+Widget bottomSheet(BuildContext context, String route) {
   return Container(
     padding: EdgeInsets.all(20.r),
     decoration: BoxDecoration(
-      color: Colors.white.withOpacity(0.9),
+      color: Colors.white,
       borderRadius: BorderRadius.circular(15.r),
     ),
     child: Column(
@@ -466,10 +466,11 @@ Widget bottomSheet(BuildContext context , String route) {
             splashColor: MyColors.mainColor,
             onTap: () async {
               return showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return cancelOrderBottomSheet(context , route);
-                  });
+                context: context,
+                builder: (context) {
+                  return cancelOrderBottomSheet(context, route);
+                },
+              );
             },
             child: Container(
               width: 284.w,

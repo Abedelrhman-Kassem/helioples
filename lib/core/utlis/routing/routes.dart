@@ -44,7 +44,7 @@ class AppRouter {
     switch (settings.name) {
       case intialRoute:
       case introScreen:
-        page = const TestScreen();
+        // page = const TestScreen();
         page = const IntroScreen();
         fromRight = false;
         break;
@@ -188,18 +188,18 @@ class AppRouter {
         page = const ReOrderScreen();
         fromRight = false;
         break;
-      case pickUpScreen :
-        page = const PickUpScreen() ;
-        fromRight = false ;
-        break ; 
-      case pickupOrderDetails : 
+      case pickUpScreen:
+        page = const PickUpScreen();
+        fromRight = false;
+        break;
+      case pickupOrderDetails:
         page = const PickupOrderDetails();
-        fromRight = false ;
-        break ;
-      case pickupReorderScreen : 
-        page = const PickupReorderScreen() ; 
-        fromRight = false ;
-        break ;  
+        fromRight = false;
+        break;
+      case pickupReorderScreen:
+        page = const PickupReorderScreen();
+        fromRight = false;
+        break;
 
       default:
         page = const PageNotFoundScreen();

@@ -38,35 +38,31 @@ class PickUpScreen extends StatelessWidget {
             children: [
               Container(
                 padding: EdgeInsets.all(20.r),
-                margin: EdgeInsets.symmetric(vertical: 20.h ) ,
+                margin: EdgeInsets.symmetric(vertical: 20.h),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.9),
                   borderRadius: BorderRadius.circular(15.r),
-
                 ),
                 child: ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemBuilder: (context , index)
-                  {
+                  itemBuilder: (context, index) {
                     return itemWidget();
-                  }  ,
-                  itemCount: 4 ,
+                  },
+                  itemCount: 4,
                 ),
-
               ),
-              timeScheduleContainer(context , 'Pickup Time'),
+              timeScheduleContainer(context, 'Pickup Time'),
               const BranchesRow(),
-              
               const PromoCodeContainer(),
               paymentDetails(),
               SizedBox(height: 160.h),
-
             ],
           ),
         ),
       ),
-      bottomSheet: bottomSheet(context , pickupOrderDetails),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: bottomSheet(context, pickupOrderDetails),
     );
   }
 }

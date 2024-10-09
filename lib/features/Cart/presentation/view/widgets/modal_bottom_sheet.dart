@@ -5,7 +5,6 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_item.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view/pick_up_screen.dart';
 
 class ModalBottomSheet extends StatefulWidget {
   const ModalBottomSheet({super.key});

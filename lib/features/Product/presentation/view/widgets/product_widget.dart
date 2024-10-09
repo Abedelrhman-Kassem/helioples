@@ -5,10 +5,12 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/heart_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_counter_widget.dart';
+import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductWidget extends StatefulWidget {
-  const ProductWidget({super.key});
+  final Product product;
+  const ProductWidget({super.key, required this.product});
 
   @override
   State<ProductWidget> createState() => _ProductWidgetState();
@@ -40,12 +42,13 @@ class _ProductWidgetState extends State<ProductWidget> {
                 itemCount: 3,
                 controller: _pageController,
                 itemBuilder: (context, index) => Helper.loadNetworkImage(
+                  url: widget.product.thumbnailImage ?? '',
                   assetsErrorPath: 'assets/test_images/white-toast.png',
                   fit: BoxFit.contain,
                 ),
               ),
               Text(
-                'In Stock',
+                widget.product.state!,
                 style: Styles.styles14w400Gold,
               ),
               Positioned.directional(
@@ -89,7 +92,7 @@ class _ProductWidgetState extends State<ProductWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Whole White Toast',
+              widget.product.description!,
               style: Styles.styles18w500BlackWhite,
             ),
             ItemCounterWidget(
@@ -103,9 +106,10 @@ class _ProductWidgetState extends State<ProductWidget> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '1 Pcs',
+                  '${widget.product.availabelPieces!} Pcs',
                   style: Styles.styles14w400NormalBlack,
                 ),
                 Text(
@@ -118,7 +122,8 @@ class _ProductWidgetState extends State<ProductWidget> {
               children: [
                 RichText(
                   text: TextSpan(
-                    text: '80.25',
+                    text:
+                        '${widget.product.afterDiscount ?? widget.product.price}',
                     style: Styles.styles25w900MainColor,
                     children: [
                       TextSpan(
@@ -129,32 +134,33 @@ class _ProductWidgetState extends State<ProductWidget> {
                   ),
                 ),
                 SizedBox(height: 10.h),
-                Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 17.w,
-                        vertical: 8.h,
+                if (widget.product.afterDiscount != null)
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 17.w,
+                          vertical: 8.h,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.r),
+                          color: const Color.fromRGBO(254, 237, 229, 1),
+                        ),
+                        child: Text(
+                          '12% off',
+                          style: Styles.styles12w600Gold,
+                        ),
                       ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.r),
-                        color: const Color.fromRGBO(254, 237, 229, 1),
-                      ),
-                      child: Text(
-                        '12% off',
-                        style: Styles.styles12w600Gold,
-                      ),
-                    ),
-                    SizedBox(width: 10.w),
-                    Text(
-                      '90.25 EGP',
-                      style: Styles.styles12w600Black.copyWith(
-                        decoration: TextDecoration.lineThrough,
-                      ),
-                      // selectionColor: Colors.red,
-                    )
-                  ],
-                ),
+                      SizedBox(width: 10.w),
+                      Text(
+                        '${widget.product.price}',
+                        style: Styles.styles12w600Black.copyWith(
+                          decoration: TextDecoration.lineThrough,
+                        ),
+                        // selectionColor: Colors.red,
+                      )
+                    ],
+                  ),
               ],
             ),
           ],
