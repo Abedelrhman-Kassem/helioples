@@ -194,8 +194,8 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                                               tween: Tween<double>(
                                                   begin: 10, end: 150),
                                               duration:
-                                                  const Duration(seconds: 1),
-                                              child:Center(
+                                                  const Duration(milliseconds: 2500 ),
+                                                curve: Curves.elasticOut,                                              child:Center(
                                                 child: Image.asset(
                                                         "assets/Icons_logos/Property 1=Group 13.png"),
                                               ), 

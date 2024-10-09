@@ -37,7 +37,8 @@ class _HomeLayoutState extends State<HomeLayout> {
 
           return PopScope(
             canPop: false,
-            onPopInvokedWithResult: (didPop, result) {
+
+            onPopInvoked: (didPop) {
               if (homeLayoutCubit.selectedIndex == 0) {
                 return;
               }
