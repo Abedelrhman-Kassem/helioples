@@ -14,7 +14,7 @@ class ModalBottomSheet extends StatefulWidget {
 }
 
 class _ModalBottomSheetState extends State<ModalBottomSheet> {
-  int radioValue = 0;
+  String paymentType = 'onDelivery';
 
   @override
   Widget build(BuildContext context) {
@@ -56,22 +56,22 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
               radioItem(
                 title: 'Delivery',
                 iconPath: 'ic_outline-delivery-dining',
-                index: 0,
-                radioValue: radioValue,
+                index: 'onDelivery',
+                radioValue: paymentType,
                 onTap: () {
                   setState(() {
-                    radioValue = 0;
+                    paymentType = 'onDelivery';
                   });
                 },
               ),
               radioItem(
                 title: 'Pickup',
                 iconPath: 'subway_bag',
-                index: 1,
-                radioValue: radioValue,
+                index: 'OnBranch',
+                radioValue: paymentType,
                 onTap: () {
                   setState(() {
-                    radioValue = 1;
+                    paymentType = 'OnBranch';
                   });
                 },
               ),
@@ -79,15 +79,17 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
               InkWell(
                 borderRadius: BorderRadius.circular(36.77.r),
                 onTap: () {
-                  if(0 == radioValue)
-                  {
-                    Navigator.pushNamed(context, checkoutScreen);
-
-                  } else if (1 == radioValue)
-                  {
-                    Navigator.pushNamed(context, pickUpScreen) ; 
+                  if ('onDelivery' == paymentType) {
+                    Navigator.pushNamed(
+                      context,
+                      checkoutScreen,
+                    );
+                  } else {
+                    Navigator.pushNamed(
+                      context,
+                      pickUpScreen,
+                    );
                   }
-                  
                 },
                 child: Container(
                   width: 284.w,

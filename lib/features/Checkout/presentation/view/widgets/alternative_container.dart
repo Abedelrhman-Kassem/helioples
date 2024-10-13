@@ -12,7 +12,7 @@ class AlternativeContainer extends StatefulWidget {
 }
 
 class _AlternativeContainerState extends State<AlternativeContainer> {
-  int radioValue = -1;
+  String radioValue = 'call';
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +41,11 @@ class _AlternativeContainerState extends State<AlternativeContainer> {
           radioItem(
             title: 'Give me a call',
             iconPath: 'call',
-            index: 0,
+            index: 'call',
             radioValue: radioValue,
             onTap: () async {
               setState(() {
-                radioValue = 0;
+                radioValue = 'call';
               });
               return showModalBottomSheet(
                 context: context,
@@ -56,11 +56,11 @@ class _AlternativeContainerState extends State<AlternativeContainer> {
           radioItem(
             title: 'WhatsApp me',
             iconPath: 'whatsapp',
-            index: 1,
+            index: 'whatsapp',
             radioValue: radioValue,
             onTap: () async {
               setState(() {
-                radioValue = 1;
+                radioValue = 'whatsapp';
               });
               return showModalBottomSheet(
                 context: context,

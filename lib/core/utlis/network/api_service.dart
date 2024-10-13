@@ -40,7 +40,10 @@ class ApiService {
   Future<Response> post({
     required String endPoints,
     required Map<String, dynamic> data,
+    Map<String, String>? headers,
   }) async {
+    mainHeader.addAll(headers ?? {});
+
     try {
       var response = await dio.post(
         '$baseUrl$endPoints',

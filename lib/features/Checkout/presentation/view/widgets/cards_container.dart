@@ -15,7 +15,7 @@ class CardsContainer extends StatefulWidget {
 }
 
 class _CardsContainerState extends State<CardsContainer> {
-  int radioValue = 0;
+  String radioValue = 0.toString();
 
   @override
   Widget build(BuildContext context) {
@@ -41,22 +41,22 @@ class _CardsContainerState extends State<CardsContainer> {
               radioItem(
                 title: 'XXXX XXXX XXXX 5565',
                 iconPath: 'card-on-delivery',
-                index: 0,
+                index: 0.toString(),
                 radioValue: radioValue,
                 onTap: () {
                   setState(() {
-                    radioValue = 0;
+                    radioValue = 0.toString();
                   });
                 },
               ),
               radioItem(
                 title: 'XXXX XXXX XXXX 1234',
                 iconPath: 'card-on-delivery',
-                index: 1,
+                index: 1.toString(),
                 radioValue: radioValue,
                 onTap: () {
                   setState(() {
-                    radioValue = 1;
+                    radioValue = 1.toString();
                   });
                 },
               ),
@@ -64,7 +64,7 @@ class _CardsContainerState extends State<CardsContainer> {
               addWidget(
                 text: 'Add Card',
                 onTap: () {
-                  Navigator.pushNamed(context, cardScreen);
+                  Navigator.pushReplacementNamed(context, cardScreen);
                 },
               ),
               SizedBox(height: 20.h),

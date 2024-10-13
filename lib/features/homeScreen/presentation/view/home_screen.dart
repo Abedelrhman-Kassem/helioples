@@ -209,6 +209,7 @@ class HomeScreen extends StatelessWidget {
                       getCategories = true;
                       categories = state.categories.categories!;
                     }
+
                     if (state is FetchCategoriesFailure) {
                       if (kDebugMode) {
                         print(state.message);
