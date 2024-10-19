@@ -11,14 +11,19 @@ import 'package:negmt_heliopolis/features/Product/presentation/view/widgets/prod
 import 'package:negmt_heliopolis/features/Product/presentation/view_model/cubit/product_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class ProductScreen extends StatelessWidget {
+class ProductScreen extends StatefulWidget {
   final int productId;
   const ProductScreen({super.key, required this.productId});
 
   @override
+  State<ProductScreen> createState() => _ProductScreenState();
+}
+
+class _ProductScreenState extends State<ProductScreen> {
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ProductCubit()..getProductDetails(productId),
+      create: (context) => ProductCubit()..getProductDetails(widget.productId),
       child: Scaffold(
         appBar: AppBar(
           leading: returnArrow(
@@ -47,7 +52,7 @@ class ProductScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: ProductWidget(
-                        product: state.product,
+                        product: state.productModel.product!,
                       ),
                     ),
                     SizedBox(height: 30.h),
@@ -73,10 +78,12 @@ class ProductScreen extends StatelessWidget {
                             itemBuilder: (context, index) => ItemWidget(
                               counter: 0,
                               isFavorite: false,
+                              relatedProductsModel:
+                                  state.productModel.related![index],
                             ),
                             separatorBuilder: (context, index) =>
                                 SizedBox(width: 10.w),
-                            itemCount: 10,
+                            itemCount: state.productModel.related!.length,
                           ),
                           const SizedBox(width: 20),
                         ],
@@ -128,7 +135,7 @@ class ProductScreen extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         BlocProvider.of<ProductCubit>(context)
-                            .getProductDetails(productId);
+                            .getProductDetails(widget.productId);
                       },
                       child: const Text('Tap to try again'),
                     ),

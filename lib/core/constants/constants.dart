@@ -42,9 +42,10 @@ const String DB_Name = 'negma.db';
 // DB CARTITEM TABLE
 const String cartItemTable = 'cartItems';
 const String cartItemId = 'id';
+const String cartItemEnName = 'enName';
+const String cartItemEnDesc = 'enDesc';
 const String cartItemName = 'name';
 const String cartItemDesc = 'desc';
 const String cartItemQty = 'quantity';
 const String cartItemImageUrl = 'imageUrl';
-const String cartItemPcs = 'pcs';
 const String cartItemPrice = 'price';

@@ -1,23 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/cart_item_icon_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
+import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 class CartItemWidget extends StatefulWidget {
-  const CartItemWidget({super.key});
+  final ItemUiModel itemUiModel;
+  final Future<void> Function(int) onDelete;
+  const CartItemWidget({
+    super.key,
+    required this.itemUiModel,
+    required this.onDelete,
+  });
 
   @override
   State<CartItemWidget> createState() => _CartItemWidgetState();
 }
 
 class _CartItemWidgetState extends State<CartItemWidget> {
-  int counter = 1;
-
   @override
   Widget build(BuildContext context) {
+    var product = widget.itemUiModel;
+
+    Future<void> updateQty() async {
+      await DBHelper.updateData(
+        table: cartItemTable,
+        values: {
+          cartItemQty: product.quantity,
+        },
+        where: 'id = ?',
+        whereArgs: [product.id],
+      );
+    }
+
     return Container(
       margin: EdgeInsets.symmetric(vertical: 15.h),
       height: 135.h,
@@ -36,6 +56,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
             ),
             child: Center(
               child: Helper.loadNetworkImage(
+                url: product.thumbnailImage,
                 assetsErrorPath: 'assets/test_images/water-bottle.png',
                 fit: BoxFit.contain,
                 width: double.infinity,
@@ -49,13 +70,13 @@ class _CartItemWidgetState extends State<CartItemWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Nestle Pure Life 1.5 Litres',
+                  product.name,
                   style: Styles.styles15w500Black,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  '3 Pcs (25 EGP)',
+                  '${product.quantity} Pcs (${product.price} EGP)',
                   style: Styles.styles10w400interFamily,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -66,28 +87,30 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   children: [
                     cartItemIconWidget(
                       svgPath: 'assets/svg_icons/trash.svg',
-                      onTap: () {
-                        if (counter > 1) {
-                          setState(() {
-                            counter--;
-                          });
+                      onTap: () async {
+                        if (product.quantity > 1) {
+                          product.quantity--;
+                          await updateQty();
+                          setState(() {});
+                        } else {
+                          await widget.onDelete(product.id);
                         }
                       },
-                      isBiggerThanOne: counter > 1,
+                      isBiggerThanOne: product.quantity > 1,
                       minusSvgPath: 'assets/svg_icons/empty-minus.svg',
                     ),
                     SizedBox(width: 10.w),
                     Text(
-                      '$counter',
+                      '${product.quantity}',
                       style: Styles.styles15w400NormalBlack,
                     ),
                     SizedBox(width: 10.w),
                     cartItemIconWidget(
                       svgPath: 'assets/svg_icons/empty-plus.svg',
                       onTap: () {
-                        setState(() {
-                          counter++;
-                        });
+                        product.quantity++;
+                        updateQty();
+                        setState(() {});
                       },
                     ),
                   ],
@@ -103,7 +126,9 @@ class _CartItemWidgetState extends State<CartItemWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    await widget.onDelete(product.id);
+                  },
                   child: svgIcon(
                     path: 'assets/svg_icons/trash.svg',
                     width: 21.71.w,
@@ -113,11 +138,12 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 ),
                 RichText(
                   text: TextSpan(
-                    text: '75.',
+                    text: '${(product.price * product.quantity).toInt()}.',
                     style: Styles.styles26w600NormalBlack,
                     children: [
                       TextSpan(
-                        text: '00',
+                        text:
+                            '${(((product.price * product.quantity) - (product.price * product.quantity).toInt()) * 100).round()}',
                         style: Styles.styles14w300NormalBlack,
                       ),
                     ],

@@ -19,14 +19,18 @@ class DBHelper {
           await db.execute('''
               CREATE TABLE $cartItemTable (
               $cartItemId INTEGER PRIMARY KEY,
+              $cartItemEnName TEXT NOT NULL,
+              $cartItemEnDesc TEXT NOT NULL,
               $cartItemName TEXT NOT NULL,
               $cartItemDesc TEXT NOT NULL,
               $cartItemQty INTEGER NOT NULL,
               $cartItemImageUrl TEXT NOT NULL,
-              $cartItemPcs INTEGER NOT NULL,
               $cartItemPrice REAL NOT NULL
               )
             ''');
+          if (kDebugMode) {
+            print('$cartItemTable table created');
+          }
         } catch (e) {
           if (kDebugMode) {
             print(e.toString());

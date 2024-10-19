@@ -23,12 +23,22 @@ class ProductCubit extends Cubit<ProductState> {
         await getCategoriesImp.getProductDetails(product);
 
     res.fold(
-      (failure) => emit(
-        GetProductFailure(failure.errorMessage),
-      ),
-      (product) => emit(
-        GetProductSuccess(product.product!),
-      ),
+      (failure) => {
+        if (!isClosed)
+          {
+            emit(
+              GetProductFailure(failure.errorMessage),
+            )
+          }
+      },
+      (product) => {
+        if (!isClosed)
+          {
+            emit(
+              GetProductSuccess(product),
+            )
+          }
+      },
     );
   }
 }

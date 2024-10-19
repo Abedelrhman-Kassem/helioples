@@ -18,6 +18,8 @@ void main() async {
   CacheHelper.init();
   DBHelper.init();
 
+  // DBHelper.deleteDB();
+
   AppRouter appRouter = AppRouter();
   Bloc.observer = MyBlocObserver();
 
@@ -56,6 +58,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           onGenerateRoute: appRouter.generate,
           theme: lightTheme,
           darkTheme: darkTheme,
@@ -63,7 +66,6 @@ class MyApp extends StatelessWidget {
           locale: Locale(getLocale(context)),
           supportedLocales: context.supportedLocales,
           localizationsDelegates: context.localizationDelegates,
-          debugShowCheckedModeBanner: false,
         );
       },
     );
