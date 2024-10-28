@@ -111,3 +111,4 @@ Thumbs.db
 local.properties
 .env
 *lib/*test.dart
+lib/test.dart

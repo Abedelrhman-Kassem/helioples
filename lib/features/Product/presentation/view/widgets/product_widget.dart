@@ -57,8 +57,8 @@ class _ProductWidgetState extends State<ProductWidget> {
                 top: 0,
                 child: HeartWidget(
                   isFavorite: false,
-                  width: 23.w,
-                  height: 21.h,
+                  width: 25.w,
+                  height: 23.h,
                 ),
               ),
               Positioned.directional(

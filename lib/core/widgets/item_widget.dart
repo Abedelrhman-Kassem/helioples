@@ -18,8 +18,8 @@ class ItemWidget extends StatefulWidget {
   ItemWidget({
     super.key,
     this.color,
-    required this.counter,
-    required this.isFavorite,
+    this.counter = 0,
+    this.isFavorite = false,
     this.relatedProductsModel,
   });
 
@@ -164,7 +164,7 @@ class _ItemWidgetState extends State<ItemWidget> {
           Navigator.pushNamed(
             context,
             productScreen,
-            arguments: {'productId': 1},
+            arguments: {'productId': 1627},
           );
         },
         child: Container(
