@@ -107,7 +107,13 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                 : Container(),
             const Spacer(),
             SignUpCustomButton(
-                buttonText: "Allow Location Access", onPressed: () {}),
+                buttonText: "Allow Location Access", onPressed: () {
+                   Navigator.pushReplacementNamed(
+                                  context,
+                                  homeLayout,
+                                );
+                  
+                }),
             SizedBox(
               height: 15.h,
             ),

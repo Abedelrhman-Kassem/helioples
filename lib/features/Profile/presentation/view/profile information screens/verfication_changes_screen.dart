@@ -32,7 +32,7 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
   final FocusNode _focusNode3 = FocusNode();
-  final FocusNode _focusNode4 = FocusNode();       
+  final FocusNode _focusNode4 = FocusNode();
   final CountdownController _countdownController =
       CountdownController(autoStart: true);
 
@@ -193,12 +193,13 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                                           TweenAnimationBuilder(
                                               tween: Tween<double>(
                                                   begin: 10, end: 150),
-                                              duration:
-                                                  const Duration(milliseconds: 2500 ),
-                                                curve: Curves.elasticOut,                                              child:Center(
+                                              duration: const Duration(
+                                                  milliseconds: 2500),
+                                              curve: Curves.elasticOut,
+                                              child: Center(
                                                 child: Image.asset(
-                                                        "assets/Icons_logos/Property 1=Group 13.png"),
-                                              ), 
+                                                    "assets/Icons_logos/Property 1=Group 13.png"),
+                                              ),
                                               builder: (BuildContext context,
                                                   double value, Widget? child) {
                                                 return Container(
@@ -233,9 +234,9 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                                                 Navigator.of(context)
                                                     .pushNamed(homeLayout);
                                               }),
-                                        SizedBox(
-                                          height: 20.h,
-                                        )
+                                          SizedBox(
+                                            height: 20.h,
+                                          )
                                         ],
                                       ),
                                     ),
