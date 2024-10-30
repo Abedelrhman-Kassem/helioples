@@ -11,6 +11,7 @@ class ApiService {
   var mainHeader = {
     'Content-Type': 'application/json',
     'pass': 'GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+
   };
 
   Future<void> setAuthorizationHeader() async {
@@ -23,6 +24,8 @@ class ApiService {
       if (token != null) {
         // Add token to the headers of the Dio instance
         dio.options.headers['Authorization'] = 'Bearer $token';
+        mainHeader['token'] = '$token';
+         print(mainHeader);
       } else {
         // If token is null, user is not authenticated
         // Handle the case accordingly, such as redirecting to login screen

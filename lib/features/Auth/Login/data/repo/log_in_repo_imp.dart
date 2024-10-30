@@ -15,17 +15,29 @@ class LogInRepoImp extends LogInRepo
     try {
        // await apiService.setAuthorizationHeader();
         final formattedPhone = '+20$phone';
+        print("b3d el phone");
        final data = {
         'phone': formattedPhone , 
         'password':password,
         };
-       var response = await apiService.post(endPoints: 'auth/login', data: data );
-       if (response.statusCode == 200) {
-                final token = response.data['token'];
-        await _storage.write(key: 'token', value: token);
 
+       var response = await apiService.post(endPoints: 'auth/login', data: data );
+
+       if (response.statusCode == 200)
+        {
+
+
+        final token = response.data['token'];
+        print("token-----");
+        print(response.data['token']);
+        print("token-----");
+
+        await _storage.write(key: 'token', value: token);
+ 
         await apiService.setAuthorizationHeader();
-        return right(response.data['msg']);
+   
+        
+        return right(response.data['token']);
       } else {
         return left(ServerFailure('Failed to sign in. Please try again.'));
       }

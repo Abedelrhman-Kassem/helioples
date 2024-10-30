@@ -1,13 +1,20 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:gap/gap.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/widgets/languageWidget.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/widgets/CustomButton.dart';
 import 'package:negmt_heliopolis/core/widgets/helioplis_logo.dart';
+import 'package:negmt_heliopolis/core/widgets/loading_button.dart';
+import 'package:negmt_heliopolis/features/Auth/Login/data/repo/log_in_repo_imp.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/phone_number_input_widget.dart';
+import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/sign%20in%20cubit/sign_in_cubit.dart';
+import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/sign%20in%20cubit/sign_in_states.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -63,16 +70,69 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 const Gap(20),
-                CustomButton(
-                  text: "Continue",
-                  onTap: () {
-                    // Navigator.pushNamed(context, verficationScreen);
-                  },
-                  backgroundColor: MyColors.mainColor,
-                  textColor: MyColors.mainScaffoldWhiteColor,
-                  verticalPadding: 15,
-                  borderRadius: 20,
+                BlocProvider(
+                  create: (context) =>
+                      SignInCubit((LogInRepoImp(apiService: ApiService()))),
+                  child: BlocConsumer<SignInCubit,SignInState>(builder: (context ,state )
+                  {
+                    var cubit = BlocProvider.of<SignInCubit>(context);
+                    if(state is SignInLoading )
+                    {
+                       return const LoadingButton(
+                            height: 60,
+                            radius: 10,
+                          );
+                    } else 
+                    {
+                       return Center(
+                            child: SignUpCustomButton(
+                              buttonText: "Continue",
+                              onPressed: () {
+                                cubit.signIn("1145243378", "12345678");
+                                //  Navigator.of(context).pushNamed(
+                                //   verficationScreen,
+                                //   arguments: {
+                                //     'phoneNumber': "+201145243378",
+                                //   },
+                                // );
+
+
+                              },
+                            ),
+                          );
+
+                    }
+                  }, listener: (context ,state)
+                  {
+                     if (state is SignInFailure) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(state.errorMessage)));
+                        } else if (state is SignInSuccess) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text('Please Enter Validaition code')));
+                          Navigator.of(context).pushNamed(
+                            verficationScreen,
+                            arguments: {
+                              'phoneNumber': "1145243378",
+                            },
+                          );
+                        }
+
+                  }
+                  ),
                 ),
+                // CustomButton(
+                //   text: "Continue",
+                //   onTap: () {
+                //     // Navigator.pushNamed(context, verficationScreen);
+                //   },
+                //   backgroundColor: MyColors.mainColor,
+                //   textColor: MyColors.mainScaffoldWhiteColor,
+                //   verticalPadding: 15,
+                //   borderRadius: 20,
+                // ),
                 const Gap(10),
                 Center(
                   child: RichText(
