@@ -23,6 +23,14 @@ Widget cardTextField({
         controller: controller,
         keyboardType: type,
         maxLength: maxLength,
+        buildCounter: (
+          context, {
+          required currentLength,
+          required isFocused,
+          required maxLength,
+        }) {
+          return null;
+        },
         cursorColor: MyColors.mainColor,
         style: Styles.styles17w500NormalBlack.copyWith(
           color: const Color.fromRGBO(50, 50, 50, 1),

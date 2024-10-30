@@ -7,8 +7,8 @@ class ProductInitial extends ProductState {}
 class GetProductLoading extends ProductState {}
 
 class GetProductSuccess extends ProductState {
-  Product product;
-  GetProductSuccess(this.product);
+  ProductModel productModel;
+  GetProductSuccess(this.productModel);
 }
 
 class GetProductFailure extends ProductState {

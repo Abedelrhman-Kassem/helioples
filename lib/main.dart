@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/bloc_observer.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/routing/routes.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/themes.dart';
@@ -15,6 +16,9 @@ void main() async {
   await ScreenUtil.ensureScreenSize();
 
   CacheHelper.init();
+  DBHelper.init();
+
+  // DBHelper.deleteDB();
 
   AppRouter appRouter = AppRouter();
   Bloc.observer = MyBlocObserver();
@@ -54,6 +58,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           onGenerateRoute: appRouter.generate,
           theme: lightTheme,
           darkTheme: darkTheme,
@@ -61,7 +66,6 @@ class MyApp extends StatelessWidget {
           locale: Locale(getLocale(context)),
           supportedLocales: context.supportedLocales,
           localizationsDelegates: context.localizationDelegates,
-          debugShowCheckedModeBanner: false,
         );
       },
     );

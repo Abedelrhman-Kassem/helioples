@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
@@ -10,21 +11,50 @@ import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/cart_it
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/modal_bottom_sheet.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
+import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    bool isInHomeLayoutCubit(BuildContext context) {
-      try {
-        BlocProvider.of<HomeLayoutCubit>(context);
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }
+  State<CartScreen> createState() => _CartScreenState();
+}
 
+class _CartScreenState extends State<CartScreen> {
+  List<Map<String, Object?>> tableValues = [];
+
+  @override
+  void initState() {
+    DBHelper.queryData(table: cartItemTable).then((value) {
+      setState(() {
+        tableValues = value;
+      });
+    });
+    super.initState();
+  }
+
+  Future<void> deleteItem(int id) async {
+    print('hello from $id');
+    try {
+      await DBHelper.deleteData(
+        table: cartItemTable,
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+      List<Map<String, dynamic>> mutableTableValues = List.from(tableValues);
+      mutableTableValues.removeWhere((element) => element[cartItemId] == id);
+
+      setState(() {
+        tableValues = mutableTableValues;
+      });
+    } catch (e) {
+      print('$e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cart'),
@@ -33,9 +63,9 @@ class CartScreen extends StatelessWidget {
         leading: returnArrow(
           context: context,
           onTap: () {
-            if (isInHomeLayoutCubit(context)) {
+            try {
               BlocProvider.of<HomeLayoutCubit>(context).returnIndex(context);
-            } else {
+            } catch (e) {
               if (Navigator.canPop(context)) {
                 Navigator.pop(context);
               } else {
@@ -53,8 +83,21 @@ class CartScreen extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.symmetric(horizontal: 10.w),
-              itemBuilder: (context, index) => const CartItemWidget(),
-              itemCount: 6,
+              itemBuilder: (context, index) => CartItemWidget(
+                itemUiModel: ItemUiModel(
+                  id: tableValues[index][cartItemId] as int,
+                  name: tableValues[index][cartItemName] as String,
+                  enName: tableValues[index][cartItemEnName] as String,
+                  enDesc: tableValues[index][cartItemEnDesc] as String,
+                  description: tableValues[index][cartItemDesc] as String,
+                  thumbnailImage:
+                      tableValues[index][cartItemImageUrl] as String,
+                  price: tableValues[index][cartItemPrice] as double,
+                  quantity: tableValues[index][cartItemQty] as int,
+                ),
+                onDelete: deleteItem,
+              ),
+              itemCount: tableValues.length,
             ),
             SizedBox(
               height: 293.h,

@@ -16,19 +16,29 @@ class ProductCubit extends Cubit<ProductState> {
 
   ProductModel? productModel;
 
-  void getProductDetails() async {
+  void getProductDetails(int product) async {
     emit(GetProductLoading());
 
     Either<Failure, ProductModel> res =
-        await getCategoriesImp.getProductDetails(1);
+        await getCategoriesImp.getProductDetails(product);
 
     res.fold(
-      (failure) => emit(
-        GetProductFailure(failure.errorMessage),
-      ),
-      (product) => emit(
-        GetProductSuccess(product.product!),
-      ),
+      (failure) => {
+        if (!isClosed)
+          {
+            emit(
+              GetProductFailure(failure.errorMessage),
+            )
+          }
+      },
+      (product) => {
+        if (!isClosed)
+          {
+            emit(
+              GetProductSuccess(product),
+            )
+          }
+      },
     );
   }
 }

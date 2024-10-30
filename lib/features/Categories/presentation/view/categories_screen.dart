@@ -19,13 +19,14 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  bool isFeatured = true;
+  bool isFeatured = false;
   List<String> categories = [
     "Croissant",
     "Toast",
     "Muffins",
     "Donuts",
   ];
+
   List<String> images = [
     "assets/Icons_logos/Croissant.png",
     "assets/Icons_logos/Toast.png",
@@ -42,6 +43,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     GlobalKey(),
     GlobalKey(),
   ];
+
+  List<int> itemsCount = [5, 5, 5, 5];
 
   // ScrollController to listen to scrolling events
   late ScrollController scrollController;
@@ -60,13 +63,32 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     super.dispose();
   }
 
+  bool isLoading = false;
+
   void _handleScroll() {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     for (int i = 0; i < sectionKeys.length; i++) {
       final RenderBox? box =
           sectionKeys[i].currentContext!.findRenderObject() as RenderBox?;
+
       if (box != null) {
-        final position = box.localToGlobal(Offset.zero);
-        if (position.dy <= 300 && position.dy + box.size.height > 300) {
+        final position = box.localToGlobal(Offset(0, box.size.height));
+
+        if (position.dy <= box.size.height + screenHeight / 2 &&
+            position.dy > screenHeight / 2) {
+          if (position.dy <= screenHeight) {
+            if (!isLoading && itemsCount[i] < 50) {
+              isLoading = true;
+              itemsCount[i] += 5;
+
+              Future.delayed(const Duration(seconds: 2)).then((_) {
+                isLoading = false;
+              });
+
+              setState(() {});
+            }
+          }
           DefaultTabController.of(tabContext!).animateTo(i);
           break;
         }
@@ -182,21 +204,24 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                           SizedBox(height: 20.h),
                         ],
                       ),
-                    ...List.generate(categories.length, (index) {
-                      return Column(
-                        key: sectionKeys[isFeatured ? index + 1 : index],
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            categories[index],
-                            style: Styles.styles21w700black,
-                          ),
-                          SizedBox(height: 16.h),
-                          itemWidgetGridView(),
-                          SizedBox(height: 60.h),
-                        ],
-                      );
-                    }),
+                    ...List.generate(
+                      categories.length,
+                      (index) {
+                        return Column(
+                          key: sectionKeys[isFeatured ? index + 1 : index],
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              categories[index],
+                              style: Styles.styles21w700black,
+                            ),
+                            SizedBox(height: 16.h),
+                            itemWidgetGridView(itemCount: itemsCount[index]),
+                            SizedBox(height: 60.h),
+                          ],
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

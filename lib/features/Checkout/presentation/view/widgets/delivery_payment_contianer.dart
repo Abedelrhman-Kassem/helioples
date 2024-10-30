@@ -13,7 +13,7 @@ class DeliveryPaymentContianer extends StatefulWidget {
 }
 
 class _DeliveryPaymentContianerState extends State<DeliveryPaymentContianer> {
-  int radioValue = 0;
+  String radioValue = 'cashOnDelivery';
 
   @override
   Widget build(BuildContext context) {
@@ -35,33 +35,33 @@ class _DeliveryPaymentContianerState extends State<DeliveryPaymentContianer> {
           radioItem(
             title: 'Cash on delivery',
             iconPath: 'cash-on-delivery',
-            index: 0,
+            index: 'cashOnDelivery',
             radioValue: radioValue,
             onTap: () {
               setState(() {
-                radioValue = 0;
+                radioValue = 'cashOnDelivery';
               });
             },
           ),
           radioItem(
             title: 'Card on delivery',
             iconPath: 'card-on-delivery',
-            index: 1,
+            index: 'cardOnDelivery',
             radioValue: radioValue,
             onTap: () {
               setState(() {
-                radioValue = 1;
+                radioValue = 'cardOnDelivery';
               });
             },
           ),
           radioItem(
             title: 'Credit/Debit card',
             iconPath: 'credit-or-debit-card',
-            index: 2,
+            index: 'creditOrDebitCard',
             radioValue: radioValue,
             onTap: () async {
               setState(() {
-                radioValue = 2;
+                radioValue = 'creditOrDebitCard';
               });
 
               return showModalBottomSheet(

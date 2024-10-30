@@ -57,8 +57,8 @@ class _ProductWidgetState extends State<ProductWidget> {
                 top: 0,
                 child: HeartWidget(
                   isFavorite: false,
-                  width: 23.w,
-                  height: 21.h,
+                  width: 25.w,
+                  height: 23.h,
                 ),
               ),
               Positioned.directional(
@@ -97,6 +97,15 @@ class _ProductWidgetState extends State<ProductWidget> {
             ),
             ItemCounterWidget(
               counter: 0,
+              itemUiModel: ItemUiModel(
+                id: widget.product.id!,
+                name: widget.product.name!,
+                description: widget.product.description ?? 'description',
+                enName: widget.product.enName ?? 'enName',
+                enDesc: widget.product.enDesc ?? 'enDesc',
+                thumbnailImage: widget.product.thumbnailImage ?? '',
+                price: widget.product.afterDiscount ?? widget.product.price!,
+              ),
             )
           ],
         ),

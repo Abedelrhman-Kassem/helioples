@@ -41,11 +41,12 @@ class AppRouter {
   Route generate(RouteSettings settings) {
     Widget page;
     bool fromRight;
+
     switch (settings.name) {
       case intialRoute:
       case introScreen:
-        // page = const TestScreen();
         page = const IntroScreen();
+        // page = const TestScreen();
         fromRight = false;
         break;
 
@@ -122,7 +123,10 @@ class AppRouter {
         break;
 
       case productScreen:
-        page = const ProductScreen();
+        final args = settings.arguments as Map<String, dynamic>;
+        page = ProductScreen(
+          productId: args['productId'],
+        );
         fromRight = false;
         break;
 

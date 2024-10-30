@@ -7,8 +7,8 @@ import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 Widget radioItem({
   required String title,
   required String iconPath,
-  required int index,
-  required int radioValue,
+  required String index,
+  required String radioValue,
   required Function() onTap,
 }) {
   return Padding(

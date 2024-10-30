@@ -45,7 +45,7 @@ Widget exitOrderBottomSheet(BuildContext context) {
                     onTap: () {
                       Navigator.pushNamedAndRemoveUntil(
                         context,
-                        cartScreen,
+                        homeLayout,
                         (route) => false,
                       );
                     },
