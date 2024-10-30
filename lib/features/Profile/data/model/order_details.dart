@@ -1,11 +1,9 @@
-import 'dart:ffi';
-
-class Order {
+class OrderDetails {
   int? id;
   int? userId;
-  DateTime? arriveTime;
+  Null? arriveTime;
   int? tips;
-  int? alternativeProduct;
+  Null? alternativeProduct;
   double? subTotal;
   int? vat;
   int? deliveryFees;
@@ -13,15 +11,20 @@ class Order {
   double? total;
   String? paymentMethod;
   bool? paid;
-  int? promoCodeId;
+  bool? chooseForMe;
+  Null? promoCodeId;
   String? clientOrderState;
   String? adminOrderState;
-  int? addressId;
+  Null? addressId;
   String? deliverMethod;
   String? updatedAt;
   String? createdAt;
+  Null? branchId;
+  Null? promoCode;
+  Null? address;
+  List<Items>? items;
 
-  Order(
+  OrderDetails(
       {this.id,
       this.userId,
       this.arriveTime,
@@ -34,15 +37,20 @@ class Order {
       this.total,
       this.paymentMethod,
       this.paid,
+      this.chooseForMe,
       this.promoCodeId,
       this.clientOrderState,
       this.adminOrderState,
       this.addressId,
       this.deliverMethod,
       this.updatedAt,
-      this.createdAt});
+      this.createdAt,
+      this.branchId,
+      this.promoCode,
+      this.address,
+      this.items});
 
-  Order.fromJson(Map<String, dynamic> json) {
+  OrderDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['userId'];
     arriveTime = json['arriveTime'];
@@ -55,6 +63,7 @@ class Order {
     total = json['total'];
     paymentMethod = json['paymentMethod'];
     paid = json['paid'];
+    chooseForMe = json['chooseForMe'];
     promoCodeId = json['promoCodeId'];
     clientOrderState = json['clientOrderState'];
     adminOrderState = json['adminOrderState'];
@@ -62,6 +71,15 @@ class Order {
     deliverMethod = json['deliverMethod'];
     updatedAt = json['updatedAt'];
     createdAt = json['createdAt'];
+    branchId = json['branchId'];
+    promoCode = json['promoCode'];
+    address = json['address'];
+    if (json['items'] != null) {
+      items = <Items>[];
+      json['items'].forEach((v) {
+        items!.add(new Items.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -78,6 +96,7 @@ class Order {
     data['total'] = this.total;
     data['paymentMethod'] = this.paymentMethod;
     data['paid'] = this.paid;
+    data['chooseForMe'] = this.chooseForMe;
     data['promoCodeId'] = this.promoCodeId;
     data['clientOrderState'] = this.clientOrderState;
     data['adminOrderState'] = this.adminOrderState;
@@ -85,6 +104,45 @@ class Order {
     data['deliverMethod'] = this.deliverMethod;
     data['updatedAt'] = this.updatedAt;
     data['createdAt'] = this.createdAt;
+    data['branchId'] = this.branchId;
+    data['promoCode'] = this.promoCode;
+    data['address'] = this.address;
+    if (this.items != null) {
+      data['items'] = this.items!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Items {
+  int? id;
+  double? priceWhenOrdered;
+  int? number;
+  int? orderId;
+  int? productId;
+
+  Items(
+      {this.id,
+      this.priceWhenOrdered,
+      this.number,
+      this.orderId,
+      this.productId});
+
+  Items.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    priceWhenOrdered = json['priceWhenOrdered'];
+    number = json['number'];
+    orderId = json['orderId'];
+    productId = json['productId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['priceWhenOrdered'] = this.priceWhenOrdered;
+    data['number'] = this.number;
+    data['orderId'] = this.orderId;
+    data['productId'] = this.productId;
     return data;
   }
 }
