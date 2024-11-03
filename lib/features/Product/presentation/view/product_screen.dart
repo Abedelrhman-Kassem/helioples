@@ -76,8 +76,6 @@ class _ProductScreenState extends State<ProductScreen> {
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) => ItemWidget(
-                              counter: 0,
-                              isFavorite: false,
                               relatedProductsModel:
                                   state.productModel.related![index],
                             ),

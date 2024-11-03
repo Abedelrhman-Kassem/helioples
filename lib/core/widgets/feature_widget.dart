@@ -93,10 +93,8 @@ class FeatureWidget extends StatelessWidget {
                               blurRadius: 5.0.sp,
                             )
                           ]),
-                          child: ItemWidget(
+                          child: const ItemWidget(
                             color: Colors.white,
-                            counter: 0,
-                            isFavorite: false,
                           ),
                         ),
                       ),

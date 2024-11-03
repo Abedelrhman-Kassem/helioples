@@ -28,7 +28,7 @@ class ApiService {
       if (token != null) {
         // Add token to the headers of the Dio instance
         mainHeader['token'] = token;
-        print(mainHeader);
+        // print(mainHeader);
       } else {
         // If token is null, user is not authenticated
         // Handle the case accordingly, such as redirecting to login screen
@@ -70,7 +70,7 @@ class ApiService {
     required String endpoint,
     Map<String, String>? headers,
   }) async {
-    // await setAuthorizationHeader();
+    await setAuthorizationHeader();
     // print('Request Headers: ${dio.options.headers}');
     // print(endpoint);
 
