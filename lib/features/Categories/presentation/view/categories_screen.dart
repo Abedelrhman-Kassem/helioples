@@ -125,18 +125,17 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   elevation: 20,
                   backgroundColor: Colors.white,
                   leading: returnArrow(
-                      context: context,
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      }),
+                    context: context,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
                   title: categoriesButtonTitleWidet(
                     context: context,
                     title: 'Bakeries And Pastries',
                   ),
-                  actions: [
-                    cartCounter(
-                      context: context,
-                    )
+                  actions: const [
+                    CartCounter(),
                   ],
                   bottom: ButtonsTabBar(
                     splashColor: MyColors.mainColor,
@@ -230,12 +229,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               bottom: 10,
               left: 0,
               right: 0,
-              child: CartContainer(
-                svgIconPath: "assets/svg_icons/favorite-Cart.svg",
-                buttonText: "Go To Cart",
-                productsCount: "3",
-                totalAmount: "310",
-              ),
+              child: CartContainer(),
             ),
           ],
         ),

@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/notifiers/db_change_notifier.dart';
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DBHelper {
-  // TO DO REMOVE STATIC FROM database instance -------------------------------------------
   static late Database database;
 
   static init() async {
@@ -47,11 +47,21 @@ class DBHelper {
     required String table,
     required Map<String, dynamic> values,
   }) async {
-    return await database.insert(
-      table,
-      values,
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    try {
+      final DbChangeNotifier productsCount = DbChangeNotifier();
+
+      int row = await database.insert(
+        table,
+        values,
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+
+      productsCount.fetchItemCount();
+
+      return row;
+    } catch (e) {
+      throw '${values[cartItemName]} is not inserted succefully';
+    }
   }
 
   static Future<List<Map<String, Object?>>> queryData({
@@ -74,12 +84,22 @@ class DBHelper {
     String? where,
     List<Object?>? whereArgs,
   }) async {
-    return await database.update(
-      table,
-      values,
-      where: where,
-      whereArgs: whereArgs,
-    );
+    try {
+      final DbChangeNotifier productsCount = DbChangeNotifier();
+
+      int updatedRow = await database.update(
+        table,
+        values,
+        where: where,
+        whereArgs: whereArgs,
+      );
+
+      productsCount.fetchItemCount();
+
+      return updatedRow;
+    } catch (e) {
+      throw '$e, ${whereArgs?[0]} not updated successfully';
+    }
   }
 
   static Future<int> deleteData({
@@ -87,10 +107,50 @@ class DBHelper {
     String? where,
     List<Object?>? whereArgs,
   }) async {
-    return await database.delete(
-      table,
-      where: where,
-      whereArgs: whereArgs,
+    try {
+      final DbChangeNotifier productsCount = DbChangeNotifier();
+
+      int deletedRow = await database.delete(
+        table,
+        where: where,
+        whereArgs: whereArgs,
+      );
+
+      productsCount.fetchItemCount();
+
+      return deletedRow;
+    } catch (e) {
+      throw '$e, ${whereArgs?[0]} not deleted succefully';
+    }
+  }
+
+  static Future<int> getCartItemCount() async {
+    final List<Map<String, dynamic>> result =
+        await database.rawQuery('SELECT COUNT(*) as count FROM $cartItemTable');
+
+    int count = Sqflite.firstIntValue(result) ?? 0;
+
+    return count;
+  }
+
+  static Future<DbChangeNotifierModel> getDbData() async {
+    List<Map<String, Object?>> items = await DBHelper.queryData(
+      table: cartItemTable,
+      columns: [cartItemQty, cartItemPrice],
+    );
+
+    double total = 0;
+
+    for (var item in items) {
+      int qty = item[cartItemQty] as int;
+      double price = item[cartItemPrice] as double;
+      total += qty * price;
+    }
+
+    total = double.parse(total.toStringAsFixed(2));
+    return DbChangeNotifierModel(
+      count: items.length,
+      totalPrice: total,
     );
   }
 

@@ -22,22 +22,15 @@ class LikedScreen extends StatelessWidget {
           context: context,
         ),
         title: const Text('Likes'),
-        actions: [
-          cartCounter(
-            context: context,
-          ),
+        actions: const [
+          CartCounter(),
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: itemWidgetGridView(isFavorite: true),
       ),
-      floatingActionButton: const CartContainer(
-        svgIconPath: "assets/svg_icons/favorite-Cart.svg",
-        buttonText: "Go To Cart",
-        productsCount: "3",
-        totalAmount: "310",
-      ),
+      floatingActionButton: const CartContainer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
