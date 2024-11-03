@@ -12,14 +12,9 @@ class ItemWidget extends StatefulWidget {
   final Color? color;
   final RelatedProductsModel? relatedProductsModel;
 
-  int counter;
-  bool isFavorite;
-
-  ItemWidget({
+  const ItemWidget({
     super.key,
     this.color,
-    this.counter = 0,
-    this.isFavorite = false,
     this.relatedProductsModel,
   });
 
@@ -28,6 +23,8 @@ class ItemWidget extends StatefulWidget {
 }
 
 class _ItemWidgetState extends State<ItemWidget> {
+  int counter = 0;
+
   @override
   Widget build(BuildContext context) {
     var product = widget.relatedProductsModel;
@@ -44,8 +41,8 @@ class _ItemWidgetState extends State<ItemWidget> {
         child: Container(
           width: 120,
           padding: const EdgeInsets.symmetric(
-            vertical: 7,
-            horizontal: 10,
+            vertical: 5,
+            horizontal: 6,
           ),
           decoration: BoxDecoration(
             color: widget.color ?? const Color.fromRGBO(241, 241, 241, 1),
@@ -77,7 +74,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                       ),
                     ),
                   HeartWidget(
-                    isFavorite: false,
+                    isFavorite: product.isLiked!,
                     width: 22,
                     height: 20.37,
                   ),
@@ -92,7 +89,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ItemCounterWidget(
-                    counter: widget.counter,
+                    counter: counter,
                     itemUiModel: ItemUiModel(
                       id: product.id!,
                       name: product.name!,
@@ -101,7 +98,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                       description: product.enDescription ?? 'description',
                       thumbnailImage: product.thumbnailImage ?? '',
                       price: product.afterDiscount ?? product.price!,
-                      quantity: widget.counter,
+                      quantity: counter,
                     ),
                   ),
                 ],
@@ -212,7 +209,7 @@ class _ItemWidgetState extends State<ItemWidget> {
               ),
               const SizedBox(height: 10),
               ItemCounterWidget(
-                counter: widget.counter,
+                counter: counter,
               ),
               const SizedBox(height: 10),
               Row(

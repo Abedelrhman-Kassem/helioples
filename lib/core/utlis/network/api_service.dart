@@ -8,10 +8,14 @@ class ApiService {
   Dio dio = Dio();
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
+  static Future<String?> getToken() async {
+    final String? token = await const FlutterSecureStorage().read(key: 'token');
+    return token;
+  }
+
   var mainHeader = {
     'Content-Type': 'application/json',
     'pass': 'GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
-
   };
 
   Future<void> setAuthorizationHeader() async {
@@ -23,9 +27,8 @@ class ApiService {
       // Check if token exists
       if (token != null) {
         // Add token to the headers of the Dio instance
-        dio.options.headers['Authorization'] = 'Bearer $token';
-        mainHeader['token'] = '$token';
-         print(mainHeader);
+        mainHeader['token'] = token;
+        // print(mainHeader);
       } else {
         // If token is null, user is not authenticated
         // Handle the case accordingly, such as redirecting to login screen
@@ -67,7 +70,7 @@ class ApiService {
     required String endpoint,
     Map<String, String>? headers,
   }) async {
-    // await setAuthorizationHeader();
+    await setAuthorizationHeader();
     // print('Request Headers: ${dio.options.headers}');
     // print(endpoint);
 

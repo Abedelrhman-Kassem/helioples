@@ -50,8 +50,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     super.initState();
     scrollController = ScrollController();
     scrollController.addListener(_handleScroll);
-    subCategoriesCubit = SubCategoriesCubit(SubCategoriesRepoImp(api: ApiService()));
-    subCategoriesCubit.fetchSubCategories(2); // Ensure this ID is correct
   }
 
   @override

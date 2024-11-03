@@ -29,6 +29,7 @@ class Product {
   String? state;
   String? createdAt;
   double? discount;
+  bool? isLiked;
 
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -47,6 +48,7 @@ class Product {
     state = json['state'];
     createdAt = json['createdAt'];
     discount = json['discount'];
+    isLiked = json['isLiked'];
   }
 }
 
@@ -63,6 +65,7 @@ class UnitOfMeasure {
 class RelatedProductsModel {
   int? id;
   String? name;
+  String? description;
   String? enDescription;
   String? enName;
   String? thumbnailImage;
@@ -72,10 +75,12 @@ class RelatedProductsModel {
   String? state;
   String? createdAt;
   double? discount;
+  bool? isLiked;
 
   RelatedProductsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    description = json['description'];
     enDescription = json['enDescription'];
     enName = json['enName'];
     thumbnailImage = json['thumbnailImage'];
@@ -85,6 +90,7 @@ class RelatedProductsModel {
     state = json['state'];
     createdAt = json['createdAt'];
     discount = json['discount'];
+    isLiked = json['isLiked'];
   }
 }
 

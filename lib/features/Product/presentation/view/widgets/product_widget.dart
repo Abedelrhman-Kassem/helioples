@@ -57,8 +57,8 @@ class _ProductWidgetState extends State<ProductWidget> {
                 top: 0,
                 child: HeartWidget(
                   isFavorite: false,
-                  width: 25.w,
-                  height: 23.h,
+                  width: 30.w,
+                  height: 28.h,
                 ),
               ),
               Positioned.directional(
@@ -91,9 +91,14 @@ class _ProductWidgetState extends State<ProductWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              widget.product.description!,
-              style: Styles.styles18w500BlackWhite,
+            Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width - 170.w,
+              ),
+              child: Text(
+                widget.product.enDesc!,
+                style: Styles.styles18w500BlackWhite,
+              ),
             ),
             ItemCounterWidget(
               counter: 0,

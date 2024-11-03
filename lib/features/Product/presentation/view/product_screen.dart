@@ -36,8 +36,8 @@ class _ProductScreenState extends State<ProductScreen> {
             context: context,
             title: 'Bakeries And Pastries',
           ),
-          actions: [
-            cartCounter(context: context),
+          actions: const [
+            CartCounter(),
           ],
         ),
         body: BlocConsumer<ProductCubit, ProductState>(
@@ -76,8 +76,6 @@ class _ProductScreenState extends State<ProductScreen> {
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) => ItemWidget(
-                              counter: 0,
-                              isFavorite: false,
                               relatedProductsModel:
                                   state.productModel.related![index],
                             ),
@@ -147,12 +145,7 @@ class _ProductScreenState extends State<ProductScreen> {
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: const CartContainer(
-          svgIconPath: "assets/svg_icons/favorite-Cart.svg",
-          buttonText: "Go To Cart",
-          productsCount: "3",
-          totalAmount: "310",
-        ),
+        floatingActionButton: const CartContainer(),
       ),
     );
   }
