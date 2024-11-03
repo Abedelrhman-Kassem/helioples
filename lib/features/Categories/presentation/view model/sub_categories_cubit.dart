@@ -24,10 +24,10 @@ class SubCategoriesCubit extends Cubit<FetchCategoriesState> {
     if (isPagination) {
       if (isFetchingMoreProducts) return;
       isFetchingMoreProducts = true;
-      emit(ProductsPaginationLoading(allProducts)); // Show loading indicator at the end of the list
+      emit(ProductsPaginationLoading(allProducts)); 
     } else {
       emit(ProductsLoading());
-      allProducts = []; // Reset products list for a new subcategory
+      allProducts = []; 
     }
 
     final result = await repo.getProductsInSubCategory(subCategoryId, page);
@@ -35,7 +35,7 @@ class SubCategoriesCubit extends Cubit<FetchCategoriesState> {
       (failure) {
         isFetchingMoreProducts = false;
         if (isPagination) {
-          emit(ProductsPaginationLoading(allProducts)); // Maintain current list on failure
+          emit(ProductsPaginationLoading(allProducts)); 
         } else {
           emit(ProductsFailure(failure.errorMessage));
         }

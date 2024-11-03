@@ -50,6 +50,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     super.initState();
     scrollController = ScrollController();
     scrollController.addListener(_handleScroll);
+    subCategoriesCubit = SubCategoriesCubit(SubCategoriesRepoImp(api: ApiService()));
+    subCategoriesCubit.fetchSubCategories(2);
   }
 
   @override
@@ -146,8 +148,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                             title: 'Bakeries And Pastries',
                           ),
                           actions: [
-                            cartCounter(
-                              context: context,
+                            CartCounter(
+                          
                             )
                           ],
                           bottom: 
@@ -231,10 +233,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       left: 0,
                       right: 0,
                       child: CartContainer(
-                        svgIconPath: "assets/svg_icons/favorite-Cart.svg",
-                        buttonText: "Go To Cart",
-                        productsCount: "3",
-                        totalAmount: "310",
+
                       ),
                     ),
                   ],
