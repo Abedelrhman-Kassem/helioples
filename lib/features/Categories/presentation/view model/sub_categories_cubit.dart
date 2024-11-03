@@ -3,36 +3,48 @@ import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.d
 import 'package:negmt_heliopolis/features/Categories/data/repo/sub_categories_repo_imp.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view%20model/sub_categories_states.dart';
 
-class SubCategoriesCubit extends Cubit<FetchSubCatigoriesState>
-{
-  SubCategoriesRepoImp repo ;
-  List<SubCategories> subCategoriesList = [];
-  int currentPage = 1 ; 
-  bool isFetching = false ; 
-  SubCategoriesCubit(this.repo) : super(FetchSubCatigoriesInitial());
-  Future<void> fetchSubCatigories(int id) async {
-  if (isFetching) return; // Prevent fetching if already in progress
-  isFetching = true; 
-  emit(FetchSubCatigoriesLoading());
+class SubCategoriesCubit extends Cubit<FetchCategoriesState> {
+  final SubCategoriesRepoImp repo;
+  bool isFetchingMoreProducts = false;
+  List<Products> allProducts = [];
 
-  var result = await repo.getSubCategories(currentPage, id); 
-  result.fold((failure) {
-    emit(FetchSubCatigoriesFailure(failure.errorMessage));
-    isFetching = false; 
-  }, (fetchedSubCategories) {
-    if (fetchedSubCategories.isNotEmpty) {
-      subCategoriesList.addAll(fetchedSubCategories); // Correct assignment
-      currentPage++;
-      emit(FetchSubCatigoriesSuccess(subCategoriesList));  // Emit with updated list
+  SubCategoriesCubit(this.repo) : super(SubCategoriesInitial());
+
+  Future<void> fetchSubCategories(int categoryId) async {
+    emit(SubCategoriesLoading());
+
+    final result = await repo.getSubCategories(categoryId);
+    result.fold(
+      (failure) => emit(SubCategoriesFailure(failure.errorMessage)),
+      (subCategories) => emit(SubCategoriesSuccess(subCategories)),
+    );
+  }
+
+  Future<void> fetchProductsInSubCategory(int subCategoryId, int page, {bool isPagination = false}) async {
+    if (isPagination) {
+      if (isFetchingMoreProducts) return;
+      isFetchingMoreProducts = true;
+      emit(ProductsPaginationLoading(allProducts)); // Show loading indicator at the end of the list
+    } else {
+      emit(ProductsLoading());
+      allProducts = []; // Reset products list for a new subcategory
     }
-    isFetching = false; 
-  });
-}
 
-
-
-
-  
-
-
+    final result = await repo.getProductsInSubCategory(subCategoryId, page);
+    result.fold(
+      (failure) {
+        isFetchingMoreProducts = false;
+        if (isPagination) {
+          emit(ProductsPaginationLoading(allProducts)); // Maintain current list on failure
+        } else {
+          emit(ProductsFailure(failure.errorMessage));
+        }
+      },
+      (products) {
+        allProducts.addAll(products);
+        isFetchingMoreProducts = false;
+        emit(ProductsSuccess(allProducts));
+      },
+    );
+  }
 }

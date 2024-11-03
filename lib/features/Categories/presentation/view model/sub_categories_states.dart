@@ -1,27 +1,57 @@
 import 'package:equatable/equatable.dart';
 import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 
-
-abstract class FetchSubCatigoriesState extends Equatable
-{
-  const FetchSubCatigoriesState() ; 
-   @override
+abstract class FetchCategoriesState extends Equatable {
+  const FetchCategoriesState();
+  
+  @override
   List<Object> get props => [];
 }
 
-class FetchSubCatigoriesInitial extends FetchSubCatigoriesState {}
+// Subcategories states
+class SubCategoriesInitial extends FetchCategoriesState {}
 
-class FetchSubCatigoriesLoading extends FetchSubCatigoriesState {}
+class SubCategoriesLoading extends FetchCategoriesState {}
 
-class FetchSubCatigoriesSuccess extends FetchSubCatigoriesState{
-    final List<SubCategories> subCategories ; 
-    const FetchSubCatigoriesSuccess(this.subCategories);
+class SubCategoriesSuccess extends FetchCategoriesState {
+  final List<SubCategories> subCategories;
+  const SubCategoriesSuccess(this.subCategories);
 
+  @override
+  List<Object> get props => [subCategories];
 }
 
-class FetchSubCatigoriesFailure extends FetchSubCatigoriesState {
-  final String msg ; 
-  const FetchSubCatigoriesFailure(this.msg) ; 
+class SubCategoriesFailure extends FetchCategoriesState {
+  final String message;
+  const SubCategoriesFailure(this.message);
 
-  
+  @override
+  List<Object> get props => [message];
+}
+
+// Products states (for a specific subcategory)
+class ProductsLoading extends FetchCategoriesState {}
+
+class ProductsSuccess extends FetchCategoriesState {
+  final List<Products> products;
+  const ProductsSuccess(this.products);
+
+  @override
+  List<Object> get props => [products];
+}
+
+class ProductsFailure extends FetchCategoriesState {
+  final String message;
+  const ProductsFailure(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+class ProductsPaginationLoading extends FetchCategoriesState {
+  final List<Products> products;
+  const ProductsPaginationLoading(this.products);
+
+  @override
+  List<Object> get props => [products];
 }

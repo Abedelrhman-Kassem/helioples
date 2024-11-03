@@ -14,13 +14,11 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
 
   @override
   Future<Either<Failure, List<SubCategories>>> getSubCategories(
-      int page, int id) async {
+       int id) async {
     try {
+      await api.setAuthorizationHeader();
       var response =
-          await api.get(endpoint: "api/categories/2/sub-categories", headers: {
-        "token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE4IiwidHlwZSI6InVzZXIiLCJwdXJwb3NlIjoiYXV0aCIsImlhdCI6MTcyODgyMTg0OSwiZXhwIjoxNzI5MjUzODQ5fQ.H1YcyQOzsabWzz-PPPDF-jKIi1-o9jz0_-jFiLvwWDU"
-      });
+          await api.get(endpoint: "api/categories/1/sub-categories", );
 
       print(response['subCategories']);
 
@@ -35,7 +33,7 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
         }
       }
       print("***********");
-      print(subCategories[1]);
+      //print(subCategories[1]);
       print("*********");
       return right(subCategories);
     } catch (e) {
@@ -45,5 +43,33 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
         return left(ServerFailure(e.toString()));
       }
     }
+  }
+  
+  @override
+  Future<Either<Failure, List<Products>>> getProductsInSubCategory(int subCategoryId, int page) async  {
+
+    try {
+      await api.setAuthorizationHeader() ; 
+
+      var response = await api.get(endpoint: "api/categories/1/sub-categories/$subCategoryId?page=$page");
+      List<Products> products = [];
+
+      for (var item in response['subCategory']['products']) {
+        try {
+          products.add(Products.fromJson(item));
+        } catch (e) {
+          print("Error parsing item: $e");
+        }
+      } 
+      return right(products);
+      
+    } catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure.fromDioError(e));
+      } else {
+        return left(ServerFailure(e.toString()));
+      }
+    }
+   
   }
 }
