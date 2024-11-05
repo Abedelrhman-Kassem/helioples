@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
@@ -50,7 +49,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     super.initState();
     scrollController = ScrollController();
     scrollController.addListener(_handleScroll);
-    subCategoriesCubit = SubCategoriesCubit(SubCategoriesRepoImp(api: ApiService()));
+    subCategoriesCubit =
+        SubCategoriesCubit(SubCategoriesRepoImp(api: ApiService()));
     subCategoriesCubit.fetchSubCategories(2);
   }
 
@@ -87,7 +87,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               setState(() {});
             }
           }
-          DefaultTabController.of(tabContext!)?.animateTo(i);
+          DefaultTabController.of(tabContext!).animateTo(i);
           break;
         }
       }
@@ -112,15 +112,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       child: BlocBuilder<SubCategoriesCubit, FetchCategoriesState>(
         builder: (context, state) {
           if (state is SubCategoriesLoading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (state is SubCategoriesFailure) {
             return Center(child: Text(state.message));
           } else if (state is SubCategoriesSuccess) {
-            categories = state.subCategories.map((subCat) => subCat.name ?? "").toList();
+            categories =
+                state.subCategories.map((subCat) => subCat.name ?? "").toList();
 
             // Ensure categories are available
             if (categories.isEmpty) {
-              return Center(child: Text("No categories available"));
+              return const Center(child: Text("No categories available"));
             }
 
             return DefaultTabController(
@@ -139,54 +140,53 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                           elevation: 20,
                           backgroundColor: Colors.white,
                           leading: returnArrow(
-                              context: context,
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              }),
+                            context: context,
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
                           title: categoriesButtonTitleWidet(
                             context: context,
                             title: 'Bakeries And Pastries',
                           ),
-                          actions: [
-                            CartCounter(
-                          
-                            )
+                          actions: const [
+                            CartCounter(),
                           ],
-                          bottom: 
-                            ButtonsTabBar(
-                                  splashColor: MyColors.mainColor,
-                                  height: 75.h,
-                                  backgroundColor: const Color.fromRGBO(204, 229, 233, 1),
-                                  unselectedBackgroundColor: Colors.white,
-                                  unselectedBorderColor:
-                                      const Color.fromRGBO(170, 170, 170, 1),
-                                  labelStyle: Styles.styles15w400NormalBlack.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: MyColors.mainColor),
-                                  borderColor: Colors.transparent,
-                                  borderWidth: 1.sp,
-                                  unselectedLabelStyle:
-                                      Styles.styles15w400NormalBlack.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: const Color.fromRGBO(150, 150, 150, 1),
-                                  ),
-                                  radius: 30.r,
-                                  buttonMargin: EdgeInsets.all(10.sp),
-                                  contentCenter: true,
-                                  labelSpacing: 10.sp,
-                                  contentPadding: EdgeInsets.all(12.sp),
-                                  onTap: (index) => _scrollToSection(index),
-                                  tabs: [
-                                    ...List.generate(
-                                      categories.length,
-                                      (index) => Tab(
-                                        icon: Image.asset("assets/Icons_logos/Donuts.png"),
-                                        text: categories[index],
-                                      ),
-                                    ),
-                                  ],
-                                )
-                     
+                          bottom: ButtonsTabBar(
+                            splashColor: MyColors.mainColor,
+                            height: 75.h,
+                            backgroundColor:
+                                const Color.fromRGBO(204, 229, 233, 1),
+                            unselectedBackgroundColor: Colors.white,
+                            unselectedBorderColor:
+                                const Color.fromRGBO(170, 170, 170, 1),
+                            labelStyle: Styles.styles15w400NormalBlack.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: MyColors.mainColor),
+                            borderColor: Colors.transparent,
+                            borderWidth: 1.sp,
+                            unselectedLabelStyle:
+                                Styles.styles15w400NormalBlack.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: const Color.fromRGBO(150, 150, 150, 1),
+                            ),
+                            radius: 30.r,
+                            buttonMargin: EdgeInsets.all(10.sp),
+                            contentCenter: true,
+                            labelSpacing: 10.sp,
+                            contentPadding: EdgeInsets.all(12.sp),
+                            onTap: (index) => _scrollToSection(index),
+                            tabs: [
+                              ...List.generate(
+                                categories.length,
+                                (index) => Tab(
+                                  icon: Image.asset(
+                                      "assets/Icons_logos/Donuts.png"),
+                                  text: categories[index],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -198,7 +198,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       physics: const BouncingScrollPhysics(),
                       controller: scrollController,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 15.w, vertical: 20.h),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -232,9 +233,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       bottom: 10,
                       left: 0,
                       right: 0,
-                      child: CartContainer(
-
-                      ),
+                      child: CartContainer(),
                     ),
                   ],
                 ),

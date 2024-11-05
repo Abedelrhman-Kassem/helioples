@@ -48,6 +48,7 @@ class ApiService {
     required Map<String, dynamic> data,
     Map<String, String>? headers,
   }) async {
+    await setAuthorizationHeader();
     mainHeader.addAll(headers ?? {});
 
     try {

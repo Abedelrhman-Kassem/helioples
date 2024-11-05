@@ -12,3 +12,11 @@ class LikedModel {
     }
   }
 }
+
+class PostLikedModel {
+  bool? isLiked;
+
+  PostLikedModel.fromJson(Map<String, dynamic> json) {
+    isLiked = json['liked'];
+  }
+}
