@@ -8,6 +8,9 @@ class SubCategoriesCubit extends Cubit<FetchCategoriesState> {
   bool isFetchingMoreProducts = false;
   List<Products> allProducts = [];
 
+  Map<int,int> subCategoryPages = {} ; 
+   Map<int, List<Products>> subCategoryProducts = {};
+
   SubCategoriesCubit(this.repo) : super(SubCategoriesInitial());
 
   Future<void> fetchSubCategories(int categoryId) async {
@@ -16,34 +19,49 @@ class SubCategoriesCubit extends Cubit<FetchCategoriesState> {
     final result = await repo.getSubCategories(categoryId);
     result.fold(
       (failure) => emit(SubCategoriesFailure(failure.errorMessage)),
-      (subCategories) => emit(SubCategoriesSuccess(subCategories)),
+      (subCategories) { 
+
+        for(var subCategory in subCategories )
+        {
+          subCategoryPages[subCategory.id!] = 0 ; 
+          subCategoryProducts[subCategory.id!] = [];
+        }
+        emit(SubCategoriesSuccess(subCategories));}
     );
   }
 
-  Future<void> fetchProductsInSubCategory(int subCategoryId, int page, {bool isPagination = false}) async {
+  Future<void> fetchProductsInSubCategory(int subCategoryId, {bool isPagination = false}) async {
+    int page = subCategoryPages[subCategoryId] ?? 0 ; 
+    print("insdide cubit");
     if (isPagination) {
       if (isFetchingMoreProducts) return;
       isFetchingMoreProducts = true;
-      emit(ProductsPaginationLoading(allProducts)); 
+      emit(ProductsPaginationLoading(subCategoryProducts[subCategoryId]!)); 
     } else {
       emit(ProductsLoading());
-      allProducts = []; 
+   
     }
 
     final result = await repo.getProductsInSubCategory(subCategoryId, page);
     result.fold(
       (failure) {
+        print("inside failure");
         isFetchingMoreProducts = false;
         if (isPagination) {
-          emit(ProductsPaginationLoading(allProducts)); 
+          emit(ProductsPaginationLoading(subCategoryProducts[subCategoryId]!)); 
         } else {
           emit(ProductsFailure(failure.errorMessage));
         }
       },
       (products) {
-        allProducts.addAll(products);
+        print("inside products");
+        print(subCategoryProducts[subCategoryId]!.length);
+        subCategoryProducts[subCategoryId]!.addAll(products);
+        print(subCategoryProducts[subCategoryId]!.length);
+
+        subCategoryPages[subCategoryId] = page + 1 ; 
         isFetchingMoreProducts = false;
-        emit(ProductsSuccess(allProducts));
+        emit(ProductsSuccess(subCategoryProducts[subCategoryId]!));
       },
     );
   }

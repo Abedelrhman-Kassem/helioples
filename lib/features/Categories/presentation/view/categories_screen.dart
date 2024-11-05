@@ -45,13 +45,23 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   BuildContext? tabContext;
   late SubCategoriesCubit subCategoriesCubit;
 
+  // Set to track which sub-categories have already fetched products
+  final Set<int> loadedSubCategories = {};
+
   @override
   void initState() {
     super.initState();
     scrollController = ScrollController();
     scrollController.addListener(_handleScroll);
     subCategoriesCubit = SubCategoriesCubit(SubCategoriesRepoImp(api: ApiService()));
-    subCategoriesCubit.fetchSubCategories(2);
+
+    // Initialize sub-categories without fetching products here
+    _initializeSubCategories();
+  }
+
+  Future<void> _initializeSubCategories() async {
+    // Fetch sub-categories and wait for it to complete
+    await subCategoriesCubit.fetchSubCategories(2);
   }
 
   @override
@@ -67,19 +77,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     for (int i = 0; i < sectionKeys.length; i++) {
-      final RenderBox? box =
-          sectionKeys[i].currentContext?.findRenderObject() as RenderBox?;
+      final RenderBox? box = sectionKeys[i].currentContext?.findRenderObject() as RenderBox?;
 
       if (box != null) {
         final position = box.localToGlobal(Offset(0, box.size.height));
 
-        if (position.dy <= box.size.height + screenHeight / 2 &&
-            position.dy > screenHeight / 2) {
+        if (position.dy <= box.size.height + screenHeight / 2 && position.dy > screenHeight / 2) {
           if (position.dy <= screenHeight) {
             if (!isLoading && itemsCount[i] < 50) {
               isLoading = true;
               itemsCount[i] += 5;
-
               Future.delayed(const Duration(seconds: 2)).then((_) {
                 isLoading = false;
               });
@@ -110,140 +117,137 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     return BlocProvider<SubCategoriesCubit>.value(
       value: subCategoriesCubit,
       child: BlocBuilder<SubCategoriesCubit, FetchCategoriesState>(
-        builder: (context, state) {
-          if (state is SubCategoriesLoading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state is SubCategoriesFailure) {
-            return Center(child: Text(state.message));
-          } else if (state is SubCategoriesSuccess) {
-            categories = state.subCategories.map((subCat) => subCat.name ?? "").toList();
+  builder: (context, state) {
+    if (state is SubCategoriesLoading) {
+      return Center(child: CircularProgressIndicator());
+    } else if (state is SubCategoriesFailure) {
+      return Center(child: Text(state.message));
+    } else if (state is SubCategoriesSuccess || state is ProductsLoading || state is ProductsSuccess) {
+      categories = state is SubCategoriesSuccess
+          ? state.subCategories.map((subCat) => subCat.name ?? "").toList()
+          : categories;
 
-            // Ensure categories are available
-            if (categories.isEmpty) {
-              return Center(child: Text("No categories available"));
-            }
+      if (categories.isEmpty) {
+        return Center(child: Text("No categories available"));
+      }
 
-            return DefaultTabController(
-              length: categories.length,
-              child: Scaffold(
-                appBar: PreferredSize(
-                  preferredSize: Size.fromHeight(180.h),
-                  child: Builder(
-                    builder: (context) {
-                      tabContext = context;
-                      return SizedBox(
-                        height: 170.h,
-                        width: double.infinity,
-                        child: AppBar(
-                          toolbarHeight: 200.h,
-                          elevation: 20,
-                          backgroundColor: Colors.white,
-                          leading: returnArrow(
-                              context: context,
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              }),
-                          title: categoriesButtonTitleWidet(
-                            context: context,
-                            title: 'Bakeries And Pastries',
-                          ),
-                          actions: [
-                            CartCounter(
-                          
-                            )
-                          ],
-                          bottom: 
-                            ButtonsTabBar(
-                                  splashColor: MyColors.mainColor,
-                                  height: 75.h,
-                                  backgroundColor: const Color.fromRGBO(204, 229, 233, 1),
-                                  unselectedBackgroundColor: Colors.white,
-                                  unselectedBorderColor:
-                                      const Color.fromRGBO(170, 170, 170, 1),
-                                  labelStyle: Styles.styles15w400NormalBlack.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: MyColors.mainColor),
-                                  borderColor: Colors.transparent,
-                                  borderWidth: 1.sp,
-                                  unselectedLabelStyle:
-                                      Styles.styles15w400NormalBlack.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: const Color.fromRGBO(150, 150, 150, 1),
-                                  ),
-                                  radius: 30.r,
-                                  buttonMargin: EdgeInsets.all(10.sp),
-                                  contentCenter: true,
-                                  labelSpacing: 10.sp,
-                                  contentPadding: EdgeInsets.all(12.sp),
-                                  onTap: (index) => _scrollToSection(index),
-                                  tabs: [
-                                    ...List.generate(
-                                      categories.length,
-                                      (index) => Tab(
-                                        icon: Image.asset("assets/Icons_logos/Donuts.png"),
-                                        text: categories[index],
-                                      ),
-                                    ),
-                                  ],
-                                )
-                     
-                        ),
-                      );
+      return DefaultTabController(
+        length: categories.length,
+        child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(180.h),
+            child: Builder(
+              builder: (context) {
+                tabContext = context;
+                return AppBar(
+                  toolbarHeight: 200.h,
+                  elevation: 20,
+                  backgroundColor: Colors.white,
+                  leading: returnArrow(
+                    context: context,
+                    onTap: () {
+                      Navigator.of(context).pop();
                     },
                   ),
-                ),
-                body: Stack(
-                  children: [
-                    SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      controller: scrollController,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ...List.generate(
-                              categories.length,
-                              (index) {
-                                return Column(
-                                  key: sectionKeys[index],
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      categories[index],
-                                      style: Styles.styles21w700black,
-                                    ),
-                                    SizedBox(height: 16.h),
-                                    itemWidgetGridView(
-                                        itemCount: itemsCount.isNotEmpty &&
-                                                itemsCount.length > index
-                                            ? itemsCount[index]
-                                            : 0),
-                                    SizedBox(height: 60.h),
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
+                  title: categoriesButtonTitleWidet(
+                    context: context,
+                    title: 'Bakeries And Pastries',
+                  ),
+                  actions: [const CartCounter()],
+                  bottom: ButtonsTabBar(
+                    splashColor: MyColors.mainColor,
+                    height: 75.h,
+                    backgroundColor: const Color.fromRGBO(204, 229, 233, 1),
+                    unselectedBackgroundColor: Colors.white,
+                    unselectedBorderColor: const Color.fromRGBO(170, 170, 170, 1),
+                    labelStyle: Styles.styles15w400NormalBlack.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: MyColors.mainColor,
+                    ),
+                    borderColor: Colors.transparent,
+                    borderWidth: 1.sp,
+                    unselectedLabelStyle: Styles.styles15w400NormalBlack.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: const Color.fromRGBO(150, 150, 150, 1),
+                    ),
+                    radius: 30.r,
+                    buttonMargin: EdgeInsets.all(10.sp),
+                    contentCenter: true,
+                    labelSpacing: 10.sp,
+                    contentPadding: EdgeInsets.all(12.sp),
+                    onTap: (index) => _scrollToSection(index),
+                    tabs: [
+                      ...List.generate(
+                        categories.length,
+                        (index) => Tab(
+                          icon: Image.asset("assets/Icons_logos/Donuts.png"),
+                          text: categories[index],
                         ),
                       ),
-                    ),
-                    const Positioned(
-                      bottom: 10,
-                      left: 0,
-                      right: 0,
-                      child: CartContainer(
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          body: Stack(
+            children: [
+              SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                controller: scrollController,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ...List.generate(
+                        categories.length,
+                        (index) {
+                          final subCategoryId = 1;
 
+                          if (!loadedSubCategories.contains(subCategoryId)) {
+                            loadedSubCategories.add(subCategoryId);
+                            subCategoriesCubit.fetchProductsInSubCategory(subCategoryId);
+                          }
+
+                          final products = subCategoriesCubit.subCategoryProducts[subCategoryId] ?? [];
+
+                          return Column(
+                            key: sectionKeys[index],
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                categories[index],
+                                style: Styles.styles21w700black,
+                              ),
+                              SizedBox(height: 16.h),
+                              if (products.isNotEmpty)
+                                itemWidgetGridView(itemCount: products.length)
+                              else
+                                Center(child: Text("No products available")),
+                              SizedBox(height: 60.h),
+                            ],
+                          );
+                        },
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            );
-          }
-          return Container(); // Fallback empty container
-        },
-      ),
+              const Positioned(
+                bottom: 10,
+                left: 0,
+                right: 0,
+                child: CartContainer(),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    return Container(); // Fallback empty container
+  },
+),
     );
   }
 }

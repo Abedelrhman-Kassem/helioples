@@ -5,6 +5,6 @@ import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.d
 abstract class SubCategoriesRepo
 {
   Future<Either<Failure,List<SubCategories>>> getSubCategories(int id);
-  Future<Either<Failure,List<Products>>> getProductsInSubCategory(int subCategoryId , int page) ; 
+  Future<Either<Failure,List<Products>>> getProductsInSubCategory(int subCategoryId , int page ) ; 
 
 }
