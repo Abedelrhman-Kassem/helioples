@@ -5,7 +5,7 @@ class Order {
   int? userId;
   DateTime? arriveTime;
   int? tips;
-  int? alternativeProduct;
+  String? alternativeProduct;
   double? subTotal;
   int? vat;
   int? deliveryFees;

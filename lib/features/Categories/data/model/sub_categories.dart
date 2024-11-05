@@ -65,8 +65,8 @@ class SubCategories {
 class Products {
   int? id;
   String? name;
-  Null? enDescription;
-  Null? enName;
+  String? enDescription;
+  String? enName;
   Null? thumbnailImage;
   String? searchDescription;
   double? price;

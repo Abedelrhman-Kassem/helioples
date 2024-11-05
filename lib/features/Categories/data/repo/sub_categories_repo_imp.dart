@@ -54,13 +54,17 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
       var response = await api.get(endpoint: "api/categories/1/sub-categories/$subCategoryId?page=$page");
       List<Products> products = [];
 
+
       for (var item in response['subCategory']['products']) {
         try {
+      
           products.add(Products.fromJson(item));
         } catch (e) {
           print("Error parsing item: $e");
         }
       } 
+      // print("llllllllllllllll");
+      // print(products.length);
       return right(products);
       
     } catch (e) {
