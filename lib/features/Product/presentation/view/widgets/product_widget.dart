@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/heart_widget.dart';
+import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/heart_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_counter_widget.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -56,9 +56,10 @@ class _ProductWidgetState extends State<ProductWidget> {
                 end: 0,
                 top: 0,
                 child: HeartWidget(
-                  isFavorite: false,
+                  isFavorite: widget.product.isLiked!,
                   width: 30.w,
                   height: 28.h,
+                  productId: widget.product.id!,
                 ),
               ),
               Positioned.directional(

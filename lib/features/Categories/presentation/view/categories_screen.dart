@@ -102,7 +102,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> with SingleTickerPr
               setState(() {});
             }
           }
-          DefaultTabController.of(tabContext!)?.animateTo(i);
+          DefaultTabController.of(tabContext!).animateTo(i);
           break;
         }
       }

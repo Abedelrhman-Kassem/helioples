@@ -4,14 +4,14 @@ import 'package:equatable/equatable.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/Liked/data/models/liked_model.dart';
-import 'package:negmt_heliopolis/features/Liked/data/repo/get_liked_repo_imp.dart';
+import 'package:negmt_heliopolis/features/Liked/data/repo/liked_repo_imp.dart';
 
 part 'liked_state.dart';
 
 class LikedCubit extends Cubit<LikedState> {
   LikedCubit() : super(LikedInitial());
 
-  GetLikedRepoImp getLikedRepoImp = GetLikedRepoImp(ApiService());
+  LikedRepoImp likedRepoImp = LikedRepoImp(ApiService());
 
   LikedModel likedModel = LikedModel.fromJson({});
 
@@ -27,7 +27,7 @@ class LikedCubit extends Cubit<LikedState> {
     emit(FetchLikedLoading());
 
     Either<Failure, LikedModel> res =
-        await getLikedRepoImp.getAllLikedProducts(page);
+        await likedRepoImp.getAllLikedProducts(page);
 
     res.fold(
       (failure) {

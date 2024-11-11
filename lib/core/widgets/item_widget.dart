@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/heart_widget.dart';
+import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/heart_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_counter_widget.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/widgets/discount_widget.dart';
@@ -77,6 +77,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                     isFavorite: product.isLiked!,
                     width: 22,
                     height: 20.37,
+                    productId: product.id!,
                   ),
                 ],
               ),
@@ -196,10 +197,11 @@ class _ItemWidgetState extends State<ItemWidget> {
                           Styles.styles8w400interFamily.copyWith(fontSize: 8),
                     ),
                   ),
-                  HeartWidget(
+                  const HeartWidget(
                     isFavorite: false,
                     width: 22,
                     height: 20.37,
+                    productId: 1630,
                   ),
                 ],
               ),

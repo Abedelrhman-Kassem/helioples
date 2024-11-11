@@ -3,12 +3,12 @@ import 'package:dio/dio.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/Liked/data/models/liked_model.dart';
-import 'package:negmt_heliopolis/features/Liked/data/repo/get_liked_repo.dart';
+import 'package:negmt_heliopolis/features/Liked/data/repo/liked_repo.dart';
 
-class GetLikedRepoImp extends GetLikedRepo {
+class LikedRepoImp extends LikedRepo {
   final ApiService apiService;
 
-  GetLikedRepoImp(this.apiService);
+  LikedRepoImp(this.apiService);
 
   @override
   Future<Either<Failure, LikedModel>> getAllLikedProducts(int page) async {
@@ -26,6 +26,20 @@ class GetLikedRepoImp extends GetLikedRepo {
       }
 
       return left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Response<dynamic>> postLikedProduct(int prodcutId) async {
+    try {
+      var result = await apiService.post(
+        endPoints: 'api/protected/products/like',
+        data: {"productId": prodcutId},
+      );
+
+      return result;
+    } catch (e) {
+      rethrow;
     }
   }
 }
