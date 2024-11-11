@@ -102,6 +102,7 @@ class ItemUiModel {
   String description;
   String thumbnailImage;
   double price;
+  double discount;
   int quantity;
 
   ItemUiModel({
@@ -112,6 +113,7 @@ class ItemUiModel {
     required this.description,
     required this.thumbnailImage,
     required this.price,
+    required this.discount,
     this.quantity = 0,
   });
 }

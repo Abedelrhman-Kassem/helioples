@@ -91,6 +91,7 @@ class _CartScreenState extends State<CartScreen> {
                       tableValues[index][cartItemImageUrl] as String,
                   price: tableValues[index][cartItemPrice] as double,
                   quantity: tableValues[index][cartItemQty] as int,
+                  discount: tableValues[index][cartItemDiscount] as double,
                 ),
                 onDelete: deleteItem,
               ),

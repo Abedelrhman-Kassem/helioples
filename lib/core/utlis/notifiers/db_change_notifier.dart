@@ -10,8 +10,11 @@ class DbChangeNotifier with ChangeNotifier {
     fetchItemCount();
   }
 
-  DbChangeNotifierModel _dbChangeNotifierModel =
-      DbChangeNotifierModel(count: 0, totalPrice: 0);
+  DbChangeNotifierModel _dbChangeNotifierModel = DbChangeNotifierModel(
+    count: 0,
+    totalPrice: 0,
+    totalDiscount: 0,
+  );
 
   DbChangeNotifierModel get dbData => _dbChangeNotifierModel;
 
@@ -23,10 +26,12 @@ class DbChangeNotifier with ChangeNotifier {
 
 class DbChangeNotifierModel {
   late double totalPrice;
+  late double totalDiscount;
   late int count;
 
   DbChangeNotifierModel({
     required this.totalPrice,
     required this.count,
+    required this.totalDiscount,
   });
 }

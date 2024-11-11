@@ -25,7 +25,8 @@ class DBHelper {
               $cartItemDesc TEXT NOT NULL,
               $cartItemQty INTEGER NOT NULL,
               $cartItemImageUrl TEXT NOT NULL,
-              $cartItemPrice REAL NOT NULL
+              $cartItemPrice REAL NOT NULL,
+              $cartItemDiscount REAL NOT NULL
               )
             ''');
           if (kDebugMode) {
@@ -136,21 +137,26 @@ class DBHelper {
   static Future<DbChangeNotifierModel> getDbData() async {
     List<Map<String, Object?>> items = await DBHelper.queryData(
       table: cartItemTable,
-      columns: [cartItemQty, cartItemPrice],
+      columns: [cartItemQty, cartItemPrice, cartItemDiscount],
     );
 
-    double total = 0;
+    double totalPrice = 0;
+    double totalDiscount = 0;
 
     for (var item in items) {
       int qty = item[cartItemQty] as int;
       double price = item[cartItemPrice] as double;
-      total += qty * price;
+      double discount = item[cartItemDiscount] as double;
+
+      totalPrice += qty * price;
+      totalDiscount += qty * discount;
     }
 
-    total = double.parse(total.toStringAsFixed(2));
+    totalPrice = double.parse(totalPrice.toStringAsFixed(2));
     return DbChangeNotifierModel(
       count: items.length,
-      totalPrice: total,
+      totalPrice: totalPrice,
+      totalDiscount: totalDiscount,
     );
   }
 

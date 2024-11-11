@@ -49,3 +49,4 @@ const String cartItemDesc = 'desc';
 const String cartItemQty = 'quantity';
 const String cartItemImageUrl = 'imageUrl';
 const String cartItemPrice = 'price';
+const String cartItemDiscount = 'discount';

@@ -110,7 +110,8 @@ class _ProductWidgetState extends State<ProductWidget> {
                 enName: widget.product.enName ?? 'enName',
                 enDesc: widget.product.enDesc ?? 'enDesc',
                 thumbnailImage: widget.product.thumbnailImage ?? '',
-                price: widget.product.afterDiscount ?? widget.product.price!,
+                price: widget.product.price!,
+                discount: widget.product.discount ?? 0,
               ),
             )
           ],
