@@ -30,4 +30,19 @@ class HistoryCubit extends Cubit<FetchHistoryState> {
       isFetching = false;
     });
   }
+
+}
+class OrderDetailsCubit extends Cubit<FetchOrderState> {
+  final OrderHistoryRepoImp repo;
+  OrderDetailsCubit(this.repo) : super(FetchOrderInitial());
+
+  Future<void> getOrderDetails(int id) async {
+    
+    emit(FetchOrderLoading());
+    var result = await repo.getOrderDetails(id);
+    result.fold(
+      (failure) => emit(FetchOrderFailure(failure.errorMessage)),
+      (orderDetails) => emit(FetchOrderSuccess(orderDetails)),
+    );
+  }
 }

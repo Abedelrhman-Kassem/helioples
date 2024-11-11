@@ -49,8 +49,12 @@ class OrderHistoryRepoImp extends OrderHistoryRepo {
     try {
 
       await api.setAuthorizationHeader();
+      print("b3d el token");
+      print("id : ${id}");
+
 
       var response = await api.get(endpoint: "api/protected/orders/$id/get") ; 
+      print("b3d el response");
 
       if(response['order'] != null && response['order'].isNotEmpty)
       {

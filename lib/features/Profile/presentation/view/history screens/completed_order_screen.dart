@@ -7,6 +7,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view_model/history%20cubit/history_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view_model/history%20cubit/history_states.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../../../data/repo/order%20history%20repo/order_history_repo_imp.dart';
 
 class CompletedOrderScreen extends StatefulWidget {
@@ -66,7 +67,7 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
                       : const SizedBox.shrink();
                 }
 
-                // Render each OrderHistory item
+            
                 var orderHistory = _historyCubit.orderHistoryList[index];
                 return Padding(
                   padding:
@@ -74,7 +75,7 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Display the date
+                   
                       Text(
                         orderHistory.date ?? '',
                         style: Styles.styles17w700interFamily.copyWith(
@@ -91,7 +92,9 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.of(context)
-                                        .pushNamed(orderDetailsScreen);
+                                        .pushNamed(orderDetailsScreen , arguments: {
+                                          'order' : order,
+                                        });
                                   },
                                   child: Container(
                                     width: 400.w,
@@ -218,4 +221,47 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
       ),
     );
   }
+}
+
+Widget historyShimmerLoading()
+{
+  return Skeletonizer(
+    child: Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+
+          AppBar(
+            leading:  const Icon(Icons.add_ic_call_outlined),
+            title:  const Text("dummy "),
+          ),
+          SizedBox(
+            height: 15.h,
+          ),
+
+          Row(
+            children: [
+              Container(
+                    height: 50.h,
+                    width: 110.w,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(30.r),
+                    ),
+                  ),
+                  Container(
+                    height: 50.h,
+                    width: 110.w,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(30.r),
+                    ),
+                  ),
+            ],
+          )
+    
+        ],
+      ),
+    ),
+  );
 }
