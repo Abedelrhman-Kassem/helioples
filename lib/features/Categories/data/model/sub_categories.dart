@@ -1,3 +1,5 @@
+import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
+
 class SubCategories {
   int? id;
   bool? isFeatured;
@@ -9,7 +11,7 @@ class SubCategories {
   bool? active;
   String? createdAt;
   String? updatedAt;
-  List<Products>? products;
+  List<RelatedProductsModel>? products;
 
   SubCategories(
       {this.id,
@@ -36,30 +38,30 @@ class SubCategories {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     if (json['products'] != null) {
-      products = <Products>[];
+      products = <RelatedProductsModel>[];
       json['products'].forEach((v) {
-        products!.add(new Products.fromJson(v));
+        products!.add(new RelatedProductsModel.fromJson(v));
       });
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['isFeatured'] = this.isFeatured;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['bannerImage'] = this.bannerImage;
-    data['categoryId'] = this.categoryId;
-    data['currentProducts'] = this.currentProducts;
-    data['active'] = this.active;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    if (this.products != null) {
-      data['products'] = this.products!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = new Map<String, dynamic>();
+  //   data['id'] = this.id;
+  //   data['isFeatured'] = this.isFeatured;
+  //   data['name'] = this.name;
+  //   data['description'] = this.description;
+  //   data['bannerImage'] = this.bannerImage;
+  //   data['categoryId'] = this.categoryId;
+  //   data['currentProducts'] = this.currentProducts;
+  //   data['active'] = this.active;
+  //   data['createdAt'] = this.createdAt;
+  //   data['updatedAt'] = this.updatedAt;
+  //   if (this.products != null) {
+  //     data['products'] = this.products!.map((v) => v.toJson()).toList();
+  //   }
+  //   return data;
+  // }
 }
 
 class Products {

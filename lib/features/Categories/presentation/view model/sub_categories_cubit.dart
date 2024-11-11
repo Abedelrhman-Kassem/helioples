@@ -2,14 +2,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 import 'package:negmt_heliopolis/features/Categories/data/repo/sub_categories_repo_imp.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view%20model/sub_categories_states.dart';
+import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 class SubCategoriesCubit extends Cubit<FetchCategoriesState> {
   final SubCategoriesRepoImp repo;
   bool isFetchingMoreProducts = false;
-  List<Products> allProducts = [];
+  //List<Products> allProducts = [];
 
   Map<int,int> subCategoryPages = {} ; 
-   Map<int, List<Products>> subCategoryProducts = {};
+  Map<int, List<RelatedProductsModel>> subCategoryProducts = {};
 
   SubCategoriesCubit(this.repo) : super(SubCategoriesInitial());
 
@@ -18,7 +19,9 @@ class SubCategoriesCubit extends Cubit<FetchCategoriesState> {
 
     final result = await repo.getSubCategories(categoryId);
     result.fold(
-      (failure) => emit(SubCategoriesFailure(failure.errorMessage)),
+      (failure)  {if(!isClosed) {
+        emit(SubCategoriesFailure(failure.errorMessage));
+      }},
       (subCategories) { 
 
         for(var subCategory in subCategories )
@@ -36,7 +39,7 @@ class SubCategoriesCubit extends Cubit<FetchCategoriesState> {
     if (isPagination) {
       if (isFetchingMoreProducts) return;
       isFetchingMoreProducts = true;
-      emit(ProductsPaginationLoading(subCategoryProducts[subCategoryId]!)); 
+      //emit(ProductsPaginationLoading(subCategoryProducts[subCategoryId]!)); 
     } else {
       emit(ProductsLoading());
    

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
+import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 abstract class FetchCategoriesState extends Equatable {
   const FetchCategoriesState();
@@ -33,7 +34,7 @@ class SubCategoriesFailure extends FetchCategoriesState {
 class ProductsLoading extends FetchCategoriesState {}
 
 class ProductsSuccess extends FetchCategoriesState {
-  final List<Products> products;
+  final List<RelatedProductsModel> products;
   const ProductsSuccess(this.products);
 
   @override
@@ -49,7 +50,7 @@ class ProductsFailure extends FetchCategoriesState {
 }
 
 class ProductsPaginationLoading extends FetchCategoriesState {
-  final List<Products> products;
+  final List<RelatedProductsModel> products;
   const ProductsPaginationLoading(this.products);
 
   @override

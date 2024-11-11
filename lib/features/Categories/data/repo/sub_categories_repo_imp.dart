@@ -5,10 +5,12 @@ import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 
 import 'package:negmt_heliopolis/features/Categories/data/repo/sub_categories_repo.dart';
+import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 class SubCategoriesRepoImp extends SubCategoriesRepo {
   final ApiService api;
   List<SubCategories> subCategories = [];
+  int mainId  = 0 ; 
 
   SubCategoriesRepoImp({required this.api});
 
@@ -18,7 +20,8 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
     try {
       await api.setAuthorizationHeader();
       var response =
-          await api.get(endpoint: "api/categories/1/sub-categories", );
+          await api.get(endpoint: "api/categories/$id/sub-categories", );
+      mainId = id ; 
 
       print(response['subCategories']);
 
@@ -46,19 +49,19 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
   }
   
   @override
-  Future<Either<Failure, List<Products>>> getProductsInSubCategory(int subCategoryId, int page) async  {
+  Future<Either<Failure, List<RelatedProductsModel>>> getProductsInSubCategory(int subCategoryId, int page) async  {
 
     try {
       await api.setAuthorizationHeader() ; 
 
-      var response = await api.get(endpoint: "api/categories/1/sub-categories/$subCategoryId?page=$page");
-      List<Products> products = [];
+      var response = await api.get(endpoint: "api/categories/$mainId/sub-categories/$subCategoryId?page=$page");
+      List<RelatedProductsModel> products = [];
 
 
       for (var item in response['subCategory']['products']) {
         try {
       
-          products.add(Products.fromJson(item));
+          products.add(RelatedProductsModel.fromJson(item));
         } catch (e) {
           print("Error parsing item: $e");
         }

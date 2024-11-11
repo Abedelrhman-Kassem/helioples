@@ -8,7 +8,11 @@ Widget categoryBuilder(
     {required BuildContext context, required CategoryModel category}) {
   return GestureDetector(
     onTap: () {
-      Navigator.pushNamed(context, categoriesScreen);
+      Navigator.pushNamed(
+        context,
+        categoriesScreen,
+        arguments: {'category': category}, 
+      );
     },
     child: SizedBox(
       width: 100,
