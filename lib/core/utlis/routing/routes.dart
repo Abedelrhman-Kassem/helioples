@@ -113,7 +113,10 @@ class AppRouter {
         break;
 
       case categoriesScreen:
-        page = const CategoriesScreen();
+      final args = settings.arguments as Map<String , dynamic>;
+        page =  CategoriesScreen(
+          category: args['category'],
+        );
         fromRight = true;
         break;
 
@@ -154,7 +157,10 @@ class AppRouter {
         break;
 
       case orderDetailsScreen:
-        page = const OrderDetailsScreen();
+        final args = settings.arguments as Map<String ,dynamic>;
+        page =  OrderDetailsScreen(
+          order: args['order'],
+        );
         fromRight = true;
         break;
 
