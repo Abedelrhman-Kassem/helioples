@@ -5,6 +5,7 @@ import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/alternative_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/delivery_address_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/delivery_payment_contianer.dart';
@@ -17,75 +18,104 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/deliv
 
 class CheckoutScreen extends StatelessWidget {
   const CheckoutScreen({super.key});
+//       {
+//     "deliverMethod": "Delivery",
+//     "paymentMethod": "cashOnDelivery",
+//     "tips": 20,
+//     "alternativeProduct": "whatsapp",
+//     // "branchId": "1",
+//     "addressId": 1,
+//     "chooseForMe":false,
+//     "promoCode": null,
+//     "items": [
+//         {
+//             "productId": 1628,
+//             "number": 1
+//         },
+//         {
+//             "productId": 1627,
+//             "number": 5
+//         }
+//     ]
+// }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DeliveryCubit(),
-      child: BlocConsumer<DeliveryCubit, DeliveryState>(
-        listener: (context, state) {
-          if (state is CreateOrderFailed) {
-            print(state.error);
-          }
-        },
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              leading: returnArrow(
-                context: context,
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              title: const Text('Checkout'),
+    return BlocConsumer<DeliveryCubit, DeliveryState>(
+      listener: (context, state) {
+        if (state is CreateOrderFailed) {
+          print(state.error);
+        }
+      },
+      builder: (context, state) {
+        CreateOrderModel createOrderModel = CreateOrderModel(
+          deliverMethod: 'Delivery',
+          items: [
+            Items(
+              productId: 1,
+              number: 2,
             ),
-            body: Container(
-              height: double.infinity,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    'assets/screens_background/grocery_itemsback_ground.png',
-                  ),
+          ],
+        );
+
+        BlocProvider.of<DeliveryCubit>(context).printing();
+
+        return Scaffold(
+          appBar: AppBar(
+            leading: returnArrow(
+              context: context,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            title: const Text('Checkout'),
+          ),
+          body: Container(
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  'assets/screens_background/grocery_itemsback_ground.png',
                 ),
               ),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(20.r),
-                      margin: EdgeInsets.symmetric(vertical: 20.h),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
-                        borderRadius: BorderRadius.circular(15.r),
-                      ),
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return itemWidget();
-                        },
-                        itemCount: 4,
-                      ),
+            ),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(20.r),
+                    margin: EdgeInsets.symmetric(vertical: 20.h),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9),
+                      borderRadius: BorderRadius.circular(15.r),
                     ),
-                    timeScheduleContainer(context, 'Delivery Time'),
-                    const DeliveryAddressContainer(),
-                    const DeliveryPaymentContianer(),
-                    const DeliveryTipsContianer(),
-                    const PromoCodeContainer(),
-                    paymentDetails(),
-                    const AlternativeContainer(),
-                    SizedBox(height: 160.h),
-                  ],
-                ),
+                    child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return itemWidget();
+                      },
+                      itemCount: 4,
+                    ),
+                  ),
+                  timeScheduleContainer(context, 'Delivery Time'),
+                  const DeliveryAddressContainer(),
+                  const DeliveryPaymentContianer(),
+                  const DeliveryTipsContianer(),
+                  const PromoCodeContainer(),
+                  paymentDetails(),
+                  const AlternativeContainer(),
+                  SizedBox(height: 160.h),
+                ],
               ),
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: bottomSheet(context, checkoutDetailsScreen),
-          );
-        },
-      ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: bottomSheet(context, checkoutDetailsScreen),
+        );
+      },
     );
   }
 }
@@ -134,9 +164,13 @@ Widget bottomSheet(BuildContext context, String route) {
             borderRadius: BorderRadius.circular(36.77.r),
             splashColor: MyColors.mainColor,
             onTap: () {
-              BlocProvider.of<DeliveryCubit>(context).createOrder();
+              try {
+                // BlocProvider.of<DeliveryCubit>(context).createOrder();
+              } catch (e) {
+                //
+              }
 
-              // Navigator.pushNamed(context, route);
+              Navigator.pushNamed(context, route);
             },
             child: Container(
               width: 284.w,

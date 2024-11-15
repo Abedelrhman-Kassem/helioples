@@ -99,12 +99,14 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
               SizedBox(height: 20.h),
               InkWell(
                 onTap: () async {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return const ModalBottomSheet();
-                    },
-                  );
+                  _dbChangeNotifier.dbData.count > 0
+                      ? showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return const ModalBottomSheet();
+                          },
+                        )
+                      : null;
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 16.h),

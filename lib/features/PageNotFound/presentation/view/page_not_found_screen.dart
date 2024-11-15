@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class PageNotFoundScreen extends StatelessWidget {
-  const PageNotFoundScreen({super.key});
+  final String fromParent;
+  const PageNotFoundScreen({super.key, required this.fromParent});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.blue),
-      body: const Center(child: Text('Page Not Found')),
+      body: Center(child: Text(fromParent)),
     );
   }
 }

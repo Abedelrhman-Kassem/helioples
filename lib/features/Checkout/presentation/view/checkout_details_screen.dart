@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
@@ -9,12 +10,14 @@ import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/cancel_order_bottom_sheet.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/shipping_details_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/item_widget.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/delivery_cubit/delivery_cubit.dart';
 
 class CheckoutDetailsScreen extends StatelessWidget {
   const CheckoutDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<DeliveryCubit>(context).printing();
     return Scaffold(
       appBar: AppBar(
         leading: returnArrow(

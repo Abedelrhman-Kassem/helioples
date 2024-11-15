@@ -6,11 +6,15 @@ class ApiService {
   final baseUrl = 'http://167.88.169.140/';
 
   Dio dio = Dio();
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  static const FlutterSecureStorage _storage = FlutterSecureStorage();
 
   static Future<String?> getToken() async {
-    final String? token = await const FlutterSecureStorage().read(key: 'token');
+    final String? token = await _storage.read(key: 'token');
     return token;
+  }
+
+  static Future<void> removeToken() async {
+    await _storage.delete(key: 'token');
   }
 
   var mainHeader = {
