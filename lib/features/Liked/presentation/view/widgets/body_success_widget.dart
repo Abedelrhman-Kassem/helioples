@@ -54,6 +54,7 @@ class _BodySuccessWidgetState extends State<BodySuccessWidget> {
             // childAspectRatio: 1 / 2,
           ),
           itemBuilder: (context, index) => ItemWidget(
+            key: ValueKey(widget.state.product.products?[index].id),
             relatedProductsModel: widget.state.product.products?[index],
           ),
         ),

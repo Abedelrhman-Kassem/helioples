@@ -68,11 +68,11 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Promocode Discount',
+                    'Discount',
                     style: Styles.styles14w400NormalWhite,
                   ),
                   Text(
-                    '120.00 EGP',
+                    '${_dbChangeNotifier.dbData.totalDiscount} EGP',
                     style: Styles.styles15w600NormalWhite,
                   ),
                 ],
@@ -91,7 +91,7 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
                     style: Styles.styles14w400NormalWhite,
                   ),
                   Text(
-                    '${_dbChangeNotifier.dbData.totalPrice} EGP',
+                    '${_dbChangeNotifier.dbData.totalPrice - _dbChangeNotifier.dbData.totalDiscount} EGP',
                     style: Styles.styles18w800NormalWhite,
                   ),
                 ],
@@ -99,12 +99,14 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
               SizedBox(height: 20.h),
               InkWell(
                 onTap: () async {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return const ModalBottomSheet();
-                    },
-                  );
+                  _dbChangeNotifier.dbData.count > 0
+                      ? showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return const ModalBottomSheet();
+                          },
+                        )
+                      : null;
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 16.h),
@@ -132,7 +134,7 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
                           children: [
                             TextSpan(
                               text:
-                                  '${_dbChangeNotifier.dbData.totalPrice} EGP',
+                                  '${_dbChangeNotifier.dbData.totalPrice - _dbChangeNotifier.dbData.totalDiscount} EGP',
                               style: Styles.styles17w700MainColor,
                             ),
                           ],

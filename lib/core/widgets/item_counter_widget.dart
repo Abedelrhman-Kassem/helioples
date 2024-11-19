@@ -106,6 +106,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
           cartItemQty: newCounter,
           cartItemImageUrl: widget.itemUiModel!.thumbnailImage,
           cartItemPrice: widget.itemUiModel!.price,
+          cartItemDiscount: widget.itemUiModel!.discount,
         },
       );
     }

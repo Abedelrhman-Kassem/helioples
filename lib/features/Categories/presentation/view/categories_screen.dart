@@ -3,14 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
-// import 'package:redacted/redacted.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_container.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_counter.dart';
 import 'package:negmt_heliopolis/core/widgets/categories_button_title_widget.dart';
-import 'package:negmt_heliopolis/core/widgets/item_widget_grid.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Categories/data/repo/sub_categories_repo_imp.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view%20model/sub_categories_cubit.dart';
@@ -22,6 +20,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 class CategoriesScreen extends StatefulWidget {
   final CategoryModel category;
   const CategoriesScreen({super.key, required this.category});
+
 
   @override
   State<CategoriesScreen> createState() => _CategoriesScreenState();
@@ -97,9 +96,9 @@ class _CategoriesScreenState extends State<CategoriesScreen>
 
             isLoading = false;
 
-            setState(() {});
+              setState(() {});
+            }
           }
-
           DefaultTabController.of(tabContext!).animateTo(i);
           break;
         }
@@ -107,6 +106,19 @@ class _CategoriesScreenState extends State<CategoriesScreen>
     }
   }
 
+  void _scrollToSection(int index) {
+    // Delay the scroll action until the current frame is done laying out the widgets.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollController.removeListener(_handleScroll);
+      final context = sectionKeys[index].currentContext!;
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 500),
+      ).then((_) {
+        scrollController.addListener(_handleScroll);
+      });
+    });
+  }
   void _scrollToSection(int index) {
     // Delay the scroll action until the current frame is done laying out the widgets.
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -261,24 +273,23 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                       ),
                                       SizedBox(height: 16.h),
                                       if (products.isNotEmpty)
-                                        GridView.builder(
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount: products.length,
-                                          gridDelegate:
-                                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                            maxCrossAxisExtent: 150,
-                                            crossAxisSpacing: 7,
-                                            mainAxisSpacing: 10,
-                                            mainAxisExtent: 220,
-                                          ),
-                                          itemBuilder: (context, index) =>
-                                              ItemWidget(
-                                            relatedProductsModel:
-                                                products[index],
-                                          ),
-                                        )
+                                       GridView.builder(
+    
+    physics:
+      const NeverScrollableScrollPhysics() ,
+    shrinkWrap: true,
+    itemCount: products.length,
+    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+      maxCrossAxisExtent: 150,
+      crossAxisSpacing: 7,
+      mainAxisSpacing: 10,
+      mainAxisExtent: 220,
+      // childAspectRatio: 1 / 2,
+    ),
+    itemBuilder: (context, index) =>  ItemWidget(relatedProductsModel: products[index] ,),
+  )
+                                       // itemWidgetGridView(
+                                           // itemCount: products.length  )
                                       else
                                         buildItemsShimmer(),
                                       SizedBox(height: 60.h),
@@ -577,6 +588,111 @@ Widget buildItemsShimmer() {
         SizedBox(height: 30.h),
       ],
     ),
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+            SizedBox(
+              width: 8.w,
+            ),
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+            SizedBox(
+              width: 8.w,
+            ),
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10.h,
+        ),
+        Row(
+          children: [
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+            SizedBox(
+              width: 8.w,
+            ),
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+            SizedBox(
+              width: 8.w,
+            ),
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10.h,
+        ),
+        Row(
+          children: [
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+            SizedBox(
+              width: 8.w,
+            ),
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+            SizedBox(
+              width: 8.w,
+            ),
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+          ],
+        ),
+        SizedBox(height: 30.h),
+      ],
+    ),
   );
 }
 
@@ -594,6 +710,12 @@ Widget buildShimmerLoading2(TabController tabController) {
               backgroundColor: Colors.white,
               leading: const Icon(Icons.add_ic_call_outlined),
               title: Text("dummy"),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Icon(Icons.add_ic_call_outlined),
+                )
+              ],
               actions: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -720,7 +842,8 @@ Widget buildShimmerLoading2(TabController tabController) {
                   SizedBox(
                     height: 10.h,
                   ),
-                  Row(
+                   Row(
+                 
                     children: [
                       Container(
                         height: 240.h,
@@ -733,17 +856,17 @@ Widget buildShimmerLoading2(TabController tabController) {
                         width: 8.w,
                       ),
                       Container(
-                        height: 240.h,
+                          height: 240.h,
                         width: 130.w,
                         decoration: BoxDecoration(
                             color: Colors.grey[300],
                             borderRadius: BorderRadius.circular(30.r)),
                       ),
-                      SizedBox(
+                       SizedBox(
                         width: 8.w,
                       ),
                       Container(
-                        height: 240.h,
+                         height: 240.h,
                         width: 130.w,
                         decoration: BoxDecoration(
                             color: Colors.grey[300],
@@ -756,6 +879,11 @@ Widget buildShimmerLoading2(TabController tabController) {
               ),
             );
           }),
+
+      
+          
+      
+          
         ],
       ),
     ),

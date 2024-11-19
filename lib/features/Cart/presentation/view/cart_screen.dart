@@ -7,17 +7,36 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/cart_item_widget.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/floating_button_widget.dart';
+import 'package:negmt_heliopolis/features/Checkout/checkout_router.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/delivery_cubit/delivery_cubit.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
+import 'package:negmt_heliopolis/mytest/test.dart';
 
-class CartScreen extends StatefulWidget {
+class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  Widget build(BuildContext context) {
+    final testRouter = OrderRouter();
+
+    return BlocProvider(
+      create: (context) => DeliveryCubit(),
+      child: MaterialApp(
+        onGenerateRoute: testRouter.generate,
+      ),
+    );
+  }
 }
 
-class _CartScreenState extends State<CartScreen> {
+class InitialCartScreen extends StatefulWidget {
+  const InitialCartScreen({super.key});
+
+  @override
+  State<InitialCartScreen> createState() => _InitialCartScreenState();
+}
+
+class _InitialCartScreenState extends State<InitialCartScreen> {
   List<Map<String, Object?>> tableValues = [];
 
   @override
@@ -91,6 +110,7 @@ class _CartScreenState extends State<CartScreen> {
                       tableValues[index][cartItemImageUrl] as String,
                   price: tableValues[index][cartItemPrice] as double,
                   quantity: tableValues[index][cartItemQty] as int,
+                  discount: tableValues[index][cartItemDiscount] as double,
                 ),
                 onDelete: deleteItem,
               ),

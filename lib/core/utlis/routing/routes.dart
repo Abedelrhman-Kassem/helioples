@@ -35,7 +35,7 @@ import 'package:negmt_heliopolis/features/Profile/presentation/view/profile%20in
 import 'package:negmt_heliopolis/features/Profile/presentation/view/profile%20information%20screens/verfication_changes_screen.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/settings%20screens/settings_screen.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/special_offer_item_screen.dart';
-import 'package:negmt_heliopolis/test.dart';
+import 'package:negmt_heliopolis/mytest/test.dart';
 
 class AppRouter {
   Route generate(RouteSettings settings) {
@@ -80,10 +80,10 @@ class AppRouter {
         fromRight = true;
         break;
 
-      case cardScreen:
-        page = const CardScreen();
-        fromRight = true;
-        break;
+      // case cardScreen:
+      //   page = const CardScreen();
+      //   fromRight = true;
+      //   break;
 
       case verficationScreen:
         final args = settings.arguments as Map<String, dynamic>;
@@ -113,8 +113,8 @@ class AppRouter {
         break;
 
       case categoriesScreen:
-      final args = settings.arguments as Map<String , dynamic>;
-        page =  CategoriesScreen(
+        final args = settings.arguments as Map<String, dynamic>;
+        page = CategoriesScreen(
           category: args['category'],
         );
         fromRight = true;
@@ -133,10 +133,10 @@ class AppRouter {
         fromRight = false;
         break;
 
-      case checkoutScreen:
-        page = const CheckoutScreen();
-        fromRight = false;
-        break;
+      // case checkoutScreen:
+      //   page = const CheckoutScreen();
+      //   fromRight = false;
+      //   break;
 
       case cahngeInformationScreen:
         page = const CahngeInformationScreen();
@@ -157,17 +157,17 @@ class AppRouter {
         break;
 
       case orderDetailsScreen:
-        final args = settings.arguments as Map<String ,dynamic>;
-        page =  OrderDetailsScreen(
+        final args = settings.arguments as Map<String, dynamic>;
+        page = OrderDetailsScreen(
           order: args['order'],
         );
         fromRight = true;
         break;
 
-      case checkoutDetailsScreen:
-        page = const CheckoutDetailsScreen();
-        fromRight = true;
-        break;
+      // case checkoutDetailsScreen:
+      //   page = const CheckoutDetailsScreen();
+      //   fromRight = true;
+      //   break;
 
       case alertsScreen:
         page = const AlertsScreen();
@@ -194,40 +194,45 @@ class AppRouter {
         fromRight = false;
         break;
 
-      case reOrderScreen:
-        page = const ReOrderScreen();
-        fromRight = false;
-        break;
-      case pickUpScreen:
-        page = const PickUpScreen();
-        fromRight = false;
-        break;
-      case pickupOrderDetails:
-        page = const PickupOrderDetails();
-        fromRight = false;
-        break;
-      case pickupReorderScreen:
-        page = const PickupReorderScreen();
-        fromRight = false;
-        break;
+      // case reOrderScreen:
+      //   page = const ReOrderScreen();
+      //   fromRight = false;
+      //   break;
+
+      // case pickUpScreen:
+      //   page = const PickUpScreen();
+      //   fromRight = false;
+      //   break;
+
+      // case pickupOrderDetails:
+      //   page = const PickupOrderDetails();
+      //   fromRight = false;
+      //   break;
+
+      // case pickupReorderScreen:
+      //   page = const PickupReorderScreen();
+      //   fromRight = false;
+      //   break;
 
       default:
-        page = const PageNotFoundScreen();
+        page = const PageNotFoundScreen(
+          fromParent: 'from Main',
+        );
         fromRight = true;
         break;
     }
 
-    return _CustomPageRouteBuilder(page: page, fromRight: fromRight);
+    return CustomPageRouteBuilder(page: page, fromRight: fromRight);
   }
 }
 
 // THIS CODE TO ANIMATE THE NAVIGATION AND CHANGE THE SYSTEMLAYOUT COLOR ABOVE THE APPBAR
 
-class _CustomPageRouteBuilder extends PageRouteBuilder {
+class CustomPageRouteBuilder extends PageRouteBuilder {
   final Widget page;
   final bool fromRight;
 
-  _CustomPageRouteBuilder({
+  CustomPageRouteBuilder({
     required this.page,
     required this.fromRight,
   }) : super(

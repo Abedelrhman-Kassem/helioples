@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_container.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_counter.dart';
@@ -105,16 +106,42 @@ class _ProductScreenState extends State<ProductScreen> {
                       ),
                       SizedBox(height: 50.h),
                       SizedBox(
-                        height: 200.h,
+                        height: 240,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: List.generate(
                             7,
                             (index) => Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10.r),
-                              height: 200.h,
-                              width: 100.h,
-                              color: Colors.grey,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 25,
+                                horizontal: 10,
+                              ),
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 5,
+                              ),
+                              height: 240,
+                              width: 130,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[100],
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Icon(Icons.heart_broken),
+                                    ],
+                                  ),
+                                  Helper.loadNetworkImage(
+                                    assetsErrorPath:
+                                        'assets/screens_background/home-category.png',
+                                  ),
+                                  const Text('hello there'),
+                                ],
+                              ),
                             ),
                           ),
                         ),
