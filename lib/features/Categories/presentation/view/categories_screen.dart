@@ -21,13 +21,14 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 class CategoriesScreen extends StatefulWidget {
   final CategoryModel category;
-  const CategoriesScreen({super.key , required this.category});
+  const CategoriesScreen({super.key, required this.category});
 
   @override
   State<CategoriesScreen> createState() => _CategoriesScreenState();
 }
 
-class _CategoriesScreenState extends State<CategoriesScreen> with SingleTickerProviderStateMixin {
+class _CategoriesScreenState extends State<CategoriesScreen>
+    with SingleTickerProviderStateMixin {
   List<String> categories = [];
   List<String> images = [
     'assets/svg_icons/noto_crown.svg',
@@ -39,19 +40,18 @@ class _CategoriesScreenState extends State<CategoriesScreen> with SingleTickerPr
 
   List<GlobalKey> sectionKeys = [];
 
-  
   List<int> itemsCount = [5, 5, 5, 5];
   late ScrollController scrollController;
   BuildContext? tabContext;
   late SubCategoriesCubit subCategoriesCubit;
 
   final Set<int> loadedSubCategories = {};
-   late TabController tabController;
+  late TabController tabController;
 
   @override
   void initState() {
     super.initState();
-     tabController = TabController(length: 1, vsync: this);
+    tabController = TabController(length: 1, vsync: this);
     scrollController = ScrollController();
     scrollController.addListener(_handleScroll);
     subCategoriesCubit =
@@ -85,23 +85,21 @@ class _CategoriesScreenState extends State<CategoriesScreen> with SingleTickerPr
       if (box != null) {
         final position = box.localToGlobal(Offset(0, box.size.height));
 
-        if (position.dy <= box.size.height + screenHeight / 2 &&
-            position.dy > screenHeight / 2) {
-          if (position.dy <= screenHeight) {
-            int subCategoryId =
-                subCategoriesCubit.subCategoryProducts.keys.elementAt(i); //
-            if (!isLoading && itemsCount[i] < 50) {
-              isLoading = true;
-              itemsCount[i] += 5;
-              subCategoriesCubit.fetchProductsInSubCategory(subCategoryId,
-                  isPagination: true); //
-              Future.delayed(const Duration(seconds: 2)).then((_) {
-                isLoading = false;
-              });
+        if (position.dy <= box.size.height + screenHeight / 8 &&
+            position.dy > screenHeight / 8) {
+          int subCategoryId =
+              subCategoriesCubit.subCategoryProducts.keys.elementAt(i); //
+          if (!isLoading) {
+            isLoading = true;
 
-              setState(() {});
-            }
+            subCategoriesCubit.fetchProductsInSubCategory(subCategoryId,
+                isPagination: true); //
+
+            isLoading = false;
+
+            setState(() {});
           }
+
           DefaultTabController.of(tabContext!).animateTo(i);
           break;
         }
@@ -109,20 +107,19 @@ class _CategoriesScreenState extends State<CategoriesScreen> with SingleTickerPr
     }
   }
 
- void _scrollToSection(int index) {
-  // Delay the scroll action until the current frame is done laying out the widgets.
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    scrollController.removeListener(_handleScroll);
-    final context = sectionKeys[index].currentContext!;
-    Scrollable.ensureVisible(
-      context,
-      duration: const Duration(milliseconds: 500),
-    ).then((_) {
-      scrollController.addListener(_handleScroll);
+  void _scrollToSection(int index) {
+    // Delay the scroll action until the current frame is done laying out the widgets.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollController.removeListener(_handleScroll);
+      final context = sectionKeys[index].currentContext!;
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 500),
+      ).then((_) {
+        scrollController.addListener(_handleScroll);
+      });
     });
-  });
-}
-
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -241,6 +238,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> with SingleTickerPr
                                     subCategoriesCubit
                                         .fetchProductsInSubCategory(
                                             subCategoryId);
+                                    subCategoriesCubit
+                                        .fetchProductsInSubCategory(
+                                            subCategoryId);
+                                    subCategoriesCubit
+                                        .fetchProductsInSubCategory(
+                                            subCategoryId);
                                   }
 
                                   final products = subCategoriesCubit
@@ -258,25 +261,26 @@ class _CategoriesScreenState extends State<CategoriesScreen> with SingleTickerPr
                                       ),
                                       SizedBox(height: 16.h),
                                       if (products.isNotEmpty)
-                                       GridView.builder(
-    
-    physics:
-      const NeverScrollableScrollPhysics() ,
-    shrinkWrap: true,
-    itemCount: products.length,
-    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-      maxCrossAxisExtent: 150,
-      crossAxisSpacing: 7,
-      mainAxisSpacing: 10,
-      mainAxisExtent: 220,
-      // childAspectRatio: 1 / 2,
-    ),
-    itemBuilder: (context, index) =>  ItemWidget(relatedProductsModel: products[index] ,),
-  )
-                                       // itemWidgetGridView(
-                                           // itemCount: products.length  )
+                                        GridView.builder(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: products.length,
+                                          gridDelegate:
+                                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                                            maxCrossAxisExtent: 150,
+                                            crossAxisSpacing: 7,
+                                            mainAxisSpacing: 10,
+                                            mainAxisExtent: 220,
+                                          ),
+                                          itemBuilder: (context, index) =>
+                                              ItemWidget(
+                                            relatedProductsModel:
+                                                products[index],
+                                          ),
+                                        )
                                       else
-                                      buildItemsShimmer(),
+                                        buildItemsShimmer(),
                                       SizedBox(height: 60.h),
                                     ],
                                   );
@@ -468,115 +472,111 @@ Widget buildItemsShimmer() {
     baseColor: Colors.grey[300]!,
     highlightColor: Colors.grey[100]!,
     child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  
-                  Row(
-                 
-                    children: [
-                      Container(
-                        height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Container(
-                          height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                       SizedBox(
-                        width: 8.w,
-                      ),
-                      Container(
-                         height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                   Row(
-                 
-                    children: [
-                      Container(
-                        height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Container(
-                          height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                       SizedBox(
-                        width: 8.w,
-                      ),
-                      Container(
-                         height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                   Row(
-                 
-                    children: [
-                      Container(
-                        height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Container(
-                          height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                       SizedBox(
-                        width: 8.w,
-                      ),
-                      Container(
-                         height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30.h),
-                ],
-              ),
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+            SizedBox(
+              width: 8.w,
+            ),
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+            SizedBox(
+              width: 8.w,
+            ),
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10.h,
+        ),
+        Row(
+          children: [
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+            SizedBox(
+              width: 8.w,
+            ),
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+            SizedBox(
+              width: 8.w,
+            ),
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10.h,
+        ),
+        Row(
+          children: [
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+            SizedBox(
+              width: 8.w,
+            ),
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+            SizedBox(
+              width: 8.w,
+            ),
+            Container(
+              height: 240.h,
+              width: 130.w,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r)),
+            ),
+          ],
+        ),
+        SizedBox(height: 30.h),
+      ],
+    ),
   );
 }
 
@@ -594,12 +594,12 @@ Widget buildShimmerLoading2(TabController tabController) {
               backgroundColor: Colors.white,
               leading: const Icon(Icons.add_ic_call_outlined),
               title: Text("dummy"),
-              actions: [Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: const Icon(Icons.add_ic_call_outlined),
-              )],
-             
-              
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Icon(Icons.add_ic_call_outlined),
+                )
+              ],
             ),
           ),
           Center(
@@ -649,11 +649,10 @@ Widget buildShimmerLoading2(TabController tabController) {
                   Container(
                     height: 30.h,
                     width: 100.w,
-                    color: Colors.grey[300], 
+                    color: Colors.grey[300],
                   ),
                   SizedBox(height: 30.h),
                   Row(
-                 
                     children: [
                       Container(
                         height: 240.h,
@@ -666,17 +665,17 @@ Widget buildShimmerLoading2(TabController tabController) {
                         width: 8.w,
                       ),
                       Container(
-                          height: 240.h,
+                        height: 240.h,
                         width: 130.w,
                         decoration: BoxDecoration(
                             color: Colors.grey[300],
                             borderRadius: BorderRadius.circular(30.r)),
                       ),
-                       SizedBox(
+                      SizedBox(
                         width: 8.w,
                       ),
                       Container(
-                         height: 240.h,
+                        height: 240.h,
                         width: 130.w,
                         decoration: BoxDecoration(
                             color: Colors.grey[300],
@@ -687,8 +686,7 @@ Widget buildShimmerLoading2(TabController tabController) {
                   SizedBox(
                     height: 10.h,
                   ),
-                   Row(
-                 
+                  Row(
                     children: [
                       Container(
                         height: 240.h,
@@ -701,17 +699,17 @@ Widget buildShimmerLoading2(TabController tabController) {
                         width: 8.w,
                       ),
                       Container(
-                          height: 240.h,
+                        height: 240.h,
                         width: 130.w,
                         decoration: BoxDecoration(
                             color: Colors.grey[300],
                             borderRadius: BorderRadius.circular(30.r)),
                       ),
-                       SizedBox(
+                      SizedBox(
                         width: 8.w,
                       ),
                       Container(
-                         height: 240.h,
+                        height: 240.h,
                         width: 130.w,
                         decoration: BoxDecoration(
                             color: Colors.grey[300],
@@ -722,8 +720,7 @@ Widget buildShimmerLoading2(TabController tabController) {
                   SizedBox(
                     height: 10.h,
                   ),
-                   Row(
-                 
+                  Row(
                     children: [
                       Container(
                         height: 240.h,
@@ -736,17 +733,17 @@ Widget buildShimmerLoading2(TabController tabController) {
                         width: 8.w,
                       ),
                       Container(
-                          height: 240.h,
+                        height: 240.h,
                         width: 130.w,
                         decoration: BoxDecoration(
                             color: Colors.grey[300],
                             borderRadius: BorderRadius.circular(30.r)),
                       ),
-                       SizedBox(
+                      SizedBox(
                         width: 8.w,
                       ),
                       Container(
-                         height: 240.h,
+                        height: 240.h,
                         width: 130.w,
                         decoration: BoxDecoration(
                             color: Colors.grey[300],
@@ -759,14 +756,8 @@ Widget buildShimmerLoading2(TabController tabController) {
               ),
             );
           }),
-
-      
-          
-      
-          
         ],
       ),
     ),
   );
 }
-
