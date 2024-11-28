@@ -13,13 +13,6 @@ import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/signup_s
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/verfication_screen.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/cart_screen.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view/categories_screen.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view/card_screen.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_delivery_screen.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_details_screen.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view/pick_up_screen.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view/pickup_order_details._screen.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view/pickup_reorder_screen.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view/re_order_screen.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view/home_layout.dart';
 import 'package:negmt_heliopolis/features/Intro/presentation/view/intro_screen.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/liked_screen.dart';
@@ -35,7 +28,7 @@ import 'package:negmt_heliopolis/features/Profile/presentation/view/profile%20in
 import 'package:negmt_heliopolis/features/Profile/presentation/view/profile%20information%20screens/verfication_changes_screen.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/settings%20screens/settings_screen.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/special_offer_item_screen.dart';
-import 'package:negmt_heliopolis/mytest/test.dart';
+
 
 class AppRouter {
   Route generate(RouteSettings settings) {
