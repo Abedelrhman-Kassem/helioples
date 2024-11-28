@@ -10,9 +10,12 @@ class MapsRepository {
 
   Future<List<PlaceSuggestion>> fetchSuggestions(
       String place, String sessionToken) async {
+        print("a7a maps");
     final suggestions =
         await placesWebservices.fetchSuggestions(place, sessionToken);
-
+        print("**********");
+    print(suggestions);
+    print("**************");
     return suggestions
         .map((suggestion) => PlaceSuggestion.fromJson(suggestion))
         .toList();

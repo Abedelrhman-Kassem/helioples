@@ -1,3 +1,5 @@
+
+
 import 'package:bloc/bloc.dart';
 
 
@@ -12,12 +14,14 @@ class MapsCubit extends Cubit<MapsState> {
   MapsCubit(this.mapsRepository) : super(MapsInitial());
 
   void emitPlaceSuggestions(String place, String sessionToken) {
+  
     mapsRepository.fetchSuggestions(place, sessionToken).then((suggestions) {
       emit(PlacesLoaded(suggestions));
     });
   }
 
    void emitPlaceLocation(String placeId, String sessionToken) {
+     
     mapsRepository.getPlaceLocation(placeId, sessionToken).then((place) {
       emit(PlaceLocationLoaded(place));
     });

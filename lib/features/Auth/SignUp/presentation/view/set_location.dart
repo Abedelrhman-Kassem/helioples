@@ -19,8 +19,7 @@ import 'package:negmt_heliopolis/features/Auth/SignUp/data/repo/sing_up_repo_imp
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/send_location_cubit/send_location_cubit.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/send_location_cubit/send_location_states.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/set_location_cubit/set_location_cubit.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/sign_up_cubit/sign_up_cubit.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/sign_up_cubit/sign_up_states.dart';
+
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/place_item.dart';
 
 import 'package:uuid/uuid.dart';
@@ -152,8 +151,10 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
   Widget buildSuggestionBloc() {
     return BlocBuilder<MapsCubit, MapsState>(builder: (context, state) {
       if (state is PlacesLoaded) {
+        print("************88 build sug");
         places = state.places;
         if (places.isNotEmpty && isSuggestionsVisible) {
+          print("************* return sug");
           return buildPlacesList();
         } else {
           return Container();
@@ -165,47 +166,50 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
   }
 
   Widget buildPlacesList() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.w),
-      padding: EdgeInsets.symmetric(vertical: 8.h),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: ListView.builder(
-        itemBuilder: (ctx, index) {
-          return InkWell(
-            onTap: () {
-              placeSuggestion = places[index];
-              getSelectedPlaceLocation();
-
-              searchController.text = places[index].description;
-              searchController.clear();
-              focusNode.unfocus();
-              setState(() {
-                isSuggestionsVisible = false;
-              });
-            },
-            child: PlaceItem(
-              suggestion: places[index],
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 20.w),
+        padding: EdgeInsets.symmetric(vertical: 8.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
             ),
-          );
-        },
-        itemCount: places.length,
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
+          ],
+        ),
+        child: ListView.builder(
+          itemBuilder: (ctx, index) {
+            return InkWell(
+              onTap: () {
+                placeSuggestion = places[index];
+                getSelectedPlaceLocation();
+
+                searchController.text = places[index].description;
+                searchController.clear();
+                focusNode.unfocus();
+                setState(() {
+                  isSuggestionsVisible = false;
+                });
+              },
+              child: PlaceItem(
+                suggestion: places[index],
+              ),
+            );
+          },
+          itemCount: places.length,
+          shrinkWrap: true,
+          physics: const ClampingScrollPhysics(),
+        ),
       ),
     );
   }
 
   void getPlacesSuggestions(String query) {
+    print("************** gwa getPlacesSuggestions ");
     final sessionToken = const Uuid().v4();
     BlocProvider.of<MapsCubit>(context)
         .emitPlaceSuggestions(query, sessionToken);
@@ -251,8 +255,9 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
   void addMarkerToMarkersAndUpdateUI(Marker marker) {
     setState(() {
       markers.add(marker);
-      locationFuture = codingLocation(goToSearchedForPlace.target.latitude,
-          goToSearchedForPlace.target.longitude);
+
+      locationFuture =
+          codingLocation(marker.position.latitude, marker.position.longitude);
     });
   }
 
@@ -306,7 +311,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
               searchedPlaceMarker = Marker(
                 position: latlng,
                 markerId: const MarkerId('1'),
-                infoWindow: InfoWindow(title: placeSuggestion.description),
+                // infoWindow: InfoWindow(title: placeSuggestion.description),
                 icon: BitmapDescriptor.defaultMarkerWithHue(
                     BitmapDescriptor.hueBlue),
               );
@@ -394,6 +399,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                             horizontal: 16.w, vertical: 12.h),
                       ),
                       onSubmitted: (query) {
+                        print(" ana query");
                         getPlacesSuggestions(query);
                       },
                     ),
@@ -410,7 +416,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
             right: 0,
             child: SizedBox(
               width: double.infinity,
-              height: 230.h,
+              height: 220.h,
               child: Material(
                 elevation: 8.0.sp,
                 shape: const OutlineInputBorder(
@@ -454,14 +460,12 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                         const Spacer(),
                         GestureDetector(
                             onTap: () {
-                              if (cur != null) {
-                                CameraPosition cameraPosition = CameraPosition(
-                                    target: LatLng(cur.latitude, cur.longitude),
-                                    zoom: 14);
-                                googleMapController.animateCamera(
-                                    CameraUpdate.newCameraPosition(
-                                        cameraPosition));
-                              }
+                              CameraPosition cameraPosition = CameraPosition(
+                                  target: LatLng(cur.latitude, cur.longitude),
+                                  zoom: 14);
+                              googleMapController.animateCamera(
+                                  CameraUpdate.newCameraPosition(
+                                      cameraPosition));
                             },
                             child:
                                 Image.asset("assets/Icons_logos/location.png"))
