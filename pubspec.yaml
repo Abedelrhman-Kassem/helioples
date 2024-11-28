@@ -66,6 +66,7 @@ dependencies:
   timer_count_down: ^2.2.0
   uuid: ^4.4.2
   redacted: ^1.0.12
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_lints: ^3.0.0
