@@ -73,14 +73,19 @@ class _SignupScreenState extends State<SignupScreen> {
                     children: [
                       Expanded(
                         child: NameTextField(
+                          isPassword: false,
+                          
                           labelText: "First Name",
                           controller: firstNameController,
                           isEnabled: true,
+                         
+                          
                         ),
                       ),
                       SizedBox(width: 20.w),
                       Expanded(
                         child: NameTextField(
+                          isPassword: false,
                           labelText: "Last Name",
                           controller: lastNameController,
                           isEnabled: true,
@@ -227,6 +232,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         SignUpCubit(SignUpRepoImp(apiService: ApiService())),
                     child: BlocConsumer<SignUpCubit, SignUpState>(
                       builder: (context, state) {
+                        // ignore: unused_local_variable
                         var cubit = BlocProvider.of<SignUpCubit>(context);
                         if (state is SignUpLoading) {
                           return const LoadingButton(
