@@ -36,15 +36,20 @@ class _ProductWidgetState extends State<ProductWidget> {
           margin: EdgeInsets.symmetric(vertical: 20.h),
           child: Stack(
             children: [
-              PageView.builder(
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                itemCount: 3,
-                controller: _pageController,
-                itemBuilder: (context, index) => Helper.loadNetworkImage(
-                  url: widget.product.thumbnailImage ?? '',
-                  assetsErrorPath: 'assets/test_images/white-toast.png',
-                  fit: BoxFit.contain,
+              Align(
+                alignment: Alignment.center,
+                child: PageView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 1,
+                  controller: _pageController,
+                  itemBuilder: (context, index) => Helper.loadNetworkImage(
+                    url: widget.product.thumbnailImage ?? '',
+                    assetsErrorPath:
+                        'assets/ayman/—Pngtree—3d beauty cosmetics product design_6380191 (2).png',
+                    // assetsErrorPath: 'assets/test_images/white-toast.png',
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
               Text(
@@ -68,7 +73,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                 bottom: 0,
                 child: SmoothPageIndicator(
                   controller: _pageController,
-                  count: 3,
+                  count: 1,
                   effect: ExpandingDotsEffect(
                     activeDotColor: MyColors.mainColor,
                     dotColor: const Color.fromRGBO(217, 217, 217, 1),

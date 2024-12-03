@@ -16,7 +16,7 @@ class GetProductImp extends GetProduct {
 
     try {
       productModel = ProductModel.fromJson(
-        await apiService.get(endpoint: 'api/products/$productId'),
+        await apiService.get(endpoint: 'api/products/get?id=$productId'),
       );
 
       return right(productModel);

@@ -22,7 +22,6 @@ class CreateOrderImp extends CreateOrder {
         data: data.toJson(),
       );
 
-      // Deserialize response data to OrderDetailsModel
       orderDetailsModel = OrderDetailsModel.fromJson(response.data);
 
       return right(orderDetailsModel);

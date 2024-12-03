@@ -8,3 +8,19 @@ sealed class CartState extends Equatable {
 }
 
 final class CartInitial extends CartState {}
+
+final class CartLoadingState extends CartState {}
+
+final class CartSuccessState extends CartState {
+  final UpdateCartModel updateCartModel;
+
+  const CartSuccessState({required this.updateCartModel});
+}
+
+final class CartFailedState extends CartState {
+  final String error;
+
+  const CartFailedState({required this.error});
+}
+
+final class CartDeletingState extends CartState {}

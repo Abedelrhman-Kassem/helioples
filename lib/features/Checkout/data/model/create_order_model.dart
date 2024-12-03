@@ -7,7 +7,7 @@ class CreateOrderModel {
   int? addressId;
   bool? chooseForMe;
   String? promoCode;
-  List<Items>? items;
+  List<Item>? items;
 
   CreateOrderModel({
     this.deliverMethod,
@@ -31,9 +31,9 @@ class CreateOrderModel {
     chooseForMe = json['chooseForMe'];
     promoCode = json['promoCode'];
     if (json['items'] != null) {
-      items = <Items>[];
+      items = <Item>[];
       json['items'].forEach((v) {
-        items!.add(Items.fromJson(v));
+        items!.add(Item.fromJson(v));
       });
     }
   }
@@ -55,13 +55,13 @@ class CreateOrderModel {
   }
 }
 
-class Items {
+class Item {
   late int productId;
   late int number;
 
-  Items({required this.productId, required this.number});
+  Item({required this.productId, required this.number});
 
-  Items.fromJson(Map<String, dynamic> json) {
+  Item.fromJson(Map<String, dynamic> json) {
     productId = json['productId'];
     number = json['number'];
   }

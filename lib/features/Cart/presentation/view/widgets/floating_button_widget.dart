@@ -99,11 +99,13 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
               SizedBox(height: 20.h),
               InkWell(
                 onTap: () async {
-                  _dbChangeNotifier.dbData.count > 0
+                  int items = _dbChangeNotifier.dbData.count;
+
+                  items > 0
                       ? showModalBottomSheet(
                           context: context,
                           builder: (context) {
-                            return const ModalBottomSheet();
+                            return ModalBottomSheet(items: items);
                           },
                         )
                       : null;

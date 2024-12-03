@@ -85,6 +85,7 @@ flutter:
     - assets/Icons_logos/
     - assets/svg_icons/
     - assets/test_images/
+    - assets/ayman/
     - assets/map_style.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

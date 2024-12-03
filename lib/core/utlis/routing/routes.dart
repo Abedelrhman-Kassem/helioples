@@ -20,6 +20,7 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/pick_up_scr
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/pickup_order_details._screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/pickup_reorder_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/re_order_screen.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view/home_layout.dart';
 import 'package:negmt_heliopolis/features/Intro/presentation/view/intro_screen.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/liked_screen.dart';
@@ -80,11 +81,6 @@ class AppRouter {
         fromRight = true;
         break;
 
-      // case cardScreen:
-      //   page = const CardScreen();
-      //   fromRight = true;
-      //   break;
-
       case verficationScreen:
         final args = settings.arguments as Map<String, dynamic>;
         page = VerificationScreen(
@@ -120,11 +116,6 @@ class AppRouter {
         fromRight = true;
         break;
 
-      case cartScreen:
-        page = const CartScreen();
-        fromRight = true;
-        break;
-
       case productScreen:
         final args = settings.arguments as Map<String, dynamic>;
         page = ProductScreen(
@@ -132,11 +123,6 @@ class AppRouter {
         );
         fromRight = false;
         break;
-
-      // case checkoutScreen:
-      //   page = const CheckoutScreen();
-      //   fromRight = false;
-      //   break;
 
       case cahngeInformationScreen:
         page = const CahngeInformationScreen();
@@ -164,11 +150,6 @@ class AppRouter {
         fromRight = true;
         break;
 
-      // case checkoutDetailsScreen:
-      //   page = const CheckoutDetailsScreen();
-      //   fromRight = true;
-      //   break;
-
       case alertsScreen:
         page = const AlertsScreen();
         fromRight = true;
@@ -194,25 +175,45 @@ class AppRouter {
         fromRight = false;
         break;
 
-      // case reOrderScreen:
-      //   page = const ReOrderScreen();
-      //   fromRight = false;
-      //   break;
+      case cartScreen:
+        page = const CartScreen();
+        fromRight = false;
+        break;
 
-      // case pickUpScreen:
-      //   page = const PickUpScreen();
-      //   fromRight = false;
-      //   break;
+      case checkoutScreen:
+        page = const CheckoutScreen();
+        fromRight = false;
+        break;
 
-      // case pickupOrderDetails:
-      //   page = const PickupOrderDetails();
-      //   fromRight = false;
-      //   break;
+      case reOrderScreen:
+        page = const ReOrderScreen();
+        fromRight = true;
+        break;
 
-      // case pickupReorderScreen:
-      //   page = const PickupReorderScreen();
-      //   fromRight = false;
-      //   break;
+      case checkoutDetailsScreen:
+        page = const CheckoutDetailsScreen();
+        fromRight = true;
+        break;
+
+      case cardScreen:
+        page = const CardScreen();
+        fromRight = true;
+        break;
+
+      case pickUpScreen:
+        page = const PickUpScreen();
+        fromRight = true;
+        break;
+
+      case pickupOrderDetails:
+        page = const PickupOrderDetails();
+        fromRight = true;
+        break;
+
+      case pickupReorderScreen:
+        page = const PickupReorderScreen();
+        fromRight = true;
+        break;
 
       default:
         page = const PageNotFoundScreen(

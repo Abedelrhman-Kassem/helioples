@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
@@ -14,11 +17,17 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/del
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/payment_details.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/promo_code_container.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/delivery_cubit/delivery_cubit.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 
-class CheckoutScreen extends StatelessWidget {
+class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
-//       {
+
+  @override
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends State<CheckoutScreen> {
+  //       {
 //     "deliverMethod": "Delivery",
 //     "paymentMethod": "cashOnDelivery",
 //     "tips": 20,
@@ -38,89 +47,124 @@ class CheckoutScreen extends StatelessWidget {
 //         }
 //     ]
 // }
+  List<Map<String, Object?>> tableValues = [];
+  CreateOrderModel createOrderModel = CreateOrderModel(
+    deliverMethod: 'Delivery',
+  );
+
+  @override
+  void initState() {
+    DBHelper.queryData(table: cartItemTable).then((value) {
+      setState(() {
+        tableValues = value;
+
+        List<Item> itemsArray = [];
+        for (var value in tableValues) {
+          itemsArray.add(
+            Item(
+              productId: value[cartItemId] as int,
+              number: value[cartItemQty] as int,
+            ),
+          );
+        }
+
+        createOrderModel.items = itemsArray;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DeliveryCubit, DeliveryState>(
-      listener: (context, state) {
-        if (state is CreateOrderFailed) {
-          print(state.error);
-        }
-      },
-      builder: (context, state) {
-        CreateOrderModel createOrderModel = CreateOrderModel(
-          deliverMethod: 'Delivery',
-          items: [
-            Items(
-              productId: 1,
-              number: 2,
-            ),
-          ],
-        );
+    return BlocProvider(
+      create: (context) => CreateOrderCubit(),
+      child: BlocConsumer<CreateOrderCubit, CreateOrderState>(
+        listener: (context, state) {
+          if (state is CreateOrderFailed) {
+            print(state.error);
+          }
+        },
+        builder: (context, state) {
+          BlocProvider.of<CreateOrderCubit>(context);
 
-        BlocProvider.of<DeliveryCubit>(context).printing();
-
-        return Scaffold(
-          appBar: AppBar(
-            leading: returnArrow(
-              context: context,
-              onTap: () {
-                Navigator.pop(context);
-              },
+          return Scaffold(
+            appBar: AppBar(
+              leading: returnArrow(
+                context: context,
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: const Text('Checkout'),
             ),
-            title: const Text('Checkout'),
-          ),
-          body: Container(
-            height: double.infinity,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  'assets/screens_background/grocery_itemsback_ground.png',
+            body: Container(
+              height: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/screens_background/grocery_itemsback_ground.png',
+                  ),
+                ),
+              ),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(20.r),
+                      margin: EdgeInsets.symmetric(vertical: 20.h),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.9),
+                        borderRadius: BorderRadius.circular(15.r),
+                      ),
+                      child: ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return itemWidget(
+                            quantity: tableValues[index][cartItemQty] as int,
+                            name: tableValues[index][cartItemName] as String,
+                            imageUrl:
+                                tableValues[index][cartItemImageUrl] as String,
+                            price: tableValues[index][cartItemPrice] as double,
+                          );
+                        },
+                        itemCount: tableValues.length,
+                      ),
+                    ),
+                    timeScheduleContainer(context, 'Delivery Time'),
+                    const DeliveryAddressContainer(),
+                    DeliveryPaymentContianer(
+                      createOrderModel: createOrderModel,
+                    ),
+                    DeliveryTipsContianer(
+                      createOrderModel: createOrderModel,
+                    ),
+                    const PromoCodeContainer(),
+                    paymentDetails(),
+                    const AlternativeContainer(),
+                    SizedBox(height: 160.h),
+                  ],
                 ),
               ),
             ),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(20.r),
-                    margin: EdgeInsets.symmetric(vertical: 20.h),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(15.r),
-                    ),
-                    child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return itemWidget();
-                      },
-                      itemCount: 4,
-                    ),
-                  ),
-                  timeScheduleContainer(context, 'Delivery Time'),
-                  const DeliveryAddressContainer(),
-                  const DeliveryPaymentContianer(),
-                  const DeliveryTipsContianer(),
-                  const PromoCodeContainer(),
-                  paymentDetails(),
-                  const AlternativeContainer(),
-                  SizedBox(height: 160.h),
-                ],
-              ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.miniCenterDocked,
+            floatingActionButton: bottomSheet(
+              context,
+              checkoutDetailsScreen,
+              createOrderModel,
             ),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: bottomSheet(context, checkoutDetailsScreen),
-        );
-      },
+            resizeToAvoidBottomInset: false,
+          );
+        },
+      ),
     );
   }
 }
 
-Widget bottomSheet(BuildContext context, String route) {
+Widget bottomSheet(
+    BuildContext context, String route, CreateOrderModel createOrderModel) {
   return Container(
     padding: EdgeInsets.all(20.r),
     decoration: BoxDecoration(
@@ -169,8 +213,8 @@ Widget bottomSheet(BuildContext context, String route) {
               } catch (e) {
                 //
               }
-
-              Navigator.pushNamed(context, route);
+              print(createOrderModel.toJson());
+              // Navigator.pushNamed(context, route);
             },
             child: Container(
               width: 284.w,

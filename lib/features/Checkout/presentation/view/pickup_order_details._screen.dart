@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
@@ -8,8 +9,25 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_de
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/shipping_details_container.dart';
 
-class PickupOrderDetails extends StatelessWidget {
+class PickupOrderDetails extends StatefulWidget {
   const PickupOrderDetails({super.key});
+
+  @override
+  State<PickupOrderDetails> createState() => _PickupOrderDetailsState();
+}
+
+class _PickupOrderDetailsState extends State<PickupOrderDetails> {
+  List<Map<String, Object?>> tableValues = [];
+
+  @override
+  void initState() {
+    DBHelper.queryData(table: cartItemTable).then((value) {
+      setState(() {
+        tableValues = value;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +64,14 @@ class PickupOrderDetails extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return itemWidget();
+                    return itemWidget(
+                      quantity: tableValues[index][cartItemQty] as int,
+                      name: tableValues[index][cartItemName] as String,
+                      imageUrl: tableValues[index][cartItemImageUrl] as String,
+                      price: tableValues[index][cartItemPrice] as double,
+                    );
                   },
-                  itemCount: 4,
+                  itemCount: tableValues.length,
                 ),
               ),
               Container(
@@ -122,19 +145,19 @@ class PickupOrderDetails extends StatelessWidget {
                         ),
                       ),
                     ),
-                    
-
                   ],
                 ),
               ),
               paymentContainer(),
               paymentDetails(context),
-              SizedBox(height: 160.h,),
+              SizedBox(
+                height: 160.h,
+              ),
             ],
           ),
         ),
       ),
-      bottomSheet: bottomSheet(context , pickupReorderScreen),
+      bottomSheet: bottomSheet(context, pickupReorderScreen),
     );
   }
 }

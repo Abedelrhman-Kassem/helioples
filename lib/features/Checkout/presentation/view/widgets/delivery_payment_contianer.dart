@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_item.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/cards_container.dart';
 
 class DeliveryPaymentContianer extends StatefulWidget {
-  const DeliveryPaymentContianer({super.key});
+  final CreateOrderModel createOrderModel;
+  const DeliveryPaymentContianer({
+    super.key,
+    required this.createOrderModel,
+  });
 
   @override
   State<DeliveryPaymentContianer> createState() =>
@@ -17,6 +22,8 @@ class _DeliveryPaymentContianerState extends State<DeliveryPaymentContianer> {
 
   @override
   Widget build(BuildContext context) {
+    widget.createOrderModel.paymentMethod = radioValue;
+
     return Container(
       padding: EdgeInsets.all(20.r),
       margin: EdgeInsets.symmetric(vertical: 10.h),
@@ -57,11 +64,11 @@ class _DeliveryPaymentContianerState extends State<DeliveryPaymentContianer> {
           radioItem(
             title: 'Credit/Debit card',
             iconPath: 'credit-or-debit-card',
-            index: 'creditOrDebitCard',
+            index: 'card',
             radioValue: radioValue,
             onTap: () async {
               setState(() {
-                radioValue = 'creditOrDebitCard';
+                radioValue = 'card';
               });
 
               return showModalBottomSheet(
