@@ -11,8 +11,8 @@ class CustomButtonsTabBar extends StatefulWidget {
   const CustomButtonsTabBar({
     required this.subCategories,
     required this.onTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _CustomButtonsTabBarState createState() => _CustomButtonsTabBarState();
@@ -73,7 +73,7 @@ class _CustomButtonsTabBarState extends State<CustomButtonsTabBar> with TickerPr
             icon: Image.asset("assets/Icons_logos/${subCategory.toLowerCase()}.png"), // Adjust the icon path accordingly
             text: subCategory,
           );
-        }).toList(),
+        }),
       ],
     );
   }

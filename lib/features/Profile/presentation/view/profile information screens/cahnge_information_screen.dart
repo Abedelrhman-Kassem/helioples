@@ -81,6 +81,7 @@ class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
                     children: [
                       Expanded(
                         child: NameTextField(
+                          isPassword: false,
                           labelText: "First Name",
                           controller: firstNameController,
                           isEnabled: true,
@@ -89,6 +90,7 @@ class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
                       SizedBox(width: 20.w),
                       Expanded(
                         child: NameTextField(
+                          isPassword: false,
                           labelText: "Last Name",
                           controller: lastNameController,
                           isEnabled: true,

@@ -20,6 +20,6 @@ Widget itemWidgetGridView({
       mainAxisExtent: 220,
       // childAspectRatio: 1 / 2,
     ),
-    itemBuilder: (context, index) => ItemWidget(),
+    itemBuilder: (context, index) => const ItemWidget(),
   );
 }

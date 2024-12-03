@@ -1,4 +1,4 @@
-import 'dart:ffi';
+
 import 'order.dart'; // Import the Order model
 
 class OrderHistory {
@@ -18,10 +18,10 @@ class OrderHistory {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['date'] = this.date;
-    if (this.orders != null) {
-      data['orders'] = this.orders!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['date'] = date;
+    if (orders != null) {
+      data['orders'] = orders!.map((v) => v.toJson()).toList();
     }
     return data;
   }

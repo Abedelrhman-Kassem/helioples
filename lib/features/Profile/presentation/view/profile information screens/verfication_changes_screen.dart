@@ -202,7 +202,7 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                                               ),
                                               builder: (BuildContext context,
                                                   double value, Widget? child) {
-                                                return Container(
+                                                return SizedBox(
                                                   width: value,
                                                   height: value,
                                                   child: child,

@@ -83,26 +83,23 @@ class _CategoriesScreenState extends State<CategoriesScreen>
       if (box != null) {
         final position = box.localToGlobal(Offset(0, box.size.height));
 
-        if (position.dy <= box.size.height + screenHeight / 2 &&
-            position.dy > screenHeight / 2) {
-          if (position.dy <= screenHeight) {
-            int subCategoryId =
-                subCategoriesCubit.subCategoryProducts.keys.elementAt(i);
-            if (!isLoading && itemsCount[i] < 50) {
-              isLoading = true;
-              itemsCount[i] += 5;
-              subCategoriesCubit.fetchProductsInSubCategory(subCategoryId,
-                  isPagination: true); //
-              Future.delayed(const Duration(seconds: 2)).then((_) {
-                isLoading = false;
-              });
+        if (position.dy <= box.size.height + screenHeight / 8 &&
+            position.dy > screenHeight / 8) {
+          int subCategoryId =
+              subCategoriesCubit.subCategoryProducts.keys.elementAt(i); //
+          if (!isLoading) {
+            isLoading = true;
 
-              setState(() {});
-            }
+            subCategoriesCubit.fetchProductsInSubCategory(subCategoryId,
+                isPagination: true); //
+
+            isLoading = false;
+
+            setState(() {});
           }
-          DefaultTabController.of(tabContext!).animateTo(i);
-          break;
         }
+        DefaultTabController.of(tabContext!).animateTo(i);
+        break;
       }
     }
   }
@@ -235,6 +232,12 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                                   if (!loadedSubCategories
                                       .contains(subCategoryId)) {
                                     loadedSubCategories.add(subCategoryId);
+                                    subCategoriesCubit
+                                        .fetchProductsInSubCategory(
+                                            subCategoryId);
+                                    subCategoriesCubit
+                                        .fetchProductsInSubCategory(
+                                            subCategoryId);
                                     subCategoriesCubit
                                         .fetchProductsInSubCategory(
                                             subCategoryId);
@@ -590,11 +593,11 @@ Widget buildShimmerLoading2(TabController tabController) {
               elevation: 0,
               backgroundColor: Colors.white,
               leading: const Icon(Icons.add_ic_call_outlined),
-              title: Text("dummy"),
-              actions: [
+              title: const Text("dummy"),
+              actions: const [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Icon(Icons.add_ic_call_outlined),
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.add_ic_call_outlined),
                 )
               ],
             ),
@@ -636,127 +639,123 @@ Widget buildShimmerLoading2(TabController tabController) {
           SizedBox(
             height: 40.h,
           ),
-          ...List.generate(
-            2,
-            (index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 30.h,
-                      width: 100.w,
-                      color: Colors.grey[300],
-                    ),
-                    SizedBox(height: 30.h),
-                    Row(
-                      children: [
-                        Container(
-                          height: 240.h,
-                          width: 130.w,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(30.r)),
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Container(
-                          height: 240.h,
-                          width: 130.w,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(30.r)),
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Container(
-                          height: 240.h,
-                          width: 130.w,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(30.r)),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          height: 240.h,
-                          width: 130.w,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(30.r)),
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Container(
-                          height: 240.h,
-                          width: 130.w,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(30.r)),
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Container(
-                          height: 240.h,
-                          width: 130.w,
-                          decoration: BoxDecoration(
+          ...List.generate(2, (index) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 30.h,
+                    width: 100.w,
+                    color: Colors.grey[300],
+                  ),
+                  SizedBox(height: 30.h),
+                  Row(
+                    children: [
+                      Container(
+                        height: 240.h,
+                        width: 130.w,
+                        decoration: BoxDecoration(
                             color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          height: 240.h,
-                          width: 130.w,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(30.r)),
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Container(
-                          height: 240.h,
-                          width: 130.w,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(30.r)),
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Container(
-                          height: 240.h,
-                          width: 130.w,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(30.r)),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 30.h),
-                  ],
-                ),
-              );
-            },
-          ),
+                            borderRadius: BorderRadius.circular(30.r)),
+                      ),
+                      SizedBox(
+                        width: 8.w,
+                      ),
+                      Container(
+                        height: 240.h,
+                        width: 130.w,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(30.r)),
+                      ),
+                      SizedBox(
+                        width: 8.w,
+                      ),
+                      Container(
+                        height: 240.h,
+                        width: 130.w,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(30.r)),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        height: 240.h,
+                        width: 130.w,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(30.r)),
+                      ),
+                      SizedBox(
+                        width: 8.w,
+                      ),
+                      Container(
+                        height: 240.h,
+                        width: 130.w,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(30.r)),
+                      ),
+                      SizedBox(
+                        width: 8.w,
+                      ),
+                      Container(
+                        height: 240.h,
+                        width: 130.w,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(30.r)),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        height: 240.h,
+                        width: 130.w,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(30.r)),
+                      ),
+                      SizedBox(
+                        width: 8.w,
+                      ),
+                      Container(
+                        height: 240.h,
+                        width: 130.w,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(30.r)),
+                      ),
+                      SizedBox(
+                        width: 8.w,
+                      ),
+                      Container(
+                        height: 240.h,
+                        width: 130.w,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(30.r)),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 30.h),
+                ],
+              ),
+            );
+          }),
         ],
       ),
     ),

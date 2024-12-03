@@ -1,26 +1,37 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:gap/gap.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
-import 'package:negmt_heliopolis/core/widgets/languageWidget.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
-import 'package:negmt_heliopolis/core/widgets/CustomButton.dart';
-import 'package:negmt_heliopolis/core/widgets/helioplis_logo.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
+
 import 'package:negmt_heliopolis/core/widgets/loading_button.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/data/repo/log_in_repo_imp.dart';
-import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/phone_number_input_widget.dart';
+
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/sign%20in%20cubit/sign_in_cubit.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/sign%20in%20cubit/sign_in_states.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/name_textfield.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/nh_logo.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/phone_number_row.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_app_bar.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  @override
   Widget build(BuildContext context) {
+    TextEditingController phoneNumberController = TextEditingController();
+    TextEditingController PasswordController = TextEditingController();
     return Container(
       alignment: Alignment.center,
       decoration: const BoxDecoration(
@@ -34,94 +45,107 @@ class LoginScreen extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          title: const Text("Login"),
-          centerTitle: false,
-          actions: const [
-            // TO DO
-            // Languagewidget(),
-            Gap(20),
-          ],
-        ),
         body: Padding(
-          padding: const EdgeInsets.all(13.0),
-          child: Align(
-            alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 60.h),
+          child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const HelioplisLogo(),
-                const Gap(7),
-                Text(
-                  "Enter Phone Number",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  // style: const TextStyle(
-                  //     fontSize: 28, fontWeight: FontWeight.bold),
+                SignUpAppBar(
+                    title: "Login",
+                    isEn: true,
+                    onLanguageChange: (bool value) {
+                      setState(() {
+                        // isEn = value;
+                      });
+                    }),
+                SizedBox(height: 5.h),
+                const LogoWidget(),
+                SizedBox(height: 15.h),
+
+                // Text(
+                //   "Enter Phone Number",
+                //   style: Styles.styles25w600black.copyWith(color: const Color.fromRGBO(40, 40, 40, 1)),
+                //   // style: const TextStyle(
+                //   //     fontSize: 28, fontWeight: FontWeight.bold),
+                // ),
+                PhoneNumberRow(
+                  controller: phoneNumberController,
+                  labelText: "Phone Number",
                 ),
-                const Gap(10),
-                const PhoneNumberInputWidget(),
-                const Gap(20),
-                const Center(
+                SizedBox(
+                  height: 12.h,
+                ),
+                NameTextField(
+                    labelText: "Password",
+                    controller: PasswordController,
+                    isEnabled: true,
+                    isPassword: true),
+                SizedBox(
+                  height: 12.h,
+                ),
+                Center(
                   child: Text(
                     'You will receive a verification code',
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                    style: Styles.styles15w400Black
+                        .copyWith(color: const Color.fromRGBO(80, 80, 80, 1)),
                   ),
                 ),
-                const Gap(20),
+                SizedBox(
+                  height: 14.h,
+                ),
+
                 BlocProvider(
                   create: (context) =>
                       SignInCubit((LogInRepoImp(apiService: ApiService()))),
-                  child: BlocConsumer<SignInCubit,SignInState>(builder: (context ,state )
-                  {
+                  child: BlocConsumer<SignInCubit, SignInState>(
+                      builder: (context, state) {
                     var cubit = BlocProvider.of<SignInCubit>(context);
-                    if(state is SignInLoading )
-                    {
-                       return const LoadingButton(
-                            height: 60,
-                            radius: 10,
-                          );
-                    } else 
-                    {
-                       return Center(
-                            child: SignUpCustomButton(
-                              buttonText: "Continue",
-                              onPressed: () {
-                                cubit.signIn("1145243378", "12345678");
-                                //  Navigator.of(context).pushNamed(
-                                //   verficationScreen,
-                                //   arguments: {
-                                //     'phoneNumber': "+201145243378",
-                                //   },
-                                // );
-
-
-                              },
-                            ),
-                          );
-
+                    if (state is SignInLoading) {
+                      return const LoadingButton(
+                        height: 60,
+                        radius: 10,
+                      );
+                    } else {
+                      return Center(
+                        child: SignUpCustomButton(
+                          buttonText: "Continue",
+                          onPressed: () {
+                            cubit.signIn("1145243378", "12345678");
+                            //  Navigator.of(context).pushNamed(
+                            //   verficationScreen,
+                            //   arguments: {
+                            //     'phoneNumber': "+201145243378",
+                            //   },
+                            // );
+                          },
+                        ),
+                      );
                     }
-                  }, listener: (context ,state)
-                  {
-                     if (state is SignInFailure) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(state.errorMessage)));
-                        } else if (state is SignInSuccess) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content:
-                                      Text('Please Enter Validaition code')));
-                          Navigator.of(context).pushNamed(
-                            verficationScreen,
-                            arguments: {
-                              'phoneNumber': "1145243378",
-                            },
-                          );
-                        }
+                  }, listener: (context, state) {
+                    if (state is SignInFailure) {
+                      CustomSnackBar.show(
+                        context: context,
+                        duration: const Duration(milliseconds: 5000),
+                        text: state.errorMessage,
+                        isGreen: false,
+                      );
+                    } else if (state is SignInSuccess) {
+                      CustomSnackBar.show(
+                        context: context,
+                        duration: const Duration(milliseconds: 5000),
+                        text: 'We already sent a verification code',
+                        isGreen: true,
+                      );
 
-                  }
-                  ),
+                      Navigator.of(context).pushNamed(
+                        verficationScreen,
+                        arguments: {
+                          'phoneNumber': "1145243378",
+                        },
+                      );
+                    }
+                  }),
                 ),
                 // CustomButton(
                 //   text: "Continue",
@@ -133,25 +157,19 @@ class LoginScreen extends StatelessWidget {
                 //   verticalPadding: 15,
                 //   borderRadius: 20,
                 // ),
-                const Gap(10),
+                SizedBox(
+                  height: 16.h,
+                ),
                 Center(
                   child: RichText(
                     text: TextSpan(
                       children: <TextSpan>[
-                        const TextSpan(
-                          text: "You don't Have account?",
-                          style: TextStyle(
-                            fontSize: 17.0,
-                            color: Color.fromARGB(255, 0, 0, 0),
-                          ),
-                        ),
                         TextSpan(
-                          text: "Create an account.",
-                          style: const TextStyle(
-                            fontSize: 17.0,
-                            color: Colors.orange,
-                            fontWeight: FontWeight.bold,
-                          ),
+                            text: "Don’t Have Account? ",
+                            style: Styles.styles15w400Black),
+                        TextSpan(
+                          text: "Register Now",
+                          style: Styles.styles15w700Gold,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               Navigator.pushNamed(context, signUpScreen);
@@ -161,6 +179,48 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 26.h,
+                ),
+                Center(
+                  child: Text(
+                    "Or",
+                    style: Styles.styles16w600NormalBlack,
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Center(
+                  child: Container(
+                    height: 52.h,
+                    width: 194.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(43.r),
+                        border: Border.all(
+                            color: MyColors.mainColor, width: 2.5.w)),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(homeLayout);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Shop Now",
+                            style: Styles.styles17w500MainColor
+                                .copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: 8.w,
+                          ),
+                          Image.asset(
+                              "assets/Icons_logos/arrow-circle-right.png")
+                        ],
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
@@ -209,5 +269,80 @@ class LoginScreen extends StatelessWidget {
 //             )),
 //       ),
 //     );
+//   }
+// }
+
+// class CustomSnackBar {
+//   static void show(BuildContext context, String message, String iconPath) {
+//     // Animation Controller
+//     final animationController = AnimationController(
+//       duration: const Duration(milliseconds: 300),
+//       vsync: Scaffold.of(context), // Ensure this uses a TickerProvider
+//     );
+
+//     final animation = Tween<Offset>(
+//       begin: const Offset(0, 1), // Start off the screen at the bottom
+//       end: Offset.zero, // Move to original position
+//     ).animate(CurvedAnimation(
+//       parent: animationController,
+//       curve: Curves.easeOut,
+//     ));
+
+//     // Create the overlay entry
+//     final overlayEntry = OverlayEntry(
+//       builder: (context) {
+//         return SlideTransition(
+//           position: animation,
+//           child: Material(
+//             color: Colors.transparent,
+//             child: Container(
+//               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+//               padding: const EdgeInsets.all(16),
+//               decoration: BoxDecoration(
+//                 color: const Color.fromRGBO(213, 255, 236, 1),
+//                 borderRadius: BorderRadius.circular(60),
+//                 boxShadow: [
+//                   BoxShadow(
+//                     color: Colors.black.withOpacity(0.1),
+//                     blurRadius: 10,
+//                   ),
+//                 ],
+//               ),
+//               child: Row(
+//                 mainAxisSize: MainAxisSize.min,
+//                 children: [
+//                   Image.asset(
+//                     iconPath,
+//                     height: 24,
+//                     width: 24,
+//                   ),
+//                   const SizedBox(width: 8),
+//                   Text(
+//                     message,
+//                     style: const TextStyle(
+//                       color: Color.fromRGBO(59, 183, 126, 1),
+//                       fontSize: 13,
+//                       fontWeight: FontWeight.w400,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         );
+//       },
+//     );
+
+//     // Insert the overlay entry
+//     Overlay.of(context).insert(overlayEntry);
+//     animationController.forward();
+
+//     // Remove after delay with animation
+//     Future.delayed(const Duration(milliseconds: 5000), () {
+//       animationController.reverse().then((_) {
+//         overlayEntry.remove();
+//         animationController.dispose();
+//       });
+//     });
 //   }
 // }

@@ -64,7 +64,12 @@ class SubCategoriesCubit extends Cubit<FetchCategoriesState> {
 
         subCategoryPages[subCategoryId] = page + 1 ; 
         isFetchingMoreProducts = false;
-        emit(ProductsSuccess(subCategoryProducts[subCategoryId]!));
+        if(!isClosed)
+        {
+            emit(ProductsSuccess(subCategoryProducts[subCategoryId]!));
+
+        }
+      
       },
     );
   }

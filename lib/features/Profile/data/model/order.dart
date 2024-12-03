@@ -1,4 +1,4 @@
-import 'dart:ffi';
+
 
 class Order {
   int? id;
@@ -65,26 +65,26 @@ class Order {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['userId'] = this.userId;
-    data['arriveTime'] = this.arriveTime;
-    data['tips'] = this.tips;
-    data['alternativeProduct'] = this.alternativeProduct;
-    data['subTotal'] = this.subTotal;
-    data['vat'] = this.vat;
-    data['deliveryFees'] = this.deliveryFees;
-    data['promoCodeDiscount'] = this.promoCodeDiscount;
-    data['total'] = this.total;
-    data['paymentMethod'] = this.paymentMethod;
-    data['paid'] = this.paid;
-    data['promoCodeId'] = this.promoCodeId;
-    data['clientOrderState'] = this.clientOrderState;
-    data['adminOrderState'] = this.adminOrderState;
-    data['addressId'] = this.addressId;
-    data['deliverMethod'] = this.deliverMethod;
-    data['updatedAt'] = this.updatedAt;
-    data['createdAt'] = this.createdAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['userId'] = userId;
+    data['arriveTime'] = arriveTime;
+    data['tips'] = tips;
+    data['alternativeProduct'] = alternativeProduct;
+    data['subTotal'] = subTotal;
+    data['vat'] = vat;
+    data['deliveryFees'] = deliveryFees;
+    data['promoCodeDiscount'] = promoCodeDiscount;
+    data['total'] = total;
+    data['paymentMethod'] = paymentMethod;
+    data['paid'] = paid;
+    data['promoCodeId'] = promoCodeId;
+    data['clientOrderState'] = clientOrderState;
+    data['adminOrderState'] = adminOrderState;
+    data['addressId'] = addressId;
+    data['deliverMethod'] = deliverMethod;
+    data['updatedAt'] = updatedAt;
+    data['createdAt'] = createdAt;
     return data;
   }
 }

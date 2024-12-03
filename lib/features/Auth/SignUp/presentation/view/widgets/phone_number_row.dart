@@ -7,6 +7,7 @@ class PhoneNumberRow extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
   final EdgeInsets? padding;
+  
 
   const PhoneNumberRow({
     super.key,
@@ -36,7 +37,7 @@ class PhoneNumberRow extends StatelessWidget {
             Expanded(
               child: TextField(
                 controller: controller,
-                enabled: false,
+                enabled: true,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   filled: true,
