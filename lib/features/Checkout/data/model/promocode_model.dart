@@ -12,7 +12,7 @@ class PromoCode {
   int? id;
   String? code;
   String? name;
-  int? amount;
+  double? amount;
   bool? isPercentage;
   int? durationDays;
   String? createdAt;
@@ -22,7 +22,7 @@ class PromoCode {
     id = json['id'];
     code = json['code'];
     name = json['name'];
-    amount = json['amount'];
+    amount = json['amount'] * 1.0;
     isPercentage = json['isPercentage'];
     durationDays = json['durationDays'];
     createdAt = json['createdAt'];

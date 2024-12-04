@@ -36,11 +36,12 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
     );
   }
 
+  double promoCodeValue = 0;
   void checkPromoCode(String code) async {
     emit(CreateOrderLoading());
 
     Either<Failure, PromoCodeModel> res =
-        await promocodeRepoImp.checkPromoCode(code);
+        await promocodeRepoImp.checkPromoCode(code.trim());
 
     res.fold(
       (failure) => emit(
@@ -50,5 +51,9 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
         CheckPromoCodeSuccess(promoCodeModel),
       ),
     );
+  }
+
+  void tipsToBottomSheet(double tips) {
+    emit(TipsToBottomSheet(tips));
   }
 }

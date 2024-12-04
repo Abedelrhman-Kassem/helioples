@@ -119,7 +119,7 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
               timeScheduleContainer(context, 'Pickup Time'),
               const BranchesRow(),
               const PromoCodeContainer(),
-              paymentDetails(),
+              // PaymentDetails(createOrderModel: createOrderModel,),
             ],
           ),
         ),

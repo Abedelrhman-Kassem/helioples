@@ -7,6 +7,7 @@ class CreateOrderModel {
   int? addressId;
   bool? chooseForMe;
   String? promoCode;
+  int? deliverTimeId;
   List<Item>? items;
 
   CreateOrderModel({
@@ -18,36 +19,36 @@ class CreateOrderModel {
     this.addressId,
     this.chooseForMe,
     this.promoCode,
+    this.deliverTimeId,
     this.items,
   });
 
-  CreateOrderModel.fromJson(Map<String, dynamic> json) {
-    deliverMethod = json['deliverMethod'];
-    paymentMethod = json['paymentMethod'];
-    tips = json['tips'];
-    alternativeProduct = json['alternativeProduct'];
-    branchId = json['branchId'];
-    addressId = json['addressId'];
-    chooseForMe = json['chooseForMe'];
-    promoCode = json['promoCode'];
-    if (json['items'] != null) {
-      items = <Item>[];
-      json['items'].forEach((v) {
-        items!.add(Item.fromJson(v));
-      });
+  Map<String, dynamic> toDeliveryJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['deliverMethod'] = deliverMethod;
+    data['paymentMethod'] = paymentMethod;
+    data['tips'] = tips;
+    data['alternativeProduct'] = alternativeProduct;
+    data['addressId'] = addressId;
+    data['chooseForMe'] = chooseForMe;
+    data['promoCode'] = promoCode;
+    data['deliverTimeId'] = deliverTimeId;
+    if (items != null) {
+      data['items'] = items!.map((v) => v.toJson()).toList();
     }
+    return data;
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toPickUpJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['deliverMethod'] = deliverMethod;
     data['paymentMethod'] = paymentMethod;
     data['tips'] = tips;
     data['alternativeProduct'] = alternativeProduct;
     data['branchId'] = branchId;
-    data['addressId'] = addressId;
     data['chooseForMe'] = chooseForMe;
     data['promoCode'] = promoCode;
+    data['deliverTimeId'] = deliverTimeId;
     if (items != null) {
       data['items'] = items!.map((v) => v.toJson()).toList();
     }

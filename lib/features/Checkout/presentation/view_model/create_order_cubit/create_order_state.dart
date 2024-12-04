@@ -27,3 +27,8 @@ final class CheckPromoCodeFailed extends CreateOrderState {
   String error;
   CheckPromoCodeFailed(this.error);
 }
+
+final class TipsToBottomSheet extends CreateOrderState {
+  double tips;
+  TipsToBottomSheet(this.tips);
+}

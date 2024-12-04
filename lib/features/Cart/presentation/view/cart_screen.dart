@@ -11,7 +11,6 @@ import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/loading
 import 'package:negmt_heliopolis/features/Cart/presentation/view_model/cubit/cart_cubit.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});

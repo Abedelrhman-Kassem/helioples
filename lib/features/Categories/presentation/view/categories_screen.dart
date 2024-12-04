@@ -145,7 +145,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                 : categories;
 
             if (categories.isEmpty) {
-              return Center(child: Text("No categories available"));
+              return const Center(child: Text("No categories available"));
             }
 
             return DefaultTabController(
@@ -170,7 +170,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
                             context: context,
                             title: widget.category.name,
                           ),
-                          actions: [const CartCounter()],
+                          actions: const [CartCounter()],
                           bottom: ButtonsTabBar(
                             splashColor: MyColors.mainColor,
                             height: 75.h,

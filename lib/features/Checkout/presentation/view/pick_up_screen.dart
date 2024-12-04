@@ -79,7 +79,7 @@ class _PickUpScreenState extends State<PickUpScreen> {
               timeScheduleContainer(context, 'Pickup Time'),
               const BranchesRow(),
               const PromoCodeContainer(),
-              paymentDetails(),
+              // PaymentDetails(createOrderModel: createOrderModel,),
               SizedBox(height: 160.h),
             ],
           ),

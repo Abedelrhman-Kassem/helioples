@@ -186,7 +186,9 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                   createOrderModel: createOrderModel,
                 ),
                 const PromoCodeContainer(),
-                paymentDetails(),
+                PaymentDetails(
+                  createOrderModel: createOrderModel,
+                ),
               ],
             ),
           ),

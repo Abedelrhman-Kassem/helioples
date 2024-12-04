@@ -2,20 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_item.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/choose_bottom_sheet.dart';
 
 class AlternativeContainer extends StatefulWidget {
-  const AlternativeContainer({super.key});
+  final CreateOrderModel createOrderModel;
+  const AlternativeContainer({super.key, required this.createOrderModel});
 
   @override
   State<AlternativeContainer> createState() => _AlternativeContainerState();
 }
 
 class _AlternativeContainerState extends State<AlternativeContainer> {
-  String radioValue = 'call';
+  late String radioValue;
+
+  @override
+  void initState() {
+    radioValue = 'call';
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    widget.createOrderModel.alternativeProduct = radioValue;
+
     return Container(
       padding: EdgeInsets.all(20.r),
       margin: EdgeInsets.symmetric(vertical: 10.h),
@@ -49,7 +59,9 @@ class _AlternativeContainerState extends State<AlternativeContainer> {
               });
               return showModalBottomSheet(
                 context: context,
-                builder: (context) => const ChooseBottomSheet(),
+                builder: (context) => ChooseBottomSheet(
+                  createOrderModel: widget.createOrderModel,
+                ),
               );
             },
           ),
@@ -64,7 +76,9 @@ class _AlternativeContainerState extends State<AlternativeContainer> {
               });
               return showModalBottomSheet(
                 context: context,
-                builder: (context) => const ChooseBottomSheet(),
+                builder: (context) => ChooseBottomSheet(
+                  createOrderModel: widget.createOrderModel,
+                ),
               );
             },
           ),

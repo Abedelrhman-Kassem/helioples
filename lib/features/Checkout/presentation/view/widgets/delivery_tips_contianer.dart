@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/tips_widget.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 
 class Tips {
   String textValue;
@@ -38,6 +40,14 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
   FocusNode customTipsFucosNode = FocusNode();
 
   bool isCustomTips = false;
+
+  late CreateOrderCubit createOrderCubit;
+
+  @override
+  void initState() {
+    createOrderCubit = BlocProvider.of<CreateOrderCubit>(context);
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -101,6 +111,7 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
                         isCustomTips = false;
                         setState(() {
                           tipsValue = tipsList[index].value;
+                          createOrderCubit.tipsToBottomSheet(tipsValue);
                         });
                       },
                     );
@@ -115,6 +126,8 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
                     tipsValue = customTipsController.text.isEmpty
                         ? 0
                         : double.parse(customTipsController.text);
+
+                    createOrderCubit.tipsToBottomSheet(tipsValue);
 
                     FocusScope.of(context).requestFocus(customTipsFucosNode);
                     setState(() {});
@@ -172,7 +185,6 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
                     ),
                     cursorColor: MyColors.mainColor,
                     style: Styles.styles17w700MainColor,
-                    onChanged: (value) {},
                   ),
                 ),
               ],
