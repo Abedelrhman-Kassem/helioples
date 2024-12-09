@@ -15,6 +15,7 @@ import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/signup_s
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/verfication_screen.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/cart_screen.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view/categories_screen.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/card_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_delivery_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_details_screen.dart';
@@ -194,7 +195,8 @@ class AppRouter {
         break;
 
       case checkoutDetailsScreen:
-        page = const CheckoutDetailsScreen();
+        final args = settings.arguments as OrderDetailsModel;
+        page = CheckoutDetailsScreen(orderDetailsModel: args);
         fromRight = true;
         break;
 
@@ -209,7 +211,8 @@ class AppRouter {
         break;
 
       case pickupOrderDetails:
-        page = const PickupOrderDetails();
+        final args = settings.arguments as OrderDetailsModel;
+        page = PickupOrderDetails(orderDetailsModel: args);
         fromRight = true;
         break;
 

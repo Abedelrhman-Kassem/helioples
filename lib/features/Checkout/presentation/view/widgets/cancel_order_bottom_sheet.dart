@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_animated_widget.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 
-Widget cancelOrderBottomSheet(BuildContext context, String route) {
+Widget cancelOrderBottomSheet(BuildContext context, OrderDetailsModel order) {
   return Wrap(
     children: [
       Container(
@@ -33,7 +38,6 @@ Widget cancelOrderBottomSheet(BuildContext context, String route) {
                   child: buttonWidget(
                     color: MyColors.mainColor,
                     padding: EdgeInsets.symmetric(
-                      horizontal: 30.w,
                       vertical: 20.h,
                     ),
                     borderRadius: 53.r,
@@ -45,9 +49,7 @@ Widget cancelOrderBottomSheet(BuildContext context, String route) {
                       return showModalBottomSheet(
                         context: context,
                         builder: (context) {
-                          return ReasonBottomSheet(
-                            routee: route,
-                          );
+                          return ReasonBottomSheet(order: order);
                         },
                       );
                     },
@@ -57,7 +59,6 @@ Widget cancelOrderBottomSheet(BuildContext context, String route) {
                 Expanded(
                   child: buttonWidget(
                     padding: EdgeInsets.symmetric(
-                      horizontal: 30.w,
                       vertical: 20.h,
                     ),
                     borderRadius: 53.r,
@@ -87,10 +88,10 @@ Widget cancelOrderBottomSheet(BuildContext context, String route) {
 
 // ignore: must_be_immutable
 class ReasonBottomSheet extends StatefulWidget {
-  String routee;
-  ReasonBottomSheet({
+  final OrderDetailsModel order;
+  const ReasonBottomSheet({
     super.key,
-    required this.routee,
+    required this.order,
   });
 
   @override
@@ -100,7 +101,7 @@ class ReasonBottomSheet extends StatefulWidget {
 class _ReasonBottomSheetState extends State<ReasonBottomSheet> {
   List<String>? reasonsList;
 
-  String? radioValue;
+  late String radioValue;
 
   @override
   void initState() {
@@ -109,7 +110,7 @@ class _ReasonBottomSheetState extends State<ReasonBottomSheet> {
       'I placed the order by mistake',
       'I need to modify orders products',
       'I need to change delivery address',
-      'I need to change payment methode',
+      'I need to change payment method',
       'Other',
     ];
 
@@ -120,60 +121,88 @@ class _ReasonBottomSheetState extends State<ReasonBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      children: [
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30.r),
-          ),
-          child: Column(
+    return BlocProvider(
+      create: (context) => CreateOrderCubit(),
+      child: BlocConsumer<CreateOrderCubit, CreateOrderState>(
+        listener: (context, state) {
+          if (state is CancelOrderFailed) {
+            CustomSnackBar.show(
+              context: context,
+              duration: const Duration(seconds: 10),
+              text: state.error,
+              isGreen: false,
+            );
+          }
+
+          if (state is CancelOrderSuccess) {
+            if (widget.order.order!.deliverMethod == 'Delivery') {
+              Navigator.pushNamed(
+                context,
+                reOrderScreen,
+              );
+            } else {
+              Navigator.pushNamed(
+                context,
+                reOrderScreen,
+              );
+            }
+          }
+        },
+        builder: (context, state) {
+          return Wrap(
             children: [
-              Text(
-                'Help Us understanding the reason beyond cancellation',
-                style: Styles.styles16w600NormalBlack.copyWith(
-                  color: const Color.fromRGBO(41, 41, 41, 1),
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.r),
                 ),
-              ),
-              SizedBox(height: 20.h),
-              Column(
-                children: List.generate(
-                  reasonsList!.length,
-                  (index) {
-                    return reasonItem(
-                      radioValue: radioValue!,
-                      itemText: reasonsList![index],
+                child: Column(
+                  children: [
+                    Text(
+                      'Help Us understanding the reason beyond cancellation',
+                      style: Styles.styles16w600NormalBlack.copyWith(
+                        color: const Color.fromRGBO(41, 41, 41, 1),
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+                    Column(
+                      children: List.generate(
+                        reasonsList!.length,
+                        (index) {
+                          return reasonItem(
+                            radioValue: radioValue,
+                            itemText: reasonsList![index],
+                            onTap: () {
+                              setState(() {
+                                radioValue = reasonsList![index];
+                              });
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    buttonWidget(
+                      color: MyColors.mainColor,
+                      padding: EdgeInsets.symmetric(vertical: 20.h),
+                      margin: EdgeInsets.only(top: 20.h),
+                      borderRadius: 37.r,
+                      child: Text(
+                        'Submit',
+                        style: Styles.styles17w500NormalWhite,
+                      ),
                       onTap: () {
-                        setState(() {
-                          radioValue = reasonsList![index];
-                        });
+                        BlocProvider.of<CreateOrderCubit>(context)
+                            .cancelOrder(radioValue, widget.order.order!.id!);
                       },
-                    );
-                  },
+                    ),
+                  ],
                 ),
-              ),
-              buttonWidget(
-                color: MyColors.mainColor,
-                padding: EdgeInsets.symmetric(vertical: 20.h),
-                margin: EdgeInsets.only(top: 20.h),
-                borderRadius: 37.r,
-                child: Text(
-                  'Submit',
-                  style: Styles.styles17w500NormalWhite,
-                ),
-                onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    widget.routee,
-                    (route) => false,
-                  );
-                },
               ),
             ],
-          ),
-        ),
-      ],
+          );
+        },
+      ),
     );
   }
 }

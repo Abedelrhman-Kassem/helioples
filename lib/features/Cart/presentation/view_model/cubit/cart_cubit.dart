@@ -59,15 +59,23 @@ class CartCubit extends Cubit<CartState> {
   Future<List<Map<String, Object?>>> updateDBData(
       UpdateCartModel updateCartModel) async {
     updateCartModel.products!.forEach((product) async {
-      await DBHelper.updateData(
-        table: cartItemTable,
-        values: {
-          cartItemPrice: product.price!,
-          cartItemDiscount: product.discount ?? 0,
-        },
-        where: 'id = ?',
-        whereArgs: [product.id],
-      );
+      if (product.availabelPieces! == 0) {
+        await DBHelper.deleteData(
+          table: cartItemTable,
+          where: 'id = ?',
+          whereArgs: [product.id],
+        );
+      } else {
+        await DBHelper.updateData(
+          table: cartItemTable,
+          values: {
+            cartItemPrice: product.price!,
+            cartItemDiscount: product.currentDiscount ?? 0,
+          },
+          where: 'id = ?',
+          whereArgs: [product.id],
+        );
+      }
     });
     return DBHelper.queryData(table: cartItemTable);
   }

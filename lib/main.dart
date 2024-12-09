@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/bloc_observer.dart';
+import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/firebase_api.dart';
@@ -92,17 +93,20 @@ class _MyAppState extends State<MyApp> {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
+        return BlocProvider(
+          create: (context) => MainCubit(),
+          child: MaterialApp(
           
           navigatorKey:navigatorKey ,
-          debugShowCheckedModeBanner: false,
-          onGenerateRoute: widget.appRouter.generate,
-          theme: lightTheme,
-          darkTheme: darkTheme,
-          themeMode: ThemeMode.light,
-          locale: Locale(getLocale(context)),
-          supportedLocales: context.supportedLocales,
-          localizationsDelegates: context.localizationDelegates,
+            debugShowCheckedModeBanner: false,
+            onGenerateRoute: widget.appRouter.generate,
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode: ThemeMode.light,
+            locale: Locale(getLocale(context)),
+            supportedLocales: context.supportedLocales,
+            localizationsDelegates: context.localizationDelegates,
+          ),
         );
       },
     );

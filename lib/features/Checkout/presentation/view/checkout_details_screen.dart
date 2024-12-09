@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/notifiers/db_change_notifier.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/cancel_order_bottom_sheet.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/shipping_details_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/item_widget.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 
 class CheckoutDetailsScreen extends StatefulWidget {
-  const CheckoutDetailsScreen({super.key});
+  final OrderDetailsModel orderDetailsModel;
+  const CheckoutDetailsScreen({
+    super.key,
+    required this.orderDetailsModel,
+  });
 
   @override
   State<CheckoutDetailsScreen> createState() => _CheckoutDetailsScreenState();
@@ -22,9 +27,12 @@ class CheckoutDetailsScreen extends StatefulWidget {
 
 class _CheckoutDetailsScreenState extends State<CheckoutDetailsScreen> {
   List<Map<String, Object?>> tableValues = [];
+  late OrderDetailsModel order;
 
   @override
   void initState() {
+    order = widget.orderDetailsModel;
+
     DBHelper.queryData(table: cartItemTable).then((value) {
       setState(() {
         tableValues = value;
@@ -35,67 +43,80 @@ class _CheckoutDetailsScreenState extends State<CheckoutDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<CreateOrderCubit>(context);
-    return Scaffold(
-      appBar: AppBar(
-        leading: returnArrow(
-          context: context,
-          onTap: () {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              homeLayout,
-              (route) => false,
-            );
-          },
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          homeLayout,
+          (route) => false,
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: returnArrow(
+            context: context,
+            onTap: () {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                homeLayout,
+                (route) => false,
+              );
+            },
+          ),
+          title: const Text('Order Details'),
         ),
-        title: const Text('Order Details'),
-      ),
-      body: Container(
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-              'assets/screens_background/grocery_itemsback_ground.png',
+        body: Container(
+          height: double.infinity,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                'assets/screens_background/grocery_itemsback_ground.png',
+              ),
+            ),
+          ),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                shippingDetailsContainer(order),
+                Container(
+                  padding: EdgeInsets.all(20.r),
+                  margin: EdgeInsets.symmetric(vertical: 20.h),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.9),
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                  child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return itemWidget(
+                        quantity: tableValues[index][cartItemQty] as int,
+                        name: tableValues[index][cartItemName] as String,
+                        imageUrl:
+                            tableValues[index][cartItemImageUrl] as String,
+                        price: tableValues[index][cartItemPrice] as double,
+                      );
+                    },
+                    itemCount: tableValues.length,
+                  ),
+                ),
+                addressContainer(),
+                paymentContainer(order.order!.paymentMethod!),
+                scheduleContainer(),
+                paymentDetails(context, order),
+                SizedBox(height: 160.h),
+              ],
             ),
           ),
         ),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              shippingDetailsContainer(),
-              Container(
-                padding: EdgeInsets.all(20.r),
-                margin: EdgeInsets.symmetric(vertical: 20.h),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(15.r),
-                ),
-                child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return itemWidget(
-                      quantity: tableValues[index][cartItemQty] as int,
-                      name: tableValues[index][cartItemName] as String,
-                      imageUrl: tableValues[index][cartItemImageUrl] as String,
-                      price: tableValues[index][cartItemPrice] as double,
-                    );
-                  },
-                  itemCount: tableValues.length,
-                ),
-              ),
-              addressContainer(),
-              paymentContainer(),
-              scheduleContainer(),
-              paymentDetails(context),
-              SizedBox(height: 160.h),
-            ],
-          ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: bottomSheet(
+          context,
+          order,
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: bottomSheet(context, reOrderScreen),
     );
   }
 }
@@ -176,7 +197,27 @@ Widget addressContainer() {
   );
 }
 
-Widget paymentContainer() {
+class PaymentClass {
+  String title;
+  String path;
+
+  PaymentClass({required this.title, required this.path});
+}
+
+Widget paymentContainer(String paymentMethod) {
+  PaymentClass payment = PaymentClass(title: '', path: '');
+
+  if (paymentMethod == 'cashOnDelivery') {
+    payment.title = 'Cash On Delivery';
+    payment.path = 'cash-on-delivery';
+  } else if (paymentMethod == 'cardOnDelivery') {
+    payment.title = 'Card On Delivery';
+    payment.path = 'card-on-delivery';
+  } else {
+    payment.title = 'Credit/Debit Card';
+    payment.path = 'credit-or-debit-card';
+  }
+
   return Container(
     padding: EdgeInsets.all(20.r),
     margin: EdgeInsets.symmetric(vertical: 10.h),
@@ -206,7 +247,7 @@ Widget paymentContainer() {
             mainAxisSize: MainAxisSize.min,
             children: [
               svgIcon(
-                path: 'assets/svg_icons/cash-on-delivery.svg',
+                path: 'assets/svg_icons/${payment.path}.svg',
                 width: 32.12.w,
                 height: 32.12.h,
                 color: const Color.fromRGBO(41, 41, 41, 1),
@@ -217,18 +258,10 @@ Widget paymentContainer() {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Cash on delivery',
+                    payment.title,
                     style:
                         Styles.styles15w400Black.copyWith(color: Colors.black),
                   ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Text(
-                    "Total 210.00 EGP",
-                    style:
-                        Styles.styles12w400black.copyWith(color: Colors.black),
-                  )
                 ],
               ),
               const Spacer(),
@@ -247,8 +280,9 @@ Widget paymentContainer() {
                     width: 6.38.w,
                     height: 6.38.h,
                     decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color.fromRGBO(248, 147, 31, 1)),
+                      shape: BoxShape.circle,
+                      color: Color.fromRGBO(248, 147, 31, 1),
+                    ),
                   ),
                 ),
               ),
@@ -340,22 +374,23 @@ Widget scheduleContainer() {
   );
 }
 
-Widget paymentDetails(BuildContext context) {
-  String textToCopy = '#16515305';
-
+Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
   void copyToClipboard(BuildContext context) {
     Clipboard.setData(
-      ClipboardData(text: textToCopy),
+      ClipboardData(text: '${order.order!.id}'),
     ).then(
       (_) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Copied to clipboard!'),
-          ),
+        CustomSnackBar.show(
+          context: context,
+          duration: const Duration(seconds: 5),
+          text: 'Copied to clipboard!',
+          isGreen: true,
         );
       },
     );
   }
+
+  final DbChangeNotifier dbChangeNotifier = DbChangeNotifier();
 
   return Container(
     padding: EdgeInsets.all(20.r),
@@ -395,7 +430,7 @@ Widget paymentDetails(BuildContext context) {
             ),
             SizedBox(width: 10.w),
             Text(
-              textToCopy,
+              '${order.order!.id}',
               style: Styles.styles15w600NormalBlack,
             ),
           ],
@@ -405,11 +440,11 @@ Widget paymentDetails(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Sub Total (4 Items)',
+              'Sub Total (${dbChangeNotifier.dbData.count} Items)',
               style: Styles.styles14w400Black,
             ),
             Text(
-              '300.00 EGP',
+              '${order.order!.subTotal!.toStringAsFixed(2)} EGP',
               style: Styles.styles15w600NormalBlack,
             ),
           ],
@@ -423,7 +458,7 @@ Widget paymentDetails(BuildContext context) {
               style: Styles.styles14w400Black,
             ),
             Text(
-              '120.00 EGP',
+              '${order.order!.promoCodeDiscount!.toStringAsFixed(2)} EGP',
               style: Styles.styles15w600NormalBlack,
             ),
           ],
@@ -437,7 +472,7 @@ Widget paymentDetails(BuildContext context) {
               style: Styles.styles14w400Black,
             ),
             Text(
-              '120 EGP',
+              '${order.order!.deliveryFees} EGP',
               style: Styles.styles15w600NormalBlack,
             ),
           ],
@@ -447,7 +482,7 @@ Widget paymentDetails(BuildContext context) {
   );
 }
 
-Widget bottomSheet(BuildContext context, String route) {
+Widget bottomSheet(BuildContext context, OrderDetailsModel order) {
   return Container(
     padding: EdgeInsets.all(20.r),
     decoration: BoxDecoration(
@@ -479,7 +514,7 @@ Widget bottomSheet(BuildContext context, String route) {
                 style: Styles.styles18w500BlackWhite,
               ),
               Text(
-                '214 EGP',
+                '${order.order!.total!.toStringAsFixed(2)} EGP',
                 style: Styles.styles18w800Black,
               ),
             ],
@@ -494,7 +529,7 @@ Widget bottomSheet(BuildContext context, String route) {
               return showModalBottomSheet(
                 context: context,
                 builder: (context) {
-                  return cancelOrderBottomSheet(context, route);
+                  return cancelOrderBottomSheet(context, order);
                 },
               );
             },

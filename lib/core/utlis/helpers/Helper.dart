@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/widgets/CustomButton.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -315,7 +316,9 @@ class Helper {
 
   static Size size(BuildContext context) => MediaQuery.of(context).size;
 
-  static Widget loadingWidget() => const Center(
-        child: CircularProgressIndicator(),
+  static Widget loadingWidget() => Center(
+        child: CircularProgressIndicator(
+          color: MyColors.mainColor,
+        ),
       );
 }

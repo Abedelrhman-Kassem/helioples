@@ -5,15 +5,17 @@ SvgPicture svgIcon({
   required String path,
   required double width,
   required double height,
-  required Color color,
+  Color? color,
 }) {
   return SvgPicture.asset(
     path,
     width: width,
     height: height,
-    colorFilter: ColorFilter.mode(
-      color,
-      BlendMode.srcIn,
-    ),
+    colorFilter: color == null
+        ? null
+        : ColorFilter.mode(
+            color,
+            BlendMode.srcIn,
+          ),
   );
 }

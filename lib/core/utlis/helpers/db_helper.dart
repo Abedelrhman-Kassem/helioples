@@ -121,7 +121,7 @@ class DBHelper {
 
       return deletedRow;
     } catch (e) {
-      throw '$e, ${whereArgs?[0]} not deleted succefully';
+      throw '$e, ${whereArgs?[0]} not deleted successfully';
     }
   }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/cart_item_widget.dart';

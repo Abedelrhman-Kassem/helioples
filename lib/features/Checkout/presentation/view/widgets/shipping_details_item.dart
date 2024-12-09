@@ -10,6 +10,7 @@ Widget shippingDetailsItem({
   required String iconPath,
   required bool isLoading,
   required bool isSuccess,
+  required String date,
 }) {
   return Row(
     children: [
@@ -43,10 +44,10 @@ Widget shippingDetailsItem({
             ),
           ),
           SizedBox(height: 5.h),
-          if (isLoading && !isSuccess) const SmoothLoadingIndicators(),
+          if (isLoading) const SmoothLoadingIndicators(),
           if (isSuccess)
             Text(
-              '10 Dec 04:25 PM, ',
+              date,
               style: Styles.styles12w400intergrey121,
             ),
         ],

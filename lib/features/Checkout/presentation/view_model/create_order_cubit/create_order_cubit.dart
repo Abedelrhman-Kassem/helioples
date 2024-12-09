@@ -2,23 +2,21 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/branches_model.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/cancel_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/promocode_model.dart';
-import 'package:negmt_heliopolis/features/Checkout/data/repo/delivery_repo_imp.dart';
-import 'package:negmt_heliopolis/features/Checkout/data/repo/promocode_repo_imp.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/repo/create_repo_imp.dart';
 
 part 'create_order_state.dart';
 
 class CreateOrderCubit extends Cubit<CreateOrderState> {
-  CreateOrderCubit() : super(CheckoutInitial());
+  CreateOrderCubit() : super(CreateOrderInitial());
 
   CreateOrderImp createOrderImp = CreateOrderImp(
     apiService: ApiService(),
   );
-
-  PromocodeRepoImp promocodeRepoImp =
-      PromocodeRepoImp(apiService: ApiService());
 
   void createOrder(CreateOrderModel data) async {
     emit(CreateOrderLoading());
@@ -31,17 +29,22 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
         CreateOrderFailed(failure.errorMessage),
       ),
       (orderDetailsModel) => emit(
-        CreateOrderSuccess(orderDetailsModel.order!),
+        CreateOrderSuccess(orderDetailsModel),
       ),
     );
   }
 
-  double promoCodeValue = 0;
+  double calcPromoCode(double totalPrice, double promoCodeValue) {
+    return double.parse(
+      (totalPrice * (promoCodeValue / 100)).toStringAsFixed(2),
+    );
+  }
+
   void checkPromoCode(String code) async {
-    emit(CreateOrderLoading());
+    emit(CheckPromoCodeLoading());
 
     Either<Failure, PromoCodeModel> res =
-        await promocodeRepoImp.checkPromoCode(code.trim());
+        await createOrderImp.checkPromoCode(code.trim());
 
     res.fold(
       (failure) => emit(
@@ -55,5 +58,36 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
 
   void tipsToBottomSheet(double tips) {
     emit(TipsToBottomSheet(tips));
+  }
+
+  void cancelOrder(String reason, int orderId) async {
+    emit(CancelOrderLoading());
+
+    Either<Failure, CancelOrderModel> res =
+        await createOrderImp.cancelOrder(orderId, reason);
+
+    res.fold(
+      (failure) => emit(
+        CancelOrderFailed(failure.errorMessage),
+      ),
+      (cancelOrderModel) => emit(
+        CancelOrderSuccess(cancelOrderModel),
+      ),
+    );
+  }
+
+  void getBranches() async {
+    emit(BranchesLoading());
+
+    Either<Failure, BranchesModel> res = await createOrderImp.getAllBranches();
+
+    res.fold(
+      (failure) => emit(
+        BranchesFailed(failure.errorMessage),
+      ),
+      (branches) => emit(
+        BranchesSuccess(branches),
+      ),
+    );
   }
 }
