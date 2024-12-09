@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
@@ -34,6 +36,8 @@ class AppRouter {
   Route generate(RouteSettings settings) {
     Widget page;
     bool fromRight;
+    log("Navigating to: ${settings.name}");
+
 
     switch (settings.name) {
       case intialRoute:
