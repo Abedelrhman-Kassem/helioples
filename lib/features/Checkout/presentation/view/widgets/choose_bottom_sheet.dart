@@ -4,23 +4,38 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_animated_widget.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 
 class ChooseBottomSheet extends StatefulWidget {
-  const ChooseBottomSheet({super.key});
+  final CreateOrderModel createOrderModel;
+  const ChooseBottomSheet({
+    super.key,
+    required this.createOrderModel,
+  });
 
   @override
   State<ChooseBottomSheet> createState() => _ChooseBottomSheetState();
 }
 
 class _ChooseBottomSheetState extends State<ChooseBottomSheet> {
-  String radioChoose = 'choose';
+  bool radioChoose = true;
+
+  @override
+  void initState() {
+    if (widget.createOrderModel.chooseForMe == null) {
+      widget.createOrderModel.chooseForMe = radioChoose;
+    } else {
+      radioChoose == widget.createOrderModel.chooseForMe!;
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
       children: [
         Container(
-          // height: 300.h,
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
           decoration: BoxDecoration(
@@ -34,11 +49,10 @@ class _ChooseBottomSheetState extends State<ChooseBottomSheet> {
               ),
               SizedBox(height: 10.h),
               userChoice(
-                radioChoose: radioChoose,
-                itemValue: 'choose',
+                radioChoose: radioChoose == true,
                 onTap: () {
                   setState(() {
-                    radioChoose = 'choose';
+                    radioChoose = true;
                   });
                 },
                 title: 'Choose for me',
@@ -46,11 +60,10 @@ class _ChooseBottomSheetState extends State<ChooseBottomSheet> {
               ),
               SizedBox(height: 10.h),
               userChoice(
-                radioChoose: radioChoose,
-                itemValue: 'not',
+                radioChoose: radioChoose == false,
                 onTap: () {
                   setState(() {
-                    radioChoose = 'not';
+                    radioChoose = false;
                   });
                 },
                 title: 'Do not choose alternative',
@@ -62,6 +75,7 @@ class _ChooseBottomSheetState extends State<ChooseBottomSheet> {
                   style: Styles.styles17w500NormalWhite,
                 ),
                 onTap: () {
+                  widget.createOrderModel.chooseForMe = radioChoose;
                   Navigator.pop(context);
                 },
                 color: MyColors.mainColor,
@@ -78,8 +92,7 @@ class _ChooseBottomSheetState extends State<ChooseBottomSheet> {
 }
 
 Widget userChoice({
-  required String radioChoose,
-  required String itemValue,
+  required bool radioChoose,
   required void Function() onTap,
   required String title,
   required String text,
@@ -97,7 +110,7 @@ Widget userChoice({
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          radioAnimatedWidget(itemValue == radioChoose),
+          radioAnimatedWidget(radioChoose),
           SizedBox(width: 10.w),
           Expanded(
             child: Column(

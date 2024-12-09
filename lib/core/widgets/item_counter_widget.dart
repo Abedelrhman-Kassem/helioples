@@ -66,14 +66,14 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
     );
 
     if (value.isNotEmpty) {
-      setState(() {
-        counter = value[0][cartItemQty] as int;
-      });
-    } else {
+      counter = value[0][cartItemQty] as int;
       if (mounted) {
-        setState(() {
-          counter = 0;
-        });
+        setState(() {});
+      }
+    } else {
+      counter = 0;
+      if (mounted) {
+        setState(() {});
       }
     }
     isExpanded = counter > 0;

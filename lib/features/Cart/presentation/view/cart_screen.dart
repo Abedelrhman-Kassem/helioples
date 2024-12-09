@@ -7,123 +7,109 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/cart_item_widget.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/floating_button_widget.dart';
-import 'package:negmt_heliopolis/features/Checkout/checkout_router.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/delivery_cubit/delivery_cubit.dart';
+import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/loading_widget.dart';
+import 'package:negmt_heliopolis/features/Cart/presentation/view_model/cubit/cart_cubit.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
-
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final testRouter = OrderRouter();
+  State<CartScreen> createState() => _CartScreenState();
+}
 
+class _CartScreenState extends State<CartScreen> {
+  Widget initialWidget = const Text('Initial Widget');
+
+  @override
+  Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DeliveryCubit(),
-      child: MaterialApp(
-        onGenerateRoute: testRouter.generate,
-      ),
-    );
-  }
-}
+      create: (context) => CartCubit()..getCartProducts(),
+      child: BlocConsumer<CartCubit, CartState>(
+        listener: (context, state) {
+          if (state is CartLoadingState) {
+            initialWidget = Center(
+              child: CircularProgressIndicator(color: MyColors.mainColor),
+            );
+          }
 
-class InitialCartScreen extends StatefulWidget {
-  const InitialCartScreen({super.key});
+          if (state is CartFailedState) {
+            initialWidget = Center(child: Text(state.error));
+          }
+        },
+        builder: (context, state) {
+          CartCubit cartCubit = BlocProvider.of<CartCubit>(context);
 
-  @override
-  State<InitialCartScreen> createState() => _InitialCartScreenState();
-}
-
-class _InitialCartScreenState extends State<InitialCartScreen> {
-  List<Map<String, Object?>> tableValues = [];
-
-  @override
-  void initState() {
-    DBHelper.queryData(table: cartItemTable).then((value) {
-      setState(() {
-        tableValues = value;
-      });
-    });
-
-    super.initState();
-  }
-
-  Future<void> deleteItem(int id) async {
-    try {
-      await DBHelper.deleteData(
-        table: cartItemTable,
-        where: 'id = ?',
-        whereArgs: [id],
-      );
-
-      List<Map<String, dynamic>> mutableTableValues = List.from(tableValues);
-      mutableTableValues.removeWhere((element) => element[cartItemId] == id);
-
-      setState(() {
-        tableValues = mutableTableValues;
-      });
-    } catch (e) {
-      print('$e');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cart'),
-        backgroundColor: MyColors.mainScaffoldWhiteColor,
-        elevation: 0,
-        leading: returnArrow(
-          context: context,
-          onTap: () {
-            try {
-              BlocProvider.of<HomeLayoutCubit>(context).returnIndex(context);
-            } catch (e) {
-              if (Navigator.canPop(context)) {
-                Navigator.pop(context);
-              } else {
-                Navigator.pushNamed(context, homeLayout);
-              }
-            }
-          },
-        ),
-      ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              itemBuilder: (context, index) => CartItemWidget(
-                itemUiModel: ItemUiModel(
-                  id: tableValues[index][cartItemId] as int,
-                  name: tableValues[index][cartItemName] as String,
-                  enName: tableValues[index][cartItemEnName] as String,
-                  enDesc: tableValues[index][cartItemEnDesc] as String,
-                  description: tableValues[index][cartItemDesc] as String,
-                  thumbnailImage:
-                      tableValues[index][cartItemImageUrl] as String,
-                  price: tableValues[index][cartItemPrice] as double,
-                  quantity: tableValues[index][cartItemQty] as int,
-                  discount: tableValues[index][cartItemDiscount] as double,
-                ),
-                onDelete: deleteItem,
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              title: const Text('Cart'),
+              backgroundColor: MyColors.mainScaffoldWhiteColor,
+              elevation: 0,
+              leading: returnArrow(
+                context: context,
+                onTap: () {
+                  try {
+                    BlocProvider.of<HomeLayoutCubit>(context)
+                        .returnIndex(context);
+                  } catch (e) {
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                    } else {
+                      Navigator.pushNamed(context, homeLayout);
+                    }
+                  }
+                },
               ),
-              itemCount: tableValues.length,
             ),
-            SizedBox(
-              height: 293.h,
-            ),
-          ],
-        ),
+            body: state is CartSuccessState || state is CartDeletingState
+                ? SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.symmetric(horizontal: 10.w),
+                          itemBuilder: (context, index) => CartItemWidget(
+                            itemUiModel: ItemUiModel(
+                              id: cartCubit.tableValues[index][cartItemId]
+                                  as int,
+                              name: cartCubit.tableValues[index][cartItemName]
+                                  as String,
+                              enName: cartCubit.tableValues[index]
+                                  [cartItemEnName] as String,
+                              enDesc: cartCubit.tableValues[index]
+                                  [cartItemEnDesc] as String,
+                              description: cartCubit.tableValues[index]
+                                  [cartItemDesc] as String,
+                              thumbnailImage: cartCubit.tableValues[index]
+                                  [cartItemImageUrl] as String,
+                              price: cartCubit.tableValues[index][cartItemPrice]
+                                  as double,
+                              quantity: cartCubit.tableValues[index]
+                                  [cartItemQty] as int,
+                              discount: cartCubit.tableValues[index]
+                                  [cartItemDiscount] as double,
+                            ),
+                            onDelete: cartCubit.deleteItem,
+                          ),
+                          itemCount: cartCubit.tableValues.length,
+                        ),
+                        SizedBox(
+                          height: 293.h,
+                        ),
+                      ],
+                    ),
+                  )
+                : loadingWidget(),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: const FloatingButtonWidget(),
+          );
+        },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: const FloatingButtonWidget(),
     );
   }
 }

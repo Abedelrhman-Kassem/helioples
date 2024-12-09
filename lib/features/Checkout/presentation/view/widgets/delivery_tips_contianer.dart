@@ -1,25 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/tips_widget.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 
 class Tips {
   String textValue;
-  int value;
+  double value;
 
   Tips(this.textValue, this.value);
 }
 
 class DeliveryTipsContianer extends StatefulWidget {
-  const DeliveryTipsContianer({super.key});
+  final CreateOrderModel createOrderModel;
+  const DeliveryTipsContianer({
+    super.key,
+    required this.createOrderModel,
+  });
 
   @override
   State<DeliveryTipsContianer> createState() => _DeliveryTipsContianerState();
 }
 
 class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
-  int tipsValue = 0;
+  double tipsValue = 0;
 
   List<Tips> tipsList = [
     Tips('10 EGP', 10),
@@ -28,8 +36,30 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
     Tips('40 EGP', 40),
   ];
 
+  TextEditingController customTipsController = TextEditingController();
+  FocusNode customTipsFucosNode = FocusNode();
+
+  bool isCustomTips = false;
+
+  late CreateOrderCubit createOrderCubit;
+
+  @override
+  void initState() {
+    createOrderCubit = BlocProvider.of<CreateOrderCubit>(context);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    customTipsController.dispose();
+    customTipsFucosNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    widget.createOrderModel.tips = tipsValue;
+
     return Container(
       padding: EdgeInsets.all(20.r),
       margin: EdgeInsets.symmetric(vertical: 10.h),
@@ -76,29 +106,89 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
                   (index) {
                     return tipsWidget(
                       text: tipsList[index].textValue,
-                      value: tipsList[index].value,
-                      tipsValue: tipsValue,
+                      isChossen: tipsValue == tipsList[index].value,
                       onTap: () {
+                        isCustomTips = false;
                         setState(() {
                           tipsValue = tipsList[index].value;
+                          createOrderCubit.tipsToBottomSheet(tipsValue);
                         });
                       },
                     );
                   },
                 ),
                 tipsWidget(
-                  text: 'Custom',
+                  text: customTipsController.text.isEmpty
+                      ? 'Custom'
+                      : '${customTipsController.text} EGP',
                   onTap: () {
-                    setState(() {
-                      tipsValue = 500;
-                    });
+                    isCustomTips = true;
+                    tipsValue = customTipsController.text.isEmpty
+                        ? 0
+                        : double.parse(customTipsController.text);
+
+                    createOrderCubit.tipsToBottomSheet(tipsValue);
+
+                    FocusScope.of(context).requestFocus(customTipsFucosNode);
+                    setState(() {});
                   },
-                  value: 500,
-                  tipsValue: tipsValue,
+                  isChossen: isCustomTips,
                 ),
               ],
             ),
           ),
+          if (isCustomTips)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 20.h),
+                Text(
+                  'Tips Amount',
+                  style: Styles.styles17w700Black,
+                ),
+                SizedBox(height: 20.h),
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(33.06.r),
+                    border: Border.all(
+                      color: const Color.fromRGBO(246, 246, 246, 1),
+                    ),
+                  ),
+                  child: TextField(
+                    controller: customTipsController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                        vertical: 15.h,
+                      ),
+                      hintText: 'Enter Amount',
+                      border: InputBorder.none,
+                      hintStyle: Styles.styles17w400interFamily.copyWith(
+                        color: const Color.fromRGBO(181, 185, 190, 1),
+                      ),
+                      suffixIcon: TextButton(
+                        onPressed: () {
+                          tipsValue = customTipsController.text.isEmpty
+                              ? 0
+                              : double.parse(customTipsController.text);
+                          FocusScope.of(context).unfocus();
+                          setState(() {});
+                        },
+                        child: Text(
+                          'Apply',
+                          style: Styles.styles17w500MainColor,
+                        ),
+                      ),
+                    ),
+                    cursorColor: MyColors.mainColor,
+                    style: Styles.styles17w700MainColor,
+                  ),
+                ),
+              ],
+            ),
         ],
       ),
     );

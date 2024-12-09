@@ -19,10 +19,9 @@ class CreateOrderImp extends CreateOrder {
     try {
       var response = await apiService.post(
         endPoints: 'api/protected/orders/create',
-        data: data.toJson(),
+        data: data.toDeliveryJson(),
       );
 
-      // Deserialize response data to OrderDetailsModel
       orderDetailsModel = OrderDetailsModel.fromJson(response.data);
 
       return right(orderDetailsModel);

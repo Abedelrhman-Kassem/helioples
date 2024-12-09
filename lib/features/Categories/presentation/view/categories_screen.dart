@@ -88,6 +88,51 @@ void initState() {
 
   bool isLoading = false;
 
+  void _handleScroll() {
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    for (int i = 0; i < sectionKeys.length; i++) {
+      final RenderBox? box =
+          sectionKeys[i].currentContext?.findRenderObject() as RenderBox?;
+
+      if (box != null) {
+        final position = box.localToGlobal(Offset(0, box.size.height));
+
+        if (position.dy <= box.size.height + screenHeight / 8 &&
+            position.dy > screenHeight / 8) {
+          int subCategoryId =
+              subCategoriesCubit.subCategoryProducts.keys.elementAt(i); //
+          if (!isLoading) {
+            isLoading = true;
+
+            subCategoriesCubit.fetchProductsInSubCategory(subCategoryId,
+                isPagination: true); //
+
+            isLoading = false;
+
+            setState(() {});
+          }
+        }
+        DefaultTabController.of(tabContext!).animateTo(i);
+        break;
+      }
+    }
+  }
+
+  void _scrollToSection(int index) {
+    // Delay the scroll action until the current frame is done laying out the widgets.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollController.removeListener(_handleScroll);
+      final context = sectionKeys[index].currentContext!;
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 500),
+      ).then((_) {
+        scrollController.addListener(_handleScroll);
+      });
+    });
+  }
+
 void _handleScroll() {
   for (int i = 0; i < sectionKeys.length; i++) {
     final RenderBox? box =

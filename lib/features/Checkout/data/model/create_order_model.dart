@@ -7,7 +7,8 @@ class CreateOrderModel {
   int? addressId;
   bool? chooseForMe;
   String? promoCode;
-  List<Items>? items;
+  int? deliverTimeId;
+  List<Item>? items;
 
   CreateOrderModel({
     this.deliverMethod,
@@ -18,36 +19,36 @@ class CreateOrderModel {
     this.addressId,
     this.chooseForMe,
     this.promoCode,
+    this.deliverTimeId,
     this.items,
   });
 
-  CreateOrderModel.fromJson(Map<String, dynamic> json) {
-    deliverMethod = json['deliverMethod'];
-    paymentMethod = json['paymentMethod'];
-    tips = json['tips'];
-    alternativeProduct = json['alternativeProduct'];
-    branchId = json['branchId'];
-    addressId = json['addressId'];
-    chooseForMe = json['chooseForMe'];
-    promoCode = json['promoCode'];
-    if (json['items'] != null) {
-      items = <Items>[];
-      json['items'].forEach((v) {
-        items!.add(Items.fromJson(v));
-      });
+  Map<String, dynamic> toDeliveryJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['deliverMethod'] = deliverMethod;
+    data['paymentMethod'] = paymentMethod;
+    data['tips'] = tips;
+    data['alternativeProduct'] = alternativeProduct;
+    data['addressId'] = addressId;
+    data['chooseForMe'] = chooseForMe;
+    data['promoCode'] = promoCode;
+    data['deliverTimeId'] = deliverTimeId;
+    if (items != null) {
+      data['items'] = items!.map((v) => v.toJson()).toList();
     }
+    return data;
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toPickUpJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['deliverMethod'] = deliverMethod;
     data['paymentMethod'] = paymentMethod;
     data['tips'] = tips;
     data['alternativeProduct'] = alternativeProduct;
     data['branchId'] = branchId;
-    data['addressId'] = addressId;
     data['chooseForMe'] = chooseForMe;
     data['promoCode'] = promoCode;
+    data['deliverTimeId'] = deliverTimeId;
     if (items != null) {
       data['items'] = items!.map((v) => v.toJson()).toList();
     }
@@ -55,13 +56,13 @@ class CreateOrderModel {
   }
 }
 
-class Items {
+class Item {
   late int productId;
   late int number;
 
-  Items({required this.productId, required this.number});
+  Item({required this.productId, required this.number});
 
-  Items.fromJson(Map<String, dynamic> json) {
+  Item.fromJson(Map<String, dynamic> json) {
     productId = json['productId'];
     number = json['number'];
   }

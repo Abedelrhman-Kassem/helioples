@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_delivery_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/banches_row.dart';
 
@@ -10,8 +12,25 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/pay
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/promo_code_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/time_container.dart';
 
-class PickUpScreen extends StatelessWidget {
+class PickUpScreen extends StatefulWidget {
   const PickUpScreen({super.key});
+
+  @override
+  State<PickUpScreen> createState() => _PickUpScreenState();
+}
+
+class _PickUpScreenState extends State<PickUpScreen> {
+  List<Map<String, Object?>> tableValues = [];
+
+  @override
+  void initState() {
+    DBHelper.queryData(table: cartItemTable).then((value) {
+      setState(() {
+        tableValues = value;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,22 +66,31 @@ class PickUpScreen extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return itemWidget();
+                    return itemWidget(
+                      quantity: tableValues[index][cartItemQty] as int,
+                      name: tableValues[index][cartItemName] as String,
+                      imageUrl: tableValues[index][cartItemImageUrl] as String,
+                      price: tableValues[index][cartItemPrice] as double,
+                    );
                   },
-                  itemCount: 4,
+                  itemCount: tableValues.length,
                 ),
               ),
               timeScheduleContainer(context, 'Pickup Time'),
               const BranchesRow(),
               const PromoCodeContainer(),
-              paymentDetails(),
+              // PaymentDetails(createOrderModel: createOrderModel,),
               SizedBox(height: 160.h),
             ],
           ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: bottomSheet(context, pickupOrderDetails),
+      floatingActionButton: bottomSheet(
+        context,
+        pickupOrderDetails,
+        CreateOrderModel(),
+      ),
     );
   }
 }

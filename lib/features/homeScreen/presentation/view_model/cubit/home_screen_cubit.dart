@@ -28,6 +28,7 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
 
     Either<Failure, AllCategoriesModel> res =
         await getCategoriesImp.getAllCategories();
+
     res.fold(
       (failure) => emit(
         FetchCategoriesFailure(failure.errorMessage),

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
@@ -10,14 +11,31 @@ import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/cancel_order_bottom_sheet.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/shipping_details_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/item_widget.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/delivery_cubit/delivery_cubit.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 
-class CheckoutDetailsScreen extends StatelessWidget {
+class CheckoutDetailsScreen extends StatefulWidget {
   const CheckoutDetailsScreen({super.key});
 
   @override
+  State<CheckoutDetailsScreen> createState() => _CheckoutDetailsScreenState();
+}
+
+class _CheckoutDetailsScreenState extends State<CheckoutDetailsScreen> {
+  List<Map<String, Object?>> tableValues = [];
+
+  @override
+  void initState() {
+    DBHelper.queryData(table: cartItemTable).then((value) {
+      setState(() {
+        tableValues = value;
+      });
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    BlocProvider.of<DeliveryCubit>(context).printing();
+    BlocProvider.of<CreateOrderCubit>(context);
     return Scaffold(
       appBar: AppBar(
         leading: returnArrow(
@@ -57,9 +75,14 @@ class CheckoutDetailsScreen extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return itemWidget();
+                    return itemWidget(
+                      quantity: tableValues[index][cartItemQty] as int,
+                      name: tableValues[index][cartItemName] as String,
+                      imageUrl: tableValues[index][cartItemImageUrl] as String,
+                      price: tableValues[index][cartItemPrice] as double,
+                    );
                   },
-                  itemCount: 4,
+                  itemCount: tableValues.length,
                 ),
               ),
               addressContainer(),
