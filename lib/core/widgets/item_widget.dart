@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/heart_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_counter_widget.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
@@ -69,20 +72,37 @@ class _ItemWidgetState extends State<ItemWidget> {
                       bottom: 0,
                       child: SizedBox(
                         height: 30,
-                        child: ItemCounterWidget(
-                          counter: counter,
-                          itemUiModel: ItemUiModel(
-                            id: product.id!,
-                            name: product.name!,
-                            enName: product.enName ?? 'enName',
-                            enDesc: product.enDescription ?? 'enDescription',
-                            description: product.enDescription ?? 'description',
-                            thumbnailImage: product.thumbnailImage ?? '',
-                            price: product.price!,
-                            discount: product.discount ?? 0,
-                            quantity: counter,
-                          ),
-                        ),
+                        child: product.availabelPieces! > 0
+                            ? ItemCounterWidget(
+                                counter: counter,
+                                itemUiModel: ItemUiModel(
+                                  id: product.id!,
+                                  name: product.name!,
+                                  enName: product.enName ?? 'enName',
+                                  enDesc:
+                                      product.enDescription ?? 'enDescription',
+                                  description:
+                                      product.enDescription ?? 'description',
+                                  thumbnailImage: product.thumbnailImage ?? '',
+                                  price: product.price!,
+                                  discount: product.currentDiscount ?? 0,
+                                  quantity: counter,
+                                ),
+                              )
+                            : Material(
+                                color: widget.color ??
+                                    const Color.fromRGBO(241, 241, 241, 1),
+                                child: InkWell(
+                                  onTap: () {},
+                                  child: svgIcon(
+                                    path:
+                                        'assets/svg_icons/empty-notification.svg',
+                                    height: 35.h,
+                                    width: 35.w,
+                                    color: MyColors.mainColor,
+                                  ),
+                                ),
+                              ),
                       ),
                     ),
                     Align(
@@ -147,7 +167,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  if (product.afterDiscount != null)
+                  if (product.currentDiscount != 0)
                     discountWidget(
                       discount: '${product.price!}',
                       alignBottom: 6,

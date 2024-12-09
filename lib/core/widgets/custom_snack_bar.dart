@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
 class CustomSnackBar {
   static void show({
@@ -19,22 +21,31 @@ class CustomSnackBar {
         ),
         content: Row(
           children: [
-            Image.asset(
-              isGreen
-                  ? "assets/Icons_logos/green_snackbar_icon.png"
-                  : "assets/Icons_logos/red_snackbar_icon.png",
-              height: 24,
-              width: 24,
+            // Image.asset(
+            //   isGreen
+            //       ? "assets/svg_icons/tick-circle.svg"
+            //       : "assets/svg_icons/close-circle.svg",
+            //   height: 24,
+            //   width: 24,
+            // ),
+            svgIcon(
+              path: isGreen
+                  ? "assets/svg_icons/tick-circle.svg"
+                  : "assets/svg_icons/close-circle.svg",
+              width: 24.w,
+              height: 24.h,
             ),
             const SizedBox(width: 8),
-            Text(
-              text,
-              style: TextStyle(
-                color: isGreen
-                    ? const Color.fromRGBO(59, 183, 126, 1)
-                    : const Color.fromRGBO(247, 75, 129, 1), // Text color
-                fontSize: 13,
-                fontWeight: FontWeight.w400,
+            Expanded(
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: isGreen
+                      ? const Color.fromRGBO(59, 183, 126, 1)
+                      : const Color.fromRGBO(247, 75, 129, 1), // Text color
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
           ],

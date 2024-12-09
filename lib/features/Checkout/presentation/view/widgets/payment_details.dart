@@ -8,14 +8,17 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/creat
 
 class PaymentDetails extends StatefulWidget {
   final CreateOrderModel createOrderModel;
-  const PaymentDetails({super.key, required this.createOrderModel});
+  const PaymentDetails({
+    super.key,
+    required this.createOrderModel,
+  });
 
   @override
   State<PaymentDetails> createState() => _PaymentDetailsState();
 }
 
 class _PaymentDetailsState extends State<PaymentDetails> {
-  late final DbChangeNotifier _dbChangeNotifier;
+  late final DbChangeNotifier dbChangeNotifier;
 
   late CreateOrderCubit createOrderCubit;
   late double promoCodeValue;
@@ -23,9 +26,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
 
   @override
   void initState() {
-    _dbChangeNotifier = DbChangeNotifier();
-    _dbChangeNotifier.fetchItemCount();
-    _dbChangeNotifier.addListener(refreshState);
+    dbChangeNotifier = DbChangeNotifier();
 
     createOrderCubit = BlocProvider.of<CreateOrderCubit>(context);
 
@@ -36,37 +37,35 @@ class _PaymentDetailsState extends State<PaymentDetails> {
   }
 
   void refreshState() {
-    setState(() {});
-  }
-
-  @override
-  void dispose() {
-    _dbChangeNotifier.removeListener(refreshState);
-
-    super.dispose();
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CreateOrderCubit, CreateOrderState>(
       listener: (context, state) {
+        if (state is CheckPromoCodeLoading || state is CheckPromoCodeFailed) {
+          promoCodeValue = 0;
+        }
+
         if (state is CheckPromoCodeSuccess) {
           promoCodeValue = state.promoCodeModel.promoCode!.amount!;
           isPercentage = state.promoCodeModel.promoCode!.isPercentage!;
+
+          if (isPercentage) {
+            promoCodeValue = createOrderCubit.calcPromoCode(
+              dbChangeNotifier.dbData.totalPrice,
+              promoCodeValue,
+            );
+          }
 
           widget.createOrderModel.promoCode =
               state.promoCodeModel.promoCode!.code!;
         }
       },
       builder: (context, state) {
-        if (isPercentage) {
-          promoCodeValue = double.parse(
-              (_dbChangeNotifier.dbData.totalPrice * 0.2).toStringAsFixed(2));
-        }
-
-        BlocProvider.of<CreateOrderCubit>(context).promoCodeValue =
-            promoCodeValue;
-
         return Container(
           padding: EdgeInsets.all(20.r),
           margin: EdgeInsets.only(top: 10.h),
@@ -80,11 +79,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Sub Total (${_dbChangeNotifier.dbData.count} Items)',
+                    'Sub Total (${dbChangeNotifier.dbData.count} Items)',
                     style: Styles.styles14w400Black,
                   ),
                   Text(
-                    '${_dbChangeNotifier.dbData.totalPrice} EGP',
+                    '${dbChangeNotifier.dbData.totalPrice} EGP',
                     style: Styles.styles15w600NormalBlack,
                   ),
                 ],
@@ -98,7 +97,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                     style: Styles.styles14w400Black,
                   ),
                   Text(
-                    '${_dbChangeNotifier.dbData.totalDiscount} EGP',
+                    '${dbChangeNotifier.dbData.totalDiscount} EGP',
                     style: Styles.styles15w600NormalBlack,
                   ),
                 ],
@@ -117,20 +116,22 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                   ),
                 ],
               ),
-              SizedBox(height: 15.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Delivery fees',
-                    style: Styles.styles14w400Black,
-                  ),
-                  Text(
-                    '120 EGP',
-                    style: Styles.styles15w600NormalBlack,
-                  ),
-                ],
-              ),
+              if (widget.createOrderModel.deliverMethod != 'OnBranch') ...[
+                SizedBox(height: 15.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Delivery fees',
+                      style: Styles.styles14w400Black,
+                    ),
+                    Text(
+                      '120 EGP',
+                      style: Styles.styles15w600NormalBlack,
+                    ),
+                  ],
+                ),
+              ]
             ],
           ),
         );

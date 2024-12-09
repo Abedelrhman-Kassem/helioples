@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 
 class PromoCodeContainer extends StatefulWidget {
@@ -26,7 +27,12 @@ class _PromoCodeContainerState extends State<PromoCodeContainer> {
     return BlocConsumer<CreateOrderCubit, CreateOrderState>(
       listener: (context, state) {
         if (state is CheckPromoCodeFailed) {
-          print(state.error);
+          CustomSnackBar.show(
+            context: context,
+            duration: const Duration(seconds: 10),
+            text: state.error,
+            isGreen: false,
+          );
         }
       },
       builder: (context, state) {
@@ -69,7 +75,14 @@ class _PromoCodeContainerState extends State<PromoCodeContainer> {
                       color: const Color.fromRGBO(181, 185, 190, 1),
                     ),
                     suffixIcon: state is CheckPromoCodeLoading
-                        ? CircularProgressIndicator(color: MyColors.mainColor)
+                        ? Container(
+                            height: 50.h,
+                            width: 50.h,
+                            padding: EdgeInsets.all(10.r),
+                            child: CircularProgressIndicator(
+                              color: MyColors.mainColor,
+                            ),
+                          )
                         : TextButton(
                             onPressed: () {
                               if (promoCodeController.text.isNotEmpty) {

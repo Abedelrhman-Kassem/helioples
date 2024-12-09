@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/shipping_details_item.dart';
 
-Widget shippingDetailsContainer() {
+Widget shippingDetailsContainer(OrderDetailsModel order) {
   return Container(
     padding: EdgeInsets.all(20.r),
     margin: EdgeInsets.symmetric(vertical: 20.h),
@@ -15,22 +16,26 @@ Widget shippingDetailsContainer() {
         shippingDetailsItem(
           text: 'Preparing',
           iconPath: 'assets/svg_icons/box.svg',
-          isLoading: true,
-          isSuccess: true,
+          isLoading: order.order!.clientOrderState! == 'Pending',
+          isSuccess: order.order!.clientOrderState! == 'OnWay' ||
+              order.order!.clientOrderState! == 'Shipped',
+          date: '10 Dec 04:25 PM, ',
         ),
         SizedBox(height: 20.h),
         shippingDetailsItem(
           text: 'Arrived To Drop Location',
           iconPath: 'assets/svg_icons/truck-tick.svg',
-          isLoading: true,
-          isSuccess: false,
+          isLoading: order.order!.clientOrderState! == 'OnWay',
+          isSuccess: order.order!.clientOrderState! == 'Shipped',
+          date: '10 Dec 04:25 PM, ',
         ),
         SizedBox(height: 20.h),
         shippingDetailsItem(
           text: 'Delivered',
           iconPath: 'assets/svg_icons/box-tick.svg',
           isLoading: false,
-          isSuccess: false,
+          isSuccess: order.order!.clientOrderState! == 'Shipped',
+          date: '10 Dec 04:25 PM, ',
         ),
       ],
     ),

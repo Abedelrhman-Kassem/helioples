@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/bloc_observer.dart';
+import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
@@ -57,15 +58,18 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          onGenerateRoute: appRouter.generate,
-          theme: lightTheme,
-          darkTheme: darkTheme,
-          themeMode: ThemeMode.light,
-          locale: Locale(getLocale(context)),
-          supportedLocales: context.supportedLocales,
-          localizationsDelegates: context.localizationDelegates,
+        return BlocProvider(
+          create: (context) => MainCubit(),
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            onGenerateRoute: appRouter.generate,
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode: ThemeMode.light,
+            locale: Locale(getLocale(context)),
+            supportedLocales: context.supportedLocales,
+            localizationsDelegates: context.localizationDelegates,
+          ),
         );
       },
     );

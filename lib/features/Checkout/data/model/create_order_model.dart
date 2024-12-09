@@ -3,7 +3,7 @@ class CreateOrderModel {
   String? paymentMethod;
   double? tips;
   String? alternativeProduct;
-  String? branchId;
+  int? branchId;
   int? addressId;
   bool? chooseForMe;
   String? promoCode;
@@ -43,12 +43,11 @@ class CreateOrderModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['deliverMethod'] = deliverMethod;
     data['paymentMethod'] = paymentMethod;
-    data['tips'] = tips;
     data['alternativeProduct'] = alternativeProduct;
     data['branchId'] = branchId;
     data['chooseForMe'] = chooseForMe;
     data['promoCode'] = promoCode;
-    data['deliverTimeId'] = deliverTimeId;
+    // data['deliverTimeId'] = deliverTimeId;
     if (items != null) {
       data['items'] = items!.map((v) => v.toJson()).toList();
     }

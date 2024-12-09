@@ -64,32 +64,48 @@ class UnitOfMeasure {
 
 class RelatedProductsModel {
   int? id;
+  String? barCodeId;
   String? name;
-  String? description;
-  String? enDescription;
   String? enName;
   String? thumbnailImage;
+  String? enDescription;
+  String? description;
   String? searchDescription;
+  int? availabelPieces;
+  int? totalOrders;
   double? price;
-  double? afterDiscount;
   String? state;
+  int? views;
+  bool? active;
+  int? discountId;
   String? createdAt;
-  double? discount;
+  String? updatedAt;
+  int? unitOfMeasureId;
+  double? currentDiscount;
+  double? afterDiscount;
   bool? isLiked;
 
   RelatedProductsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    barCodeId = json['barCodeId'];
     name = json['name'];
-    description = json['description'];
-    enDescription = json['enDescription'];
     enName = json['enName'];
     thumbnailImage = json['thumbnailImage'];
+    enDescription = json['enDescription'];
+    description = json['description'];
     searchDescription = json['searchDescription'];
+    availabelPieces = json['availabelPieces'];
+    totalOrders = json['totalOrders'];
     price = json['price'] * 1.0;
-    afterDiscount = json['afterDiscount'];
     state = json['state'];
+    views = json['views'];
+    active = json['active'];
+    discountId = json['discountId'];
     createdAt = json['createdAt'];
-    discount = json['discount'];
+    updatedAt = json['updatedAt'];
+    unitOfMeasureId = json['unitOfMeasureId'];
+    currentDiscount = (json['current_discount'] ?? 0) * 1.0;
+    afterDiscount = (json['afterDiscount'] ?? price) * 1.0;
     isLiked = json['isLiked'];
   }
 }

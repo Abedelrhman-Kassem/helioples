@@ -2,13 +2,13 @@ part of 'create_order_cubit.dart';
 
 sealed class CreateOrderState {}
 
-final class CheckoutInitial extends CreateOrderState {}
+final class CreateOrderInitial extends CreateOrderState {}
 
 final class CreateOrderLoading extends CreateOrderState {}
 
 final class CreateOrderSuccess extends CreateOrderState {
-  OrderModel order;
-  CreateOrderSuccess(this.order);
+  OrderDetailsModel orderDetailsModel;
+  CreateOrderSuccess(this.orderDetailsModel);
 }
 
 final class CreateOrderFailed extends CreateOrderState {
@@ -31,4 +31,28 @@ final class CheckPromoCodeFailed extends CreateOrderState {
 final class TipsToBottomSheet extends CreateOrderState {
   double tips;
   TipsToBottomSheet(this.tips);
+}
+
+final class CancelOrderLoading extends CreateOrderState {}
+
+final class CancelOrderSuccess extends CreateOrderState {
+  CancelOrderModel cancelOrderModel;
+  CancelOrderSuccess(this.cancelOrderModel);
+}
+
+final class CancelOrderFailed extends CreateOrderState {
+  String error;
+  CancelOrderFailed(this.error);
+}
+
+final class BranchesLoading extends CreateOrderState {}
+
+final class BranchesSuccess extends CreateOrderState {
+  BranchesModel branchesModel;
+  BranchesSuccess(this.branchesModel);
+}
+
+final class BranchesFailed extends CreateOrderState {
+  String error;
+  BranchesFailed(this.error);
 }
