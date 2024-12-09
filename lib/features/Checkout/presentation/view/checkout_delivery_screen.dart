@@ -48,6 +48,7 @@ class CheckoutScreen extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        // ignore: unused_local_variable
         CreateOrderModel createOrderModel = CreateOrderModel(
           deliverMethod: 'Delivery',
           items: [
