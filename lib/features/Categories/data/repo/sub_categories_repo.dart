@@ -7,5 +7,6 @@ abstract class SubCategoriesRepo
 {
   Future<Either<Failure,List<SubCategories>>> getSubCategories(int id);
   Future<Either<Failure,List<RelatedProductsModel>>> getProductsInSubCategory(int subCategoryId , int page  ) ; 
+  Future<Either<Failure,List<RelatedProductsModel>>> getAllProductsOfSubCategory(int subCategoryId);
 
 }

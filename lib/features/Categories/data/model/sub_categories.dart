@@ -5,7 +5,7 @@ class SubCategories {
   bool? isFeatured;
   String? name;
   String? description;
-  Null? bannerImage;
+  Null bannerImage;
   int? categoryId;
   int? currentProducts;
   bool? active;
@@ -40,7 +40,7 @@ class SubCategories {
     if (json['products'] != null) {
       products = <RelatedProductsModel>[];
       json['products'].forEach((v) {
-        products!.add(new RelatedProductsModel.fromJson(v));
+        products!.add(RelatedProductsModel.fromJson(v));
       });
     }
   }
@@ -69,13 +69,13 @@ class Products {
   String? name;
   String? enDescription;
   String? enName;
-  Null? thumbnailImage;
+  Null thumbnailImage;
   String? searchDescription;
   double? price;
-  Null? afterDiscount;
+  Null afterDiscount;
   String? state;
   String? createdAt;
-  Null? discount;
+  Null discount;
 
   Products(
       {this.id,
@@ -105,18 +105,18 @@ class Products {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['enDescription'] = this.enDescription;
-    data['enName'] = this.enName;
-    data['thumbnailImage'] = this.thumbnailImage;
-    data['searchDescription'] = this.searchDescription;
-    data['price'] = this.price;
-    data['afterDiscount'] = this.afterDiscount;
-    data['state'] = this.state;
-    data['createdAt'] = this.createdAt;
-    data['discount'] = this.discount;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['enDescription'] = enDescription;
+    data['enName'] = enName;
+    data['thumbnailImage'] = thumbnailImage;
+    data['searchDescription'] = searchDescription;
+    data['price'] = price;
+    data['afterDiscount'] = afterDiscount;
+    data['state'] = state;
+    data['createdAt'] = createdAt;
+    data['discount'] = discount;
     return data;
   }
 }
