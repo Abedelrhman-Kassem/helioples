@@ -67,6 +67,16 @@ dependencies:
   uuid: ^4.4.2
   redacted: ^1.0.12
   image_picker: ^1.1.2
+  firebase_core: ^3.8.1
+  cloud_firestore: ^5.5.1
+  firebase_storage: ^12.3.7
+  firebase_messaging: ^15.1.6
+  # firebase_auth: ^5.3.4fl
+  google_sign_in: ^6.2.2
+  firebase_analytics: ^11.3.6
+  awesome_dialog: ^3.2.1
+  another_flushbar: ^1.12.30
+  font_awesome_flutter: ^10.8.0
 
 dev_dependencies:
   flutter_lints: ^3.0.0
