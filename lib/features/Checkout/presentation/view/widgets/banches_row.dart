@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/branches_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 
 class BranchesRow extends StatefulWidget {
   final BranchesModel branchesModel;
@@ -32,6 +34,10 @@ class _BranchesRowState extends State<BranchesRow> {
   @override
   Widget build(BuildContext context) {
     widget.createOrderModel.branchId = selectedBranch;
+
+    BlocProvider.of<CreateOrderCubit>(context).branch = branches.firstWhere(
+      (branch) => branch.id == selectedBranch,
+    );
 
     return Container(
       width: double.infinity,

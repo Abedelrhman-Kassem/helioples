@@ -16,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
     List<ProfileItem> items = [
       ProfileItem(
         imagePath: "assets/svg_icons/profile_icon.svg",
-        label: "Profile \n Information",
+        label: "Profile Information",
         onTap: () {
           Navigator.of(context).pushNamed(cahngeInformationScreen);
         },
@@ -54,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
       const ProfileItem(
           imagePath: "assets/svg_icons/logout_icon.svg", label: "Logout"),
     ];
-    
+
     HomeLayoutCubit homeLayoutCubit = BlocProvider.of<HomeLayoutCubit>(context);
 
     return Scaffold(

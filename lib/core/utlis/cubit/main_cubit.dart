@@ -9,7 +9,7 @@ class MainCubit extends Cubit<MainState> {
   MainCubit() : super(MainInitial());
 
   List<Map<String, Object?>>? tableValues;
-  void clearDb() async {
+  Future<void> clearDb() async {
     tableValues = await DBHelper.queryData(table: cartItemTable);
 
     await DBHelper.deleteData(table: cartItemTable);

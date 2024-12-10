@@ -207,8 +207,11 @@ class AppRouter {
         break;
 
       case pickupOrderDetails:
-        final args = settings.arguments as OrderDetailsModel;
-        page = PickupOrderDetails(orderDetailsModel: args);
+        final args = settings.arguments as Map<String, dynamic>;
+        page = PickupOrderDetails(
+          orderDetailsModel: args['order'],
+          branch: args['branch'],
+        );
         fromRight = true;
         break;
 

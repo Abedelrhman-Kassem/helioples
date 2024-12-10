@@ -8,7 +8,6 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view/widgets/gbutton.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
-import 'package:negmt_heliopolis/features/homeScreen/presentation/view_model/cubit/home_screen_cubit.dart';
 
 class HomeLayout extends StatefulWidget {
   const HomeLayout({super.key});
@@ -20,15 +19,11 @@ class HomeLayout extends StatefulWidget {
 class _HomeLayoutState extends State<HomeLayout> {
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => HomeLayoutCubit(),
-        ),
-        BlocProvider(
-          create: (context) => HomeScreenCubit()..getAllCategories(),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => HomeLayoutCubit()
+        ..getAllCategories(homeScreen: true, page: 0)
+        ..getConfigs(),
+      // ..getSpecialOffers(homeScreen: true, page: 0),
       child: BlocConsumer<HomeLayoutCubit, HomeLayoutState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -37,7 +32,6 @@ class _HomeLayoutState extends State<HomeLayout> {
 
           return PopScope(
             canPop: false,
-
             onPopInvoked: (didPop) {
               if (homeLayoutCubit.selectedIndex == 0) {
                 return;

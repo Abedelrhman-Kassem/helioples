@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/branches_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_details_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/item_widget.dart';
@@ -12,9 +14,11 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/shi
 
 class PickupOrderDetails extends StatefulWidget {
   final OrderDetailsModel orderDetailsModel;
+  final Branches branch;
   const PickupOrderDetails({
     super.key,
     required this.orderDetailsModel,
+    required this.branch,
   });
 
   @override
@@ -29,11 +33,8 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
   void initState() {
     order = widget.orderDetailsModel;
 
-    DBHelper.queryData(table: cartItemTable).then((value) {
-      setState(() {
-        tableValues = value;
-      });
-    });
+    tableValues = BlocProvider.of<MainCubit>(context).tableValues!;
+
     super.initState();
   }
 
@@ -83,19 +84,29 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
                     color: Colors.white.withOpacity(0.9),
                     borderRadius: BorderRadius.circular(15.r),
                   ),
-                  child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return itemWidget(
-                        quantity: tableValues[index][cartItemQty] as int,
-                        name: tableValues[index][cartItemName] as String,
-                        imageUrl:
-                            tableValues[index][cartItemImageUrl] as String,
-                        price: tableValues[index][cartItemPrice] as double,
-                      );
-                    },
-                    itemCount: tableValues.length,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Order Items',
+                        style: Styles.styles17w700Black,
+                      ),
+                      SizedBox(height: 20.h),
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return itemWidget(
+                            quantity: tableValues[index][cartItemQty] as int,
+                            name: tableValues[index][cartItemName] as String,
+                            imageUrl:
+                                tableValues[index][cartItemImageUrl] as String,
+                            price: tableValues[index][cartItemPrice] as double,
+                          );
+                        },
+                        itemCount: tableValues.length,
+                      ),
+                    ],
                   ),
                 ),
                 Container(
@@ -134,7 +145,7 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "Eldabaa Branch",
+                                      widget.branch.name!,
                                       style: Styles.styles16w400NormalBlack,
                                     ),
                                     Text(
