@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "501758429254",
+    "project_id": "negmet-heliopolis",
+    "storage_bucket": "negmet-heliopolis.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501758429254:android:114170e43a9bf0f2c7e247",
+        "android_client_info": {
+          "package_name": "com.example.negmt_heliopolis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJaWx5CI1yfS2xxch1euVmSNOiFOMucuU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

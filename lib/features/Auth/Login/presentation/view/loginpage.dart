@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +22,7 @@ import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/phone_number_row.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_app_bar.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,6 +32,46 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  getToken() async {
+    String? myToken = await FirebaseMessaging.instance.getToken();
+    FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+ 
+    log("token : $myToken");
+  }
+
+  myRequestPermission() async 
+  {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+NotificationSettings settings = await messaging.requestPermission(
+  alert: true,
+  announcement: false,
+  badge: true,
+  carPlay: true,
+  criticalAlert: false,
+  provisional: false,
+  sound: true,
+);
+
+if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+  print('User granted permission');
+} else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+  print('User granted provisional permission');
+} else {
+  print('User declined or has not accepted permission');
+}
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    
+    myRequestPermission();
+    getToken();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController phoneNumberController = TextEditingController();

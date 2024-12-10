@@ -86,6 +86,7 @@ Widget cancelOrderBottomSheet(BuildContext context, OrderDetailsModel order) {
   );
 }
 
+// ignore: must_be_immutable
 class ReasonBottomSheet extends StatefulWidget {
   final OrderDetailsModel order;
   const ReasonBottomSheet({

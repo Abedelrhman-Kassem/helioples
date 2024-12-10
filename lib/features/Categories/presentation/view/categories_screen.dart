@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,21 +47,34 @@ class _CategoriesScreenState extends State<CategoriesScreen>
 
   final Set<int> loadedSubCategories = {};
   late TabController tabController;
+  int x = 1;
+   int? firstSubCategoryId ; 
 
   @override
-  void initState() {
-    super.initState();
-    tabController = TabController(length: 1, vsync: this);
-    scrollController = ScrollController();
-    scrollController.addListener(_handleScroll);
-    subCategoriesCubit =
-        SubCategoriesCubit(SubCategoriesRepoImp(api: ApiService()));
+ @override
+void initState() {
+  super.initState();
+  tabController = TabController(length: 1, vsync: this);
+  scrollController = ScrollController();
+  scrollController.addListener(_handleScroll);
+  subCategoriesCubit = SubCategoriesCubit(SubCategoriesRepoImp(api: ApiService()));
 
-    _initializeSubCategories();
-  }
+  Future.microtask(() async {
+    await _initializeSubCategories();
+  });
+}
+
 
   Future<void> _initializeSubCategories() async {
     await subCategoriesCubit.fetchSubCategories(widget.category.id);
+    final subCategoryIds = subCategoriesCubit.subCategoryProducts.keys.toList();
+    if (subCategoryIds.isNotEmpty) {
+       firstSubCategoryId = subCategoryIds.first;
+      loadedSubCategories.add(firstSubCategoryId!);
+
+
+    }
+
     final subCategoryCount = subCategoriesCubit.subCategoryProducts.keys.length;
     sectionKeys = List.generate(subCategoryCount, (_) => GlobalKey());
   }
@@ -118,193 +133,280 @@ class _CategoriesScreenState extends State<CategoriesScreen>
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider<SubCategoriesCubit>.value(
-      value: subCategoriesCubit,
-      child: BlocBuilder<SubCategoriesCubit, FetchCategoriesState>(
-        builder: (context, state) {
-          if (state is SubCategoriesLoading) {
-            return SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                controller: scrollController,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      buildShimmerLoading2(tabController),
-                    ]));
-          } else if (state is SubCategoriesFailure) {
-            return Center(child: Text(state.message));
-          } else if (state is SubCategoriesSuccess ||
-              state is ProductsLoading ||
-              state is ProductsSuccess) {
-            categories = state is SubCategoriesSuccess
-                ? state.subCategories
-                    .map((subCat) => subCat.name ?? "")
-                    .toList()
-                : categories;
+void _handleScroll() {
+  for (int i = 0; i < sectionKeys.length; i++) {
+    final RenderBox? box =
+        sectionKeys[i].currentContext?.findRenderObject() as RenderBox?;
+    if (box == null) continue;
 
-            if (categories.isEmpty) {
-              return const Center(child: Text("No categories available"));
-            }
+    final position = box.localToGlobal(Offset.zero);
+    final isVisible = position.dy >= 0 && position.dy < MediaQuery.of(context).size.height;
 
-            return DefaultTabController(
-              length: categories.length,
-              child: Scaffold(
-                  appBar: PreferredSize(
-                    preferredSize: Size.fromHeight(180.h),
-                    child: Builder(
-                      builder: (context) {
-                        tabContext = context;
-                        return AppBar(
-                          toolbarHeight: 200.h,
-                          elevation: 20,
-                          backgroundColor: Colors.white,
-                          leading: returnArrow(
-                            context: context,
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          title: categoriesButtonTitleWidet(
-                            context: context,
-                            title: widget.category.name,
-                          ),
-                          actions: const [CartCounter()],
-                          bottom: ButtonsTabBar(
-                            splashColor: MyColors.mainColor,
-                            height: 75.h,
-                            backgroundColor:
-                                const Color.fromRGBO(204, 229, 233, 1),
-                            unselectedBackgroundColor: Colors.white,
-                            unselectedBorderColor:
-                                const Color.fromRGBO(170, 170, 170, 1),
-                            labelStyle: Styles.styles15w400NormalBlack.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: MyColors.mainColor,
-                            ),
-                            borderColor: Colors.transparent,
-                            borderWidth: 1.sp,
-                            unselectedLabelStyle:
-                                Styles.styles15w400NormalBlack.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: const Color.fromRGBO(150, 150, 150, 1),
-                            ),
-                            radius: 30.r,
-                            buttonMargin: EdgeInsets.all(10.sp),
-                            contentCenter: true,
-                            labelSpacing: 10.sp,
-                            contentPadding: EdgeInsets.all(12.sp),
-                            onTap: (index) => _scrollToSection(index),
-                            tabs: [
-                              ...List.generate(
-                                categories.length,
-                                (index) => Tab(
-                                  icon: Image.asset(
-                                      "assets/Icons_logos/Donuts.png"),
-                                  text: categories[index],
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  body: Stack(
-                    children: [
-                      SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        controller: scrollController,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 20.h),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ...List.generate(
-                                categories.length,
-                                (index) {
-                                  final subCategoryId = subCategoriesCubit
-                                      .subCategoryProducts.keys
-                                      .elementAt(index);
+    if (isVisible) {
+      final subCategoryId = subCategoriesCubit.subCategoryProducts.keys.elementAt(i);
 
-                                  if (!loadedSubCategories
-                                      .contains(subCategoryId)) {
-                                    loadedSubCategories.add(subCategoryId);
-                                    subCategoriesCubit
-                                        .fetchProductsInSubCategory(
-                                            subCategoryId);
-                                    subCategoriesCubit
-                                        .fetchProductsInSubCategory(
-                                            subCategoryId);
-                                    subCategoriesCubit
-                                        .fetchProductsInSubCategory(
-                                            subCategoryId);
-                                  }
+      // Lazy load subcategory products if not already loaded
+      if (loadedSubCategories.add(subCategoryId)) {
+        subCategoriesCubit.fetchAllPRoductsOfSubCategory(subCategoryId);
+      }
 
-                                  final products = subCategoriesCubit
-                                          .subCategoryProducts[subCategoryId] ??
-                                      [];
+      // Handle tab animation
 
-                                  return Column(
-                                    key: sectionKeys[index],
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        categories[index],
-                                        style: Styles.styles21w700black,
-                                      ),
-                                      SizedBox(height: 16.h),
-                                      if (products.isNotEmpty)
-                                        GridView.builder(
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount: products.length,
-                                          gridDelegate:
-                                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                            maxCrossAxisExtent: 150,
-                                            crossAxisSpacing: 7,
-                                            mainAxisSpacing: 10,
-                                            mainAxisExtent: 220,
-                                            // childAspectRatio: 1 / 2,
-                                          ),
-                                          itemBuilder: (context, index) =>
-                                              ItemWidget(
-                                            relatedProductsModel:
-                                                products[index],
-                                          ),
-                                        )
-                                      // itemWidgetGridView(
-                                      // itemCount: products.length  )
-                                      else
-                                        buildItemsShimmer(),
-                                      SizedBox(height: 60.h),
-                                    ],
-                                  );
-                                },
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      const Positioned(
-                        bottom: 10,
-                        left: 0,
-                        right: 0,
-                        child: CartContainer(),
-                      ),
-                    ],
-                  )),
-            );
-          }
-          return Container();
-        },
-      ),
-    );
+      setState(() {
+           DefaultTabController.of(tabContext!).animateTo(i);
+        
+      });
+ 
+
+
+      // Prefetch the next subcategory
+      if (i + 1 < sectionKeys.length) {
+        final nextSubCategoryId = subCategoriesCubit.subCategoryProducts.keys.elementAt(i + 1);
+        if (loadedSubCategories.add(nextSubCategoryId)) {
+          subCategoriesCubit.fetchAllPRoductsOfSubCategory(nextSubCategoryId);
+        }
+      }
+      break;
+    }
   }
+}
+
+
+
+
+
+void _scrollToSection(int index) {
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    scrollController.removeListener(_handleScroll);
+
+    final subCategoryId = subCategoriesCubit.subCategoryProducts.keys.elementAt(index);
+
+    if (!loadedSubCategories.contains(subCategoryId)) {
+      setState(() {
+        loadedSubCategories.add(subCategoryId);
+      });
+
+      await subCategoriesCubit.fetchAllPRoductsOfSubCategory(subCategoryId);
+    }
+
+    final context = sectionKeys[index].currentContext;
+
+    if (context == null) {
+      log("Section key at index $index has no attached context.");
+      return; // Avoid performing actions on a null context
+    }
+
+    Scrollable.ensureVisible(
+      context,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+      alignment: 0,
+    ).then((_) {
+      scrollController.addListener(_handleScroll);
+    });
+
+    // Fetch DefaultTabController safely
+    final tabController = DefaultTabController.of(context);
+    if (tabController != null) {
+      tabController.animateTo(index);
+    } else {
+      log("DefaultTabController is null when animating to index $index.");
+    }
+  });
+}
+
+
+Future<void> _loadRemainingDataForCurrentTab() async {
+  final currentSubCategoryId = subCategoriesCubit.subCategoryProducts.keys.first;
+
+  if (subCategoriesCubit.hasMore[currentSubCategoryId] == true) {
+    await subCategoriesCubit.fetchProductsInSubCategory(currentSubCategoryId, isPagination: true);
+  }
+}
+
+
+
+
+  @override
+  @override
+Widget build(BuildContext context) {
+  return BlocProvider<SubCategoriesCubit>.value(
+    value: subCategoriesCubit,
+    child: BlocBuilder<SubCategoriesCubit, FetchCategoriesState>(
+      builder: (context, state) {
+        if (state is SubCategoriesLoading) {
+          return _buildLoadingState();
+        } else if (state is SubCategoriesFailure) {
+          return _buildErrorState(state.message);
+        } else if (state is SubCategoriesSuccess ||
+            state is ProductsLoading ||
+            state is ProductsSuccess) {
+          return _buildCategoriesContent(state);
+        }
+        return Container();
+      },
+    ),
+  );
+}
+
+Widget _buildLoadingState() {
+  return SingleChildScrollView(
+    physics: const BouncingScrollPhysics(),
+    controller: scrollController,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [buildShimmerLoading2(tabController)],
+    ),
+  );
+}
+
+Widget _buildErrorState(String message) {
+  return Center(child: Text(message));
+}
+
+Widget _buildCategoriesContent(FetchCategoriesState state) {
+  categories = state is SubCategoriesSuccess
+      ? state.subCategories.map((subCat) => subCat.name ?? "").toList()
+      : categories;
+
+  if (categories.isEmpty) {
+    return const Center(child: Text("No categories available"));
+  }
+
+  return DefaultTabController(
+
+
+    length: categories.length,
+    child: Scaffold(
+      appBar: _buildAppBar(),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            controller: scrollController,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(
+                  categories.length,
+                  (index) => _buildSubCategorySection(index),
+                ),
+              ),
+            ),
+          ),
+          const Positioned(
+            bottom: 10,
+            left: 0,
+            right: 0,
+            child: CartContainer(),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+PreferredSizeWidget _buildAppBar() {
+  
+  return PreferredSize(
+    preferredSize: Size.fromHeight(180.h),
+    
+    child: Builder(
+      builder: (context) {
+        tabContext = context ;
+        return AppBar(
+          toolbarHeight: 200.h,
+          elevation: 20,
+          backgroundColor: Colors.white,
+          leading: returnArrow(
+            context: context,
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          title: categoriesButtonTitleWidet(
+            context: context,
+            title: widget.category.name,
+          ),
+          actions: const [CartCounter()],
+          bottom: ButtonsTabBar(
+            splashColor: MyColors.mainColor,
+            height: 75.h,
+            backgroundColor: const Color.fromRGBO(204, 229, 233, 1),
+            unselectedBackgroundColor: Colors.white,
+            unselectedBorderColor: const Color.fromRGBO(170, 170, 170, 1),
+            labelStyle: Styles.styles15w400NormalBlack.copyWith(
+              fontWeight: FontWeight.w600,
+              color: MyColors.mainColor,
+            ),
+            borderColor: Colors.transparent,
+            borderWidth: 1.sp,
+            unselectedLabelStyle: Styles.styles15w400NormalBlack.copyWith(
+              fontWeight: FontWeight.w500,
+              color: const Color.fromRGBO(150, 150, 150, 1),
+            ),
+            radius: 30.r,
+            buttonMargin: EdgeInsets.all(10.sp),
+            contentCenter: true,
+            labelSpacing: 10.sp,
+            contentPadding: EdgeInsets.all(12.sp),
+            onTap: (index) => _scrollToSection(index),
+            tabs: List.generate(
+              categories.length,
+              (index) => Tab(
+                icon: Image.asset("assets/Icons_logos/Donuts.png"),
+                text: categories[index],
+              ),
+            ),
+          ),
+        );
+      }
+    ),
+  );
+}
+
+Widget _buildSubCategorySection(int index) {
+
+  final subCategoryId = subCategoriesCubit.subCategoryProducts.keys.elementAt(index);
+ if (subCategoryId == firstSubCategoryId)
+ {
+   subCategoriesCubit.fetchAllPRoductsOfSubCategory(subCategoryId);
+   log("inside condition");
+   firstSubCategoryId = 0 ; 
+ }
+  final products = subCategoriesCubit.subCategoryProducts[subCategoryId] ?? [];
+
+  return Column(
+    key: sectionKeys[index],
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        categories[index],
+        style: Styles.styles21w700black,
+      ),
+      SizedBox(height: 16.h),
+      if (products.isNotEmpty)
+        GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: products.length,
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 150,
+            crossAxisSpacing: 7,
+            mainAxisSpacing: 10,
+            mainAxisExtent: 220,
+          ),
+          itemBuilder: (context, productIndex) =>
+              ItemWidget(relatedProductsModel: products[productIndex]),
+        )
+      else
+        buildItemsShimmer(),
+      SizedBox(height: 60.h),
+    ],
+  );
+}
+
 }
 
 Widget buildShimmerLoading() {
@@ -639,125 +741,150 @@ Widget buildShimmerLoading2(TabController tabController) {
           SizedBox(
             height: 40.h,
           ),
-          ...List.generate(2, (index) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 30.h,
-                    width: 100.w,
-                    color: Colors.grey[300],
-                  ),
-                  SizedBox(height: 30.h),
-                  Row(
-                    children: [
-                      Container(
-                        height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
+          ...List.generate(
+            2,
+            (index) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 30.h,
+                      width: 100.w,
+                      color: Colors.grey[300],
+                    ),
+                    SizedBox(height: 30.h),
+                    Row(
+                      children: [
+                        Container(
+                          height: 240.h,
+                          width: 130.w,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(30.r)),
+                        ),
+                        SizedBox(
+                          width: 8.w,
+                        ),
+                        Container(
+                          height: 240.h,
+                          width: 130.w,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(30.r)),
+                        ),
+                        SizedBox(
+                          width: 8.w,
+                        ),
+                        Container(
+                          height: 240.h,
+                          width: 130.w,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(30.r)),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          height: 240.h,
+                          width: 130.w,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(30.r)),
+                        ),
+                        SizedBox(
+                          width: 8.w,
+                        ),
+                        Container(
+                          height: 240.h,
+                          width: 130.w,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(30.r)),
+                        ),
+                        SizedBox(
+                          width: 8.w,
+                        ),
+                        Container(
+                          height: 240.h,
+                          width: 130.w,
+                          decoration: BoxDecoration(
                             color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Container(
-                        height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Container(
-                        height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Container(
-                        height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Container(
-                        height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Container(
-                        height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Container(
-                        height: 240.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(30.r)),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30.h),
-                ],
-              ),
-            );
-          }),
+                            borderRadius: BorderRadius.circular(30.r),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          height: 240.h,
+                          width: 130.w,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(30.r)),
+                        ),
+                        SizedBox(
+                          width: 8.w,
+                        ),
+                        Container(
+                          height: 240.h,
+                          width: 130.w,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(30.r)),
+                        ),
+                        SizedBox(
+                          width: 8.w,
+                        ),
+                        Container(
+                          height: 240.h,
+                          width: 130.w,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(30.r)),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 30.h),
+                  ],
+                ),
+              );
+            },
+          ),
         ],
       ),
     ),
   );
+}
+
+class SlowScrollPhysics extends ClampingScrollPhysics {
+  final double speedFactor;
+
+  SlowScrollPhysics({this.speedFactor = 0.2, ScrollPhysics? parent})
+      : super(parent: parent);
+
+  @override
+  SlowScrollPhysics applyTo(ScrollPhysics? ancestor) {
+    return SlowScrollPhysics(
+      speedFactor: speedFactor,
+      parent: buildParent(ancestor),
+    );
+  }
+
+  @override
+  double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
+    // تقليل السرعة بضربها في عامل التباطؤ
+    return super.applyPhysicsToUserOffset(position, offset * speedFactor);
+  }
 }

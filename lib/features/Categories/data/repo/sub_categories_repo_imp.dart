@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
@@ -54,7 +56,7 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
     try {
       await api.setAuthorizationHeader() ; 
 
-      var response = await api.get(endpoint: "api/categories/$mainId/sub-categories/$subCategoryId?page=$page");
+      var response = await api.get(endpoint: "api/categories/$mainId/sub-categories/$subCategoryId?page=$page&include=40");
       List<RelatedProductsModel> products = [];
 
 
@@ -78,5 +80,38 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
       }
     }
    
+  }
+  
+  @override
+  Future<Either<Failure, List<RelatedProductsModel>>> getAllProductsOfSubCategory(int subCategoryId) async {
+     try {
+      await api.setAuthorizationHeader() ; 
+
+      var response = await api.get(endpoint: "api/categories/$mainId/sub-categories/$subCategoryId?include=200");
+      List<RelatedProductsModel> products = [];
+
+
+      for (var item in response['subCategory']['products']) {
+        try {
+      
+          products.add(RelatedProductsModel.fromJson(item));
+        } catch (e) {
+          print("Error parsing item: $e");
+        }
+      } 
+      // print("llllllllllllllll");
+      // print(products.length);
+      log("prinintg products in the repo ");
+      print(products);
+      log("after printing products in the repo");
+      return right(products);
+      
+    } catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure.fromDioError(e));
+      } else {
+        return left(ServerFailure(e.toString()));
+      }
+    }
   }
 }
