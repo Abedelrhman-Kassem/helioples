@@ -37,7 +37,7 @@ class ServerFailure extends Failure {
       case DioExceptionType.unknown:
         return ServerFailure('Unknown Error!');
       default:
-        return ServerFailure('Oops, something went wrong!');
+        return ServerFailure('Check Your Enternet Connection');
     }
   }
 

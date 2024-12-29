@@ -22,8 +22,8 @@ class _HomeLayoutState extends State<HomeLayout> {
     return BlocProvider(
       create: (context) => HomeLayoutCubit()
         ..getAllCategories(homeScreen: true, page: 0)
-        ..getConfigs(),
-      // ..getSpecialOffers(homeScreen: true, page: 0),
+        ..getConfigs()
+        ..getSpecialOffers(homeScreen: true, page: 0),
       child: BlocConsumer<HomeLayoutCubit, HomeLayoutState>(
         listener: (context, state) {},
         builder: (context, state) {

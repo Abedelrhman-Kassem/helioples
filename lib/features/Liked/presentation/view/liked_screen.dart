@@ -9,6 +9,7 @@ import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/body_l
 import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/body_success_widget.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/body_unauthorized.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view_model/cubit/liked_cubit.dart';
+import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 class LikedScreen extends StatefulWidget {
   const LikedScreen({super.key});
@@ -18,6 +19,13 @@ class LikedScreen extends StatefulWidget {
 }
 
 class _LikedScreenState extends State<LikedScreen> {
+  late List<RelatedProductsModel> products;
+  @override
+  void initState() {
+    products = [];
+    super.initState();
+  }
+
   Widget bodyWidget = const Center(
     child: Text('Initial'),
   );
@@ -43,12 +51,13 @@ class _LikedScreenState extends State<LikedScreen> {
         create: (context) => LikedCubit()..getAllLikedProducts(),
         child: BlocConsumer<LikedCubit, LikedState>(
           listener: (context, state) {
-            if (state is FetchLikedLoading) {
+            if (state is FetchLikedLoading && products.isEmpty) {
               bodyWidget = bodyLoadingWidget();
             }
 
             if (state is FetchLikedSuccess) {
-              bodyWidget = BodySuccessWidget(state: state);
+              products.addAll(state.product.products!);
+              bodyWidget = BodySuccessWidget(productList: products);
             }
 
             if (state is FetchLikedFailure) {

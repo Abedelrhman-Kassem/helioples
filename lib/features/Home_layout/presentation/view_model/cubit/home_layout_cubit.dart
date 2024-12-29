@@ -22,7 +22,7 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
   int previousIndex = 0;
 
   List<Widget> screens = [
-    HomeScreen(),
+    const HomeScreen(),
     const ExploreScreen(),
     const LikedScreen(),
     const CartScreen(),
@@ -56,6 +56,16 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
   // home screen things
   bool isCategoryRow = false;
 
+  bool gettingCategories = false;
+  bool gettingConfigs = false;
+  bool gettingOffers = false;
+
+  List<CategoryModel> categories = [];
+
+  List<String> configs = [];
+
+  List<Offer> offers = [];
+
   void changeCategory() {
     isCategoryRow = !isCategoryRow;
     emit(ChangeHomeScreenCategory());
@@ -81,9 +91,10 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
       (failure) => emit(
         FetchCategoriesFailure(failure.errorMessage),
       ),
-      (categories) => emit(
-        FetchCategoriesSuccess(categories),
-      ),
+      (categories) {
+        gettingCategories = true;
+        emit(FetchCategoriesSuccess(categories));
+      },
     );
   }
 
@@ -96,9 +107,12 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
       (failure) => emit(
         FetchConfigsFailed(failure.errorMessage),
       ),
-      (homeSliderModel) => emit(
-        FetchConfigsSuccess(homeSliderModel),
-      ),
+      (homeSliderModel) {
+        gettingConfigs = true;
+        emit(
+          FetchConfigsSuccess(homeSliderModel),
+        );
+      },
     );
   }
 
@@ -118,9 +132,10 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
       (failure) => emit(
         FetchOffersFailed(failure.errorMessage),
       ),
-      (offersModel) => emit(
-        FetchOffersSuccess(offersModel),
-      ),
+      (offersModel) {
+        gettingOffers = true;
+        emit(FetchOffersSuccess(offersModel));
+      },
     );
   }
 }

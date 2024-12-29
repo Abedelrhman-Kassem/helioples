@@ -16,6 +16,7 @@ import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cu
 import 'package:negmt_heliopolis/core/widgets/category_builder.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/special_offer_model.dart';
+import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/loading_offer_wiget.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/location_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -28,24 +29,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late HomeLayoutCubit homeScreenCubit;
-  late bool getCategories;
-  late List<CategoryModel> categories;
-
-  late bool getConfigs;
-  late List<String> configs;
-
-  late bool getOffers;
-  late List<Offer> offers;
+  late HomeLayoutCubit homeLayoutCubit;
 
   @override
   void initState() {
-    homeScreenCubit = BlocProvider.of<HomeLayoutCubit>(context);
-    getCategories = false;
-    categories = [];
-
-    getConfigs = false;
-    getOffers = false;
+    homeLayoutCubit = BlocProvider.of<HomeLayoutCubit>(context);
 
     super.initState();
   }
@@ -63,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
               listener: (context, state) {
                 if (state is FetchConfigsLoading ||
                     state is FetchConfigsFailed) {
-                  getConfigs = false;
+                  homeLayoutCubit.gettingConfigs = false;
                 }
 
                 if (state is FetchConfigsFailed) {
@@ -76,17 +64,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
 
                 if (state is FetchConfigsSuccess) {
-                  configs = state.homeSliderModel.configs!.homeScreenSlider!;
-                  getConfigs = true;
+                  homeLayoutCubit.configs =
+                      state.homeSliderModel.configs!.homeScreenSlider!;
+                  homeLayoutCubit.gettingConfigs = true;
                 }
               },
               builder: (context, state) {
                 return Stack(
                   alignment: Alignment.topCenter,
                   children: [
-                    if (getConfigs)
+                    if (homeLayoutCubit.gettingConfigs)
                       CarouselSlider(
-                        items: configs.map(
+                        items: homeLayoutCubit.configs.map(
                           (ele) {
                             return SizedBox(
                               child: Helper.loadNetworkImage(
@@ -109,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           scrollDirection: Axis.horizontal,
                         ),
                       ),
-                    if (state is FetchConfigsLoading)
+                    if (!homeLayoutCubit.gettingConfigs)
                       Skeletonizer(
                         child: AspectRatio(
                           aspectRatio: 438 / 424,
@@ -130,8 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         child: IconButton(
                           onPressed: () {
-                            BlocProvider.of<HomeLayoutCubit>(context)
-                                .changeCurrentIndex(context, 1);
+                            homeLayoutCubit.changeCurrentIndex(context, 1);
                           },
                           icon: svgIcon(
                             path: 'assets/svg_icons/search-normal.svg',
@@ -157,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   listener: (context, state) {
                     if (state is FetchOffersLoading ||
                         state is FetchOffersFailed) {
-                      getOffers = false;
+                      homeLayoutCubit.gettingOffers = false;
                     }
 
                     if (state is FetchOffersFailed) {
@@ -170,126 +158,81 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
 
                     if (state is FetchOffersSuccess) {
-                      offers = state.specialOfferModel.offers!;
-                      getOffers = true;
+                      homeLayoutCubit.offers = state.specialOfferModel.offers!;
+                      homeLayoutCubit.gettingOffers = true;
                     }
                   },
                   builder: (context, state) {
                     return Column(
                       children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 18.0.r),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Special Offers',
-                                style: Styles.styles17w600interFamily,
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    allspecialOffersScreen,
-                                  );
-                                },
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'View All',
-                                      style: Styles.styles14w500interFamily,
-                                    ),
-                                    SizedBox(width: 4.w),
-                                    Transform(
-                                      transform:
-                                          Matrix4.rotationY(isAr ? pi : 0),
-                                      child: svgIcon(
-                                        path:
-                                            'assets/svg_icons/arrow-right.svg',
-                                        width: 10,
-                                        height: 9,
-                                        color: const Color.fromRGBO(
-                                            0, 126, 143, 1),
-                                      ),
-                                    ),
-                                  ],
+                        if (homeLayoutCubit.gettingOffers) ...[
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 18.0.r),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Special Offers',
+                                  style: Styles.styles17w600interFamily,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.only(start: 18.w),
-                          child: AspectRatio(
-                            aspectRatio: 297 / 140,
-                            child: ListView.separated(
-                              physics: const BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return specialOfferWidget(
-                                  context: context,
-                                  assetImagePath:
-                                      'assets/test_images/offers.png',
-                                  widgetWidth: 297.w,
-                                  onTap: () {
+                                TextButton(
+                                  onPressed: () {
                                     Navigator.pushNamed(
                                       context,
-                                      specialOfferItemScreen,
+                                      allspecialOffersScreen,
                                     );
                                   },
-                                  upToOfferWidget: () => upToOfferWidget(
-                                    iconHeight: 13.74.h,
-                                    iconWidth: 13.74.w,
-                                    context: context,
-                                    text: Text(
-                                      'Up to 20% off',
-                                      style: Styles.styles7w500interFamily,
-                                    ),
-                                  ),
-                                  descriptionOfferWidget: () =>
-                                      descriptionOfferWidget(
-                                    titleText: Text(
-                                      'Mango Season',
-                                      style: Styles.styles13w700interFamily,
-                                    ),
-                                    offerRichText: RichText(
-                                      text: TextSpan(
-                                        text: 'Offer Ends At ',
-                                        style: Styles.styles9w400interFamily,
-                                        children: [
-                                          TextSpan(
-                                            text: '1 Day 16 Hours',
-                                            style:
-                                                Styles.styles12w500interFamily,
-                                          )
-                                        ],
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'View All',
+                                        style: Styles.styles14w500interFamily,
                                       ),
-                                    ),
-                                    beneficiaryText: RichText(
-                                      text: TextSpan(
-                                        text: 'Beneficiary ',
-                                        style: Styles.styles9w400interFamily,
-                                        children: [
-                                          TextSpan(
-                                            text: '33',
-                                            style:
-                                                Styles.styles9w800interFamily,
-                                          )
-                                        ],
+                                      SizedBox(width: 4.w),
+                                      Transform(
+                                        transform:
+                                            Matrix4.rotationY(isAr ? pi : 0),
+                                        child: svgIcon(
+                                          path:
+                                              'assets/svg_icons/arrow-right.svg',
+                                          width: 10,
+                                          height: 9,
+                                          color: const Color.fromRGBO(
+                                              0, 126, 143, 1),
+                                        ),
                                       ),
-                                    ),
-                                    iconWidth: 13.66.w,
-                                    iconHeight: 13.66.h,
+                                    ],
                                   ),
-                                );
-                              },
-                              separatorBuilder: (context, index) =>
-                                  SizedBox(width: 20.w),
-                              itemCount: 10,
+                                ),
+                              ],
                             ),
                           ),
-                        ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.only(start: 18.w),
+                            child: AspectRatio(
+                              aspectRatio: 297 / 140,
+                              child: ListView.separated(
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: homeLayoutCubit.offers.length,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return SizedBox(
+                                    width: 275.w,
+                                    child: SpecialOfferWidget(
+                                      offer: homeLayoutCubit.offers[index],
+                                      canNavigate: true,
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(width: 20.w),
+                              ),
+                            ),
+                          ),
+                        ],
+                        if (!homeLayoutCubit.gettingOffers)
+                          const LoadingOfferWiget(),
                       ],
                     );
                   },
@@ -298,8 +241,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 BlocConsumer<HomeLayoutCubit, HomeLayoutState>(
                   listener: (context, state) {
                     if (state is FetchCategoriesSuccess) {
-                      getCategories = true;
-                      categories = state.categories.categories!;
+                      homeLayoutCubit.gettingCategories = true;
+                      homeLayoutCubit.categories = state.categories.categories!;
                     }
 
                     if (state is FetchCategoriesFailure) {
@@ -345,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         MyBoxShadows.iconsIsCategoryBoxShadow
                                       ],
                                     ),
-                                    child: homeScreenCubit.isCategoryRow
+                                    child: homeLayoutCubit.isCategoryRow
                                         ? Row(
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment:
@@ -399,13 +342,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  homeScreenCubit.changeCategory();
+                                  homeLayoutCubit.changeCategory();
                                 },
                               ),
                             ],
                           ),
                         ),
-                        if (getCategories == true)
+                        if (homeLayoutCubit.gettingCategories == true)
                           AnimatedSwitcher(
                             duration: const Duration(milliseconds: 250),
                             reverseDuration: const Duration(milliseconds: 250),
@@ -415,7 +358,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: child,
                               );
                             },
-                            child: homeScreenCubit.isCategoryRow
+                            child: homeLayoutCubit.isCategoryRow
                                 ? Container(
                                     padding:
                                         EdgeInsetsDirectional.only(start: 18.w),
@@ -427,11 +370,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                       itemBuilder: (context, index) =>
                                           categoryBuilder(
                                         context: context,
-                                        category: categories[index],
+                                        category:
+                                            homeLayoutCubit.categories[index],
                                       ),
                                       separatorBuilder: (context, index) =>
                                           const SizedBox(width: 14),
-                                      itemCount: categories.length,
+                                      itemCount:
+                                          homeLayoutCubit.categories.length,
                                     ),
                                   )
                                 : Padding(
@@ -443,7 +388,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       physics:
                                           const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
-                                      itemCount: categories.length,
+                                      itemCount:
+                                          homeLayoutCubit.categories.length,
                                       gridDelegate:
                                           const SliverGridDelegateWithMaxCrossAxisExtent(
                                         maxCrossAxisExtent: 125,
@@ -455,7 +401,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       itemBuilder: (context, index) =>
                                           categoryBuilder(
                                         context: context,
-                                        category: categories[index],
+                                        category:
+                                            homeLayoutCubit.categories[index],
                                       ),
                                     ),
                                   ),

@@ -48,31 +48,29 @@ class _CategoriesScreenState extends State<CategoriesScreen>
   final Set<int> loadedSubCategories = {};
   late TabController tabController;
   int x = 1;
-   int? firstSubCategoryId ; 
+  int? firstSubCategoryId;
 
   @override
- @override
-void initState() {
-  super.initState();
-  tabController = TabController(length: 1, vsync: this);
-  scrollController = ScrollController();
-  scrollController.addListener(_handleScroll);
-  subCategoriesCubit = SubCategoriesCubit(SubCategoriesRepoImp(api: ApiService()));
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 1, vsync: this);
+    scrollController = ScrollController();
+    scrollController.addListener(_handleScroll);
+    subCategoriesCubit =
+        SubCategoriesCubit(SubCategoriesRepoImp(api: ApiService()));
 
-  Future.microtask(() async {
-    await _initializeSubCategories();
-  });
-}
-
+    Future.microtask(() async {
+      await _initializeSubCategories();
+    });
+  }
 
   Future<void> _initializeSubCategories() async {
     await subCategoriesCubit.fetchSubCategories(widget.category.id);
     final subCategoryIds = subCategoriesCubit.subCategoryProducts.keys.toList();
     if (subCategoryIds.isNotEmpty) {
-       firstSubCategoryId = subCategoryIds.first;
+      firstSubCategoryId = subCategoryIds.first;
       loadedSubCategories.add(firstSubCategoryId!);
-
-
     }
 
     final subCategoryCount = subCategoriesCubit.subCategoryProducts.keys.length;
@@ -88,233 +86,223 @@ void initState() {
 
   bool isLoading = false;
 
-  void _handleScroll() {
-    final screenHeight = MediaQuery.of(context).size.height;
+  // void _handleScroll() {
+  //   final screenHeight = MediaQuery.of(context).size.height;
 
+  //   for (int i = 0; i < sectionKeys.length; i++) {
+  //     final RenderBox? box =
+  //         sectionKeys[i].currentContext?.findRenderObject() as RenderBox?;
+
+  //     if (box != null) {
+  //       final position = box.localToGlobal(Offset(0, box.size.height));
+
+  //       if (position.dy <= box.size.height + screenHeight / 8 &&
+  //           position.dy > screenHeight / 8) {
+  //         int subCategoryId =
+  //             subCategoriesCubit.subCategoryProducts.keys.elementAt(i); //
+  //         if (!isLoading) {
+  //           isLoading = true;
+
+  //           subCategoriesCubit.fetchProductsInSubCategory(subCategoryId,
+  //               isPagination: true); //
+
+  //           isLoading = false;
+
+  //           setState(() {});
+  //         }
+  //       }
+  //       DefaultTabController.of(tabContext!).animateTo(i);
+  //       break;
+  //     }
+  //   }
+  // }
+
+  // void _scrollToSection(int index) {
+  //   // Delay the scroll action until the current frame is done laying out the widgets.
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     scrollController.removeListener(_handleScroll);
+  //     final context = sectionKeys[index].currentContext!;
+  //     Scrollable.ensureVisible(
+  //       context,
+  //       duration: const Duration(milliseconds: 500),
+  //     ).then((_) {
+  //       scrollController.addListener(_handleScroll);
+  //     });
+  //   });
+  // }
+
+  void _handleScroll() {
     for (int i = 0; i < sectionKeys.length; i++) {
       final RenderBox? box =
           sectionKeys[i].currentContext?.findRenderObject() as RenderBox?;
+      if (box == null) continue;
 
-      if (box != null) {
-        final position = box.localToGlobal(Offset(0, box.size.height));
+      final position = box.localToGlobal(Offset.zero);
+      final isVisible =
+          position.dy >= 0 && position.dy < MediaQuery.of(context).size.height;
 
-        if (position.dy <= box.size.height + screenHeight / 8 &&
-            position.dy > screenHeight / 8) {
-          int subCategoryId =
-              subCategoriesCubit.subCategoryProducts.keys.elementAt(i); //
-          if (!isLoading) {
-            isLoading = true;
+      if (isVisible) {
+        final subCategoryId =
+            subCategoriesCubit.subCategoryProducts.keys.elementAt(i);
 
-            subCategoriesCubit.fetchProductsInSubCategory(subCategoryId,
-                isPagination: true); //
+        // Lazy load subcategory products if not already loaded
+        if (loadedSubCategories.add(subCategoryId)) {
+          subCategoriesCubit.fetchAllPRoductsOfSubCategory(subCategoryId);
+        }
 
-            isLoading = false;
+        // Handle tab animation
 
-            setState(() {});
+        setState(() {
+          DefaultTabController.of(tabContext!).animateTo(i);
+        });
+
+        // Prefetch the next subcategory
+        if (i + 1 < sectionKeys.length) {
+          final nextSubCategoryId =
+              subCategoriesCubit.subCategoryProducts.keys.elementAt(i + 1);
+          if (loadedSubCategories.add(nextSubCategoryId)) {
+            subCategoriesCubit.fetchAllPRoductsOfSubCategory(nextSubCategoryId);
           }
         }
-        DefaultTabController.of(tabContext!).animateTo(i);
         break;
       }
     }
   }
 
   void _scrollToSection(int index) {
-    // Delay the scroll action until the current frame is done laying out the widgets.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       scrollController.removeListener(_handleScroll);
-      final context = sectionKeys[index].currentContext!;
+
+      final subCategoryId =
+          subCategoriesCubit.subCategoryProducts.keys.elementAt(index);
+
+      if (!loadedSubCategories.contains(subCategoryId)) {
+        setState(() {
+          loadedSubCategories.add(subCategoryId);
+        });
+
+        await subCategoriesCubit.fetchAllPRoductsOfSubCategory(subCategoryId);
+      }
+
+      final context = sectionKeys[index].currentContext;
+
+      if (context == null) {
+        log("Section key at index $index has no attached context.");
+        return; // Avoid performing actions on a null context
+      }
+
       Scrollable.ensureVisible(
         context,
         duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+        alignment: 0,
       ).then((_) {
         scrollController.addListener(_handleScroll);
       });
+
+      // Fetch DefaultTabController safely
+      final tabController = DefaultTabController.of(context);
+      if (tabController != null) {
+        tabController.animateTo(index);
+      } else {
+        log("DefaultTabController is null when animating to index $index.");
+      }
     });
   }
 
-void _handleScroll() {
-  for (int i = 0; i < sectionKeys.length; i++) {
-    final RenderBox? box =
-        sectionKeys[i].currentContext?.findRenderObject() as RenderBox?;
-    if (box == null) continue;
+  Future<void> _loadRemainingDataForCurrentTab() async {
+    final currentSubCategoryId =
+        subCategoriesCubit.subCategoryProducts.keys.first;
 
-    final position = box.localToGlobal(Offset.zero);
-    final isVisible = position.dy >= 0 && position.dy < MediaQuery.of(context).size.height;
-
-    if (isVisible) {
-      final subCategoryId = subCategoriesCubit.subCategoryProducts.keys.elementAt(i);
-
-      // Lazy load subcategory products if not already loaded
-      if (loadedSubCategories.add(subCategoryId)) {
-        subCategoriesCubit.fetchAllPRoductsOfSubCategory(subCategoryId);
-      }
-
-      // Handle tab animation
-
-      setState(() {
-           DefaultTabController.of(tabContext!).animateTo(i);
-        
-      });
- 
-
-
-      // Prefetch the next subcategory
-      if (i + 1 < sectionKeys.length) {
-        final nextSubCategoryId = subCategoriesCubit.subCategoryProducts.keys.elementAt(i + 1);
-        if (loadedSubCategories.add(nextSubCategoryId)) {
-          subCategoriesCubit.fetchAllPRoductsOfSubCategory(nextSubCategoryId);
-        }
-      }
-      break;
+    if (subCategoriesCubit.hasMore[currentSubCategoryId] == true) {
+      await subCategoriesCubit.fetchProductsInSubCategory(currentSubCategoryId,
+          isPagination: true);
     }
   }
-}
-
-
-
-
-
-void _scrollToSection(int index) {
-  WidgetsBinding.instance.addPostFrameCallback((_) async {
-    scrollController.removeListener(_handleScroll);
-
-    final subCategoryId = subCategoriesCubit.subCategoryProducts.keys.elementAt(index);
-
-    if (!loadedSubCategories.contains(subCategoryId)) {
-      setState(() {
-        loadedSubCategories.add(subCategoryId);
-      });
-
-      await subCategoriesCubit.fetchAllPRoductsOfSubCategory(subCategoryId);
-    }
-
-    final context = sectionKeys[index].currentContext;
-
-    if (context == null) {
-      log("Section key at index $index has no attached context.");
-      return; // Avoid performing actions on a null context
-    }
-
-    Scrollable.ensureVisible(
-      context,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-      alignment: 0,
-    ).then((_) {
-      scrollController.addListener(_handleScroll);
-    });
-
-    // Fetch DefaultTabController safely
-    final tabController = DefaultTabController.of(context);
-    if (tabController != null) {
-      tabController.animateTo(index);
-    } else {
-      log("DefaultTabController is null when animating to index $index.");
-    }
-  });
-}
-
-
-Future<void> _loadRemainingDataForCurrentTab() async {
-  final currentSubCategoryId = subCategoriesCubit.subCategoryProducts.keys.first;
-
-  if (subCategoriesCubit.hasMore[currentSubCategoryId] == true) {
-    await subCategoriesCubit.fetchProductsInSubCategory(currentSubCategoryId, isPagination: true);
-  }
-}
-
-
-
 
   @override
   @override
-Widget build(BuildContext context) {
-  return BlocProvider<SubCategoriesCubit>.value(
-    value: subCategoriesCubit,
-    child: BlocBuilder<SubCategoriesCubit, FetchCategoriesState>(
-      builder: (context, state) {
-        if (state is SubCategoriesLoading) {
-          return _buildLoadingState();
-        } else if (state is SubCategoriesFailure) {
-          return _buildErrorState(state.message);
-        } else if (state is SubCategoriesSuccess ||
-            state is ProductsLoading ||
-            state is ProductsSuccess) {
-          return _buildCategoriesContent(state);
-        }
-        return Container();
-      },
-    ),
-  );
-}
-
-Widget _buildLoadingState() {
-  return SingleChildScrollView(
-    physics: const BouncingScrollPhysics(),
-    controller: scrollController,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [buildShimmerLoading2(tabController)],
-    ),
-  );
-}
-
-Widget _buildErrorState(String message) {
-  return Center(child: Text(message));
-}
-
-Widget _buildCategoriesContent(FetchCategoriesState state) {
-  categories = state is SubCategoriesSuccess
-      ? state.subCategories.map((subCat) => subCat.name ?? "").toList()
-      : categories;
-
-  if (categories.isEmpty) {
-    return const Center(child: Text("No categories available"));
+  Widget build(BuildContext context) {
+    return BlocProvider<SubCategoriesCubit>.value(
+      value: subCategoriesCubit,
+      child: BlocBuilder<SubCategoriesCubit, FetchCategoriesState>(
+        builder: (context, state) {
+          if (state is SubCategoriesLoading) {
+            return _buildLoadingState();
+          } else if (state is SubCategoriesFailure) {
+            return _buildErrorState(state.message);
+          } else if (state is SubCategoriesSuccess ||
+              state is ProductsLoading ||
+              state is ProductsSuccess) {
+            return _buildCategoriesContent(state);
+          }
+          return Container();
+        },
+      ),
+    );
   }
 
-  return DefaultTabController(
+  Widget _buildLoadingState() {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      controller: scrollController,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [buildShimmerLoading2(tabController)],
+      ),
+    );
+  }
 
+  Widget _buildErrorState(String message) {
+    return Center(child: Text(message));
+  }
 
-    length: categories.length,
-    child: Scaffold(
-      appBar: _buildAppBar(),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            controller: scrollController,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(
-                  categories.length,
-                  (index) => _buildSubCategorySection(index),
+  Widget _buildCategoriesContent(FetchCategoriesState state) {
+    categories = state is SubCategoriesSuccess
+        ? state.subCategories.map((subCat) => subCat.name ?? "").toList()
+        : categories;
+
+    if (categories.isEmpty) {
+      return const Center(child: Text("No categories available"));
+    }
+
+    return DefaultTabController(
+      length: categories.length,
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              controller: scrollController,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: List.generate(
+                    categories.length,
+                    (index) => _buildSubCategorySection(index),
+                  ),
                 ),
               ),
             ),
-          ),
-          const Positioned(
-            bottom: 10,
-            left: 0,
-            right: 0,
-            child: CartContainer(),
-          ),
-        ],
+            const Positioned(
+              bottom: 10,
+              left: 0,
+              right: 0,
+              child: CartContainer(),
+            ),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-PreferredSizeWidget _buildAppBar() {
-  
-  return PreferredSize(
-    preferredSize: Size.fromHeight(180.h),
-    
-    child: Builder(
-      builder: (context) {
-        tabContext = context ;
+  PreferredSizeWidget _buildAppBar() {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(180.h),
+      child: Builder(builder: (context) {
+        tabContext = context;
         return AppBar(
           toolbarHeight: 200.h,
           elevation: 20,
@@ -361,52 +349,50 @@ PreferredSizeWidget _buildAppBar() {
             ),
           ),
         );
-      }
-    ),
-  );
-}
+      }),
+    );
+  }
 
-Widget _buildSubCategorySection(int index) {
+  Widget _buildSubCategorySection(int index) {
+    final subCategoryId =
+        subCategoriesCubit.subCategoryProducts.keys.elementAt(index);
+    if (subCategoryId == firstSubCategoryId) {
+      subCategoriesCubit.fetchAllPRoductsOfSubCategory(subCategoryId);
+      log("inside condition");
+      firstSubCategoryId = 0;
+    }
+    final products =
+        subCategoriesCubit.subCategoryProducts[subCategoryId] ?? [];
 
-  final subCategoryId = subCategoriesCubit.subCategoryProducts.keys.elementAt(index);
- if (subCategoryId == firstSubCategoryId)
- {
-   subCategoriesCubit.fetchAllPRoductsOfSubCategory(subCategoryId);
-   log("inside condition");
-   firstSubCategoryId = 0 ; 
- }
-  final products = subCategoriesCubit.subCategoryProducts[subCategoryId] ?? [];
-
-  return Column(
-    key: sectionKeys[index],
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        categories[index],
-        style: Styles.styles21w700black,
-      ),
-      SizedBox(height: 16.h),
-      if (products.isNotEmpty)
-        GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: products.length,
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 150,
-            crossAxisSpacing: 7,
-            mainAxisSpacing: 10,
-            mainAxisExtent: 220,
-          ),
-          itemBuilder: (context, productIndex) =>
-              ItemWidget(relatedProductsModel: products[productIndex]),
-        )
-      else
-        buildItemsShimmer(),
-      SizedBox(height: 60.h),
-    ],
-  );
-}
-
+    return Column(
+      key: sectionKeys[index],
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          categories[index],
+          style: Styles.styles21w700black,
+        ),
+        SizedBox(height: 16.h),
+        if (products.isNotEmpty)
+          GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: products.length,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 150,
+              crossAxisSpacing: 7,
+              mainAxisSpacing: 10,
+              mainAxisExtent: 220,
+            ),
+            itemBuilder: (context, productIndex) =>
+                ItemWidget(relatedProductsModel: products[productIndex]),
+          )
+        else
+          buildItemsShimmer(),
+        SizedBox(height: 60.h),
+      ],
+    );
+  }
 }
 
 Widget buildShimmerLoading() {

@@ -1,81 +1,149 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget_grid.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
+import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view_model/cubit/special_offers_item_cubit.dart';
+import 'package:negmt_heliopolis/features/homeScreen/data/model/special_offer_model.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-class SpecialOfferItemScreen extends StatelessWidget {
-  const SpecialOfferItemScreen({super.key});
+class SpecialOfferItemScreen extends StatefulWidget {
+  final int id;
+  const SpecialOfferItemScreen({
+    super.key,
+    required this.id,
+  });
+
+  @override
+  State<SpecialOfferItemScreen> createState() => _SpecialOfferItemScreenState();
+}
+
+class _SpecialOfferItemScreenState extends State<SpecialOfferItemScreen> {
+  late Offer offer;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Special Offers',
-          style: Styles.styles16w700interFamily,
-        ),
-      ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(17.0.r),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              specialOfferWidget(
-                context: context,
-                assetImagePath: 'assets/test_images/offers.png',
-                upToOfferWidget: () => upToOfferWidget(
-                  iconHeight: 17.h,
-                  iconWidth: 17.w,
-                  context: context,
-                  text: Text(
-                    'Up to 20% off',
-                    style: Styles.styles9w500interFamily.copyWith(
-                      color: const Color.fromRGBO(255, 255, 255, 1),
-                    ),
-                  ),
-                ),
-                descriptionOfferWidget: () => descriptionOfferWidget(
-                  titleText: Text(
-                    'Seasonal Offers',
-                    style: Styles.styles17w700Black,
-                  ),
-                  offerRichText: RichText(
-                    text: TextSpan(
-                      text: 'Offer Ends At ',
-                      style: Styles.styles12w400Gray,
-                      children: [
-                        TextSpan(
-                          text: '1 Day 16 Hours',
-                          style: Styles.styles12w500interFamily,
-                        )
-                      ],
-                    ),
-                  ),
-                  beneficiaryText: RichText(
-                    text: TextSpan(
-                      text: 'Beneficiary ',
-                      style: Styles.styles12w400Gray,
-                      children: [
-                        TextSpan(
-                          text: '33',
-                          style: Styles.styles12w800interFamily,
-                        )
-                      ],
-                    ),
-                  ),
-                  iconWidth: 13.66.w,
-                  iconHeight: 13.66.h,
+    return BlocProvider(
+      create: (context) => SpecialOffersItemCubit()..getOffer(id: widget.id),
+      child: BlocConsumer<SpecialOffersItemCubit, SpecialOffersItemState>(
+        listener: (context, state) {
+          if (state is SpecialOffersSuccess) {
+            offer = Offer(
+              id: state.specialOfferItemModel.offer!.id,
+              name: state.specialOfferItemModel.offer!.name,
+              badge: state.specialOfferItemModel.offer!.badge,
+              thumbnailImage: state.specialOfferItemModel.offer!.thumbnailImage,
+              visits: state.specialOfferItemModel.offer!.visits,
+              companyImage: state.specialOfferItemModel.offer!.companyImage,
+              createdAt: state.specialOfferItemModel.offer!.createdAt,
+              expiresAt: state.specialOfferItemModel.offer!.expiresAt,
+              homeScreen: state.specialOfferItemModel.offer!.homeScreen,
+            );
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Special Offers',
+                style: Styles.styles16w700interFamily,
+              ),
+            ),
+            body: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(17.0.r),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (state is SpecialOffersSuccess) ...[
+                      SpecialOfferWidget(
+                        offer: offer,
+                        canNavigate: false,
+                      ),
+                      SizedBox(height: 30.h),
+                      GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount:
+                            state.specialOfferItemModel.offer!.products!.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 150,
+                          crossAxisSpacing: 7,
+                          mainAxisSpacing: 10,
+                          mainAxisExtent: 220,
+                          // childAspectRatio: 1 / 2,
+                        ),
+                        itemBuilder: (context, index) => ItemWidget(
+                          relatedProductsModel: state
+                              .specialOfferItemModel.offer!.products![index],
+                        ),
+                      ),
+                    ] else
+                      Skeletonizer(
+                        child: Column(
+                          children: [
+                            Helper.loadNetworkImage(
+                              assetsErrorPath:
+                                  'assets/screens_background/home-category.png',
+                            ),
+                            SizedBox(height: 30.h),
+                            GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: 9,
+                              gridDelegate:
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 150,
+                                crossAxisSpacing: 7,
+                                mainAxisSpacing: 10,
+                                mainAxisExtent: 220,
+                              ),
+                              itemBuilder: (context, index) => Skeletonizer(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 25, horizontal: 10),
+                                  height: 240,
+                                  width: 130,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[100],
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Icon(Icons.heart_broken),
+                                        ],
+                                      ),
+                                      Helper.loadNetworkImage(
+                                        assetsErrorPath:
+                                            'assets/screens_background/home-category.png',
+                                      ),
+                                      const Text('hello there'),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                  ],
                 ),
               ),
-              SizedBox(height: 30.h),
-              itemWidgetGridView(),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
