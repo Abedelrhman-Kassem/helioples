@@ -1,36 +1,39 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
+import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
+import 'package:negmt_heliopolis/features/Explore/data/models/search_model.dart';
+import 'package:negmt_heliopolis/features/Explore/data/repo/search_repo_imp.dart';
 
 part 'explore_state.dart';
 
 class ExploreCubit extends Cubit<ExploreState> {
   ExploreCubit() : super(ExploreInitial());
 
-  @override
-  Future<void> close() {
-    searchController.dispose();
-    return super.close();
-  }
+  SearchRepoImp searchRepoImp = SearchRepoImp(ApiService());
 
-  TextEditingController searchController = TextEditingController();
+  void search(String query, int page) async {
+    emit(ExploreLoading());
 
-  bool canSearch = false;
+    Either<Failure, SearchModel> res =
+        await searchRepoImp.search(query: query, page: page);
 
-  void getSearchApi(String value) {
-    if (value.length > 1) {
-      canSearch = true;
-    } else {
-      canSearch = false;
-    }
-
-    searchController.text = value;
-    emit(ChangeSearchExplore());
-  }
-
-  bool isSearching = false;
-
-  void changeIsSearching(bool search) {
-    isSearching = search;
-    emit(SearchTapExplore());
+    res.fold(
+      (failure) {
+        if (!isClosed) {
+          emit(
+            ExploreFailed(failure.errorMessage),
+          );
+        }
+      },
+      (products) {
+        if (!isClosed) {
+          emit(
+            ExploreSuccess(products),
+          );
+        }
+      },
+    );
   }
 }

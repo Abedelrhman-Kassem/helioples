@@ -74,6 +74,7 @@ class ApiService {
   Future<Map<String, dynamic>> get({
     required String endpoint,
     Map<String, String>? headers,
+    CancelToken? cancelToken,
   }) async {
     await setAuthorizationHeader();
     // print('Request Headers: ${dio.options.headers}');
@@ -86,10 +87,18 @@ class ApiService {
         options: Options(
           headers: mainHeader,
         ),
+        cancelToken: cancelToken,
       );
       return response.data;
     } catch (e) {
-      rethrow;
+      if (e is DioException) {
+        if (CancelToken.isCancel(e)) {
+          print("Request canceled: $e");
+        }
+        rethrow;
+      } else {
+        rethrow;
+      }
     }
   }
 

@@ -108,11 +108,11 @@ class _ItemWidgetState extends State<ItemWidget> {
                     Align(
                       alignment: Alignment.topCenter,
                       child: Row(
-                        mainAxisAlignment: product.state != "InStock"
+                        mainAxisAlignment: product.availabelPieces == 0
                             ? MainAxisAlignment.spaceBetween
                             : MainAxisAlignment.end,
                         children: [
-                          if (product.state != "InStock")
+                          if (product.availabelPieces == 0)
                             Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 7.34,
