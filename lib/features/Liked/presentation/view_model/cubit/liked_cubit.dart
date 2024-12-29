@@ -16,15 +16,20 @@ class LikedCubit extends Cubit<LikedState> {
   LikedModel likedModel = LikedModel.fromJson({});
 
   int page = 0;
+  bool isLoading = false;
+  bool endFetching = false;
 
-  Future<void> getAllLikedProducts() async {
+  Future<void> getLikedProducts() async {
     String? token = await ApiService.getToken();
     if (token == null) {
       emit(UnLoggedState());
       return;
     }
 
+    if (isLoading || endFetching) return;
+
     emit(FetchLikedLoading());
+    isLoading = true;
 
     Either<Failure, LikedModel> res =
         await likedRepoImp.getAllLikedProducts(page);
@@ -32,6 +37,7 @@ class LikedCubit extends Cubit<LikedState> {
     res.fold(
       (failure) {
         if (!isClosed) {
+          isLoading = false;
           emit(
             FetchLikedFailure(failure.errorMessage),
           );
@@ -39,6 +45,11 @@ class LikedCubit extends Cubit<LikedState> {
       },
       (likedProducts) {
         if (!isClosed) {
+          if (likedProducts.products!.isEmpty) {
+            endFetching = true;
+          }
+          isLoading = false;
+          page++;
           emit(
             FetchLikedSuccess(likedProducts),
           );

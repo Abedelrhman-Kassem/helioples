@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/liked_notifier.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
+import 'package:negmt_heliopolis/features/Liked/presentation/view_model/cubit/liked_cubit.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 // ignore: must_be_immutable
@@ -18,18 +21,23 @@ class BodySuccessWidget extends StatefulWidget {
 class _BodySuccessWidgetState extends State<BodySuccessWidget> {
   final LikedNotifier likedNotifier = LikedNotifier();
   final ScrollController _scrollController = ScrollController();
+  late final LikedCubit likedCubit;
 
   @override
   void initState() {
     likedNotifier.addListener(removeUnlikedProduct);
+    likedCubit = BlocProvider.of<LikedCubit>(context);
 
-    _scrollController.addListener(hello);
+    _scrollController.addListener(getPages);
 
     super.initState();
   }
 
-  void hello() {
-    print(_scrollController.position.maxScrollExtent);
+  void getPages() {
+    if (_scrollController.position.pixels >=
+        (_scrollController.position.maxScrollExtent - 300)) {
+      BlocProvider.of<LikedCubit>(context).getLikedProducts();
+    }
   }
 
   void removeUnlikedProduct() {
@@ -55,7 +63,7 @@ class _BodySuccessWidgetState extends State<BodySuccessWidget> {
       child: GridView.builder(
         controller: _scrollController,
         physics: const BouncingScrollPhysics(),
-        shrinkWrap: true,
+        // shrinkWrap: true,
         itemCount: widget.productList.length,
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 150,

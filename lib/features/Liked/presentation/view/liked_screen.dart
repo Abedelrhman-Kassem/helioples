@@ -48,7 +48,7 @@ class _LikedScreenState extends State<LikedScreen> {
         ],
       ),
       body: BlocProvider(
-        create: (context) => LikedCubit()..getAllLikedProducts(),
+        create: (context) => LikedCubit()..getLikedProducts(),
         child: BlocConsumer<LikedCubit, LikedState>(
           listener: (context, state) {
             if (state is FetchLikedLoading && products.isEmpty) {
