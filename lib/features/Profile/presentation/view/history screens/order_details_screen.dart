@@ -139,7 +139,7 @@ class OrderDetailsScreen extends StatelessWidget {
                                         ),
                                         SizedBox(width: 12.w),
                                         Text(
-                                          "3 X",
+                                          "${orderDetails.items![index].number}X",
                                           style:
                                               Styles.styles14w500interFamily,
                                         ),

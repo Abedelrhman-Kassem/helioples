@@ -9,9 +9,9 @@ class ReOrderContainer extends StatelessWidget {
   final String route;
 
   const ReOrderContainer({
-    Key? key,
+    super.key,
     required this.route,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

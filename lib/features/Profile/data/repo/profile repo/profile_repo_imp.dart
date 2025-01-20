@@ -1,16 +1,24 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/Profile/data/model/Faqs.dart';
+import 'package:negmt_heliopolis/features/Profile/data/model/notification.dart';
 import 'package:negmt_heliopolis/features/Profile/data/model/report.dart';
 import 'package:negmt_heliopolis/features/Profile/data/repo/profile%20repo/profile_repo.dart';
 
-class ProfileRepoImp extends ProfileRepo {
+class ProfileRepoImp extends ProfileRepo 
+{
+
   final ApiService api;
+
   ProfileRepoImp({required this.api});
 
   List<Faqs> faqs =[];
+  
+  List<Alerts> alerts = [];
+
   @override
   Future<Either<Failure,List<Faqs>>> getFaqs() async {
     try {
@@ -31,10 +39,14 @@ class ProfileRepoImp extends ProfileRepo {
 
       
     } catch (e) {
-      if (e is DioException) {
+      if (e is DioException) 
+      {
         return left(ServerFailure.fromDioError(e));
-      } else {
+
+      } else 
+      {
         return left(ServerFailure(e.toString()));
+
       }
       
     }
@@ -50,20 +62,55 @@ class ProfileRepoImp extends ProfileRepo {
       if(response.statusCode == 200)
       {
         return right(response.data['msg']);
-      }else{
+      }
+      else
+      {
          return left(ServerFailure('Failed to Submit Report. Please try again.'));
       }
 
 
       
-    } catch (e) {
-      if (e is DioException) {
+    } catch (e)
+     {
+      if (e is DioException)
+      {
         return left(ServerFailure.fromDioError(e));
-      } else {
+
+      } else 
+      {
         return left(ServerFailure(e.toString()));
       }
       
     }
+  }
+  
+  @override
+  Future<Either<Failure,List<Alerts>>> getAlerts()  async {
+    try 
+    {
+      await api.setAuthorizationHeader();
+      var response = await api.get(endpoint: "api/protected/user/notifications/get");
+
+      for (var item in response['notifications']) 
+      {
+        var a = Alerts.fromJson(item);
+        alerts.add(a);
+        
+      }
+      return right(alerts);
+      
+    } catch (e) {
+      if (e is DioException) 
+      {
+        return left(ServerFailure.fromDioError(e));
+      }
+      else
+      {
+        return left(ServerFailure(e.toString()));
+      }
+      
+    }
+   
   }
 
 }

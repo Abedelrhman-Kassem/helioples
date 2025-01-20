@@ -102,8 +102,8 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
         permission == LocationPermission.always) {
       Position position = await Geolocator.getCurrentPosition();
       cur = position;
-      print("Latitude: ${position.latitude}");
-      print("Longitude: ${position.longitude}");
+      // print("Latitude: ${position.latitude}");
+      // print("Longitude: ${position.longitude}");
 
       // Load the custom marker icon and update the UI
       BitmapDescriptor customIcon = await BitmapDescriptor.fromAssetImage(
@@ -523,9 +523,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                               child: SignUpCustomButton(
                                   buttonText: "Continue",
                                   onPressed: () {
-                                    print(long);
-                                    print("==============");
-                                    print(lat);
+
                                     if (lat != null && long != null) {
                                       cubit.sendLocation(long!, lat!);
                                     }
