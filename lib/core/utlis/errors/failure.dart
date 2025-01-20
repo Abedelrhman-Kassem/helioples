@@ -33,11 +33,11 @@ class ServerFailure extends Failure {
           return ServerFailure('Bad Request!');
         }
       case DioExceptionType.cancel:
-        return ServerFailure('Request was canceled!');
+        return ServerFailure('');
       case DioExceptionType.unknown:
         return ServerFailure('Unknown Error!');
       default:
-        return ServerFailure('Oops, something went wrong!');
+        return ServerFailure('Check Your Enternet Connection');
     }
   }
 

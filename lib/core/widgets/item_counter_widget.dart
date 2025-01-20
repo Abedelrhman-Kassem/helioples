@@ -59,7 +59,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
   // Load counter from SQLite DB
   Future<void> _loadCounterFromDB() async {
     final value = await DBHelper.queryData(
-      table: cartItemTable,
+      table: cartTable,
       columns: [cartItemQty],
       where: 'id = ?',
       whereArgs: [widget.itemUiModel!.id],
@@ -83,7 +83,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
     if (widget.itemUiModel != null) {
       try {
         DBHelper.deleteData(
-          table: cartItemTable,
+          table: cartTable,
           where: 'id = ?',
           whereArgs: [widget.itemUiModel!.id],
         );
@@ -96,7 +96,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
   Future<void> _updateCounterInDB(int newCounter) async {
     if (widget.itemUiModel != null) {
       await DBHelper.insertData(
-        table: cartItemTable,
+        table: cartTable,
         values: {
           cartItemId: widget.itemUiModel!.id,
           cartItemName: widget.itemUiModel!.name,

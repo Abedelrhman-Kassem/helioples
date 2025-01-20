@@ -39,7 +39,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   void initState() {
-    DBHelper.queryData(table: cartItemTable).then((value) {
+    DBHelper.queryData(table: cartTable).then((value) {
       setState(() {
         tableValues = value;
 
@@ -64,9 +64,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     return BlocProvider(
       create: (context) => CreateOrderCubit(),
       child: BlocConsumer<CreateOrderCubit, CreateOrderState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is CreateOrderSuccess) {
-            BlocProvider.of<MainCubit>(context).clearDb();
+            await BlocProvider.of<MainCubit>(context).clearDb();
 
             Navigator.pushNamed(
               context,
@@ -115,19 +115,32 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         color: Colors.white.withOpacity(0.9),
                         borderRadius: BorderRadius.circular(15.r),
                       ),
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return itemWidget(
-                            quantity: tableValues[index][cartItemQty] as int,
-                            name: tableValues[index][cartItemName] as String,
-                            imageUrl:
-                                tableValues[index][cartItemImageUrl] as String,
-                            price: tableValues[index][cartItemPrice] as double,
-                          );
-                        },
-                        itemCount: tableValues.length,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Order Items',
+                            style: Styles.styles17w700Black,
+                          ),
+                          SizedBox(height: 20.h),
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return itemWidget(
+                                quantity:
+                                    tableValues[index][cartItemQty] as int,
+                                name:
+                                    tableValues[index][cartItemName] as String,
+                                imageUrl: tableValues[index][cartItemImageUrl]
+                                    as String,
+                                price:
+                                    tableValues[index][cartItemPrice] as double,
+                              );
+                            },
+                            itemCount: tableValues.length,
+                          ),
+                        ],
                       ),
                     ),
                     timeScheduleContainer(context, 'Delivery Time'),

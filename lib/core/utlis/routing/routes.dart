@@ -46,7 +46,6 @@ class AppRouter {
     bool fromRight;
     log("Navigating to: ${settings.name}");
 
-
     switch (settings.name) {
       case intialRoute:
       case introScreen:
@@ -71,7 +70,8 @@ class AppRouter {
         break;
 
       case specialOfferItemScreen:
-        page = const SpecialOfferItemScreen();
+        final args = settings.arguments as int;
+        page = SpecialOfferItemScreen(id: args);
         fromRight = true;
         break;
 
@@ -211,8 +211,11 @@ class AppRouter {
         break;
 
       case pickupOrderDetails:
-        final args = settings.arguments as OrderDetailsModel;
-        page = PickupOrderDetails(orderDetailsModel: args);
+        final args = settings.arguments as Map<String, dynamic>;
+        page = PickupOrderDetails(
+          orderDetailsModel: args['order'],
+          branch: args['branch'],
+        );
         fromRight = true;
         break;
 

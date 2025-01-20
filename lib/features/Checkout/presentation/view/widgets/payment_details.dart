@@ -18,7 +18,7 @@ class PaymentDetails extends StatefulWidget {
 }
 
 class _PaymentDetailsState extends State<PaymentDetails> {
-  late final DbChangeNotifier dbChangeNotifier;
+  late DbChangeNotifierModel dbChangeNotifier;
 
   late CreateOrderCubit createOrderCubit;
   late double promoCodeValue;
@@ -26,20 +26,19 @@ class _PaymentDetailsState extends State<PaymentDetails> {
 
   @override
   void initState() {
-    dbChangeNotifier = DbChangeNotifier();
+    dbChangeNotifier = DbChangeNotifier().dbData;
 
     createOrderCubit = BlocProvider.of<CreateOrderCubit>(context);
 
+    if (dbChangeNotifier.count == 0) {
+      dbChangeNotifier = createOrderCubit.getDBChangeNotifierModel(context);
+    }
+
     promoCodeValue = 0;
+
     isPercentage = false;
 
     super.initState();
-  }
-
-  void refreshState() {
-    if (mounted) {
-      setState(() {});
-    }
   }
 
   @override
@@ -56,7 +55,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
 
           if (isPercentage) {
             promoCodeValue = createOrderCubit.calcPromoCode(
-              dbChangeNotifier.dbData.totalPrice,
+              dbChangeNotifier.totalPrice,
               promoCodeValue,
             );
           }
@@ -79,11 +78,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Sub Total (${dbChangeNotifier.dbData.count} Items)',
+                    'Sub Total (${dbChangeNotifier.count} Items)',
                     style: Styles.styles14w400Black,
                   ),
                   Text(
-                    '${dbChangeNotifier.dbData.totalPrice} EGP',
+                    '${dbChangeNotifier.totalPrice} EGP',
                     style: Styles.styles15w600NormalBlack,
                   ),
                 ],
@@ -97,7 +96,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                     style: Styles.styles14w400Black,
                   ),
                   Text(
-                    '${dbChangeNotifier.dbData.totalDiscount} EGP',
+                    '${dbChangeNotifier.totalDiscount} EGP',
                     style: Styles.styles15w600NormalBlack,
                   ),
                 ],

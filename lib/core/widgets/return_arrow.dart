@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 Widget returnArrow({
   required BuildContext context,
   required Function() onTap,
 }) {
-  bool isRtl = context.locale.languageCode == 'ar';
-
   return IconButton(
     onPressed: onTap,
     icon: svgIcon(
-      path: isRtl
+      path: isRtl(context)
           ? 'assets/svg_icons/arrow-right-1.svg'
           : 'assets/svg_icons/arrow-left.svg',
       width: 29.w,

@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,22 +10,33 @@ import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/core/widgets/category_builder.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
+import 'package:negmt_heliopolis/features/homeScreen/data/model/special_offer_model.dart';
+import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/loading_offer_wiget.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/location_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
-import 'package:negmt_heliopolis/features/homeScreen/presentation/view_model/cubit/home_screen_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-// ignore: must_be_immutable
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
-  bool getCategories = false;
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
-  List<CategoryModel> categories = [];
+class _HomeScreenState extends State<HomeScreen> {
+  late HomeLayoutCubit homeLayoutCubit;
+
+  @override
+  void initState() {
+    homeLayoutCubit = BlocProvider.of<HomeLayoutCubit>(context);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,58 +47,92 @@ class HomeScreen extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                CarouselSlider(
-                  items: [1, 2, 3, 4, 5].map(
-                    (ele) {
-                      return SizedBox(
-                        child: Helper.loadNetworkImage(
-                          url: '',
-                          assetsErrorPath: 'assets/test_images/home.png',
+            BlocConsumer<HomeLayoutCubit, HomeLayoutState>(
+              listener: (context, state) {
+                if (state is FetchConfigsLoading ||
+                    state is FetchConfigsFailed) {
+                  homeLayoutCubit.gettingConfigs = false;
+                }
+
+                if (state is FetchConfigsFailed) {
+                  CustomSnackBar.show(
+                    context: context,
+                    duration: const Duration(seconds: 10),
+                    text: state.error,
+                    isGreen: false,
+                  );
+                }
+
+                if (state is FetchConfigsSuccess) {
+                  homeLayoutCubit.configs =
+                      state.homeSliderModel.configs!.homeScreenSlider!;
+                  homeLayoutCubit.gettingConfigs = true;
+                }
+              },
+              builder: (context, state) {
+                return Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    if (homeLayoutCubit.gettingConfigs)
+                      CarouselSlider(
+                        items: homeLayoutCubit.configs.map(
+                          (ele) {
+                            return SizedBox(
+                              child: Helper.loadNetworkImage(
+                                url: ele,
+                                assetsErrorPath: 'assets/test_images/home.png',
+                              ),
+                            );
+                          },
+                        ).toList(),
+                        options: CarouselOptions(
+                          aspectRatio: 438 / 424,
+                          // height: 430.h,
+                          autoPlay: true,
+                          initialPage: 0,
+                          viewportFraction: 1,
+                          enableInfiniteScroll: true,
+                          autoPlayInterval: const Duration(seconds: 3),
+                          autoPlayAnimationDuration: const Duration(seconds: 1),
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          scrollDirection: Axis.horizontal,
                         ),
-                      );
-                    },
-                  ).toList(),
-                  options: CarouselOptions(
-                    aspectRatio: 438 / 424,
-                    // height: 430.h,
-                    autoPlay: true,
-                    initialPage: 0,
-                    viewportFraction: 1,
-                    enableInfiniteScroll: true,
-                    autoPlayInterval: const Duration(seconds: 3),
-                    autoPlayAnimationDuration: const Duration(seconds: 1),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    scrollDirection: Axis.horizontal,
-                  ),
-                ),
-                Positioned(
-                  top: 63.h,
-                  left: 358.w,
-                  child: Container(
-                    width: 54.w,
-                    height: 54.h,
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(255, 255, 255, 0.7),
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        BlocProvider.of<HomeLayoutCubit>(context)
-                            .changeCurrentIndex(context, 1);
-                      },
-                      icon: svgIcon(
-                        path: 'assets/svg_icons/search-normal.svg',
-                        width: 26.44.w,
-                        height: 26.44.h,
-                        color: MyColors.mainColor,
+                      ),
+                    if (!homeLayoutCubit.gettingConfigs)
+                      Skeletonizer(
+                        child: AspectRatio(
+                          aspectRatio: 438 / 424,
+                          child: Helper.loadNetworkImage(
+                            assetsErrorPath: 'assets/test_images/home.png',
+                          ),
+                        ),
+                      ),
+                    Positioned(
+                      top: 63.h,
+                      left: 358.w,
+                      child: Container(
+                        width: 54.w,
+                        height: 54.h,
+                        decoration: const BoxDecoration(
+                          color: Color.fromRGBO(255, 255, 255, 0.7),
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            homeLayoutCubit.changeCurrentIndex(context, 1);
+                          },
+                          icon: svgIcon(
+                            path: 'assets/svg_icons/search-normal.svg',
+                            width: 26.44.w,
+                            height: 26.44.h,
+                            color: MyColors.mainColor,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ],
+                  ],
+                );
+              },
             ),
             const FractionalTranslation(
               translation: Offset(0, -0.5),
@@ -97,133 +141,120 @@ class HomeScreen extends StatelessWidget {
             Column(
               children: [
                 // Special Offers -----------------------------------------------
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 18.0.r),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Special Offers',
-                        style: Styles.styles17w600interFamily,
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            allspecialOffersScreen,
-                          );
-                        },
-                        child: Row(
-                          children: [
-                            Text(
-                              'View All',
-                              style: Styles.styles14w500interFamily,
-                            ),
-                            SizedBox(width: 4.w),
-                            Transform(
-                              transform: Matrix4.rotationY(isAr ? pi : 0),
-                              child: svgIcon(
-                                path: 'assets/svg_icons/arrow-right.svg',
-                                width: 10,
-                                height: 9,
-                                color: const Color.fromRGBO(0, 126, 143, 1),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.only(start: 18.w),
-                  child: AspectRatio(
-                    aspectRatio: 297 / 140,
-                    child: ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return specialOfferWidget(
-                          context: context,
-                          assetImagePath: 'assets/test_images/offers.png',
-                          widgetWidth: 297.w,
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              specialOfferItemScreen,
-                            );
-                          },
-                          upToOfferWidget: () => upToOfferWidget(
-                            iconHeight: 13.74.h,
-                            iconWidth: 13.74.w,
-                            context: context,
-                            text: Text(
-                              'Up to 20% off',
-                              style: Styles.styles7w500interFamily,
-                            ),
-                          ),
-                          descriptionOfferWidget: () => descriptionOfferWidget(
-                            titleText: Text(
-                              'Mango Season',
-                              style: Styles.styles13w700interFamily,
-                            ),
-                            offerRichText: RichText(
-                              text: TextSpan(
-                                text: 'Offer Ends At ',
-                                style: Styles.styles9w400interFamily,
-                                children: [
-                                  TextSpan(
-                                    text: '1 Day 16 Hours',
-                                    style: Styles.styles12w500interFamily,
-                                  )
-                                ],
-                              ),
-                            ),
-                            beneficiaryText: RichText(
-                              text: TextSpan(
-                                text: 'Beneficiary ',
-                                style: Styles.styles9w400interFamily,
-                                children: [
-                                  TextSpan(
-                                    text: '33',
-                                    style: Styles.styles9w800interFamily,
-                                  )
-                                ],
-                              ),
-                            ),
-                            iconWidth: 13.66.w,
-                            iconHeight: 13.66.h,
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, index) =>
-                          SizedBox(width: 20.w),
-                      itemCount: 10,
-                    ),
-                  ),
-                ),
-                // Categories ---------------------------------------------------
-                BlocConsumer<HomeScreenCubit, HomeScreenState>(
+                BlocConsumer<HomeLayoutCubit, HomeLayoutState>(
                   listener: (context, state) {
-                    if (state is FetchCategoriesSuccess) {
-                      getCategories = true;
-                      categories = state.categories.categories!;
+                    if (state is FetchOffersLoading ||
+                        state is FetchOffersFailed) {
+                      homeLayoutCubit.gettingOffers = false;
                     }
 
-                    if (state is FetchCategoriesFailure) {
-                      if (kDebugMode) {
-                        print(state.message);
-                      }
+                    if (state is FetchOffersFailed) {
+                      CustomSnackBar.show(
+                        context: context,
+                        duration: const Duration(seconds: 10),
+                        text: state.error,
+                        isGreen: false,
+                      );
+                    }
+
+                    if (state is FetchOffersSuccess) {
+                      homeLayoutCubit.offers = state.specialOfferModel.offers!;
+                      homeLayoutCubit.gettingOffers = true;
                     }
                   },
                   builder: (context, state) {
-                    HomeScreenCubit homeScreenCubit =
-                        BlocProvider.of<HomeScreenCubit>(context);
-
-                    if (!getCategories) {
-                      // homeScreenCubit.getAllCategories();
+                    return Column(
+                      children: [
+                        if (homeLayoutCubit.gettingOffers) ...[
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 18.0.r),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Special Offers',
+                                  style: Styles.styles17w600interFamily,
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      allspecialOffersScreen,
+                                    );
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'View All',
+                                        style: Styles.styles14w500interFamily,
+                                      ),
+                                      SizedBox(width: 4.w),
+                                      Transform(
+                                        transform:
+                                            Matrix4.rotationY(isAr ? pi : 0),
+                                        child: svgIcon(
+                                          path:
+                                              'assets/svg_icons/arrow-right.svg',
+                                          width: 10,
+                                          height: 9,
+                                          color: const Color.fromRGBO(
+                                              0, 126, 143, 1),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.only(start: 18.w),
+                            child: AspectRatio(
+                              aspectRatio: 297 / 140,
+                              child: ListView.separated(
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: homeLayoutCubit.offers.length,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return SizedBox(
+                                    width: 275.w,
+                                    child: SpecialOfferWidget(
+                                      offer: homeLayoutCubit.offers[index],
+                                      canNavigate: true,
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(width: 20.w),
+                              ),
+                            ),
+                          ),
+                        ],
+                        if (!homeLayoutCubit.gettingOffers)
+                          const LoadingOfferWiget(),
+                      ],
+                    );
+                  },
+                ),
+                // Categories ---------------------------------------------------
+                BlocConsumer<HomeLayoutCubit, HomeLayoutState>(
+                  listener: (context, state) {
+                    if (state is FetchCategoriesSuccess) {
+                      homeLayoutCubit.gettingCategories = true;
+                      homeLayoutCubit.categories = state.categories.categories!;
                     }
 
+                    if (state is FetchCategoriesFailure) {
+                      CustomSnackBar.show(
+                        context: context,
+                        duration: const Duration(seconds: 10),
+                        text: state.error,
+                        isGreen: false,
+                      );
+                    }
+                  },
+                  builder: (context, state) {
                     return Column(
                       children: [
                         Padding(
@@ -257,7 +288,7 @@ class HomeScreen extends StatelessWidget {
                                         MyBoxShadows.iconsIsCategoryBoxShadow
                                       ],
                                     ),
-                                    child: homeScreenCubit.isCategoryRow
+                                    child: homeLayoutCubit.isCategoryRow
                                         ? Row(
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment:
@@ -282,9 +313,9 @@ class HomeScreen extends StatelessWidget {
                                               2,
                                               (rowIndex) => Padding(
                                                 padding: EdgeInsets.only(
-                                                    bottom: rowIndex < 1
-                                                        ? 1.h
-                                                        : 0), // Add space between rows
+                                                  bottom:
+                                                      rowIndex < 1 ? 1.h : 0,
+                                                ), // Add space between rows
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
@@ -311,13 +342,13 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                 ),
                                 onPressed: () {
-                                  homeScreenCubit.changeCategory();
+                                  homeLayoutCubit.changeCategory();
                                 },
                               ),
                             ],
                           ),
                         ),
-                        if (getCategories == true)
+                        if (homeLayoutCubit.gettingCategories == true)
                           AnimatedSwitcher(
                             duration: const Duration(milliseconds: 250),
                             reverseDuration: const Duration(milliseconds: 250),
@@ -327,7 +358,7 @@ class HomeScreen extends StatelessWidget {
                                 child: child,
                               );
                             },
-                            child: homeScreenCubit.isCategoryRow
+                            child: homeLayoutCubit.isCategoryRow
                                 ? Container(
                                     padding:
                                         EdgeInsetsDirectional.only(start: 18.w),
@@ -339,11 +370,13 @@ class HomeScreen extends StatelessWidget {
                                       itemBuilder: (context, index) =>
                                           categoryBuilder(
                                         context: context,
-                                        category: categories[index],
+                                        category:
+                                            homeLayoutCubit.categories[index],
                                       ),
                                       separatorBuilder: (context, index) =>
                                           const SizedBox(width: 14),
-                                      itemCount: categories.length,
+                                      itemCount:
+                                          homeLayoutCubit.categories.length,
                                     ),
                                   )
                                 : Padding(
@@ -355,7 +388,8 @@ class HomeScreen extends StatelessWidget {
                                       physics:
                                           const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
-                                      itemCount: categories.length,
+                                      itemCount:
+                                          homeLayoutCubit.categories.length,
                                       gridDelegate:
                                           const SliverGridDelegateWithMaxCrossAxisExtent(
                                         maxCrossAxisExtent: 125,
@@ -367,7 +401,8 @@ class HomeScreen extends StatelessWidget {
                                       itemBuilder: (context, index) =>
                                           categoryBuilder(
                                         context: context,
-                                        category: categories[index],
+                                        category:
+                                            homeLayoutCubit.categories[index],
                                       ),
                                     ),
                                   ),

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
@@ -11,7 +10,6 @@ import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
-import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/alternative_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/delivery_address_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/delivery_payment_contianer.dart';
@@ -67,7 +65,7 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
     return BlocProvider(
       create: (context) => CreateOrderCubit(),
       child: BlocConsumer<CreateOrderCubit, CreateOrderState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is CreateOrderFailed) {
             CustomSnackBar.show(
               context: context,
@@ -78,6 +76,8 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
           }
 
           if (state is CreateOrderSuccess) {
+            await BlocProvider.of<MainCubit>(context).clearDb();
+
             Navigator.pushNamed(
               context,
               checkoutDetailsScreen,
