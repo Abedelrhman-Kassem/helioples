@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
-import 'package:negmt_heliopolis/core/widgets/item_widget_grid.dart';
+import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view_model/cubit/special_offers_item_cubit.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/special_offer_model.dart';
@@ -43,10 +44,25 @@ class _SpecialOfferItemScreenState extends State<SpecialOfferItemScreen> {
               homeScreen: state.specialOfferItemModel.offer!.homeScreen,
             );
           }
+
+          if (state is SpecialOffersFailed) {
+            CustomSnackBar.show(
+              context: context,
+              duration: const Duration(seconds: 10),
+              text: state.error,
+              isGreen: false,
+            );
+          }
         },
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
+              leading: returnArrow(
+                context: context,
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
               title: Text(
                 'Special Offers',
                 style: Styles.styles16w700interFamily,

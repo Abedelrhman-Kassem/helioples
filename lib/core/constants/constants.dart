@@ -39,8 +39,8 @@ const String interFamily = 'Inter';
 // ignore: constant_identifier_names
 const String DB_Name = 'negma.db';
 
-// DB CARTITEM TABLE
-const String cartItemTable = 'cartItems';
+// DB CART ITEM TABLE
+const String cartTable = 'cartItems';
 const String cartItemId = 'id';
 const String cartItemEnName = 'enName';
 const String cartItemEnDesc = 'enDesc';
@@ -50,3 +50,8 @@ const String cartItemQty = 'quantity';
 const String cartItemImageUrl = 'imageUrl';
 const String cartItemPrice = 'price';
 const String cartItemDiscount = 'discount';
+
+// DB Search TABLE
+const String searchTable = 'searchItems';
+const String searchItemId = 'id';
+const String searchItemName = 'name';

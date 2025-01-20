@@ -17,7 +17,7 @@ class DBHelper {
       onCreate: (db, version) async {
         try {
           await db.execute('''
-              CREATE TABLE $cartItemTable (
+              CREATE TABLE $cartTable (
               $cartItemId INTEGER PRIMARY KEY,
               $cartItemEnName TEXT NOT NULL,
               $cartItemEnDesc TEXT NOT NULL,
@@ -29,8 +29,17 @@ class DBHelper {
               $cartItemDiscount REAL NOT NULL
               )
             ''');
+
+          await db.execute('''
+              CREATE TABLE $searchTable (
+              $searchItemId INTEGER PRIMARY KEY,
+              $searchItemName TEXT NOT NULL UNIQUE
+              )
+            ''');
+
           if (kDebugMode) {
-            print('$cartItemTable table created');
+            print('$cartTable table created');
+            print('$searchTable table created');
           }
         } catch (e) {
           if (kDebugMode) {
@@ -127,7 +136,7 @@ class DBHelper {
 
   static Future<int> getCartItemCount() async {
     final List<Map<String, dynamic>> result =
-        await database.rawQuery('SELECT COUNT(*) as count FROM $cartItemTable');
+        await database.rawQuery('SELECT COUNT(*) as count FROM $cartTable');
 
     int count = Sqflite.firstIntValue(result) ?? 0;
 
@@ -136,7 +145,7 @@ class DBHelper {
 
   static Future<DbChangeNotifierModel> getDbData() async {
     List<Map<String, Object?>> items = await DBHelper.queryData(
-      table: cartItemTable,
+      table: cartTable,
       columns: [cartItemQty, cartItemPrice, cartItemDiscount],
     );
 

@@ -5,17 +5,16 @@ import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
-import 'package:negmt_heliopolis/features/Explore/data/models/search_model.dart';
+import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Explore/presentation/view_model/cubit/explore_cubit.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/body_loading_widget.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   final ExploreCubit exploreCubit;
-  CustomSearchDelegate(this.exploreCubit);
+  final String? historyValue;
 
-  @override
-  double? get leadingWidth => 0;
+  CustomSearchDelegate(this.exploreCubit, {this.historyValue});
 
   @override
   String? get searchFieldLabel => 'Search for groceries and more';
@@ -52,22 +51,17 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   List<Widget>? buildActions(BuildContext context) {
-    return [
-      TextButton(
-        onPressed: () {
-          close(context, null);
-        },
-        child: Text(
-          'Cancel',
-          style: Styles.styles12w400MainColor,
-        ),
-      ),
-    ];
+    return [];
   }
 
   @override
   Widget? buildLeading(BuildContext context) {
-    return const SizedBox();
+    return returnArrow(
+      context: context,
+      onTap: () {
+        Navigator.pop(context);
+      },
+    );
   }
 
   @override
@@ -93,6 +87,7 @@ class CustomSearchDelegate extends SearchDelegate {
     List<RelatedProductsModel> products = [];
     if (query.trim().length > 2) {
       exploreCubit.search(query, page);
+      exploreCubit.insertSearchDbData(query.trim());
     }
 
     @override
@@ -147,14 +142,13 @@ class CustomSearchDelegate extends SearchDelegate {
                       crossAxisSpacing: 7,
                       mainAxisSpacing: 10,
                       mainAxisExtent: 220,
-                      // childAspectRatio: 1 / 2,
                     ),
                     itemBuilder: (context, index) => ItemWidget(
                       key: ValueKey(products[index].id),
                       relatedProductsModel: products[index],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           );
@@ -165,6 +159,10 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    if (historyValue != null) {
+      query = historyValue!;
+    }
+
     List<RelatedProductsModel> products = [];
     if (query.trim().length > 2) {
       exploreCubit.search(query, 0);
@@ -181,19 +179,24 @@ class CustomSearchDelegate extends SearchDelegate {
         builder: (context, state) {
           return Column(
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 10.h,
-                  horizontal: 20.w,
-                ),
-                margin: EdgeInsets.symmetric(
-                  vertical: 10.h,
-                ),
-                width: double.infinity,
-                color: const Color.fromRGBO(239, 239, 239, 1),
-                child: Text(
-                  'All Suggestions',
-                  style: Styles.styles12w400black,
+              InkWell(
+                onTap: () {
+                  showResults(context);
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 10.h,
+                    horizontal: 20.w,
+                  ),
+                  margin: EdgeInsets.symmetric(
+                    vertical: 10.h,
+                  ),
+                  width: double.infinity,
+                  color: const Color.fromRGBO(239, 239, 239, 1),
+                  child: Text(
+                    'All Suggestions',
+                    style: Styles.styles12w400black,
+                  ),
                 ),
               ),
               Expanded(

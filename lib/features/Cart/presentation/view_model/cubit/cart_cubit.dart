@@ -29,7 +29,7 @@ class CartCubit extends Cubit<CartState> {
     List<int> ids = [];
 
     tableIdValues = await DBHelper.queryData(
-      table: cartItemTable,
+      table: cartTable,
       columns: [cartItemId],
     );
 
@@ -61,13 +61,13 @@ class CartCubit extends Cubit<CartState> {
     updateCartModel.products!.forEach((product) async {
       if (product.availabelPieces! == 0) {
         await DBHelper.deleteData(
-          table: cartItemTable,
+          table: cartTable,
           where: 'id = ?',
           whereArgs: [product.id],
         );
       } else {
         await DBHelper.updateData(
-          table: cartItemTable,
+          table: cartTable,
           values: {
             cartItemPrice: product.price!,
             cartItemDiscount: product.currentDiscount ?? 0,
@@ -77,14 +77,14 @@ class CartCubit extends Cubit<CartState> {
         );
       }
     });
-    return DBHelper.queryData(table: cartItemTable);
+    return DBHelper.queryData(table: cartTable);
   }
 
   Future<void> deleteItem(int id) async {
     emit(CartLoadingState());
     try {
       await DBHelper.deleteData(
-        table: cartItemTable,
+        table: cartTable,
         where: 'id = ?',
         whereArgs: [id],
       );

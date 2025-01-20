@@ -41,7 +41,7 @@ class _PickUpScreenState extends State<PickUpScreen> {
 
   @override
   void initState() {
-    DBHelper.queryData(table: cartItemTable).then((value) {
+    DBHelper.queryData(table: cartTable).then((value) {
       setState(() {
         tableValues = value;
 

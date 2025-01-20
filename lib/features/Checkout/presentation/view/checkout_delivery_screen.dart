@@ -39,7 +39,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   void initState() {
-    DBHelper.queryData(table: cartItemTable).then((value) {
+    DBHelper.queryData(table: cartTable).then((value) {
       setState(() {
         tableValues = value;
 

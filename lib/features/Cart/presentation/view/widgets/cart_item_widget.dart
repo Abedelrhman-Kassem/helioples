@@ -29,7 +29,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
 
     Future<void> updateQty() async {
       await DBHelper.updateData(
-        table: cartItemTable,
+        table: cartTable,
         values: {
           cartItemQty: product.quantity,
         },
