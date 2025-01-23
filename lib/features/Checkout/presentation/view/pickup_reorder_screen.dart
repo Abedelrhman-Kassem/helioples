@@ -170,9 +170,12 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
               body: Container(
                 height: double.infinity,
                 decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(
-                            'assets/screens_background/grocery_itemsback_ground.png'))),
+                  image: DecorationImage(
+                    image: AssetImage(
+                      'assets/screens_background/grocery_itemsback_ground.png',
+                    ),
+                  ),
+                ),
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Column(

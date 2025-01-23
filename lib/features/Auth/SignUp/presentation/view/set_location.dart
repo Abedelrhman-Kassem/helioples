@@ -111,26 +111,29 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
         "assets/Icons_logos/current_location_marker.png",
       );
 
-      setState(() {
-        currentLocationMarker = Marker(
-          markerId: const MarkerId("current_location"),
-          position: LatLng(position.latitude, position.longitude),
-          icon: customIcon,
-          infoWindow: const InfoWindow(title: "My Location"),
-        );
+      if (mounted) {
+        setState(() {
+          currentLocationMarker = Marker(
+            markerId: const MarkerId("current_location"),
+            position: LatLng(position.latitude, position.longitude),
+            icon: customIcon,
+            infoWindow: const InfoWindow(title: "My Location"),
+          );
 
-        markers.add(currentLocationMarker);
+          markers.add(currentLocationMarker);
 
-        CameraPosition cameraPosition = CameraPosition(
-          target: LatLng(position.latitude, position.longitude),
-          zoom: 17,
-        );
+          CameraPosition cameraPosition = CameraPosition(
+            target: LatLng(position.latitude, position.longitude),
+            zoom: 17,
+          );
 
-        // Move the camera to the current location
-        googleMapController
-            .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-        locationFuture = codingLocation(position.latitude, position.longitude);
-      });
+          // Move the camera to the current location
+          googleMapController
+              .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+          locationFuture =
+              codingLocation(position.latitude, position.longitude);
+        });
+      }
     }
   }
 
@@ -391,12 +394,17 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                       decoration: InputDecoration(
                         hintText: 'Find a place...',
                         hintStyle: Styles.styles14w400NormalBlack.copyWith(
-                            color: const Color.fromRGBO(141, 145, 150, 1)),
-                        prefixIcon: const Icon(Icons.search,
-                            color: Color.fromRGBO(41, 45, 50, 1)),
+                          color: const Color.fromRGBO(141, 145, 150, 1),
+                        ),
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          color: Color.fromRGBO(41, 45, 50, 1),
+                        ),
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 12.h),
+                          horizontal: 16.w,
+                          vertical: 12.h,
+                        ),
                       ),
                       onSubmitted: (query) {
                         print(" ana query");

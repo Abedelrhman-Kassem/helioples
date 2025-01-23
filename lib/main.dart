@@ -19,29 +19,26 @@ import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/routing/routes.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/themes.dart';
 
-
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   log("Handling background message: ${message.messageId}");
 }
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-   await Firebase.initializeApp(
-  
-  );
+  await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseApi firebaseApi = FirebaseApi();
   await firebaseApi.initNotification();
   await EasyLocalization.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
 
-
   CacheHelper.init();
+  // await DBHelper.deleteDB();
   DBHelper.init();
   AppRouter appRouter = AppRouter();
   Bloc.observer = MyBlocObserver();
-
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -56,10 +53,7 @@ void main() async {
     ),
   );
 
-
-
   runApp(
-    
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('ar')],
       path: 'assets/languages_jsons',
@@ -94,10 +88,10 @@ class _MyAppState extends State<MyApp> {
       splitScreenMode: true,
       builder: (context, child) {
         return BlocProvider(
-          create: (context) => MainCubit(),
+          lazy: false,
+          create: (context) => MainCubit()..getAddressess(),
           child: MaterialApp(
-          
-          navigatorKey:navigatorKey ,
+            navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
             onGenerateRoute: widget.appRouter.generate,
             theme: lightTheme,

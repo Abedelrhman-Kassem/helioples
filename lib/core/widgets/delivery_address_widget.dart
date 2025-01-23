@@ -6,7 +6,7 @@ import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
 Widget deliveryAddressWidget({
   required String title,
-  required String addressTitleRadioValue,
+  required bool isChossen,
   required String location,
   required void Function() onTap,
 }) {
@@ -16,7 +16,7 @@ Widget deliveryAddressWidget({
       splashColor: const Color.fromRGBO(248, 147, 31, .1),
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.0.w),
+        padding: EdgeInsets.symmetric(vertical: 15.0.h),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -46,9 +46,7 @@ Widget deliveryAddressWidget({
               ),
             ),
             const Spacer(),
-            radioAnimatedWidget(
-              addressTitleRadioValue.toLowerCase() == title.toLowerCase(),
-            ),
+            radioAnimatedWidget(isChossen),
           ],
         ),
       ),

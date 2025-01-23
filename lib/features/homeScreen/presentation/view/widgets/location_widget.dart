@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
@@ -8,36 +10,38 @@ import 'package:negmt_heliopolis/core/widgets/add_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/delivery_address_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
+import 'package:negmt_heliopolis/features/homeScreen/data/model/address_model.dart';
 
 class LocationWidget extends StatefulWidget {
-  const LocationWidget({super.key});
+  final AddressModel addressModel;
+  const LocationWidget({super.key, required this.addressModel});
 
   @override
   State<LocationWidget> createState() => _LocationWidgetState();
 }
 
 class _LocationWidgetState extends State<LocationWidget> {
-  int addressRadioValue = 0;
-  String addressTitle = 'Home';
-  String addressLocation = 'Salah Salem Street 44C, Maadi, Cairo';
+  late AddressModel addressModel;
+  late Address chossenAddress;
+
+  @override
+  void initState() {
+    addressModel = widget.addressModel;
+    chossenAddress = BlocProvider.of<MainCubit>(context).address!;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        final Map? result = await showModalBottomSheet(
+        await showModalBottomSheet(
           isScrollControlled: true,
           context: context,
-          builder: (context) => AddressModalBottomSheet(title: addressTitle),
+          builder: (context) => AddressModalBottomSheet(
+            addressModel: addressModel,
+          ),
         );
-        if (result != null &&
-            result.containsKey('title') &&
-            result.containsKey('location')) {
-          setState(() {
-            addressTitle = result['title'];
-            addressLocation = result['location'];
-          });
-        }
       },
       child: Container(
         width: 375.w,
@@ -85,11 +89,11 @@ class _LocationWidgetState extends State<LocationWidget> {
                   width: 250.w,
                   child: RichText(
                     text: TextSpan(
-                      text: '$addressTitle ',
+                      text: '${chossenAddress.locationStr} ',
                       style: Styles.styles17w700Black,
                       children: [
                         TextSpan(
-                          text: addressLocation,
+                          text: '${chossenAddress.street}',
                           style: Styles.styles17w400interFamily,
                         ),
                       ],
@@ -113,10 +117,9 @@ class _LocationWidgetState extends State<LocationWidget> {
   }
 }
 
-// ignore: must_be_immutable
 class AddressModalBottomSheet extends StatefulWidget {
-  String title;
-  AddressModalBottomSheet({super.key, required this.title});
+  final AddressModel addressModel;
+  const AddressModalBottomSheet({super.key, required this.addressModel});
 
   @override
   State<AddressModalBottomSheet> createState() =>
@@ -128,6 +131,14 @@ class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
     'title': 'Home',
     'location': 'Salah Salem Street 44C, Maadi, Cairo',
   };
+
+  int? addressId;
+
+  @override
+  void initState() {
+    addressId = BlocProvider.of<MainCubit>(context).address!.id;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,31 +172,38 @@ class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
                 ],
               ),
               SizedBox(height: 10.h),
-              deliveryAddressWidget(
-                title: 'Home',
-                location: 'Salah Salem Street 44C, Maadi, Cairo',
-                addressTitleRadioValue: widget.title,
-                onTap: () {
-                  setState(() {
-                    widget.title = 'Home';
-                  });
-                },
+              ListView.builder(
+                // physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: widget.addressModel.address!.length,
+                itemBuilder: (context, index) => deliveryAddressWidget(
+                  title: widget.addressModel.address![index].locationStr!,
+                  location: widget.addressModel.address![index].street!,
+                  isChossen:
+                      addressId == widget.addressModel.address![index].id,
+                  onTap: () {
+                    setState(() {
+                      addressId = widget.addressModel.address![index].id;
+                      print(addressId);
+                    });
+                  },
+                ),
               ),
               // SizedBox(height: 10.h),
-              deliveryAddressWidget(
-                title: 'Work',
-                location: 'Salah Salem Street 44C, Maadi',
-                addressTitleRadioValue: widget.title,
-                onTap: () {
-                  setState(() {
-                    widget.title = 'Work';
-                    address = {
-                      'title': 'Work',
-                      'location': 'Salah Salem Street 44C, Maadi',
-                    };
-                  });
-                },
-              ),
+              // deliveryAddressWidget(
+              //   title: 'Work',
+              //   location: 'Salah Salem Street 44C, Maadi',
+              //   addressTitleRadioValue: widget.title,
+              //   onTap: () {
+              //     setState(() {
+              //       widget.title = 'Work';
+              //       address = {
+              //         'title': 'Work',
+              //         'location': 'Salah Salem Street 44C, Maadi',
+              //       };
+              //     });
+              //   },
+              // ),
               SizedBox(height: 30.h),
               buttonWidget(
                 color: MyColors.mainColor,
