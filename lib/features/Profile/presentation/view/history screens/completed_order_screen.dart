@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/problem_page.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view_model/history%20cubit/history_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view_model/history%20cubit/history_states.dart';
@@ -54,7 +57,34 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
               _historyCubit.orderHistoryList.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is FetchHistoryFailure) {
-            return Center(child: Text(state.msg));
+            if(state.msg == "You are not allowed to access this page.")
+            {
+               return Center(child: InfoMessageWidget(
+              buttonText: "Sign In Now",
+              imagePath: "assets/Icons_logos/Social 03.png",
+              title: "No Profile Information",
+              description: "You need sign in to app in order to control your personal information",
+              onPressed: (){
+                Navigator.pushNamed(context,signInScreen );
+              },
+
+            ));
+              
+            } else 
+            {
+              return Center(child: InfoMessageWidget(
+              buttonText: "Refresh",
+              imagePath: "assets/Icons_logos/Connectivity_issue.png",
+              title: "Error Occurred",
+              description: "Seems like we got a problem, please refresh",
+              onPressed: (){
+                Navigator.pushNamed(context,signInScreen );
+              },
+
+            ));
+
+            }
+           
           } else if (state is FetchHistorySuccess ||
               _historyCubit.orderHistoryList.isNotEmpty) {
             return ListView.builder(
@@ -67,7 +97,7 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
                       : const SizedBox.shrink();
                 }
 
-            
+                
                 var orderHistory = _historyCubit.orderHistoryList[index];
                 return Padding(
                   padding:

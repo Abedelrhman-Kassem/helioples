@@ -4,12 +4,12 @@ class Order {
   int? id;
   int? userId;
   DateTime? arriveTime;
-  int? tips;
+  double? tips;
   String? alternativeProduct;
   double? subTotal;
-  int? vat;
-  int? deliveryFees;
-  int? promoCodeDiscount;
+  double? vat;
+  double? deliveryFees;
+  double? promoCodeDiscount;
   double? total;
   String? paymentMethod;
   bool? paid;
@@ -45,14 +45,14 @@ class Order {
   Order.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['userId'];
-    arriveTime = json['arriveTime'];
-    tips = json['tips'];
+    arriveTime = json['arriveTime'] ;
+    tips = (json['tips'] != null) ? json['tips'] * 1.0 : 0;
     alternativeProduct = json['alternativeProduct'];
-    subTotal = json['subTotal'];
-    vat = json['vat'];
-    deliveryFees = json['deliveryFees'];
-    promoCodeDiscount = json['promoCodeDiscount'];
-    total = json['total'];
+    subTotal = (json['subTotal'] != null) ? json['subTotal'] * 1.0 : 0;
+    vat = (json['vat'] != null) ? json['vat'] * 1.0 : 0;
+    deliveryFees = (json['deliveryFees'] != null) ? json['deliveryFees'] * 1.0 : 0;
+    promoCodeDiscount = (json['promoCodeDiscount'] != null) ? json['promoCodeDiscount'] * 1.0 : 0;
+    total = (json['total'] != null) ? json['total'] * 1.0 : 0;
     paymentMethod = json['paymentMethod'];
     paid = json['paid'];
     promoCodeId = json['promoCodeId'];
@@ -62,7 +62,7 @@ class Order {
     deliverMethod = json['deliverMethod'];
     updatedAt = json['updatedAt'];
     createdAt = json['createdAt'];
-  }
+}
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

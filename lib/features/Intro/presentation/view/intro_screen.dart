@@ -1,14 +1,48 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/keys_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
-class IntroScreen extends StatelessWidget {
+class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
 
+  @override
+  State<IntroScreen> createState() => _IntroScreenState();
+}
+
+class _IntroScreenState extends State<IntroScreen> {
+//   Future<void> getInit() async {
+//   try {
+//     RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+//     log("Received initial message: ${initialMessage?.messageId}");
+    
+//     if (initialMessage != null && navigatorKey.currentContext != null) {
+//       // Delay navigation to ensure the context is ready
+//       WidgetsBinding.instance.addPostFrameCallback((_) {
+//         Navigator.pushNamed(
+//           navigatorKey.currentContext!,
+//           homeLayout, // Replace with your desired route
+//         );
+//       });
+//     } else {
+//       log("Navigator context is not ready or no initial message.");
+//     }
+//   } catch (e) {
+//     log("Error handling initial message: $e");
+//   }
+// }
+  @override
+  void initState() {
+// getInit();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final isAr = isRtl(context);

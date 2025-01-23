@@ -1,7 +1,7 @@
 class OrderDetails {
   int? id;
   int? userId;
-  Null arriveTime;
+  DateTime? arriveTime;
   int? tips;
   String? alternativeProduct;
   double? subTotal;
@@ -12,16 +12,16 @@ class OrderDetails {
   String? paymentMethod;
   bool? paid;
   bool? chooseForMe;
-  Null promoCodeId;
-  Null reason;
+  int? promoCodeId;
+  String? reason;
   String? clientOrderState;
   String? adminOrderState;
   int? addressId;
   String? deliverMethod;
   String? updatedAt;
   String? createdAt;
-  Null branchId;
-  Null promoCode;
+  int? branchId;
+  String? promoCode;
   Address? address;
   List<Items>? items;
 
@@ -207,7 +207,7 @@ class Product {
   String? barCodeId;
   String? name;
   String? enName;
-  Null thumbnailImage;
+  String? thumbnailImage;
   String? enDescription;
   String? description;
   String? searchDescription;
@@ -217,7 +217,7 @@ class Product {
   String? state;
   int? views;
   bool? active;
-  Null discountId;
+  int? discountId;
   String? createdAt;
   String? updatedAt;
   int? unitOfMeasureId;

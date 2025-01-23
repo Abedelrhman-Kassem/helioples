@@ -89,10 +89,12 @@ class _CategoriesScreenState extends State<CategoriesScreen>
   // void _handleScroll() {
   //   final screenHeight = MediaQuery.of(context).size.height;
 
-  //   for (int i = 0; i < sectionKeys.length; i++) {
-  //     final RenderBox? box =
-  //         sectionKeys[i].currentContext?.findRenderObject() as RenderBox?;
+    for (int i = 0; i < sectionKeys.length; i++) {
+      final RenderBox? box =
+          sectionKeys[i].currentContext?.findRenderObject() as RenderBox?;
 
+  //     if (box != null) {
+  //       final position = box.localToGlobal(Offset(0, box.size.height));
   //     if (box != null) {
   //       final position = box.localToGlobal(Offset(0, box.size.height));
 
@@ -102,20 +104,26 @@ class _CategoriesScreenState extends State<CategoriesScreen>
   //             subCategoriesCubit.subCategoryProducts.keys.elementAt(i); //
   //         if (!isLoading) {
   //           isLoading = true;
+  //       if (position.dy <= box.size.height + screenHeight / 8 &&
+  //           position.dy > screenHeight / 8) {
+  //         int subCategoryId =
+  //             subCategoriesCubit.subCategoryProducts.keys.elementAt(i); //
+  //         if (!isLoading) {
+  //           isLoading = true;
 
-  //           subCategoriesCubit.fetchProductsInSubCategory(subCategoryId,
-  //               isPagination: true); //
+            subCategoriesCubit.fetchProductsInSubCategory(subCategoryId,
+                isPagination: true); //
 
-  //           isLoading = false;
+            isLoading = false;
 
-  //           setState(() {});
-  //         }
-  //       }
-  //       DefaultTabController.of(tabContext!).animateTo(i);
-  //       break;
-  //     }
-  //   }
-  // }
+            setState(() {});
+          }
+        }
+        DefaultTabController.of(tabContext!).animateTo(i);
+        break;
+      }
+    }
+  }
 
   // void _scrollToSection(int index) {
   //   // Delay the scroll action until the current frame is done laying out the widgets.
@@ -209,6 +217,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
       }
     });
   }
+>>>>>>> 47b056599caa0886f04cf634de91e35f77898ab6
 
   Future<void> _loadRemainingDataForCurrentTab() async {
     final currentSubCategoryId =
