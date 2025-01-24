@@ -26,24 +26,21 @@ class _LocationWidgetState extends State<LocationWidget> {
   late Address chossenAddress;
 
   @override
-  void initState() {
+  Widget build(BuildContext context) {
     addressModel = widget.addressModel;
     chossenAddress = BlocProvider.of<MainCubit>(context).address!;
-    super.initState();
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        // await showModalBottomSheet(
-        //   isScrollControlled: true,
-        //   context: context,
-        //   builder: (context) => AddressModalBottomSheet(
-        //     addressModel: addressModel,
-        //   ),
-        // );
-        Navigator.pushNamed(context, confirmAddress);
+        await showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (context) => AddressModalBottomSheet(
+            addressModel: addressModel,
+          ),
+        );
+        setState(() {});
+        // Navigator.pushNamed(context, confirmAddress);
       },
       child: Container(
         width: 375.w,
@@ -186,7 +183,6 @@ class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
                   onTap: () {
                     setState(() {
                       addressId = widget.addressModel.address![index].id;
-                      print(addressId);
                     });
                   },
                 ),
@@ -218,7 +214,10 @@ class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
                   'Done',
                   style: Styles.styles17w600White,
                 ),
-                onTap: () {
+                onTap: () async {
+                  await BlocProvider.of<MainCubit>(context)
+                      .setChossenAddress(addressId!);
+
                   Navigator.pop(context, address);
                 },
               ),

@@ -38,7 +38,7 @@ class MainCubit extends Cubit<MainState> {
       },
       (addressModel) async {
         mainaddressModel = addressModel;
-        await getChossenAddress(addressModel);
+        await getChossenAddress();
         emit(
           GetAddressesSuccessfully(addressModel),
         );
@@ -48,27 +48,24 @@ class MainCubit extends Cubit<MainState> {
 
   Address? address;
 
-  Future<void> getChossenAddress(AddressModel addressModel) async {
+  Future<void> getChossenAddress() async {
     int? addressId = await getChossenAddressId();
 
-    address = addressModel.address!.firstWhere(
+    address = mainaddressModel.address!.firstWhere(
         (element) => element.id == addressId,
-        orElse: () => addressModel.address!.first);
+        orElse: () => mainaddressModel.address!.first);
   }
 
   Future<int?> getChossenAddressId() async {
     return await CacheHelper.getSharedPreferenceData(key: 'addressId');
   }
 
-  Future<void> setChossenAddress(
-      int addressId, AddressModel addressModel) async {
+  Future<void> setChossenAddress(int addressId) async {
     await CacheHelper.saveSharedPreferencesData(
       key: 'addressId',
       value: addressId,
     );
 
-    getChossenAddress(addressModel);
-
-    emit(GetAddressesSuccessfully(addressModel));
+    getChossenAddress();
   }
 }
