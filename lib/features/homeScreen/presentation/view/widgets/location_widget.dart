@@ -10,6 +10,7 @@ import 'package:negmt_heliopolis/core/widgets/add_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/delivery_address_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/confirm_address_bottom_sheet.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/address_model.dart';
 
 class LocationWidget extends StatefulWidget {
@@ -35,13 +36,14 @@ class _LocationWidgetState extends State<LocationWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await showModalBottomSheet(
-          isScrollControlled: true,
-          context: context,
-          builder: (context) => AddressModalBottomSheet(
-            addressModel: addressModel,
-          ),
-        );
+        // await showModalBottomSheet(
+        //   isScrollControlled: true,
+        //   context: context,
+        //   builder: (context) => AddressModalBottomSheet(
+        //     addressModel: addressModel,
+        //   ),
+        // );
+        Navigator.pushNamed(context, confirmAddress);
       },
       child: Container(
         width: 375.w,

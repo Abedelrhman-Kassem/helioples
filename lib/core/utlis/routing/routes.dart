@@ -23,6 +23,7 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/pick_up_scr
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/pickup_order_details._screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/pickup_reorder_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/re_order_screen.dart';
+import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/confirm_address_bottom_sheet.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view/home_layout.dart';
 import 'package:negmt_heliopolis/features/Intro/presentation/view/intro_screen.dart';
@@ -222,6 +223,11 @@ class AppRouter {
       case pickupReorderScreen:
         page = const PickupReorderScreen();
         fromRight = true;
+        break;
+
+      case confirmAddress:
+        page = const ConfirmAddress();
+        fromRight = false;
         break;
 
       default:
