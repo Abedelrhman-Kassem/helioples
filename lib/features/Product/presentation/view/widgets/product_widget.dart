@@ -107,7 +107,6 @@ class _ProductWidgetState extends State<ProductWidget> {
               ),
             ),
             ItemCounterWidget(
-              counter: 0,
               itemUiModel: ItemUiModel(
                 id: widget.product.id!,
                 name: widget.product.name!,
@@ -116,6 +115,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                 enDesc: widget.product.enDesc ?? 'enDesc',
                 thumbnailImage: widget.product.thumbnailImage ?? '',
                 price: widget.product.price!,
+                availablePieces: widget.product.availabelPieces!,
                 discount: widget.product.discount ?? 0,
               ),
             )

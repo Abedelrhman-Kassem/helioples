@@ -86,16 +86,18 @@ class FeatureWidget extends StatelessWidget {
                         height: 180.h,
                         width: 140.w,
                         child: Container(
-                          decoration: BoxDecoration(boxShadow: [
-                            BoxShadow(
-                              offset: const Offset(0.0, 6.0),
-                              color: Colors.grey.withOpacity(0.3),
-                              blurRadius: 5.0.sp,
-                            )
-                          ]),
-                          child: const ItemWidget(
-                            color: Colors.white,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                offset: const Offset(0.0, 6.0),
+                                color: Colors.grey.withOpacity(0.3),
+                                blurRadius: 5.0.sp,
+                              )
+                            ],
                           ),
+                          // child: const ItemWidget(
+                          //   color: Colors.white, relatedProductsModel: null,
+                          // ),
                         ),
                       ),
                     );

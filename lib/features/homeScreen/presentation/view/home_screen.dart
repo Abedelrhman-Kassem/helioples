@@ -15,8 +15,6 @@ import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/core/widgets/category_builder.dart';
-import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
-import 'package:negmt_heliopolis/features/homeScreen/data/model/special_offer_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/loading_offer_wiget.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/location_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';

@@ -48,6 +48,7 @@ class CartCubit extends Cubit<CartState> {
         tableValues = await updateDBData(updateCart);
         DbChangeNotifier productsCount = DbChangeNotifier();
         productsCount.fetchItemCount();
+        updateCartModel = updateCart;
 
         if (!isClosed) {
           emit(CartSuccessState(updateCartModel: updateCart));
@@ -57,8 +58,11 @@ class CartCubit extends Cubit<CartState> {
   }
 
   Future<List<Map<String, Object?>>> updateDBData(
-      UpdateCartModel updateCartModel) async {
-    updateCartModel.products!.forEach((product) async {
+    UpdateCartModel updateCartModel,
+  ) async {
+    tableValues = await DBHelper.queryData(table: cartTable);
+
+    for (var product in updateCartModel.products!) {
       if (product.availabelPieces! == 0) {
         await DBHelper.deleteData(
           table: cartTable,
@@ -66,17 +70,26 @@ class CartCubit extends Cubit<CartState> {
           whereArgs: [product.id],
         );
       } else {
+        Map<String, dynamic> values = {
+          cartItemPrice: product.price!,
+          cartItemDiscount: product.currentDiscount ?? 0,
+        };
+
+        for (var item in tableValues) {
+          if (item[cartItemId] == product.id &&
+              item[cartItemQty] as int > product.availabelPieces!) {
+            values[cartItemQty] = product.availabelPieces;
+          }
+        }
+
         await DBHelper.updateData(
           table: cartTable,
-          values: {
-            cartItemPrice: product.price!,
-            cartItemDiscount: product.currentDiscount ?? 0,
-          },
+          values: values,
           where: 'id = ?',
           whereArgs: [product.id],
         );
       }
-    });
+    }
     return DBHelper.queryData(table: cartTable);
   }
 
@@ -100,5 +113,14 @@ class CartCubit extends Cubit<CartState> {
         print('$e');
       }
     }
+  }
+
+  int getAvailablePieces(int id) {
+    for (var product in updateCartModel!.products!) {
+      if (product.id == id) {
+        return product.availabelPieces!;
+      }
+    }
+    throw Exception('Product with id $id not found');
   }
 }

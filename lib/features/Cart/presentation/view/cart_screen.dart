@@ -39,6 +39,7 @@ class _CartScreenState extends State<CartScreen> {
         },
         builder: (context, state) {
           CartCubit cartCubit = BlocProvider.of<CartCubit>(context);
+          List<Map<String, Object?>> tableValues = cartCubit.tableValues;
 
           return Scaffold(
             backgroundColor: Colors.white,
@@ -73,28 +74,28 @@ class _CartScreenState extends State<CartScreen> {
                           padding: EdgeInsets.symmetric(horizontal: 10.w),
                           itemBuilder: (context, index) => CartItemWidget(
                             itemUiModel: ItemUiModel(
-                              id: cartCubit.tableValues[index][cartItemId]
-                                  as int,
-                              name: cartCubit.tableValues[index][cartItemName]
-                                  as String,
-                              enName: cartCubit.tableValues[index]
-                                  [cartItemEnName] as String,
-                              enDesc: cartCubit.tableValues[index]
-                                  [cartItemEnDesc] as String,
-                              description: cartCubit.tableValues[index]
-                                  [cartItemDesc] as String,
-                              thumbnailImage: cartCubit.tableValues[index]
+                              id: tableValues[index][cartItemId] as int,
+                              name: tableValues[index][cartItemName] as String,
+                              enName:
+                                  tableValues[index][cartItemEnName] as String,
+                              enDesc:
+                                  tableValues[index][cartItemEnDesc] as String,
+                              description:
+                                  tableValues[index][cartItemDesc] as String,
+                              thumbnailImage: tableValues[index]
                                   [cartItemImageUrl] as String,
-                              price: cartCubit.tableValues[index][cartItemPrice]
+                              price:
+                                  tableValues[index][cartItemPrice] as double,
+                              discount: tableValues[index][cartItemDiscount]
                                   as double,
-                              quantity: cartCubit.tableValues[index]
-                                  [cartItemQty] as int,
-                              discount: cartCubit.tableValues[index]
-                                  [cartItemDiscount] as double,
+                              quantity: tableValues[index][cartItemQty] as int,
+                              availablePieces: cartCubit.getAvailablePieces(
+                                tableValues[index][cartItemId] as int,
+                              ),
                             ),
                             onDelete: cartCubit.deleteItem,
                           ),
-                          itemCount: cartCubit.tableValues.length,
+                          itemCount: tableValues.length,
                         ),
                         SizedBox(
                           height: 293.h,

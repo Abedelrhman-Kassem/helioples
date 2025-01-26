@@ -5,6 +5,7 @@ import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/cart_item_icon_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
@@ -12,6 +13,7 @@ import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart'
 class CartItemWidget extends StatefulWidget {
   final ItemUiModel itemUiModel;
   final Future<void> Function(int) onDelete;
+
   const CartItemWidget({
     super.key,
     required this.itemUiModel,
@@ -76,7 +78,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  '${product.quantity} Pcs (${product.price} EGP)',
+                  '${product.availablePieces} Pcs (${product.price} EGP)',
                   style: Styles.styles10w400interFamily,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -108,9 +110,19 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                     cartItemIconWidget(
                       svgPath: 'assets/svg_icons/empty-plus.svg',
                       onTap: () {
-                        product.quantity++;
-                        updateQty();
-                        setState(() {});
+                        if (product.quantity < product.availablePieces) {
+                          product.quantity++;
+                          updateQty();
+                          setState(() {});
+                        } else {
+                          CustomSnackBar.show(
+                            context: context,
+                            text:
+                                'You can\'t add more than ${product.availablePieces} pieces',
+                            duration: const Duration(seconds: 10),
+                            isGreen: false,
+                          );
+                        }
                       },
                     ),
                   ],
