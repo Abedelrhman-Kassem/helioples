@@ -7,7 +7,10 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/cho
 
 class AlternativeContainer extends StatefulWidget {
   final CreateOrderModel createOrderModel;
-  const AlternativeContainer({super.key, required this.createOrderModel});
+  const AlternativeContainer({
+    super.key,
+    required this.createOrderModel,
+  });
 
   @override
   State<AlternativeContainer> createState() => _AlternativeContainerState();
@@ -25,6 +28,7 @@ class _AlternativeContainerState extends State<AlternativeContainer> {
   @override
   Widget build(BuildContext context) {
     widget.createOrderModel.alternativeProduct = radioValue;
+    widget.createOrderModel.chooseForMe = true;
 
     return Container(
       padding: EdgeInsets.all(20.r),

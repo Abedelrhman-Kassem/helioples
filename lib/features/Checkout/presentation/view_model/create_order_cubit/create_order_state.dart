@@ -56,3 +56,15 @@ final class BranchesFailed extends CreateOrderState {
   String error;
   BranchesFailed(this.error);
 }
+
+final class LoadingDeliveryTime extends CreateOrderState {}
+
+final class GetDeliveryTimeSuccess extends CreateOrderState {
+  DeliveryTimeModel deliveryTimeModel;
+  GetDeliveryTimeSuccess(this.deliveryTimeModel);
+}
+
+final class GetDeliveryTimeFailed extends CreateOrderState {
+  String error;
+  GetDeliveryTimeFailed(this.error);
+}

@@ -167,7 +167,10 @@ class _PickUpScreenState extends State<PickUpScreen> {
                         ],
                       ),
                     ),
-                    timeScheduleContainer(context, 'Pickup Time'),
+                    TimeScheduleContainer(
+                      title: 'PickUp Time',
+                      createOrderModel: createOrderModel,
+                    ),
                     if (state is BranchesLoading)
                       Helper.loadingWidget()
                     else if (state is BranchesFailed)
@@ -177,7 +180,9 @@ class _PickUpScreenState extends State<PickUpScreen> {
                         branchesModel: branchesModel,
                         createOrderModel: createOrderModel,
                       ),
-                    const PromoCodeContainer(),
+                    PromoCodeContainer(
+                      createOrderModel: createOrderModel,
+                    ),
                     PaymentDetails(createOrderModel: createOrderModel),
                     AlternativeContainer(
                       createOrderModel: createOrderModel,

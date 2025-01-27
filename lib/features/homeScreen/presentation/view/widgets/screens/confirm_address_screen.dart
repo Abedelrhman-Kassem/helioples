@@ -18,6 +18,7 @@ class _ConfirmAddressState extends State<ConfirmAddress> {
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Confirm Address'),

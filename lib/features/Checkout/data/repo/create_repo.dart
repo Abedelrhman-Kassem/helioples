@@ -4,6 +4,7 @@ import 'package:negmt_heliopolis/features/Checkout/data/model/branches_model.dar
 import 'package:negmt_heliopolis/features/Checkout/data/model/cancel_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/delivery_time_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/promocode_model.dart';
 
 abstract class CreateOrder {
@@ -15,4 +16,6 @@ abstract class CreateOrder {
   Future<Either<Failure, CancelOrderModel>> cancelOrder(int id, String reason);
 
   Future<Either<Failure, BranchesModel>> getAllBranches();
+
+  Future<Either<Failure, DeliveryTimeModel>> getDeliveryTime();
 }

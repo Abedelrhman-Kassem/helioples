@@ -10,7 +10,7 @@ import 'package:negmt_heliopolis/core/widgets/add_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/delivery_address_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/confirm_address_bottom_sheet.dart';
+import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/screens/confirm_address_screen.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/address_model.dart';
 
 class LocationWidget extends StatefulWidget {

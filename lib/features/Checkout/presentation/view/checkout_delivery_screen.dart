@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,9 +34,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   List<Map<String, Object?>> tableValues = [];
   CreateOrderModel createOrderModel = CreateOrderModel(
     deliverMethod: 'Delivery',
-    deliverTimeId: 2,
-    addressId: 2,
-    chooseForMe: true,
   );
 
   @override
@@ -143,15 +142,22 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ],
                       ),
                     ),
-                    timeScheduleContainer(context, 'Delivery Time'),
-                    const DeliveryAddressContainer(),
+                    TimeScheduleContainer(
+                      title: 'Delivery Time',
+                      createOrderModel: createOrderModel,
+                    ),
+                    DeliveryAddressContainer(
+                      createOrderModel: createOrderModel,
+                    ),
                     DeliveryPaymentContianer(
                       createOrderModel: createOrderModel,
                     ),
                     DeliveryTipsContianer(
                       createOrderModel: createOrderModel,
                     ),
-                    const PromoCodeContainer(),
+                    PromoCodeContainer(
+                      createOrderModel: createOrderModel,
+                    ),
                     PaymentDetails(
                       createOrderModel: createOrderModel,
                     ),
@@ -279,6 +285,7 @@ class _CheckOutBottomSheetState extends State<CheckOutBottomSheet> {
                     borderRadius: BorderRadius.circular(36.77.r),
                     splashColor: MyColors.mainColor,
                     onTap: () {
+                      log(widget.createOrderModel.deliverTimeId.toString());
                       createOrderCubit.createOrder(widget.createOrderModel);
                     },
                     child: Container(

@@ -269,7 +269,10 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                           itemCount: tableValues.length,
                         ),
                       ),
-                      timeScheduleContainer(context, 'Pickup Time'),
+                      TimeScheduleContainer(
+                        title: 'PickUp Time',
+                        createOrderModel: createOrderModel,
+                      ),
                       if (state is BranchesLoading)
                         Helper.loadingWidget()
                       else if (state is BranchesFailed)
@@ -279,7 +282,9 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                           branchesModel: branchesModel,
                           createOrderModel: createOrderModel,
                         ),
-                      const PromoCodeContainer(),
+                      PromoCodeContainer(
+                        createOrderModel: createOrderModel,
+                      ),
                       PaymentDetails(
                         createOrderModel: createOrderModel,
                       ),

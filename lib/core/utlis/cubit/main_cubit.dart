@@ -52,8 +52,9 @@ class MainCubit extends Cubit<MainState> {
     int? addressId = await getChossenAddressId();
 
     address = mainaddressModel.address!.firstWhere(
-        (element) => element.id == addressId,
-        orElse: () => mainaddressModel.address!.first);
+      (element) => element.id == addressId,
+      orElse: () => mainaddressModel.address!.first,
+    );
   }
 
   Future<int?> getChossenAddressId() async {

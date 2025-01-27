@@ -5,6 +5,7 @@ import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/branches_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/cancel_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/delivery_time_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/promocode_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/repo/create_repo.dart';
@@ -99,6 +100,27 @@ class CreateOrderImp extends CreateOrder {
       branchesModel = BranchesModel.fromJson(response);
 
       return right(branchesModel);
+    } catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure.fromDioError(e));
+      }
+
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, DeliveryTimeModel>> getDeliveryTime() async {
+    DeliveryTimeModel deliveryTimeModel;
+
+    try {
+      var response = await apiService.get(
+        endpoint: 'api/protected/delivery/get-available-time',
+      );
+
+      deliveryTimeModel = DeliveryTimeModel.fromJson(response);
+
+      return right(deliveryTimeModel);
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioError(e));

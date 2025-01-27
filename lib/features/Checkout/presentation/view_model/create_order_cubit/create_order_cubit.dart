@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +9,7 @@ import 'package:negmt_heliopolis/core/utlis/notifiers/db_change_notifier.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/branches_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/cancel_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/delivery_time_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/promocode_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/repo/create_repo_imp.dart';
@@ -117,6 +117,32 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
       count: items.length,
       totalPrice: totalPrice,
       totalDiscount: totalDiscount,
+    );
+  }
+
+  AvailableTime? availableTime;
+  void getDeliveryTime() async {
+    emit(LoadingDeliveryTime());
+
+    Either<Failure, DeliveryTimeModel> res =
+        await createOrderImp.getDeliveryTime();
+
+    res.fold(
+      (failure) => emit(
+        GetDeliveryTimeFailed(failure.errorMessage),
+      ),
+      (deliveryTimeModel) {
+        if (deliveryTimeModel.available!.isEmpty) {
+          emit(
+            GetDeliveryTimeFailed('No available time'),
+          );
+          return;
+        }
+        availableTime = deliveryTimeModel.available!.first;
+        emit(
+          GetDeliveryTimeSuccess(deliveryTimeModel),
+        );
+      },
     );
   }
 }

@@ -4,10 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 
 class PromoCodeContainer extends StatefulWidget {
-  const PromoCodeContainer({super.key});
+  final CreateOrderModel createOrderModel;
+  const PromoCodeContainer({
+    super.key,
+    required this.createOrderModel,
+  });
 
   @override
   State<PromoCodeContainer> createState() => _PromoCodeContainerState();
@@ -33,6 +38,11 @@ class _PromoCodeContainerState extends State<PromoCodeContainer> {
             text: state.error,
             isGreen: false,
           );
+        }
+
+        if (state is CheckPromoCodeSuccess) {
+          widget.createOrderModel.promoCode =
+              state.promoCodeModel.promoCode!.code;
         }
       },
       builder: (context, state) {
@@ -98,9 +108,6 @@ class _PromoCodeContainerState extends State<PromoCodeContainer> {
                   ),
                   cursorColor: MyColors.mainColor,
                   style: Styles.styles17w700MainColor,
-                  onChanged: (value) {
-                    if (value.isNotEmpty) {}
-                  },
                 ),
               ),
             ],

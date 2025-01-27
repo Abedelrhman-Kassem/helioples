@@ -50,10 +50,6 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
 
     createOrderModel = CreateOrderModel(
       deliverMethod: 'Delivery',
-      deliverTimeId: 2,
-      addressId: 2,
-      chooseForMe: true,
-      alternativeProduct: 'call',
       items: itemsArray,
     );
 
@@ -219,15 +215,22 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                           itemCount: tableValues.length,
                         ),
                       ),
-                      timeScheduleContainer(context, 'Delivery Time'),
-                      const DeliveryAddressContainer(),
+                      TimeScheduleContainer(
+                        title: 'Delivery Time',
+                        createOrderModel: createOrderModel,
+                      ),
+                      DeliveryAddressContainer(
+                        createOrderModel: createOrderModel,
+                      ),
                       DeliveryPaymentContianer(
                         createOrderModel: createOrderModel,
                       ),
                       DeliveryTipsContianer(
                         createOrderModel: createOrderModel,
                       ),
-                      const PromoCodeContainer(),
+                      PromoCodeContainer(
+                        createOrderModel: createOrderModel,
+                      ),
                       PaymentDetails(
                         createOrderModel: createOrderModel,
                       ),
