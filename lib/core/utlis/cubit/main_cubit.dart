@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -7,7 +9,9 @@ import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/address_model.dart';
+import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/repo/address_repo_imp.dart';
+import 'package:negmt_heliopolis/features/homeScreen/data/repo/home_screen_imp.dart';
 
 part 'main_state.dart';
 
@@ -68,5 +72,48 @@ class MainCubit extends Cubit<MainState> {
     );
 
     getChossenAddress();
+  }
+
+  HomeScreenRepoImp homeScreenImp = HomeScreenRepoImp(
+    apiService: ApiService(),
+  );
+
+  bool loadingCategories = false;
+  bool endFetching = false;
+  AllCategoriesModel categories = AllCategoriesModel.fromJson({
+    'categories': <CategoryModel>[],
+  });
+  int page = 0;
+
+  Future<void> getAllCategories({
+    required bool homeScreen,
+  }) async {
+    if (loadingCategories || endFetching) return;
+
+    emit(FetchMainCubitCategoriesLoading());
+    loadingCategories = true;
+
+    Either<Failure, AllCategoriesModel> res =
+        await homeScreenImp.getAllCategories(
+      homeScreen: homeScreen,
+      page: page,
+    );
+
+    res.fold(
+      (failure) => emit(
+        FetchMainCubitCategoriesFailure(failure.errorMessage),
+      ),
+      (categoriesModel) {
+        if (categoriesModel.categories!.isEmpty) {
+          endFetching = true;
+        }
+
+        categories.categories?.addAll(categoriesModel.categories!);
+
+        page++;
+        emit(FetchMainCubitCategoriesSuccess(categoriesModel));
+      },
+    );
+    loadingCategories = false;
   }
 }

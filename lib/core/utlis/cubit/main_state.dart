@@ -20,3 +20,15 @@ final class GetAddressesFailed extends MainState {
   final String error;
   const GetAddressesFailed(this.error);
 }
+
+final class FetchMainCubitCategoriesLoading extends MainState {}
+
+final class FetchMainCubitCategoriesSuccess extends MainState {
+  final AllCategoriesModel allCategoriesModel;
+  const FetchMainCubitCategoriesSuccess(this.allCategoriesModel);
+}
+
+final class FetchMainCubitCategoriesFailure extends MainState {
+  final String error;
+  const FetchMainCubitCategoriesFailure(this.error);
+}

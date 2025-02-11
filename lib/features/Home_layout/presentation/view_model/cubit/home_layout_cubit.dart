@@ -21,12 +21,12 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
   int selectedIndex = 0;
   int previousIndex = 0;
 
-  List<Widget> screens = [
-    const HomeScreen(),
-    const ExploreScreen(),
-    const LikedScreen(),
-    const CartScreen(),
-    const ProfileScreen(),
+  List<Widget> screens = const [
+    HomeScreen(),
+    ExploreScreen(),
+    LikedScreen(),
+    CartScreen(),
+    ProfileScreen(),
   ];
 
   List<int> previousIndexList = [0];

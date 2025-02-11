@@ -1,8 +1,11 @@
 class ProductModel {
+  Category? category;
   Product? product;
   List<RelatedProductsModel>? related;
 
   ProductModel.fromJson(Map<String, dynamic> json) {
+    category =
+        json['category'] != null ? Category.fromJson(json['category']) : null;
     product =
         json['product'] != null ? Product.fromJson(json['product']) : null;
     if (json['related'] != null) {
@@ -11,6 +14,16 @@ class ProductModel {
         related!.add(RelatedProductsModel.fromJson(v));
       });
     }
+  }
+}
+
+class Category {
+  int? id;
+  String? name;
+
+  Category.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
   }
 }
 

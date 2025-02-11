@@ -5,7 +5,7 @@ import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_container.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_counter.dart';
-import 'package:negmt_heliopolis/core/widgets/categories_button_title_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/categories_bottom_sheet.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Product/presentation/view/widgets/product_widget.dart';
@@ -33,8 +33,7 @@ class _ProductScreenState extends State<ProductScreen> {
               Navigator.pop(context);
             },
           ),
-          title: categoriesButtonTitleWidet(
-            context: context,
+          title: const CategoriesBottomSheet(
             title: 'Bakeries And Pastries',
           ),
           actions: const [
