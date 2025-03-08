@@ -14,7 +14,8 @@ import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/set_loca
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/signup_screen.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/verfication_screen.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/cart_screen.dart';
-import 'package:negmt_heliopolis/features/Categories/presentation/view/categories_screen.dart';
+import 'package:negmt_heliopolis/features/Categories/presentation/view%20model/cubit/sub_categories_cubit.dart';
+import 'package:negmt_heliopolis/features/Categories/presentation/view/sub_categories_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/card_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_delivery_screen.dart';
@@ -23,6 +24,7 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/pick_up_scr
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/pickup_order_details._screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/pickup_reorder_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/re_order_screen.dart';
+import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/screens/confirm_address_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view/home_layout.dart';
@@ -115,8 +117,14 @@ class AppRouter {
 
       case categoriesScreen:
         final args = settings.arguments as Map<String, dynamic>;
-        page = CategoriesScreen(
-          category: args['category'],
+        final category = args['category'] as CategoryModel;
+
+        page = BlocProvider(
+          create: (context) =>
+              SubCategoriesCubit()..fetchSubCategories(category.id),
+          child: SubCategoriesScreen(
+            category: args['category'],
+          ),
         );
         fromRight = true;
         break;

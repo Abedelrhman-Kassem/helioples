@@ -7,7 +7,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Explore/presentation/view_model/cubit/explore_cubit.dart';
-import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/body_loading_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/skeletonizer_loading.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
@@ -125,7 +125,7 @@ class CustomSearchDelegate extends SearchDelegate {
             child: Column(
               children: [
                 if (state is ExploreLoading && products.isEmpty)
-                  bodyLoadingWidget(),
+                  gridProductsLoading(9),
                 //
                 Padding(
                   padding: const EdgeInsets.symmetric(

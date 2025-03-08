@@ -64,59 +64,59 @@ class SubCategories {
   // }
 }
 
-class Products {
-  int? id;
-  String? name;
-  String? enDescription;
-  String? enName;
-  Null thumbnailImage;
-  String? searchDescription;
-  double? price;
-  Null afterDiscount;
-  String? state;
-  String? createdAt;
-  Null discount;
+// class Products {
+//   int? id;
+//   String? name;
+//   String? enDescription;
+//   String? enName;
+//   Null thumbnailImage;
+//   String? searchDescription;
+//   double? price;
+//   Null afterDiscount;
+//   String? state;
+//   String? createdAt;
+//   Null discount;
 
-  Products(
-      {this.id,
-      this.name,
-      this.enDescription,
-      this.enName,
-      this.thumbnailImage,
-      this.searchDescription,
-      this.price,
-      this.afterDiscount,
-      this.state,
-      this.createdAt,
-      this.discount});
+//   Products(
+//       {this.id,
+//       this.name,
+//       this.enDescription,
+//       this.enName,
+//       this.thumbnailImage,
+//       this.searchDescription,
+//       this.price,
+//       this.afterDiscount,
+//       this.state,
+//       this.createdAt,
+//       this.discount});
 
-  Products.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    enDescription = json['enDescription'];
-    enName = json['enName'];
-    thumbnailImage = json['thumbnailImage'];
-    searchDescription = json['searchDescription'];
-    price = json['price'] != null ? (json['price'] as num).toDouble() : null;
-    afterDiscount = json['afterDiscount'];
-    state = json['state'];
-    createdAt = json['createdAt'];
-    discount = json['discount'];
-  }
+//   Products.fromJson(Map<String, dynamic> json) {
+//     id = json['id'];
+//     name = json['name'];
+//     enDescription = json['enDescription'];
+//     enName = json['enName'];
+//     thumbnailImage = json['thumbnailImage'];
+//     searchDescription = json['searchDescription'];
+//     price = json['price'] != null ? (json['price'] as num).toDouble() : null;
+//     afterDiscount = json['afterDiscount'];
+//     state = json['state'];
+//     createdAt = json['createdAt'];
+//     discount = json['discount'];
+//   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['enDescription'] = enDescription;
-    data['enName'] = enName;
-    data['thumbnailImage'] = thumbnailImage;
-    data['searchDescription'] = searchDescription;
-    data['price'] = price;
-    data['afterDiscount'] = afterDiscount;
-    data['state'] = state;
-    data['createdAt'] = createdAt;
-    data['discount'] = discount;
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['id'] = id;
+//     data['name'] = name;
+//     data['enDescription'] = enDescription;
+//     data['enName'] = enName;
+//     data['thumbnailImage'] = thumbnailImage;
+//     data['searchDescription'] = searchDescription;
+//     data['price'] = price;
+//     data['afterDiscount'] = afterDiscount;
+//     data['state'] = state;
+//     data['createdAt'] = createdAt;
+//     data['discount'] = discount;
+//     return data;
+//   }
+// }

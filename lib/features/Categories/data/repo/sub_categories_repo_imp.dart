@@ -12,18 +12,20 @@ import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart'
 class SubCategoriesRepoImp extends SubCategoriesRepo {
   final ApiService api;
   List<SubCategories> subCategories = [];
-  int mainId  = 0 ; 
+  int mainId = 0;
 
   SubCategoriesRepoImp({required this.api});
 
   @override
   Future<Either<Failure, List<SubCategories>>> getSubCategories(
-       int id) async {
+    int id,
+  ) async {
     try {
       await api.setAuthorizationHeader();
-      var response =
-          await api.get(endpoint: "api/categories/$id/sub-categories", );
-      mainId = id ; 
+      var response = await api.get(
+        endpoint: "api/categories/$id/sub-categories",
+      );
+      mainId = id;
 
       print(response['subCategories']);
 
@@ -49,29 +51,30 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
       }
     }
   }
-  
+
   @override
-  Future<Either<Failure, List<RelatedProductsModel>>> getProductsInSubCategory(int subCategoryId, int page) async  {
-
+  Future<Either<Failure, List<RelatedProductsModel>>> getProductsInSubCategory(
+      int subCategoryId, int page,
+      {int include = 10}) async {
     try {
-      await api.setAuthorizationHeader() ; 
+      await api.setAuthorizationHeader();
 
-      var response = await api.get(endpoint: "api/categories/$mainId/sub-categories/$subCategoryId?page=$page&include=40");
+      var response = await api.get(
+        endpoint:
+            "api/categories/$mainId/sub-categories/$subCategoryId?page=$page&include=$include",
+      );
       List<RelatedProductsModel> products = [];
-
 
       for (var item in response['subCategory']['products']) {
         try {
-      
           products.add(RelatedProductsModel.fromJson(item));
         } catch (e) {
           print("Error parsing item: $e");
         }
-      } 
+      }
       // print("llllllllllllllll");
       // print(products.length);
       return right(products);
-      
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
@@ -79,33 +82,32 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
         return left(ServerFailure(e.toString()));
       }
     }
-   
   }
-  
+
   @override
-  Future<Either<Failure, List<RelatedProductsModel>>> getAllProductsOfSubCategory(int subCategoryId) async {
-     try {
-      await api.setAuthorizationHeader() ; 
+  Future<Either<Failure, List<RelatedProductsModel>>>
+      getAllProductsOfSubCategory(int subCategoryId) async {
+    try {
+      await api.setAuthorizationHeader();
 
-      var response = await api.get(endpoint: "api/categories/$mainId/sub-categories/$subCategoryId?include=200");
+      var response = await api.get(
+          endpoint:
+              "api/categories/$mainId/sub-categories/$subCategoryId?include=200");
       List<RelatedProductsModel> products = [];
-
 
       for (var item in response['subCategory']['products']) {
         try {
-      
           products.add(RelatedProductsModel.fromJson(item));
         } catch (e) {
           print("Error parsing item: $e");
         }
-      } 
+      }
       // print("llllllllllllllll");
       // print(products.length);
       log("prinintg products in the repo ");
       print(products);
       log("after printing products in the repo");
       return right(products);
-      
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioError(e));

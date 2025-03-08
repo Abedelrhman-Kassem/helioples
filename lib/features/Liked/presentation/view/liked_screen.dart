@@ -5,7 +5,7 @@ import 'package:negmt_heliopolis/core/widgets/cart_counter.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/body_failed_widget.dart';
-import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/body_loading_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/skeletonizer_loading.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/body_success_widget.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/body_unauthorized.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view_model/cubit/liked_cubit.dart';
@@ -52,7 +52,7 @@ class _LikedScreenState extends State<LikedScreen> {
         child: BlocConsumer<LikedCubit, LikedState>(
           listener: (context, state) {
             if (state is FetchLikedLoading && products.isEmpty) {
-              bodyWidget = bodyLoadingWidget();
+              bodyWidget = gridProductsLoading(9);
             }
 
             if (state is FetchLikedSuccess) {
