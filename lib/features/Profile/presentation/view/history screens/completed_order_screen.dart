@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,34 +55,30 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
               _historyCubit.orderHistoryList.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is FetchHistoryFailure) {
-            if(state.msg == "You are not allowed to access this page.")
-            {
-               return Center(child: InfoMessageWidget(
-              buttonText: "Sign In Now",
-              imagePath: "assets/Icons_logos/Social 03.png",
-              title: "No Profile Information",
-              description: "You need sign in to app in order to control your personal information",
-              onPressed: (){
-                Navigator.pushNamed(context,signInScreen );
-              },
-
-            ));
-              
-            } else 
-            {
-              return Center(child: InfoMessageWidget(
-              buttonText: "Refresh",
-              imagePath: "assets/Icons_logos/Connectivity_issue.png",
-              title: "Error Occurred",
-              description: "Seems like we got a problem, please refresh",
-              onPressed: (){
-                Navigator.pushNamed(context,signInScreen );
-              },
-
-            ));
-
+            if (state.msg == "You are not allowed to access this page.") {
+              return Center(
+                  child: InfoMessageWidget(
+                buttonText: "Sign In Now",
+                imagePath: "assets/Icons_logos/Social 03.png",
+                title: "No Profile Information",
+                description:
+                    "You need sign in to app in order to control your personal information",
+                onPressed: () {
+                  Navigator.pushNamed(context, signInScreen);
+                },
+              ));
+            } else {
+              return Center(
+                  child: InfoMessageWidget(
+                buttonText: "Refresh",
+                imagePath: "assets/Icons_logos/Connectivity_issue.png",
+                title: "Error Occurred",
+                description: "Seems like we got a problem, please refresh",
+                onPressed: () {
+                  Navigator.pushNamed(context, signInScreen);
+                },
+              ));
             }
-           
           } else if (state is FetchHistorySuccess ||
               _historyCubit.orderHistoryList.isNotEmpty) {
             return ListView.builder(
@@ -97,7 +91,6 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
                       : const SizedBox.shrink();
                 }
 
-                
                 var orderHistory = _historyCubit.orderHistoryList[index];
                 return Padding(
                   padding:
@@ -105,7 +98,6 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                   
                       Text(
                         orderHistory.date ?? '',
                         style: Styles.styles17w700interFamily.copyWith(
@@ -114,16 +106,16 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
                         ),
                       ),
                       SizedBox(height: 8.h),
-
                       Column(
                         children: orderHistory.orders?.map((order) {
                               return Padding(
                                 padding: EdgeInsets.only(bottom: 8.h),
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.of(context)
-                                        .pushNamed(orderDetailsScreen , arguments: {
-                                          'order' : order,
+                                    Navigator.of(context).pushNamed(
+                                        orderDetailsScreen,
+                                        arguments: {
+                                          'order': order,
                                         });
                                   },
                                   child: Container(
@@ -253,43 +245,39 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
   }
 }
 
-Widget historyShimmerLoading()
-{
+Widget historyShimmerLoading() {
   return Skeletonizer(
     child: Container(
       color: Colors.white,
       child: Column(
         children: [
-
           AppBar(
-            leading:  const Icon(Icons.add_ic_call_outlined),
-            title:  const Text("dummy "),
+            leading: const Icon(Icons.add_ic_call_outlined),
+            title: const Text("dummy "),
           ),
           SizedBox(
             height: 15.h,
           ),
-
           Row(
             children: [
               Container(
-                    height: 50.h,
-                    width: 110.w,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(30.r),
-                    ),
-                  ),
-                  Container(
-                    height: 50.h,
-                    width: 110.w,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(30.r),
-                    ),
-                  ),
+                height: 50.h,
+                width: 110.w,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r),
+                ),
+              ),
+              Container(
+                height: 50.h,
+                width: 110.w,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(30.r),
+                ),
+              ),
             ],
           )
-    
         ],
       ),
     ),

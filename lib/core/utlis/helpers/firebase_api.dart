@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/main.dart';
 
-
 class FirebaseApi {
   final _firebaseMessaging = FirebaseMessaging.instance;
 
@@ -29,9 +28,7 @@ class FirebaseApi {
     log("Handling message: ${message.data}");
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-    
       log("Navigator Key State: ${navigatorKey.currentState}");
-      
 
       navigatorKey.currentState?.pushNamed(homeLayout);
     });

@@ -175,7 +175,7 @@ class _PickUpScreenState extends State<PickUpScreen> {
                       Helper.loadingWidget()
                     else if (state is BranchesFailed)
                       Text(state.error)
-                    else
+                    else if (branchesModel.branches != null)
                       BranchesRow(
                         branchesModel: branchesModel,
                         createOrderModel: createOrderModel,

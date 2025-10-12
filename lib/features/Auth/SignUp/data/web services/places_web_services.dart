@@ -18,7 +18,7 @@ class PlacesWebservices {
           'input': place,
           'types': 'address',
           'components': 'country:eg',
-          'key': 'AIzaSyBQAThnQ7ZR3akrO2kvDR6c85XOa2t3bBA',
+          'key': 'AIzaSyBY2c4R_pLZfBCYfrxw4j0NtV4oBZxw-tQ',
           'sessiontoken': sessionToken
         },
       );
@@ -38,7 +38,7 @@ class PlacesWebservices {
         queryParameters: {
           'place_id': placeId,
           'fields': 'geometry',
-          'key': 'AIzaSyBQAThnQ7ZR3akrO2kvDR6c85XOa2t3bBA',
+          'key': 'AIzaSyBY2c4R_pLZfBCYfrxw4j0NtV4oBZxw-tQ',
           'sessiontoken': sessionToken
         },
       );

@@ -36,37 +36,36 @@ class _LoginScreenState extends State<LoginScreen> {
     String? myToken = await FirebaseMessaging.instance.getToken();
     FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
- 
     log("token : $myToken");
   }
 
-  myRequestPermission() async 
-  {
+  myRequestPermission() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-NotificationSettings settings = await messaging.requestPermission(
-  alert: true,
-  announcement: false,
-  badge: true,
-  carPlay: true,
-  criticalAlert: false,
-  provisional: false,
-  sound: true,
-);
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: true,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
 
-if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-  print('User granted permission');
-} else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-  print('User granted provisional permission');
-} else {
-  print('User declined or has not accepted permission');
-}
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
   }
 
   @override
   void initState() {
     // TODO: implement initState
-    
+
     myRequestPermission();
     getToken();
     super.initState();
@@ -121,10 +120,11 @@ if (settings.authorizationStatus == AuthorizationStatus.authorized) {
                   height: 12.h,
                 ),
                 NameTextField(
-                    labelText: "Password",
-                    controller: PasswordController,
-                    isEnabled: true,
-                    isPassword: true),
+                  labelText: "Password",
+                  controller: PasswordController,
+                  isEnabled: true,
+                  isPassword: true,
+                ),
                 SizedBox(
                   height: 12.h,
                 ),
@@ -273,7 +273,6 @@ if (settings.authorizationStatus == AuthorizationStatus.authorized) {
     );
   }
 }
-
 
 // import 'package:flutter_bloc/flutter_bloc.dart';
 
