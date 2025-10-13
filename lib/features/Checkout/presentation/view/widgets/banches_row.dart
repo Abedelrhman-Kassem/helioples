@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,6 +28,7 @@ class _BranchesRowState extends State<BranchesRow> {
   @override
   void initState() {
     selectedBranch = widget.branchesModel.branches?[0].id ?? 0;
+    log(widget.branchesModel.branches.toString());
     branches = widget.branchesModel.branches!;
 
     super.initState();

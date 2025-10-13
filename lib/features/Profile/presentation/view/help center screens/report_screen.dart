@@ -27,74 +27,73 @@ class ReportScreen extends StatefulWidget {
 }
 
 class _ReportScreenState extends State<ReportScreen> {
- 
   final TextEditingController firstNameController =
       TextEditingController(text: "Omar");
   final TextEditingController lastNameController =
       TextEditingController(text: "Salah");
   final TextEditingController phoneNumberController =
       TextEditingController(text: "+201116026564");
-  final TextEditingController messageController = new TextEditingController();
-    File? _selectedImage;
-  Future<void> _pickImage(String type) async
-  {
-    final ImagePicker picker =   ImagePicker();
- 
-    if(type == "Camera")
-    {
+  final TextEditingController messageController = TextEditingController();
+  File? _selectedImage;
+  Future<void> _pickImage(String type) async {
+    final ImagePicker picker = ImagePicker();
+
+    if (type == "Camera") {
       final XFile? image = await picker.pickImage(source: ImageSource.camera);
-          if(image != null)
-    {
-      setState(() {
-        _selectedImage = File(image.path);
-      });
-    }
-
-    } else
-    {
+      if (image != null) {
+        setState(() {
+          _selectedImage = File(image.path);
+        });
+      }
+    } else {
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-          if(image != null)
-    {
-      setState(() {
-        _selectedImage = File(image.path);
-      });
+      if (image != null) {
+        setState(() {
+          _selectedImage = File(image.path);
+        });
+      }
     }
-
-    }
-    
-
   }
 
-  void _showImageSourceDialog()
-  {
-    showDialog(context: context, builder: (context)=>AlertDialog(
-
-      title: Text("Choose Image Source" , style: Styles.styles12w600Black.copyWith(fontSize: 18.sp , fontWeight: FontWeight.w600),),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-           ListTile(
-              leading:  Icon(Icons.camera_alt , color: MyColors.mainColor,),
-              title: const Text("Camera"),
-              onTap: () {
-                
-                Navigator.of(context).pop(); // Close the dialog
-                _pickImage("Camera");
-              },
-            ),
-            ListTile(
-              leading:  Icon(Icons.photo , color: MyColors.mainColor,),
-              title: const Text("Gallery"),
-              onTap: () {
-                Navigator.of(context).pop(); // Close the dialog
-                _pickImage("Gallery");
-              },
-            ),
-        ],
-      ),
-
-    ));
+  void _showImageSourceDialog() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text(
+                "Choose Image Source",
+                style: Styles.styles12w600Black
+                    .copyWith(fontSize: 18.sp, fontWeight: FontWeight.w600),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    leading: Icon(
+                      Icons.camera_alt,
+                      color: MyColors.mainColor,
+                    ),
+                    title: const Text("Camera"),
+                    onTap: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                      _pickImage("Camera");
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.photo,
+                      color: MyColors.mainColor,
+                    ),
+                    title: const Text("Gallery"),
+                    onTap: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                      _pickImage("Gallery");
+                    },
+                  ),
+                ],
+              ),
+            ));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,9 +105,11 @@ class _ReportScreenState extends State<ReportScreen> {
           children: [
             Row(
               children: [
-                returnArrow(context: context, onTap: (){
-                Navigator.of(context).pop();
-              }),
+                returnArrow(
+                    context: context,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    }),
                 SizedBox(
                   width: 90.w,
                 ),
@@ -200,13 +201,12 @@ class _ReportScreenState extends State<ReportScreen> {
               width: double.infinity,
               height: 60.h,
               decoration: BoxDecoration(
-                color: const Color.fromRGBO(246, 246, 246, 1),
-                borderRadius: BorderRadius.circular(20.r)
-              ),
+                  color: const Color.fromRGBO(246, 246, 246, 1),
+                  borderRadius: BorderRadius.circular(20.r)),
               child: GestureDetector(
                 onTap: _showImageSourceDialog,
                 child: Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 15.w),
+                  padding: EdgeInsets.symmetric(horizontal: 15.w),
                   child: Row(
                     children: [
                       if (_selectedImage != null) ...[
@@ -221,78 +221,76 @@ class _ReportScreenState extends State<ReportScreen> {
                       const Spacer(),
                       Text(
                         "Upload",
-                        style: Styles.styles13w400interFamily.copyWith(fontWeight: FontWeight.w500 , color: MyColors.mainColor , fontSize: 15.sp ),
+                        style: Styles.styles13w400interFamily.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: MyColors.mainColor,
+                            fontSize: 15.sp),
                       ),
                       SizedBox(
                         width: 8.w,
                       ),
-                      Image.asset("assets/Icons_logos/gallery-export.png" ,),
+                      Image.asset(
+                        "assets/Icons_logos/gallery-export.png",
+                      ),
                     ],
                   ),
                 ),
               ),
-
             ),
             SizedBox(
               height: 20.h,
             ),
             BlocProvider(
-              create: (context) =>ReportCubit(ProfileRepoImp(api: ApiService())),
-              child: BlocConsumer<ReportCubit,SubmitReportState>(builder: (context ,state)
-              {
-                var cubit = BlocProvider.of<ReportCubit>(context);
-                if(state is SubmitReportLoading)
-                {
-                  return const LoadingButton(
-                            height: 60,
-                            radius: 10,
-                          );
-                } else 
-                {
-                  return  Center(
-                  child: SignUpCustomButton(
-                      buttonText: "Submit Message", onPressed: () {
-                        Report report = new Report(
-                          firstName: firstNameController.text,
-                          imageUrl: "https://www.google.com/imgres?q=cristiano%20ronaldo&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fd%2Fd7%2FCristiano_Ronaldo_playing_for_Al_Nassr_FC_against_Persepolis%252C_September_2023_%2528cropped%2529.jpg%2F640px-Cristiano_Ronaldo_playing_for_Al_Nassr_FC_against_Persepolis%252C_September_2023_%2528cropped%2529.jpg&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FCristiano_Ronaldo&docid=CBspcpQflHogDM&tbnid=VxxZB7gC_IBLmM&vet=12ahUKEwj-vd3S6P6JAxUhTqQEHWmkKiUQM3oECBoQAA..i&w=640&h=837&hcb=2&ved=2ahUKEwj-vd3S6P6JAxUhTqQEHWmkKiUQM3oECBoQAA",
-                          lastName: lastNameController.text,
-                          phoneNumber: phoneNumberController.text,
-                          message: messageController.text
-                        );
-                        print(report.firstName);
-                        print(report.lastName);
-                        print(report.message);
-                        print(report.phoneNumber);
-                        print(report.imageUrl);
-                        print("rrrrrrr");
+                create: (context) =>
+                    ReportCubit(ProfileRepoImp(api: ApiService())),
+                child: BlocConsumer<ReportCubit, SubmitReportState>(
+                    builder: (context, state) {
+                  var cubit = BlocProvider.of<ReportCubit>(context);
+                  if (state is SubmitReportLoading) {
+                    return const LoadingButton(
+                      height: 60,
+                      radius: 10,
+                    );
+                  } else {
+                    return Center(
+                        child: SignUpCustomButton(
+                            buttonText: "Submit Message",
+                            onPressed: () {
+                              Report report = new Report(
+                                  firstName: firstNameController.text,
+                                  imageUrl:
+                                      "https://www.google.com/imgres?q=cristiano%20ronaldo&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fd%2Fd7%2FCristiano_Ronaldo_playing_for_Al_Nassr_FC_against_Persepolis%252C_September_2023_%2528cropped%2529.jpg%2F640px-Cristiano_Ronaldo_playing_for_Al_Nassr_FC_against_Persepolis%252C_September_2023_%2528cropped%2529.jpg&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FCristiano_Ronaldo&docid=CBspcpQflHogDM&tbnid=VxxZB7gC_IBLmM&vet=12ahUKEwj-vd3S6P6JAxUhTqQEHWmkKiUQM3oECBoQAA..i&w=640&h=837&hcb=2&ved=2ahUKEwj-vd3S6P6JAxUhTqQEHWmkKiUQM3oECBoQAA",
+                                  lastName: lastNameController.text,
+                                  phoneNumber: phoneNumberController.text,
+                                  message: messageController.text);
+                              print(report.firstName);
+                              print(report.lastName);
+                              print(report.message);
+                              print(report.phoneNumber);
+                              print(report.imageUrl);
+                              print("rrrrrrr");
 
-                        cubit.submitReport(report);
-                       
-                      }));
-                }
-              }, listener: (context ,state)
-              {
-                if(state is SubmitReportFailure)
-                {
-                  CustomSnackBar.show(
-                        context: context,
-                        duration: const Duration(milliseconds: 5000),
-                        text: state.errorMessage,
-                        isGreen: false,);
-                } else if(state is SubmitReportSuccess)
-                {
-                  CustomSnackBar.show(
-                        context: context,
-                        duration: const Duration(milliseconds: 5000),
-                        text: 'Report Is Sent ',
-                        isGreen: true,
-                      );
-                       Navigator.of(context).pushNamed(helpCenterScreen);
-                }
-
-              })
-             
-            )
+                              cubit.submitReport(report);
+                            }));
+                  }
+                }, listener: (context, state) {
+                  if (state is SubmitReportFailure) {
+                    CustomSnackBar.show(
+                      context: context,
+                      duration: const Duration(milliseconds: 5000),
+                      text: state.errorMessage,
+                      isGreen: false,
+                    );
+                  } else if (state is SubmitReportSuccess) {
+                    CustomSnackBar.show(
+                      context: context,
+                      duration: const Duration(milliseconds: 5000),
+                      text: 'Report Is Sent ',
+                      isGreen: true,
+                    );
+                    Navigator.of(context).pushNamed(helpCenterScreen);
+                  }
+                }))
           ],
         ),
       ),

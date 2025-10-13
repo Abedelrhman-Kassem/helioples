@@ -83,6 +83,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.subCategories.length,
                   itemBuilder: (context, index) {
+                    print('bulid ');
                     return Container(
                       margin: const EdgeInsets.symmetric(horizontal: 5),
                       width: widget.sectionBtnWidth,

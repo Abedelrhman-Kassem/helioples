@@ -29,18 +29,18 @@ environment:
 # versions available, run `flutter pub outdated`.
 
 dependencies:
-  animations: ^2.0.11
-  bloc: ^8.1.4
-  buttons_tabbar: ^1.3.13
-  cached_network_image: ^3.4.0
-  carousel_slider: ^5.0.0
-  confetti: ^0.7.0
+  animations:
+  bloc:
+  buttons_tabbar:
+  cached_network_image:
+  carousel_slider:
+  confetti:
   cupertino_icons: ^1.0.6
-  dartz: ^0.10.1
-  dio: ^5.6.0
-  easy_localization: ^3.0.7
-  equatable: ^2.0.5
-  flag: ^7.0.0
+  dartz:
+  dio:
+  easy_localization:
+  equatable:
+  flag:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
