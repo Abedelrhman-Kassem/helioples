@@ -4,11 +4,13 @@ import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/notification_button_controlled.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/heart_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_counter_widget.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/widgets/discount_widget.dart';
+import 'package:negmt_heliopolis/test_screen.dart';
 
 class ItemWidget extends StatefulWidget {
   final Color? color;
@@ -69,39 +71,28 @@ class _ItemWidgetState extends State<ItemWidget> {
                     end: 0,
                     bottom: 0,
                     child: SizedBox(
-                      height: 30,
-                      child: product.availabelPieces! > 0
-                          ? ItemCounterWidget(
-                              itemUiModel: ItemUiModel(
-                                id: product.id!,
-                                name: product.name!,
-                                enName: product.enName ?? 'enName',
-                                enDesc:
-                                    product.enDescription ?? 'enDescription',
-                                description:
-                                    product.enDescription ?? 'description',
-                                thumbnailImage: product.thumbnailImage ?? '',
-                                price: product.price!,
-                                discount: product.currentDiscount ?? 0,
-                                availablePieces: product.availabelPieces!,
-                                quantity: counter,
-                              ),
-                            )
-                          : Material(
-                              color: widget.color ??
-                                  const Color.fromRGBO(241, 241, 241, 1),
-                              child: InkWell(
-                                onTap: () {},
-                                child: svgIcon(
-                                  path:
-                                      'assets/svg_icons/empty-notification.svg',
-                                  height: 35.h,
-                                  width: 35.w,
-                                  color: MyColors.mainColor,
+                        height: 30,
+                        child: product.availabelPieces! > 0
+                            ? ItemCounterWidget(
+                                itemUiModel: ItemUiModel(
+                                  id: product.id!,
+                                  name: product.name!,
+                                  enName: product.enName ?? 'enName',
+                                  enDesc:
+                                      product.enDescription ?? 'enDescription',
+                                  description:
+                                      product.enDescription ?? 'description',
+                                  thumbnailImage: product.thumbnailImage ?? '',
+                                  price: product.price!,
+                                  discount: product.currentDiscount ?? 0,
+                                  availablePieces: product.availabelPieces!,
+                                  quantity: counter,
                                 ),
-                              ),
-                            ),
-                    ),
+                              )
+                            : NotificationButtonControlled(
+                                isnotification: true,
+                                addNotiOrRemoveNoti: () {},
+                              )),
                   ),
                   Align(
                     alignment: Alignment.topCenter,

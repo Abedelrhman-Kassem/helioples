@@ -1,17 +1,25 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:get/utils.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/loading_button.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
+import 'package:negmt_heliopolis/features/Address/data/model/address_model.dart';
+import 'package:negmt_heliopolis/features/Address/data/repo/set_address_rep_impl.dart';
 
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/model/place.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/model/place_suggestion.dart';
@@ -21,6 +29,7 @@ import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/set_location_cubit/set_location_cubit.dart';
 
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/place_item.dart';
+import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/screens/confirm_address_screen.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -106,7 +115,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
       // print("Longitude: ${position.longitude}");
 
       // Load the custom marker icon and update the UI
-      BitmapDescriptor customIcon = await BitmapDescriptor.fromAssetImage(
+      BitmapDescriptor customIcon = await BitmapDescriptor.asset(
         const ImageConfiguration(size: Size(100, 100)),
         "assets/Icons_logos/current_location_marker.png",
       );
@@ -138,10 +147,22 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
   }
 
   Future<String> codingLocation(double x, double y) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(x, y);
-    String loc =
-        "${placemarks[0].subAdministrativeArea} ${placemarks[0].locality} ";
-    return loc;
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(x, y);
+      if (placemarks.isNotEmpty) {
+        return "${placemarks[0].subAdministrativeArea ?? ''} ${placemarks[0].locality ?? ''}"
+            .trim();
+      } else {
+        return 'Unknown location';
+      }
+    } on PlatformException catch (e) {
+      // Log وارجع قيمة احتياطية
+      log('Geocoding failed: ${e.code} - ${e.message}');
+      return 'Service not available';
+    } catch (e) {
+      log('Unexpected geocoding error: $e');
+      return 'Error getting location';
+    }
   }
 
   void buildCamerNewPosition() {
@@ -424,7 +445,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
             right: 0,
             child: SizedBox(
               width: double.infinity,
-              height: 220.h,
+              // height: 220.h,
               child: Material(
                 elevation: 8.0.sp,
                 shape: const OutlineInputBorder(
@@ -438,6 +459,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                 color: Colors.white,
                 shadowColor: Colors.grey,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -517,7 +539,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                     ),
                     BlocProvider(
                       create: (context) => SendLocationCubit(
-                          SignUpRepoImp(apiService: ApiService())),
+                          SetAddressRepImpl(apiService: ApiService())),
                       child: BlocConsumer<SendLocationCubit, SendLocationState>(
                           builder: (context, state) {
                         var cubit = BlocProvider.of<SendLocationCubit>(context);
@@ -530,11 +552,74 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                           return Center(
                               child: SignUpCustomButton(
                                   buttonText: "Continue",
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    if (lat == null || long == null) {
+                                      showCustomGetSnack(
+                                          duration: const Duration(seconds: 2),
+                                          isGreen: false,
+                                          text: 'يرجى تحديد الموقع');
+                                    } else {
+                                      Address? address = Address();
 
-                                    if (lat != null && long != null) {
-                                      cubit.sendLocation(long!, lat!);
+                                      // Get.toNamed(confirmAddress);
+
+                                      final resuilt =
+                                          await showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(30.r),
+                                          ),
+                                        ),
+                                        builder: (context) {
+                                          return ConfirmAddress(
+                                            address: address,
+                                          );
+                                        },
+                                      );
+                                      log(' locationstr ${address.locationStr?.toString() ?? ' null'}');
+                                      log(' building ${address.buildingNo?.toString() ?? ' null'}');
+                                      log(' floor ${address.floor?.toString() ?? ' null'}');
+                                      log(' street ${address.street?.toString() ?? ' null'}');
+                                      log(' department ${address.department?.toString() ?? ' null'}');
+                                      log(resuilt.toString());
+
+                                      // if (address.locationStr != null &&
+                                      //     address.buildingNo != null &&
+                                      //     address.floor != null &&
+                                      //     address.street != null &&
+                                      //     address.department != null) {
+                                      //   log('send location');
+                                      // }
+                                      if (resuilt == true) {
+                                        cubit.setAddress(
+                                          long!,
+                                          lat!,
+                                          address.locationStr!,
+                                          address.buildingNo!,
+                                          address.floor!,
+                                          address.street!,
+                                          address.department!,
+                                        );
+
+                                        // showCustomGetSnack(
+                                        //     isGreen: true,
+                                        //     text: 'تم اضافة العنوان بنجاح');
+                                      } else {
+                                        // showCustomGetSnack(
+                                        //     duration:
+                                        //         const Duration(seconds: 2),
+                                        //     isGreen: false,
+                                        //     text: 'تم الغاء اضافة العنوان');
+                                      }
+
+                                      // log(' resuilt ${resuilt.id}');
                                     }
+                                    log("lat $lat long $long");
+                                    // if (lat != null && long != null) {
+                                    //   cubit.sendLocation(long!, lat!);
+                                    // }
 
                                     // Navigator.of(context)
                                     //     .pushNamed(notificationScreen);
@@ -545,12 +630,15 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(state.errorMessage)));
                         } else if (state is SendLocationSuccess) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('location sent ')));
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //     const SnackBar(content: Text('location sent ')));
                           Navigator.of(context).pushNamed(notificationScreen);
                         }
                       }),
                     ),
+                    SizedBox(
+                      height: 10.h,
+                    )
                   ],
                 ),
               ),

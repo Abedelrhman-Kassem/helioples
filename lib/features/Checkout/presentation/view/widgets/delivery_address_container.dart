@@ -7,7 +7,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/add_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/delivery_address_widget.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
-import 'package:negmt_heliopolis/features/homeScreen/data/model/address_model.dart';
+import 'package:negmt_heliopolis/features/Address/data/model/address_model.dart';
 
 class DeliveryAddressContainer extends StatefulWidget {
   final CreateOrderModel createOrderModel;

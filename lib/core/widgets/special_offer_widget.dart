@@ -34,54 +34,57 @@ class SpecialOfferWidget extends StatelessWidget {
           );
         }
       },
-      child: SizedBox(
-        width: double.infinity,
-        child: Column(
-          children: [
-            Container(
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20.r),
+      child: Padding(
+        padding: EdgeInsets.only(left: 20.w),
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            children: [
+              Container(
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20.r),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    AspectRatio(
+                      aspectRatio: isSmall ? 1 / 1 : 296 / 136,
+                      child: Stack(
+                        alignment: Alignment.bottomLeft,
+                        children: [
+                          Helper.loadNetworkImage(
+                            url: offer.thumbnailImage ?? '',
+                            imageHeight: double.infinity,
+                            assetsErrorPath: 'assets/test_images/offers.png',
+                          ),
+                          overlay(),
+                          if (offer.badge != null)
+                            upToOfferWidget(
+                              context: context,
+                              upToOffer: offer.badge!,
+                            ),
+                          Positioned.directional(
+                            textDirection: textDirection,
+                            width: 60.w,
+                            top: 10.h,
+                            start: 10.w,
+                            child: Helper.loadNetworkImage(
+                              url: offer.companyImage ?? '',
+                              assetsErrorPath:
+                                  'assets/test_images/offer-brand.png',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              child: Column(
-                children: [
-                  AspectRatio(
-                    aspectRatio: isSmall ? 1 / 1 : 296 / 136,
-                    child: Stack(
-                      alignment: Alignment.bottomLeft,
-                      children: [
-                        Helper.loadNetworkImage(
-                          url: offer.thumbnailImage ?? '',
-                          imageHeight: double.infinity,
-                          assetsErrorPath: 'assets/test_images/offers.png',
-                        ),
-                        overlay(),
-                        if (offer.badge != null)
-                          upToOfferWidget(
-                            context: context,
-                            upToOffer: offer.badge!,
-                          ),
-                        Positioned.directional(
-                          textDirection: textDirection,
-                          width: 60.w,
-                          top: 10.h,
-                          start: 10.w,
-                          child: Helper.loadNetworkImage(
-                            url: offer.companyImage ?? '',
-                            assetsErrorPath:
-                                'assets/test_images/offer-brand.png',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            descriptionOfferWidget(offer, isSmall),
-          ],
+              descriptionOfferWidget(offer, isSmall),
+            ],
+          ),
         ),
       ),
     );

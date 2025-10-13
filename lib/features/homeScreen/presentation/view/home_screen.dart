@@ -1,9 +1,10 @@
 import 'dart:math';
-
+import 'dart:developer' as developer;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/controller/location_widget.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
@@ -69,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               },
               builder: (context, state) {
+                // developer.log('build');
                 return Stack(
                   alignment: Alignment.topCenter,
                   children: [
@@ -133,53 +135,54 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
             ),
-            BlocConsumer<MainCubit, MainState>(
-              listener: (context, state) {
-                if (state is GetAddressesFailed) {
-                  CustomSnackBar.show(
-                    context: context,
-                    duration: const Duration(seconds: 10),
-                    text: state.error,
-                    isGreen: false,
-                  );
-                }
-              },
-              builder: (context, state) {
-                if (state is LoadingAddresses) {
-                  return FractionalTranslation(
-                    translation: const Offset(0, -0.5),
-                    child: Skeletonizer(
-                      child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 50.w,
-                            vertical: 10.h,
-                          ),
-                          height: 100.h,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[100],
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('hello there how are you'),
-                              Text('hello there how are you'),
-                            ],
-                          )),
-                    ),
-                  );
-                } else if (state is GetAddressesSuccessfully) {
-                  return FractionalTranslation(
-                    translation: const Offset(0, -0.5),
-                    child: LocationWidget(addressModel: state.addressModel),
-                  );
-                } else {
-                  return SizedBox(
-                    height: 50.h,
-                  );
-                }
-              },
-            ),
+            const LocationWidgetWithGetX(),
+            // BlocConsumer<MainCubit, MainState>(
+            //   listener: (context, state) {
+            //     if (state is GetAddressesFailed) {
+            //       CustomSnackBar.show(
+            //         context: context,
+            //         duration: const Duration(seconds: 10),
+            //         text: state.error,
+            //         isGreen: false,
+            //       );
+            //     }
+            //   },
+            //   builder: (context, state) {
+            //     if (state is LoadingAddresses) {
+            //       return FractionalTranslation(
+            //         translation: const Offset(0, -0.5),
+            //         child: Skeletonizer(
+            //           child: Container(
+            //               padding: EdgeInsets.symmetric(
+            //                 horizontal: 50.w,
+            //                 vertical: 10.h,
+            //               ),
+            //               height: 100.h,
+            //               decoration: BoxDecoration(
+            //                 color: Colors.grey[100],
+            //                 borderRadius: BorderRadius.circular(10.r),
+            //               ),
+            //               child: const Column(
+            //                 mainAxisAlignment: MainAxisAlignment.center,
+            //                 children: [
+            //                   Text('hello there how are you'),
+            //                   Text('hello there how are you'),
+            //                 ],
+            //               )),
+            //         ),
+            //       );
+            //     } else if (state is GetAddressesSuccessfully) {
+            //       return const FractionalTranslation(
+            //         translation: Offset(0, -0.5),
+            //         child: LocationWidgetWithGetX(),
+            //       );
+            //     } else {
+            //       return SizedBox(
+            //         height: 50.h,
+            //       );
+            //     }
+            //   },
+            // ),
             Column(
               children: [
                 // Special Offers -----------------------------------------------
@@ -249,27 +252,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.only(start: 18.w),
-                            child: AspectRatio(
-                              aspectRatio: 297 / 140,
-                              child: ListView.separated(
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: homeLayoutCubit.offers.length,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return SizedBox(
-                                    width: 275.w,
-                                    child: SpecialOfferWidget(
-                                      offer: homeLayoutCubit.offers[index],
-                                      canNavigate: true,
-                                    ),
-                                  );
-                                },
-                                separatorBuilder: (context, index) =>
-                                    SizedBox(width: 20.w),
-                              ),
+                          AspectRatio(
+                            aspectRatio: 297 / 140,
+                            child: ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: homeLayoutCubit.offers.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return SizedBox(
+                                  width: 275.w,
+                                  child: SpecialOfferWidget(
+                                    offer: homeLayoutCubit.offers[index],
+                                    canNavigate: true,
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ],
@@ -401,51 +398,46 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             },
                             child: homeLayoutCubit.isCategoryRow
-                                ? Container(
-                                    padding:
-                                        EdgeInsetsDirectional.only(start: 18.w),
+                                ? SizedBox(
                                     height: 200,
-                                    child: ListView.separated(
+                                    child: ListView.builder(
                                       padding: EdgeInsets.only(top: 5.h),
                                       physics: const BouncingScrollPhysics(),
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, index) =>
                                           categoryBuilder(
+                                        islistview: true,
                                         context: context,
                                         category:
                                             homeLayoutCubit.categories[index],
                                       ),
-                                      separatorBuilder: (context, index) =>
-                                          const SizedBox(width: 14),
+                                      // separatorBuilder: (context, index) =>
+                                      //     const SizedBox(width: 14),
                                       itemCount:
                                           homeLayoutCubit.categories.length,
                                     ),
                                   )
-                                : Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 18.w,
+                                : GridView.builder(
+                                    padding: EdgeInsets.only(top: 5.h),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        homeLayoutCubit.categories.length,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent: 125,
+                                      // mainAxisSpacing: 10,
+                                      // crossAxisSpacing: 5,
+                                      // childAspectRatio: 1 / 1.5,
+                                      mainAxisExtent: 135,
                                     ),
-                                    child: GridView.builder(
-                                      padding: EdgeInsets.only(top: 5.h),
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount:
-                                          homeLayoutCubit.categories.length,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                                        maxCrossAxisExtent: 125,
-                                        mainAxisSpacing: 10,
-                                        crossAxisSpacing: 10,
-                                        // childAspectRatio: 1 / 1.5,
-                                        mainAxisExtent: 135,
-                                      ),
-                                      itemBuilder: (context, index) =>
-                                          categoryBuilder(
-                                        context: context,
-                                        category:
-                                            homeLayoutCubit.categories[index],
-                                      ),
+                                    itemBuilder: (context, index) =>
+                                        categoryBuilder(
+                                      islistview: false,
+                                      context: context,
+                                      category:
+                                          homeLayoutCubit.categories[index],
                                     ),
                                   ),
                           )

@@ -14,7 +14,8 @@ class SignUpRepoImp extends SignUpRepo {
   Future<Either<Failure, String>> signUp(User user) async {
     try {
       // await apiService.setAuthorizationHeader();
-      var response = await apiService.post(endPoints: 'auth/register', data: user.toJson());
+      var response = await apiService.post(
+          endPoints: 'auth/register', data: user.toJson());
       if (response.statusCode == 200) {
         return right(response.data['msg']);
       } else {
@@ -28,35 +29,29 @@ class SignUpRepoImp extends SignUpRepo {
       }
     }
   }
-   
-  @override
-  Future<Either<Failure,String>> setLocation(double long , double lat) async
-  {
-    try {
-      // await apiService.setAuthorizationHeader(); 
-       Map<String, dynamic> data = {
-      'longitude': long,
-      'latitude': lat,
-    };
 
-     var response = await apiService.post(endPoints: 'api/protected/user/update-location', data: data) ;
-     if(response.statusCode == 200)
-     {
-      return right(response.data['msg']);
-     }else
-     {
-      return left(ServerFailure('Failed to set the location'));
-     } 
-      
+  @override
+  Future<Either<Failure, String>> setLocation(double long, double lat) async {
+    try {
+      // await apiService.setAuthorizationHeader();
+      Map<String, dynamic> data = {
+        'longitude': long,
+        'latitude': lat,
+      };
+
+      var response = await apiService.post(
+          endPoints: 'api/protected/user/addresses/2/update', data: data);
+      if (response.statusCode == 200) {
+        return right(response.data['msg']);
+      } else {
+        return left(ServerFailure('Failed to set the location'));
+      }
     } catch (e) {
-       if (e is DioException) {
+      if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
       } else {
         return left(ServerFailure(e.toString()));
       }
-      
     }
-     
   }
-  
 }

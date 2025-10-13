@@ -72,7 +72,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                           child: Container(
                             width: double.infinity,
-                            height: MediaQuery.of(context).size.height * 0.3,
+                            // height: MediaQuery.of(context).size.height * 0.5.h,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(
@@ -83,79 +83,82 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 10.w, vertical: 25.h),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 15.w),
-                                        child: Text(
-                                          "Change Language",
-                                          style: Styles.styles15w400Black,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15.w),
+                                          child: Text(
+                                            "Change Language",
+                                            style: Styles.styles15w400Black,
+                                          ),
                                         ),
+                                        const Spacer(),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Image.asset(
+                                              "assets/Icons_logos/x.png"),
+                                        )
+                                      ],
+                                    ),
+                                    RadioMenuButton<String>(
+                                      value: 'en',
+                                      groupValue: selectedLang,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedLang = value!;
+                                        });
+
+                                        this.setState(() {
+                                          selectedLang = value!;
+                                        });
+                                      },
+                                      child: Text(
+                                        "English",
+                                        style: Styles.styles15w400Black,
                                       ),
-                                      const Spacer(),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Image.asset(
-                                            "assets/Icons_logos/x.png"),
-                                      )
-                                    ],
-                                  ),
-                                  RadioMenuButton<String>(
-                                    value: 'en',
-                                    groupValue: selectedLang,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedLang = value!;
-                                      });
-
-                                      this.setState(() {
-                                        selectedLang = value!;
-                                      });
-                                    },
-                                    child: Text(
-                                      "English",
-                                      style: Styles.styles15w400Black,
                                     ),
-                                  ),
-                                  RadioMenuButton<String>(
-                                    value: 'ar',
-                                    groupValue: selectedLang,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedLang = value!;
-                                      });
+                                    RadioMenuButton<String>(
+                                      value: 'ar',
+                                      groupValue: selectedLang,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedLang = value!;
+                                        });
 
-                                      this.setState(() {
-                                        selectedLang = value!;
-                                      });
-                                    },
-                                    child: Text(
-                                      "Arabic (العربية)",
-                                      style: Styles.styles15w400Black,
+                                        this.setState(() {
+                                          selectedLang = value!;
+                                        });
+                                      },
+                                      child: Text(
+                                        "Arabic (العربية)",
+                                        style: Styles.styles15w400Black,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  SignUpCustomButton(
-                                    buttonText: "Update language",
-                                    onPressed: () {
-                                      if (selectedLang == 'en') {
-                                        changeLocal(context, 'en');
-                                      } else {
-                                        changeLocal(context, 'ar');
-                                      }
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    SignUpCustomButton(
+                                      buttonText: "Update language",
+                                      onPressed: () {
+                                        if (selectedLang == 'en') {
+                                          changeLocal(context, 'en');
+                                        } else {
+                                          changeLocal(context, 'ar');
+                                        }
 
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -196,7 +199,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                           child: Container(
                             width: double.infinity,
-                            height: MediaQuery.of(context).size.height * 0.32,
+                            // height: MediaQuery.of(context).size.height * 0.32,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(
@@ -207,86 +210,89 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 10.w, vertical: 25.h),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 15.w),
-                                        child: Text(
-                                          "App Mode",
-                                          style: Styles.styles15w400Black,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15.w),
+                                          child: Text(
+                                            "App Mode",
+                                            style: Styles.styles15w400Black,
+                                          ),
                                         ),
-                                      ),
-                                      const Spacer(),
-                                      GestureDetector(
-                                        onTap: () {
+                                        const Spacer(),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Image.asset(
+                                              "assets/Icons_logos/x.png"),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        RadioMenuButton<String>(
+                                          value: 'Light Mode',
+                                          groupValue: selectedMode,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedMode = value!;
+                                            });
+
+                                            this.setState(() {
+                                              selectedMode = value!;
+                                            });
+                                          },
+                                          child: Text(
+                                            "Light Mode",
+                                            style: Styles.styles15w400Black,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        Image.asset(
+                                            "assets/Icons_logos/white_circle.png"),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        RadioMenuButton<String>(
+                                          value: 'Dark Mode',
+                                          groupValue: selectedMode,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedMode = value!;
+                                            });
+
+                                            this.setState(() {
+                                              selectedMode = value!;
+                                            });
+                                          },
+                                          child: Text(
+                                            "Dark Mode",
+                                            style: Styles.styles15w400Black,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        Image.asset(
+                                            "assets/Icons_logos/black_circle.png"),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    SignUpCustomButton(
+                                        buttonText: "Update Mode",
+                                        onPressed: () {
                                           Navigator.of(context).pop();
-                                        },
-                                        child: Image.asset(
-                                            "assets/Icons_logos/x.png"),
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      RadioMenuButton<String>(
-                                        value: 'Light Mode',
-                                        groupValue: selectedMode,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedMode = value!;
-                                          });
-
-                                          this.setState(() {
-                                            selectedMode = value!;
-                                          });
-                                        },
-                                        child: Text(
-                                          "Light Mode",
-                                          style: Styles.styles15w400Black,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      Image.asset(
-                                          "assets/Icons_logos/white_circle.png"),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      RadioMenuButton<String>(
-                                        value: 'Dark Mode',
-                                        groupValue: selectedMode,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedMode = value!;
-                                          });
-
-                                          this.setState(() {
-                                            selectedMode = value!;
-                                          });
-                                        },
-                                        child: Text(
-                                          "Dark Mode",
-                                          style: Styles.styles15w400Black,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      Image.asset(
-                                          "assets/Icons_logos/black_circle.png"),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  SignUpCustomButton(
-                                      buttonText: "Update Mode",
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      }),
-                                ],
+                                        }),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

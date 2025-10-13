@@ -180,6 +180,7 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet> {
                                       ),
                                       itemBuilder: (context, index) =>
                                           categoryBuilder(
+                                        islistview: false,
                                         context: context,
                                         category: mainCubit
                                             .categories.categories![index],

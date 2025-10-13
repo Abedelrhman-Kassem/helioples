@@ -12,7 +12,7 @@ class AddressModel {
     }
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(Map<String, Object> map) {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (address != null) {
       data['address'] = address!.map((v) => v.toJson()).toList();

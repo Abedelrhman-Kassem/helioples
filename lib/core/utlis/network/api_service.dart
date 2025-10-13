@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:negmt_heliopolis/core/utlis/services/checkinternet.dart';
 
 class ApiService {
   final baseUrl = 'http://167.88.169.140/';
@@ -52,6 +53,9 @@ class ApiService {
     required Map<String, dynamic> data,
     Map<String, String>? headers,
   }) async {
+    if (!await checkInternet()) {
+      throw Exception('No internet connection');
+    }
     await setAuthorizationHeader();
     mainHeader.addAll(headers ?? {});
 
@@ -76,6 +80,9 @@ class ApiService {
     Map<String, String>? headers,
     CancelToken? cancelToken,
   }) async {
+    if (!await checkInternet()) {
+      throw Exception('No internet connection');
+    }
     await setAuthorizationHeader();
     // print('Request Headers: ${dio.options.headers}');
     // print(endpoint);
@@ -103,6 +110,9 @@ class ApiService {
   }
 
   Future<Response> delete({required String endPoints}) async {
+    if (!await checkInternet()) {
+      throw Exception('No internet connection');
+    }
     try {
       var response = await dio.delete(
         '$baseUrl$endPoints',
@@ -122,6 +132,9 @@ class ApiService {
     required String endPoints,
     required Map<String, dynamic> data,
   }) async {
+    if (!await checkInternet()) {
+      throw Exception('No internet connection');
+    }
     try {
       await setAuthorizationHeader(); // Ensure authorization header is set
 

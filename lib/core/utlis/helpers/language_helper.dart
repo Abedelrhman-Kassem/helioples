@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-void changeLocal(BuildContext context, String langCode) async {
+Future<void> changeLocal(BuildContext context, String langCode) async {
   context.setLocale(Locale(langCode));
+  Get.updateLocale(Locale(langCode));
 }
 
 String getLocale(BuildContext context) {

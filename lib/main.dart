@@ -8,9 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:negmt_heliopolis/controller/Binding/initialbinding.dart';
+import 'package:negmt_heliopolis/controller/addresse_controller.dart';
 import 'package:negmt_heliopolis/core/bloc_observer.dart';
 import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/connectivity_controller.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/firebase_api.dart';
 
@@ -87,20 +91,23 @@ class _MyAppState extends State<MyApp> {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return BlocProvider(
-          lazy: false,
-          create: (context) => MainCubit()..getAddressess(),
-          child: MaterialApp(
-            navigatorKey: navigatorKey,
-            debugShowCheckedModeBanner: false,
-            onGenerateRoute: widget.appRouter.generate,
-            theme: lightTheme,
-            darkTheme: darkTheme,
-            themeMode: ThemeMode.light,
-            locale: Locale(getLocale(context)),
-            supportedLocales: context.supportedLocales,
-            localizationsDelegates: context.localizationDelegates,
-          ),
+        return
+            // BlocProvider(
+            //   lazy: false,
+            //   create: (context) => MainCubit()..getAddressess(),
+            //   child:
+            GetMaterialApp(
+          initialBinding: Initialbinding(),
+          navigatorKey: navigatorKey,
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: widget.appRouter.generate,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: ThemeMode.light,
+          locale: Locale(getLocale(context)),
+          supportedLocales: context.supportedLocales,
+          localizationsDelegates: context.localizationDelegates,
+          // ),
         );
       },
     );

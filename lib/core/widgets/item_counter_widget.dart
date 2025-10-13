@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
@@ -21,6 +23,8 @@ class ItemCounterWidget extends StatefulWidget {
 }
 
 class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
+  bool _showDetails = false;
+  Timer? _detailsTimer;
   final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
   @override
@@ -35,6 +39,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
   @override
   void dispose() {
     routeObserver.unsubscribe(this);
+    _detailsTimer?.cancel();
     super.dispose();
   }
 
@@ -110,6 +115,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
 
   Widget _buildCounterWidget() {
     isExpanded = counter > 0;
+    _scheduleShowDetails(isExpanded);
 
     return AnimatedContainer(
       alignment: Alignment.center,
@@ -124,29 +130,43 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           if (isExpanded) ...[
-            InkWell(
-              onTap: () async {
-                if (counter > 1) {
-                  setState(() => counter--);
-                  await _updateCounterInDB(counter);
-                } else {
-                  setState(() => counter--);
-                  await _deleteItem();
-                }
-              },
-              child: svgIcon(
-                path: 'assets/svg_icons/empty-minus.svg',
-                width: 22,
-                height: 22,
-                color: Colors.white,
+            if (_showDetails)
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: _showDetails
+                    ? InkWell(
+                        key: ValueKey(counter),
+                        onTap: () async {
+                          if (counter > 1) {
+                            setState(() => counter--);
+                            await _updateCounterInDB(counter);
+                          } else {
+                            setState(() => counter--);
+                            await _deleteItem();
+                          }
+                        },
+                        child: svgIcon(
+                          path: 'assets/svg_icons/empty-minus.svg',
+                          width: 22,
+                          height: 22,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
               ),
+            if (_showDetails) const SizedBox(width: 10),
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              child: _showDetails
+                  ? Text(
+                      '$counter',
+                      key: ValueKey(counter),
+                      style:
+                          Styles.styles12w400NormalWhite.copyWith(fontSize: 12),
+                    )
+                  : const SizedBox.shrink(),
             ),
-            const SizedBox(width: 10),
-            Text(
-              '$counter',
-              style: Styles.styles12w400NormalWhite.copyWith(fontSize: 12),
-            ),
-            const SizedBox(width: 10),
+            if (_showDetails) const SizedBox(width: 10),
           ],
           InkWell(
             onTap: () async {
@@ -173,5 +193,24 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
         ],
       ),
     );
+  }
+
+  void _scheduleShowDetails(bool isExpanded) {
+    _detailsTimer?.cancel();
+
+    if (isExpanded) {
+      _detailsTimer = Timer(const Duration(milliseconds: 300), () {
+        if (!mounted) return;
+        setState(() {
+          _showDetails = true;
+        });
+      });
+    } else {
+      if (_showDetails) {
+        setState(() {
+          _showDetails = false;
+        });
+      }
+    }
   }
 }

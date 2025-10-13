@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/utils.dart';
+import 'package:negmt_heliopolis/controller/addresse_controller.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart';
@@ -11,19 +14,22 @@ class NotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 60.h),
+        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
         child: Column(
           children: [
             AppBar(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              leading: returnArrow(context: context, onTap: (){
-                Navigator.of(context).pop();
-              })
-            ),
-            SizedBox(
-              height: 50.h,
-            ),
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                leading: returnArrow(
+                    context: context,
+                    onTap: () async {
+                      Navigator.of(context).pop();
+                      final addressesCtrl = Get.find<AddressesControllerImpl>();
+                      await addressesCtrl.fetchAddresses();
+                    })),
+            // SizedBox(
+            //   height: 20.h,
+            // ),
             Image.asset(
               "assets/Icons_logos/notification_logo.png",
             ),
