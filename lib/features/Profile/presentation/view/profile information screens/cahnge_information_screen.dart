@@ -1,13 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/egypt_code_widget.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/Date_picker.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/date_picker.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/background_image.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/name_textfield.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class CahngeInformationScreen extends StatefulWidget {
   const CahngeInformationScreen({super.key});
@@ -19,11 +21,10 @@ class CahngeInformationScreen extends StatefulWidget {
 
 class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
   final TextEditingController firstNameController =
-      TextEditingController(text: "Omar");
+      TextEditingController(text: "mohamed");
   final TextEditingController lastNameController =
-      TextEditingController(text: "Salah");
-  final TextEditingController phoneNumberController =
-      TextEditingController(text: "01116026564");
+      TextEditingController(text: "Hisham");
+  final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController birthdayDateController =
       TextEditingController(text: "17/5/2002");
   final DateTime initialDate = DateTime(2002, 5, 17);
@@ -60,7 +61,7 @@ class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
                         width: 70.w,
                       ),
                       Text(
-                        "Profile Information",
+                        LocaleKeys.change_information_profile_information.tr(),
                         style: Styles.styles16w400grey
                             .copyWith(color: Colors.black),
                       ),
@@ -70,7 +71,8 @@ class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
                     height: 20.h,
                   ),
                   Text(
-                    "Edit Your Personal Information",
+                    LocaleKeys.change_information_edit_your_personal_information
+                        .tr(),
                     style: Styles.styles25w600black,
                   ),
                   SizedBox(
@@ -82,7 +84,8 @@ class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
                       Expanded(
                         child: NameTextField(
                           isPassword: false,
-                          labelText: "First Name",
+                          labelText:
+                              LocaleKeys.change_information_first_name.tr(),
                           controller: firstNameController,
                           isEnabled: true,
                         ),
@@ -91,7 +94,8 @@ class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
                       Expanded(
                         child: NameTextField(
                           isPassword: false,
-                          labelText: "Last Name",
+                          labelText:
+                              LocaleKeys.change_information_last_name.tr(),
                           controller: lastNameController,
                           isEnabled: true,
                         ),
@@ -102,7 +106,7 @@ class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: Text(
-                      "Phone Number",
+                      LocaleKeys.change_information_phone_number.tr(),
                       style: Styles.styles14w400NormalBlack,
                     ),
                   ),
@@ -151,7 +155,7 @@ class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: Text(
-                      "Birthday Date",
+                      LocaleKeys.change_information_birthday_date.tr(),
                       style: Styles.styles14w400NormalBlack,
                     ),
                   ),
@@ -160,7 +164,7 @@ class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
                   SizedBox(height: 20.h),
                   Center(
                     child: SignUpCustomButton(
-                      buttonText: "Save",
+                      buttonText: LocaleKeys.change_information_save.tr(),
                       onPressed: () {
                         Navigator.of(context).pushNamed(
                           verficationChangesScreen,

@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 
 class SignUpAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final bool isEn;
+  final bool? isEn;
   final Function(bool) onLanguageChange;
 
   const SignUpAppBar({
     super.key,
     required this.title,
-    required this.isEn,
+    this.isEn,
     required this.onLanguageChange,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isEn = !isRtl(context);
+
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,

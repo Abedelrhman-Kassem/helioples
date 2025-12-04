@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,6 +23,7 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/ite
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/payment_details.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/promo_code_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -92,7 +94,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   Navigator.pop(context);
                 },
               ),
-              title: const Text('Checkout'),
+              title: const Text(LocaleKeys.cart_modal_checkout),
             ),
             body: Container(
               height: double.infinity,
@@ -111,7 +113,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       padding: EdgeInsets.all(20.r),
                       margin: EdgeInsets.symmetric(vertical: 20.h),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withValues(alpha: 0.9),
                         borderRadius: BorderRadius.circular(15.r),
                       ),
                       child: Column(
@@ -143,7 +145,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                     ),
                     TimeScheduleContainer(
-                      title: 'Delivery Time',
+                      title: LocaleKeys.re_order_screen_delivery_time.tr(),
                       createOrderModel: createOrderModel,
                     ),
                     DeliveryAddressContainer(
@@ -266,11 +268,11 @@ class _CheckOutBottomSheetState extends State<CheckOutBottomSheet> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Total Price',
+                      LocaleKeys.cart_modal_total_price.tr(),
                       style: Styles.styles18w500BlackWhite,
                     ),
                     Text(
-                      '$totalPrice EGP',
+                      '$totalPrice ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
                       style: Styles.styles18w800Black,
                     ),
                   ],
@@ -294,10 +296,10 @@ class _CheckOutBottomSheetState extends State<CheckOutBottomSheet> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(36.77.r),
-                        color: MyColors.mainColor.withOpacity(.9),
+                        color: MyColors.mainColor.withValues(alpha: .9),
                       ),
                       child: Text(
-                        'Place Order',
+                        LocaleKeys.checkout_delivery_screen_place_order.tr(),
                         style: Styles.styles17w500NormalWhite,
                       ),
                     ),

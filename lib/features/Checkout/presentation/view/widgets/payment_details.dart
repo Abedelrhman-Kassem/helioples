@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,7 @@ import 'package:negmt_heliopolis/core/utlis/notifiers/db_change_notifier.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class PaymentDetails extends StatefulWidget {
   final CreateOrderModel createOrderModel;
@@ -69,7 +71,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
           padding: EdgeInsets.all(20.r),
           margin: EdgeInsets.only(top: 10.h),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.9),
+            color: Colors.white.withValues(alpha: 0.9),
             borderRadius: BorderRadius.circular(15.r),
           ),
           child: Column(
@@ -78,11 +80,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Sub Total (${dbChangeNotifier.count} Items)',
+                    '${LocaleKeys.order_summary_screen_sub_total.tr()} (${dbChangeNotifier.count} ${LocaleKeys.order_summary_screen_items.tr()})',
                     style: Styles.styles14w400Black,
                   ),
                   Text(
-                    '${dbChangeNotifier.totalPrice} EGP',
+                    '${dbChangeNotifier.totalPrice} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
                     style: Styles.styles15w600NormalBlack,
                   ),
                 ],
@@ -92,11 +94,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Discount',
+                    LocaleKeys.order_summary_screen_discount.tr(),
                     style: Styles.styles14w400Black,
                   ),
                   Text(
-                    '${dbChangeNotifier.totalDiscount} EGP',
+                    '${dbChangeNotifier.totalDiscount} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
                     style: Styles.styles15w600NormalBlack,
                   ),
                 ],
@@ -106,11 +108,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Promocode Discount',
+                    LocaleKeys.order_summary_screen_promocode_discount.tr(),
                     style: Styles.styles14w400Black,
                   ),
                   Text(
-                    '$promoCodeValue EGP',
+                    '$promoCodeValue ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
                     style: Styles.styles15w600NormalBlack,
                   ),
                 ],
@@ -121,11 +123,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Delivery fees',
+                      LocaleKeys.order_summary_screen_delivery_fees.tr(),
                       style: Styles.styles14w400Black,
                     ),
                     Text(
-                      '120 EGP',
+                      '120 ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
                       style: Styles.styles15w600NormalBlack,
                     ),
                   ],

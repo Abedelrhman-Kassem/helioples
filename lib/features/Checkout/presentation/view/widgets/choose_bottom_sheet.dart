@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
@@ -5,6 +6,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_animated_widget.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class ChooseBottomSheet extends StatefulWidget {
   final CreateOrderModel createOrderModel;
@@ -44,7 +46,7 @@ class _ChooseBottomSheetState extends State<ChooseBottomSheet> {
           child: Column(
             children: [
               Text(
-                'If we couldn’t reach you in 15 minutes, how you want us to proceed?',
+                LocaleKeys.choose_bottom_sheet_choose_how_to_proceed.tr(),
                 style: Styles.styles16w600NormalBlack,
               ),
               SizedBox(height: 10.h),
@@ -55,8 +57,8 @@ class _ChooseBottomSheetState extends State<ChooseBottomSheet> {
                     radioChoose = true;
                   });
                 },
-                title: 'Choose for me',
-                text: 'Choose products at approximately with the same price',
+                title: LocaleKeys.choose_bottom_sheet_choose_for_me.tr(),
+                text: LocaleKeys.choose_bottom_sheet_choose_for_me_desc.tr(),
               ),
               SizedBox(height: 10.h),
               userChoice(
@@ -66,12 +68,15 @@ class _ChooseBottomSheetState extends State<ChooseBottomSheet> {
                     radioChoose = false;
                   });
                 },
-                title: 'Do not choose alternative',
-                text: 'We will ignore the missing items',
+                title: LocaleKeys.choose_bottom_sheet_do_not_choose_alternative
+                    .tr(),
+                text: LocaleKeys
+                    .choose_bottom_sheet_do_not_choose_alternative_desc
+                    .tr(),
               ),
               buttonWidget(
                 child: Text(
-                  'Submit',
+                  LocaleKeys.choose_bottom_sheet_submit.tr(),
                   style: Styles.styles17w500NormalWhite,
                 ),
                 onTap: () {

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +10,7 @@ import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_animated_widget.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 Widget cancelOrderBottomSheet(BuildContext context, OrderDetailsModel order) {
   return Wrap(
@@ -22,12 +24,13 @@ Widget cancelOrderBottomSheet(BuildContext context, OrderDetailsModel order) {
         child: Column(
           children: [
             Text(
-              'Order Cancellation',
+              LocaleKeys.cancel_order_bottom_sheet_order_cancellation.tr(),
               style: Styles.styles20w600Black,
             ),
             SizedBox(height: 10.h),
             Text(
-              'Are you sure you want to cancel this order?',
+              LocaleKeys.cancel_order_bottom_sheet_cancel_order_confirmation
+                  .tr(),
               style: Styles.styles17w400interFamily,
               textAlign: TextAlign.center,
             ),
@@ -42,7 +45,7 @@ Widget cancelOrderBottomSheet(BuildContext context, OrderDetailsModel order) {
                     ),
                     borderRadius: 53.r,
                     child: Text(
-                      'Cancel Order',
+                      LocaleKeys.cancel_order_bottom_sheet_cancel_order.tr(),
                       style: Styles.styles17w600White,
                     ),
                     onTap: () async {
@@ -67,7 +70,7 @@ Widget cancelOrderBottomSheet(BuildContext context, OrderDetailsModel order) {
                       width: 1.5.r,
                     ),
                     child: Text(
-                      "Don't Cancel",
+                      LocaleKeys.cancel_order_bottom_sheet_dont_cancel.tr(),
                       style: Styles.styles17w600White.copyWith(
                         color: MyColors.mainColor,
                       ),
@@ -106,12 +109,12 @@ class _ReasonBottomSheetState extends State<ReasonBottomSheet> {
   @override
   void initState() {
     reasonsList = [
-      'Just changed my mind.',
-      'I placed the order by mistake',
-      'I need to modify orders products',
-      'I need to change delivery address',
-      'I need to change payment method',
-      'Other',
+      LocaleKeys.cancel_order_bottom_sheet_reason_just_changed.tr(),
+      LocaleKeys.cancel_order_bottom_sheet_reason_placed_by_mistake.tr(),
+      LocaleKeys.cancel_order_bottom_sheet_reason_modify_products.tr(),
+      LocaleKeys.cancel_order_bottom_sheet_reason_change_address.tr(),
+      LocaleKeys.cancel_order_bottom_sheet_reason_change_payment.tr(),
+      LocaleKeys.cancel_order_bottom_sheet_reason_other.tr(),
     ];
 
     radioValue = reasonsList![0];
@@ -160,7 +163,7 @@ class _ReasonBottomSheetState extends State<ReasonBottomSheet> {
                 child: Column(
                   children: [
                     Text(
-                      'Help Us understanding the reason beyond cancellation',
+                      LocaleKeys.cancel_order_bottom_sheet_help_us_reason.tr(),
                       style: Styles.styles16w600NormalBlack.copyWith(
                         color: const Color.fromRGBO(41, 41, 41, 1),
                       ),
@@ -188,7 +191,7 @@ class _ReasonBottomSheetState extends State<ReasonBottomSheet> {
                       margin: EdgeInsets.only(top: 20.h),
                       borderRadius: 37.r,
                       child: Text(
-                        'Submit',
+                        LocaleKeys.cancel_order_bottom_sheet_submit.tr(),
                         style: Styles.styles17w500NormalWhite,
                       ),
                       onTap: () {

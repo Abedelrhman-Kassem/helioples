@@ -48,10 +48,10 @@ class NotificationButtonControlledState
 
   void _onTap() {
     if (_controller.status == AnimationStatus.dismissed) {
-      print("AnimationStatus.dismissed");
+      // print("AnimationStatus.dismissed");
       _controller.forward();
     } else if (_controller.status == AnimationStatus.completed) {
-      print("AnimationStatus.completed");
+      // print("AnimationStatus.completed");
       _controller.reverse();
     } else {
       _controller.reverse();

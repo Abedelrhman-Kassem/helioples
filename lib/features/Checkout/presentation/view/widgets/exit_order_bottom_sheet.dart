@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 Widget exitOrderBottomSheet(BuildContext context) {
   return Wrap(
@@ -18,12 +20,12 @@ Widget exitOrderBottomSheet(BuildContext context) {
         child: Column(
           children: [
             Text(
-              'Exit Order',
+              LocaleKeys.exit_order_bottom_exit_order.tr(),
               style: Styles.styles20w600Black,
             ),
             SizedBox(height: 10.h),
             Text(
-              'Are you sure you want to exit order?',
+              LocaleKeys.exit_order_bottom_exit_order_confirmation.tr(),
               style: Styles.styles17w400interFamily,
               textAlign: TextAlign.center,
             ),
@@ -39,7 +41,7 @@ Widget exitOrderBottomSheet(BuildContext context) {
                     ),
                     borderRadius: 53.r,
                     child: Text(
-                      'Exit Order',
+                      LocaleKeys.exit_order_bottom_exit_order_button.tr(),
                       style: Styles.styles17w600White,
                     ),
                     onTap: () {
@@ -64,7 +66,7 @@ Widget exitOrderBottomSheet(BuildContext context) {
                       width: 1.5.r,
                     ),
                     child: Text(
-                      'Cancel',
+                      LocaleKeys.exit_order_bottom_cancel.tr(),
                       style: Styles.styles17w600White.copyWith(
                         color: MyColors.mainColor,
                       ),

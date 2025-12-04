@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/branches_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class BranchesRow extends StatefulWidget {
   final BranchesModel branchesModel;
@@ -53,7 +55,7 @@ class _BranchesRowState extends State<BranchesRow> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "PickUp Branch",
+            LocaleKeys.pickup_order_details_screen_pickup_branch.tr(),
             style: Styles.styles17w700Black.copyWith(
               color: const Color.fromRGBO(41, 41, 41, 1),
             ),
@@ -116,8 +118,9 @@ class BranchItem extends StatelessWidget {
             children: [
               svgIcon(
                 path: "assets/svg_icons/branch_icon.svg",
-                color:
-                    isSelected ? Colors.white : Colors.white.withOpacity(0.3),
+                color: isSelected
+                    ? Colors.white
+                    : Colors.white.withValues(alpha: 0.3),
                 width: 50.w,
                 height: 50.h,
               ),

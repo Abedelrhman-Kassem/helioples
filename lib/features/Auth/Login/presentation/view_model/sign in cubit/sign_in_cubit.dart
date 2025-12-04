@@ -7,11 +7,22 @@ import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/sig
 class SignInCubit extends Cubit<SignInState> {
   final LogInRepo signInRepo;
   SignInCubit(this.signInRepo) : super(SignInInitial());
+  String? verificationId;
+  String? resendToken;
+  String? tempToken;
 
-  Future<void> signIn(String phone , String password) async {
+  // static SignInCubit get(context) => BlocProvider.of(context);
+
+  Future<void> signIn(String phone, String password) async {
     emit(SignInLoading());
-    Either<Failure, String> result = await signInRepo.signIn(phone , password);
+    Either<Failure, Map<String, dynamic>> result =
+        await signInRepo.signIn(phone, password);
     result.fold((failure) => emit(SignInFailure(failure.errorMessage)),
-        (status) => emit(SignInSuccess(status)));
+        (status) {
+      tempToken = status['token'];
+      verificationId = status['verificationId'];
+      resendToken = status['resendToken'];
+      emit(SignInSuccess(status));
+    });
   }
 }

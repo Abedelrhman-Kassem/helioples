@@ -11,10 +11,24 @@ final class SignInInitial extends SignInState {}
 
 final class SignInLoading extends SignInState {}
 
-final class SignInSuccess extends SignInState {
-  final String status;
+final class SignInOtpLoading extends SignInState {}
 
-  const SignInSuccess( this.status);
+final class SignInOtpFailure extends SignInState {
+  final String errorMessage;
+
+  const SignInOtpFailure(this.errorMessage);
+}
+
+final class SignInOtpSuccess extends SignInState {
+  final bool result;
+
+  const SignInOtpSuccess(this.result);
+}
+
+final class SignInSuccess extends SignInState {
+  final Map<String, dynamic> result;
+
+  const SignInSuccess(this.result);
 }
 
 final class SignInFailure extends SignInState {

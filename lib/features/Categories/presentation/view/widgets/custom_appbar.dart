@@ -73,7 +73,6 @@ class _CustomAppbarState extends State<CustomAppbar> {
         preferredSize: Size.fromHeight(70.h),
         child: Row(
           children: [
-            // TODO: Add Featured Button
             Expanded(
               child: Container(
                 margin: EdgeInsets.only(bottom: 15.h),

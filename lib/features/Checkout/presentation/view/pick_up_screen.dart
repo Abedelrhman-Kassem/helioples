@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,6 +19,7 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/pay
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/promo_code_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/time_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class PickUpScreen extends StatefulWidget {
   const PickUpScreen({super.key});
@@ -77,7 +79,7 @@ class _PickUpScreenState extends State<PickUpScreen> {
               CustomSnackBar.show(
                 context: context,
                 duration: const Duration(seconds: 10),
-                text: 'the branch is null',
+                text: LocaleKeys.pick_up_screen_the_branch_is_null.tr(),
                 isGreen: false,
               );
               return;
@@ -117,7 +119,7 @@ class _PickUpScreenState extends State<PickUpScreen> {
                   Navigator.of(context).pop();
                 },
               ),
-              title: const Text('Checkout'),
+              title: Text(LocaleKeys.pick_up_screen_checkout.tr()),
             ),
             body: Container(
               height: double.infinity,
@@ -136,14 +138,14 @@ class _PickUpScreenState extends State<PickUpScreen> {
                       padding: EdgeInsets.all(20.r),
                       margin: EdgeInsets.symmetric(vertical: 20.h),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withValues(alpha: 0.9),
                         borderRadius: BorderRadius.circular(15.r),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Order Items',
+                            LocaleKeys.pick_up_screen_order_items.tr(),
                             style: Styles.styles17w700Black,
                           ),
                           SizedBox(height: 20.h),
@@ -168,7 +170,7 @@ class _PickUpScreenState extends State<PickUpScreen> {
                       ),
                     ),
                     TimeScheduleContainer(
-                      title: 'PickUp Time',
+                      title: LocaleKeys.pick_up_screen_pickup_time.tr(),
                       createOrderModel: createOrderModel,
                     ),
                     if (state is BranchesLoading)

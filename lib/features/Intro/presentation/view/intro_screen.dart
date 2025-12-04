@@ -1,14 +1,11 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/keys_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -22,7 +19,7 @@ class _IntroScreenState extends State<IntroScreen> {
 //   try {
 //     RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
 //     log("Received initial message: ${initialMessage?.messageId}");
-    
+
 //     if (initialMessage != null && navigatorKey.currentContext != null) {
 //       // Delay navigation to ensure the context is ready
 //       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -43,6 +40,7 @@ class _IntroScreenState extends State<IntroScreen> {
 // getInit();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final isAr = isRtl(context);
@@ -133,11 +131,15 @@ class _IntroScreenState extends State<IntroScreen> {
                             RichText(
                               textAlign: TextAlign.center,
                               text: TextSpan(
-                                text: 'Better'.tr(),
+                                text: StringTranslateExtension(
+                                        LocaleKeys.intro_screen_better)
+                                    .tr(),
                                 style: Styles.styles40w800NormalWhite,
                                 children: [
                                   TextSpan(
-                                    text: 'Prices,'.tr(),
+                                    text: StringTranslateExtension(
+                                            LocaleKeys.intro_screen_prices)
+                                        .tr(),
                                     style: Styles.styles40w400NormalWhite,
                                   ),
                                   TextSpan(
@@ -145,11 +147,15 @@ class _IntroScreenState extends State<IntroScreen> {
                                     style: Styles.styles40w400NormalWhite,
                                   ),
                                   TextSpan(
-                                    text: 'Faster'.tr(),
+                                    text: StringTranslateExtension(
+                                            LocaleKeys.intro_screen_faster)
+                                        .tr(),
                                     style: Styles.styles40w400NormalWhite,
                                   ),
                                   TextSpan(
-                                    text: 'Delivery'.tr(),
+                                    text: StringTranslateExtension(
+                                            LocaleKeys.intro_screen_delivery)
+                                        .tr(),
                                     style: Styles.styles40w800NormalWhite,
                                   ),
                                 ],
@@ -174,7 +180,9 @@ class _IntroScreenState extends State<IntroScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Start Shopping'.tr(),
+                                      StringTranslateExtension(LocaleKeys
+                                              .intro_screen_start_shopping)
+                                          .tr(),
                                       style: Styles.styles20w500NormalWhite,
                                     ),
                                     SizedBox(width: 10.w),
@@ -196,7 +204,9 @@ class _IntroScreenState extends State<IntroScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Already Have account?'.tr(),
+                                  StringTranslateExtension(LocaleKeys
+                                          .intro_screen_already_have_account)
+                                      .tr(),
                                   style: Styles.styles16w400White,
                                 ),
                                 TextButton(
@@ -204,7 +214,9 @@ class _IntroScreenState extends State<IntroScreen> {
                                     Navigator.pushNamed(context, signInScreen);
                                   },
                                   child: Text(
-                                    'Sign In.'.tr(),
+                                    StringTranslateExtension(
+                                            LocaleKeys.intro_screen_sign_in)
+                                        .tr(),
                                     style: Styles.styles16w500NormalWhite,
                                   ),
                                 ),

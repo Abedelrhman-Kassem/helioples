@@ -5,6 +5,8 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_item.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ModalBottomSheet extends StatefulWidget {
   final int items;
@@ -40,7 +42,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Please Select Order Type',
+                    LocaleKeys.cart_modal_select_order_type.tr(),
                     style: Styles.styles17w700Black,
                   ),
                   InkWell(
@@ -58,7 +60,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
               ),
               SizedBox(height: 10.h),
               radioItem(
-                title: 'Delivery',
+                title: LocaleKeys.cart_modal_delivery.tr(),
                 iconPath: 'ic_outline-delivery-dining',
                 index: 'onDelivery',
                 radioValue: paymentType,
@@ -69,7 +71,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                 },
               ),
               radioItem(
-                title: 'Pickup',
+                title: LocaleKeys.cart_modal_pickup.tr(),
                 iconPath: 'subway_bag',
                 index: 'OnBranch',
                 radioValue: paymentType,
@@ -107,7 +109,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                     ),
                   ),
                   child: Text(
-                    'Continue',
+                    LocaleKeys.cart_modal_continue.tr(),
                     style: Styles.styles17w500MainColor,
                   ),
                 ),

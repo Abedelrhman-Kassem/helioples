@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,6 +19,7 @@ import 'dart:io';
 
 import 'package:negmt_heliopolis/features/Profile/presentation/view_model/report%20cubit/report_cubit.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view_model/report%20cubit/report_states.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -28,11 +30,10 @@ class ReportScreen extends StatefulWidget {
 
 class _ReportScreenState extends State<ReportScreen> {
   final TextEditingController firstNameController =
-      TextEditingController(text: "Omar");
+      TextEditingController(text: "mohamed");
   final TextEditingController lastNameController =
-      TextEditingController(text: "Salah");
-  final TextEditingController phoneNumberController =
-      TextEditingController(text: "+201116026564");
+      TextEditingController(text: "Hisham ");
+  final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController messageController = TextEditingController();
   File? _selectedImage;
   Future<void> _pickImage(String type) async {
@@ -114,7 +115,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   width: 90.w,
                 ),
                 Text(
-                  "Report An Issue",
+                  LocaleKeys.report_screen_report_an_issue.tr(),
                   style: Styles.styles16w400Black,
                 ),
               ],
@@ -128,24 +129,24 @@ class _ReportScreenState extends State<ReportScreen> {
                 Expanded(
                   child: NameTextField(
                     isPassword: false,
-                    labelText: "First Name",
+                    labelText: LocaleKeys.report_screen_first_name.tr(),
                     controller: firstNameController,
-                    isEnabled: false,
+                    isEnabled: true,
                   ),
                 ),
                 SizedBox(width: 20.w),
                 Expanded(
                   child: NameTextField(
                     isPassword: false,
-                    labelText: "Last Name",
+                    labelText: LocaleKeys.report_screen_last_name.tr(),
                     controller: lastNameController,
-                    isEnabled: false,
+                    isEnabled: true,
                   ),
                 ),
               ],
             ),
             PhoneNumberRow(
-              labelText: "Phone Number",
+              labelText: LocaleKeys.report_screen_phone_number.tr(),
               controller: phoneNumberController,
             ),
             SizedBox(
@@ -154,7 +155,7 @@ class _ReportScreenState extends State<ReportScreen> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
               child: Text(
-                "Your Message",
+                LocaleKeys.report_screen_your_message.tr(),
                 style: Styles.styles14w400NormalBlack,
               ),
             ),
@@ -166,7 +167,8 @@ class _ReportScreenState extends State<ReportScreen> {
               maxLines: 9,
               controller: messageController,
               decoration: InputDecoration(
-                hintText: "Enter Your Message In Details",
+                hintText:
+                    LocaleKeys.report_screen_enter_your_message_in_details.tr(),
                 hintStyle: Styles.styles17w500NormalBlack
                     .copyWith(color: const Color.fromRGBO(50, 50, 50, 1)),
                 filled: true,
@@ -220,7 +222,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       ],
                       const Spacer(),
                       Text(
-                        "Upload",
+                        LocaleKeys.report_screen_upload.tr(),
                         style: Styles.styles13w400interFamily.copyWith(
                             fontWeight: FontWeight.w500,
                             color: MyColors.mainColor,
@@ -254,9 +256,10 @@ class _ReportScreenState extends State<ReportScreen> {
                   } else {
                     return Center(
                         child: SignUpCustomButton(
-                            buttonText: "Submit Message",
+                            buttonText:
+                                LocaleKeys.report_screen_submit_message.tr(),
                             onPressed: () {
-                              Report report = new Report(
+                              Report report = Report(
                                   firstName: firstNameController.text,
                                   imageUrl:
                                       "https://www.google.com/imgres?q=cristiano%20ronaldo&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fd%2Fd7%2FCristiano_Ronaldo_playing_for_Al_Nassr_FC_against_Persepolis%252C_September_2023_%2528cropped%2529.jpg%2F640px-Cristiano_Ronaldo_playing_for_Al_Nassr_FC_against_Persepolis%252C_September_2023_%2528cropped%2529.jpg&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FCristiano_Ronaldo&docid=CBspcpQflHogDM&tbnid=VxxZB7gC_IBLmM&vet=12ahUKEwj-vd3S6P6JAxUhTqQEHWmkKiUQM3oECBoQAA..i&w=640&h=837&hcb=2&ved=2ahUKEwj-vd3S6P6JAxUhTqQEHWmkKiUQM3oECBoQAA",
@@ -285,7 +288,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     CustomSnackBar.show(
                       context: context,
                       duration: const Duration(milliseconds: 5000),
-                      text: 'Report Is Sent ',
+                      text: LocaleKeys.report_screen_report_an_issue.tr(),
                       isGreen: true,
                     );
                     Navigator.of(context).pushNamed(helpCenterScreen);

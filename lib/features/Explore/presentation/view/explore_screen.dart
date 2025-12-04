@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:negmt_heliopolis/features/Explore/presentation/view/widgets/sear
 import 'package:negmt_heliopolis/features/Explore/presentation/view/widgets/search_history_widget.dart';
 import 'package:negmt_heliopolis/features/Explore/presentation/view_model/cubit/explore_cubit.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -111,7 +113,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       ),
                       SizedBox(width: 5.w),
                       Text(
-                        'Search for groceries and more',
+                        LocaleKeys.search_delegate_search_for_groceries_and_more
+                            .tr(),
                         style: Styles.styles14w400Black,
                       ),
                     ],
@@ -131,7 +134,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Search History',
+                          LocaleKeys.search_delegate_search_history.tr(),
                           style: Styles.styles14w600NormalBlack,
                         ),
                         InkWell(
@@ -149,7 +152,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           child: Container(
                             padding: EdgeInsets.all(10.r),
                             child: Text(
-                              'Clear History',
+                              LocaleKeys.search_delegate_clear_history.tr(),
                               style: Styles.styles14w400MainColor,
                             ),
                           ),

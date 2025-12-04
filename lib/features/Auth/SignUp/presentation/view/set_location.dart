@@ -7,15 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:get/utils.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
-import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/loading_button.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Address/data/model/address_model.dart';
@@ -23,17 +19,18 @@ import 'package:negmt_heliopolis/features/Address/data/repo/set_address_rep_impl
 
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/model/place.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/model/place_suggestion.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/data/repo/sing_up_repo_imp.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/send_location_cubit/send_location_cubit.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/send_location_cubit/send_location_states.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/set_location_cubit/set_location_cubit.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view_model/send_location_cubit/send_location_cubit.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view_model/send_location_cubit/send_location_states.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view_model/set_location_cubit/set_location_cubit.dart';
 
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/place_item.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/screens/confirm_address_screen.dart';
 
 import 'package:uuid/uuid.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
-import '../view model/set_location_cubit/set_location_state.dart';
+import '../view_model/set_location_cubit/set_location_state.dart';
 import 'widgets/sign_up_custom_button.dart';
 
 class SetLocationScreen extends StatefulWidget {
@@ -153,15 +150,21 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
         return "${placemarks[0].subAdministrativeArea ?? ''} ${placemarks[0].locality ?? ''}"
             .trim();
       } else {
-        return 'Unknown location';
+        return StringTranslateExtension(
+                LocaleKeys.set_location_screen_unknown_location)
+            .tr();
       }
     } on PlatformException catch (e) {
       // Log وارجع قيمة احتياطية
       log('Geocoding failed: ${e.code} - ${e.message}');
-      return 'Service not available';
+      return StringTranslateExtension(
+              LocaleKeys.set_location_screen_service_not_available)
+          .tr();
     } catch (e) {
       log('Unexpected geocoding error: $e');
-      return 'Error getting location';
+      return StringTranslateExtension(
+              LocaleKeys.set_location_screen_error_getting_location)
+          .tr();
     }
   }
 
@@ -199,7 +202,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.black.withValues(alpha: 0.2),
               blurRadius: 6,
               offset: const Offset(0, 2),
             ),
@@ -366,7 +369,9 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                             Navigator.of(context).pushNamed(notificationScreen);
                           },
                           child: Text(
-                            "Skip",
+                            StringTranslateExtension(
+                                    LocaleKeys.set_location_screen_skip)
+                                .tr(),
                             style: Styles.styles16w400grey.copyWith(
                                 color: const Color.fromRGBO(0, 126, 143, 1),
                                 fontSize: 18.sp),
@@ -378,7 +383,9 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                 ),
               ),
               Text(
-                "Choose Delivery Location",
+                StringTranslateExtension(
+                        LocaleKeys.set_location_screen_choose_delivery_location)
+                    .tr(),
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
@@ -403,7 +410,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                       borderRadius: BorderRadius.circular(30.r),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
+                          color: Colors.black.withValues(alpha: 0.2),
                           blurRadius: 6,
                           offset: const Offset(0, 2),
                         ),
@@ -413,7 +420,9 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                       controller: searchController,
                       focusNode: focusNode,
                       decoration: InputDecoration(
-                        hintText: 'Find a place...',
+                        hintText: StringTranslateExtension(
+                                LocaleKeys.set_location_screen_find_a_place)
+                            .tr(),
                         hintStyle: Styles.styles14w400NormalBlack.copyWith(
                           color: const Color.fromRGBO(141, 145, 150, 1),
                         ),
@@ -471,7 +480,9 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Location Info",
+                                StringTranslateExtension(LocaleKeys
+                                        .set_location_screen_location_info)
+                                    .tr(),
                                 style: Styles.styles14w400NormalBlack
                                     .copyWith(fontWeight: FontWeight.w500),
                               ),
@@ -479,7 +490,9 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                                 height: 10.h,
                               ),
                               Text(
-                                "Cairo, Egypt",
+                                StringTranslateExtension(LocaleKeys
+                                        .set_location_screen_cairo_egypt)
+                                    .tr(),
                                 style: Styles.styles11w600Black.copyWith(
                                     fontSize: 26,
                                     color: const Color.fromRGBO(40, 40, 40, 1)),
@@ -510,13 +523,17 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                                 ConnectionState.waiting) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text("Loading location...",
+                                child: Text(
+                                    StringTranslateExtension(LocaleKeys
+                                            .set_location_screen_loading_location)
+                                        .tr(),
                                     style: Styles.styles14w400NormalBlack),
                               );
                             } else if (snapshot.hasError) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text("Error: ${snapshot.error}",
+                                child: Text(
+                                    '${StringTranslateExtension(LocaleKeys.set_location_screen_error).tr()} ${snapshot.error}',
                                     style: Styles.styles14w400NormalBlack),
                               );
                             } else if (snapshot.hasData) {
@@ -528,7 +545,10 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                             } else {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text("No location found",
+                                child: Text(
+                                    StringTranslateExtension(LocaleKeys
+                                            .set_location_screen_no_location_found)
+                                        .tr(),
                                     style: Styles.styles14w400NormalBlack),
                               );
                             }
@@ -551,13 +571,18 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                         } else {
                           return Center(
                               child: SignUpCustomButton(
-                                  buttonText: "Continue",
+                                  buttonText: StringTranslateExtension(
+                                          LocaleKeys
+                                              .set_location_screen_continue)
+                                      .tr(),
                                   onPressed: () async {
                                     if (lat == null || long == null) {
-                                      showCustomGetSnack(
-                                          duration: const Duration(seconds: 2),
-                                          isGreen: false,
-                                          text: 'يرجى تحديد الموقع');
+                                      // showCustomGetSnack(
+                                      //     duration: const Duration(seconds: 2),
+                                      //     isGreen: false,
+                                      //     text: StringTranslateExtension(LocaleKeys
+                                      //             .set_location_screen_please_select_location)
+                                      //         .tr());
                                     } else {
                                       Address? address = Address();
 

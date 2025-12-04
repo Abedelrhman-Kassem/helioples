@@ -40,7 +40,7 @@ class Location {
   late double lng;
 
   Location.fromJson(dynamic json) {
-    lat = json['lat'] != null ? json['lat'] : throw Exception("Missing 'lat' key in JSON.");
-    lng = json['lng'] != null ? json['lng'] : throw Exception("Missing 'lng' key in JSON.");
+    lat = json['lat'] ?? (throw Exception("Missing 'lat' key in JSON."));
+    lng = json['lng'] ?? (throw Exception("Missing 'lng' key in JSON."));
   }
 }

@@ -10,6 +10,8 @@ import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/loading
 import 'package:negmt_heliopolis/features/Cart/presentation/view_model/cubit/cart_cubit.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -19,7 +21,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  Widget initialWidget = const Text('Initial Widget');
+  Widget initialWidget = Text(LocaleKeys.cart_screen_initial_widget.tr());
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class _CartScreenState extends State<CartScreen> {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              title: const Text('Cart'),
+              title: Text(LocaleKeys.cart_screen_cart.tr()),
               backgroundColor: MyColors.mainScaffoldWhiteColor,
               elevation: 0,
               leading: returnArrow(

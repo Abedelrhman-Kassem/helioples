@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import 'package:negmt_heliopolis/core/widgets/problem_page.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view_model/history%20cubit/history_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view_model/history%20cubit/history_states.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import '../../../data/repo/order%20history%20repo/order_history_repo_imp.dart';
 
@@ -15,10 +17,10 @@ class CompletedOrderScreen extends StatefulWidget {
   const CompletedOrderScreen({super.key});
 
   @override
-  _CompletedOrderScreenState createState() => _CompletedOrderScreenState();
+  CompletedOrderScreenState createState() => CompletedOrderScreenState();
 }
 
-class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
+class CompletedOrderScreenState extends State<CompletedOrderScreen> {
   late ScrollController _scrollController;
   late HistoryCubit _historyCubit;
 
@@ -58,11 +60,13 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
             if (state.msg == "You are not allowed to access this page.") {
               return Center(
                   child: InfoMessageWidget(
-                buttonText: "Sign In Now",
+                buttonText: LocaleKeys
+                    .comleted_order_screen_completed_order_screen_no_profile_information,
                 imagePath: "assets/Icons_logos/Social 03.png",
-                title: "No Profile Information",
-                description:
-                    "You need sign in to app in order to control your personal information",
+                title: LocaleKeys
+                    .comleted_order_screen_completed_order_screen_no_profile_information,
+                description: LocaleKeys
+                    .comleted_order_screen_completed_order_screen_no_profile_information,
                 onPressed: () {
                   Navigator.pushNamed(context, signInScreen);
                 },
@@ -70,7 +74,8 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
             } else {
               return Center(
                   child: InfoMessageWidget(
-                buttonText: "Refresh",
+                buttonText: LocaleKeys
+                    .comleted_order_screen_completed_order_screen_refresh,
                 imagePath: "assets/Icons_logos/Connectivity_issue.png",
                 title: "Error Occurred",
                 description: "Seems like we got a problem, please refresh",
@@ -163,7 +168,9 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
                                                                   Colors.black),
                                                       children: [
                                                         TextSpan(
-                                                          text: "Items",
+                                                          text: LocaleKeys
+                                                              .comleted_order_screen_completed_order_screen_items
+                                                              .tr(),
                                                           style: Styles
                                                               .styles13w300interFamily
                                                               .copyWith(
@@ -179,7 +186,7 @@ class _CompletedOrderScreenState extends State<CompletedOrderScreen> {
                                                   ),
                                                   SizedBox(width: 125.w),
                                                   Text(
-                                                    "${order.total!.toStringAsFixed(2)} EGP",
+                                                    "${order.total!.toStringAsFixed(2)} ${LocaleKeys.comleted_order_screen_completed_order_screen_egp.tr()}",
                                                     style: Styles
                                                         .styles17w700interFamily,
                                                   ),

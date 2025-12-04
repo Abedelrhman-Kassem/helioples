@@ -1,24 +1,20 @@
-import 'dart:developer';
-
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
-
 import 'package:negmt_heliopolis/core/widgets/loading_button.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/data/repo/log_in_repo_imp.dart';
-
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/nh_logo.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/sign%20in%20cubit/sign_in_cubit.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/sign%20in%20cubit/sign_in_states.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/name_textfield.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/nh_logo.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/phone_number_row.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_app_bar.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart';
@@ -32,12 +28,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  getToken() async {
-    String? myToken = await FirebaseMessaging.instance.getToken();
-    FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  // getToken() async {
+  //   String? myToken = await FirebaseMessaging.instance.getToken();
+  //   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
-    log("token : $myToken");
-  }
+  //   log("token : $myToken");
+  // }
 
   myRequestPermission() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -62,19 +58,21 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   void initState() {
-    // TODO: implement initState
-
     myRequestPermission();
-    getToken();
+    // getToken();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController phoneNumberController = TextEditingController();
-    TextEditingController PasswordController = TextEditingController();
+    final String lang = getLocale(context);
+
     return Container(
       alignment: Alignment.center,
       decoration: const BoxDecoration(
@@ -91,181 +89,171 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 60.h),
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SignUpAppBar(
-                    title: "Login",
-                    isEn: true,
-                    onLanguageChange: (bool value) {
-                      setState(() {
-                        // isEn = value;
-                      });
-                    }),
-                SizedBox(height: 5.h),
-                const LogoWidget(),
-                SizedBox(height: 15.h),
-
-                // Text(
-                //   "Enter Phone Number",
-                //   style: Styles.styles25w600black.copyWith(color: const Color.fromRGBO(40, 40, 40, 1)),
-                //   // style: const TextStyle(
-                //   //     fontSize: 28, fontWeight: FontWeight.bold),
-                // ),
-                PhoneNumberRow(
-                  controller: phoneNumberController,
-                  labelText: "Phone Number",
-                ),
-                SizedBox(
-                  height: 12.h,
-                ),
-                NameTextField(
-                  labelText: "Password",
-                  controller: PasswordController,
-                  isEnabled: true,
-                  isPassword: true,
-                ),
-                SizedBox(
-                  height: 12.h,
-                ),
-                Center(
-                  child: Text(
-                    'You will receive a verification code',
-                    style: Styles.styles15w400Black
-                        .copyWith(color: const Color.fromRGBO(80, 80, 80, 1)),
-                  ),
-                ),
-                SizedBox(
-                  height: 14.h,
-                ),
-
-                BlocProvider(
-                  create: (context) =>
-                      SignInCubit((LogInRepoImp(apiService: ApiService()))),
-                  child: BlocConsumer<SignInCubit, SignInState>(
-                      builder: (context, state) {
-                    var cubit = BlocProvider.of<SignInCubit>(context);
-                    if (state is SignInLoading) {
-                      return const LoadingButton(
-                        height: 60,
-                        radius: 10,
-                      );
-                    } else {
-                      return Center(
-                        child: SignUpCustomButton(
-                          buttonText: "Continue",
-                          onPressed: () {
-                            cubit.signIn("1145243378", "12345678");
-                            //  Navigator.of(context).pushNamed(
-                            //   verficationScreen,
-                            //   arguments: {
-                            //     'phoneNumber': "+201145243378",
-                            //   },
-                            // );
-                          },
-                        ),
-                      );
-                    }
-                  }, listener: (context, state) {
-                    if (state is SignInFailure) {
-                      CustomSnackBar.show(
-                        context: context,
-                        duration: const Duration(milliseconds: 5000),
-                        text: state.errorMessage,
-                        isGreen: false,
-                      );
-                    } else if (state is SignInSuccess) {
-                      CustomSnackBar.show(
-                        context: context,
-                        duration: const Duration(milliseconds: 5000),
-                        text: 'We already sent a verification code',
-                        isGreen: true,
-                      );
-
-                      Navigator.of(context).pushNamed(
-                        verficationScreen,
-                        arguments: {
-                          'phoneNumber': "1145243378",
-                        },
-                      );
-                    }
-                  }),
-                ),
-                // CustomButton(
-                //   text: "Continue",
-                //   onTap: () {
-                //     // Navigator.pushNamed(context, verficationScreen);
-                //   },
-                //   backgroundColor: MyColors.mainColor,
-                //   textColor: MyColors.mainScaffoldWhiteColor,
-                //   verticalPadding: 15,
-                //   borderRadius: 20,
-                // ),
-                SizedBox(
-                  height: 16.h,
-                ),
-                Center(
-                  child: RichText(
-                    text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: "Don’t Have Account? ",
-                            style: Styles.styles15w400Black),
-                        TextSpan(
-                          text: "Register Now",
-                          style: Styles.styles15w700Gold,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.pushNamed(context, signUpScreen);
-                            },
-                        ),
-                      ],
+            child: Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SignUpAppBar(
+                      title: LocaleKeys.login_screen_login.tr(),
+                      // isEn: true,
+                      onLanguageChange: (bool value) {
+                        if (lang == 'ar') {
+                          changeLocal(context, 'en');
+                        } else {
+                          changeLocal(context, 'ar');
+                        }
+                        // setState(() {
+                        //   // isEn = value;
+                        // });
+                      }),
+                  SizedBox(height: 5.h),
+                  const LogoWidget(),
+                  SizedBox(height: 15.h),
+                  Center(
+                    child: PhoneNumberRow(
+                      controller: phoneNumberController,
+                      labelText: LocaleKeys.login_screen_phone_number.tr(),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 26.h,
-                ),
-                Center(
-                  child: Text(
-                    "Or",
-                    style: Styles.styles16w600NormalBlack,
+                  SizedBox(
+                    height: 12.h,
                   ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Center(
-                  child: Container(
-                    height: 52.h,
-                    width: 194.w,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(43.r),
-                        border: Border.all(
-                            color: MyColors.mainColor, width: 2.5.w)),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(homeLayout);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Shop Now",
-                            style: Styles.styles17w500MainColor
-                                .copyWith(fontWeight: FontWeight.bold),
+                  Center(
+                    child: Text(
+                      LocaleKeys.login_screen_verification_info.tr(),
+                      style: Styles.styles15w400Black
+                          .copyWith(color: const Color.fromRGBO(80, 80, 80, 1)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 14.h,
+                  ),
+                  BlocProvider(
+                    create: (context) =>
+                        SignInCubit((LogInRepoImp(apiService: ApiService()))),
+                    child: BlocConsumer<SignInCubit, SignInState>(
+                        builder: (context, state) {
+                      var cubit = BlocProvider.of<SignInCubit>(context);
+                      if (state is SignInLoading) {
+                        return const LoadingButton(
+                          height: 60,
+                          radius: 10,
+                        );
+                      } else {
+                        return Center(
+                          child: SignUpCustomButton(
+                            buttonText: LocaleKeys.login_screen_continue.tr(),
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                print("valid");
+                                cubit.signIn(
+                                    phoneNumberController.text, "12345678");
+                              }
+
+                              //  Navigator.of(context).pushNamed(
+                              //   verficationScreen,
+                              //   arguments: {
+                              //     'phoneNumber': "+201145243378",
+                              //   },
+                              // );
+                            },
                           ),
-                          SizedBox(
-                            width: 8.w,
+                        );
+                      }
+                    }, listener: (context, state) {
+                      if (state is SignInFailure) {
+                        CustomSnackBar.show(
+                          context: context,
+                          duration: const Duration(milliseconds: 5000),
+                          text: state.errorMessage,
+                          isGreen: false,
+                        );
+                      } else if (state is SignInSuccess) {
+                        // CustomSnackBar.show(
+                        //   context: context,
+                        //   duration: const Duration(milliseconds: 5000),
+                        //   text: LocaleKeys.login_screen_verification_sent.tr(),
+                        //   isGreen: true,
+                        // );
+                        final cubit = context.read<SignInCubit>();
+                        Navigator.of(context).pushNamed(
+                          verficationScreen,
+                          arguments: {
+                            'phoneNumber': phoneNumberController.text,
+                            'verificationId': cubit.verificationId,
+                            'tempToken': cubit.tempToken,
+                          },
+                        );
+                      }
+                    }),
+                  ),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  Center(
+                    child: RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: LocaleKeys.login_screen_no_account.tr(),
+                              style: Styles.styles15w400Black),
+                          TextSpan(
+                            text: LocaleKeys.login_screen_register_now.tr(),
+                            style: Styles.styles15w700Gold,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.pushNamed(context, signUpScreen);
+                              },
                           ),
-                          Image.asset(
-                              "assets/Icons_logos/arrow-circle-right.png")
                         ],
                       ),
                     ),
                   ),
-                )
-              ],
+                  SizedBox(
+                    height: 26.h,
+                  ),
+                  Center(
+                    child: Text(
+                      LocaleKeys.login_screen_or.tr(),
+                      style: Styles.styles16w600NormalBlack,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Center(
+                    child: Container(
+                      height: 52.h,
+                      width: 194.w,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(43.r),
+                          border: Border.all(
+                              color: MyColors.mainColor, width: 2.5.w)),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(homeLayout);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              LocaleKeys.login_screen_shop_now.tr(),
+                              style: Styles.styles17w500MainColor
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: 8.w,
+                            ),
+                            Image.asset(
+                                "assets/Icons_logos/arrow-circle-right.png")
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

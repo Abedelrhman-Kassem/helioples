@@ -34,7 +34,7 @@ class _AlternativeContainerState extends State<AlternativeContainer> {
       padding: EdgeInsets.all(20.r),
       margin: EdgeInsets.symmetric(vertical: 10.h),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
+        color: Colors.white.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(15.r),
       ),
       child: Column(

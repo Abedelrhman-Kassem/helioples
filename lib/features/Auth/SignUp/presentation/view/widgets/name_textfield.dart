@@ -7,14 +7,16 @@ class NameTextField extends StatefulWidget {
   final String labelText;
   final TextEditingController controller;
   final bool isEnabled;
-  final bool isPassword ; 
+  final bool isPassword;
+  final String? Function(String?)? validator;
 
   const NameTextField({
     super.key,
     required this.labelText,
     required this.controller,
-    required this.isEnabled,
-    required this.isPassword,
+    this.isEnabled = true,
+    this.isPassword = false,
+    this.validator,
   });
 
   @override
@@ -25,7 +27,6 @@ class _NameTextFieldState extends State<NameTextField> {
   bool _isObscure = true;
   @override
   Widget build(BuildContext context) {
-    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -37,49 +38,50 @@ class _NameTextFieldState extends State<NameTextField> {
           ),
         ),
         SizedBox(height: 8.h),
-        TextField(
+        TextFormField(
+          validator: widget.validator,
           controller: widget.controller,
           enabled: widget.isEnabled,
-          obscureText: widget.isPassword? _isObscure : false,
+          obscureText: widget.isPassword ? _isObscure : false,
           decoration: InputDecoration(
-            filled: true,
-            fillColor: const Color.fromRGBO(246, 246, 246, 1),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30.r),
-              borderSide: const BorderSide(
-                color: Color.fromRGBO(210, 210, 210, 1),
-                width: 1.5,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(25.r),
-              borderSide: const BorderSide(
-                color: Color.fromRGBO(210, 210, 210, 1),
-                width: 1.5,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30.r),
-              borderSide: const BorderSide(
-                color: Color.fromRGBO(210, 210, 210, 1),
-                width: 1.5,
-              ),
-            ),
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-                suffixIcon: widget.isPassword? IconButton(
-                  onPressed: (){
-                  setState(() {
-                    _isObscure = ! _isObscure ;
-                  });
-
-                }, icon: Icon(
-                  _isObscure ? Icons.visibility_off : Icons.visibility,
-                  color: MyColors.mainColor ,
-
+              filled: true,
+              fillColor: const Color.fromRGBO(246, 246, 246, 1),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30.r),
+                borderSide: const BorderSide(
+                  color: Color.fromRGBO(210, 210, 210, 1),
+                  width: 1.5,
                 ),
-                ): null
-          ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25.r),
+                borderSide: const BorderSide(
+                  color: Color.fromRGBO(210, 210, 210, 1),
+                  width: 1.5,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30.r),
+                borderSide: const BorderSide(
+                  color: Color.fromRGBO(210, 210, 210, 1),
+                  width: 1.5,
+                ),
+              ),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+              suffixIcon: widget.isPassword
+                  ? IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _isObscure = !_isObscure;
+                        });
+                      },
+                      icon: Icon(
+                        _isObscure ? Icons.visibility_off : Icons.visibility,
+                        color: MyColors.mainColor,
+                      ),
+                    )
+                  : null),
           style: Styles.styles17w500NormalBlack,
         ),
       ],

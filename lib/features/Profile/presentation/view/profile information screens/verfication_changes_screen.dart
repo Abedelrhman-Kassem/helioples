@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
@@ -7,6 +8,7 @@ import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/background_image.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/number_textfield.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:timer_count_down/timer_controller.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 import 'package:confetti/confetti.dart';
@@ -97,7 +99,9 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                           width: 65.w,
                         ),
                         Text(
-                          "Profile Information",
+                          LocaleKeys
+                              .verification_changes_screen_profile_information
+                              .tr(),
                           style: Styles.styles16w400grey
                               .copyWith(color: Colors.black),
                         ),
@@ -107,18 +111,20 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                       height: 20.h,
                     ),
                     Text(
-                      "Verify Phone Number",
+                      LocaleKeys.verification_changes_screen_verify_phone_number
+                          .tr(),
                       style: Styles.styles25w600black,
                     ),
                     SizedBox(
                       height: 30.h,
                     ),
                     Text(
-                      "We have sent a code to your number +2${widget.phoneNumber}",
+                      "${LocaleKeys.verification_changes_screen_sent_code_to.tr()} +2${widget.phoneNumber}",
                       style: Styles.styles15w400Black,
                     ),
                     Text(
-                      "Please enter the code sent",
+                      LocaleKeys.verification_changes_screen_please_enter_code
+                          .tr(),
                       style: Styles.styles15w400Black,
                     ),
                     SizedBox(height: 20.h),
@@ -164,7 +170,9 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                     SizedBox(height: 20.h),
                     Center(
                       child: SignUpCustomButton(
-                        buttonText: "Verify Now",
+                        buttonText: LocaleKeys
+                            .verfication_changes_screen_verify_now
+                            .tr(),
                         onPressed: () {
                           showModalBottomSheet(
                               context: context,
@@ -213,7 +221,9 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                                             child: SizedBox(
                                               width: 340.w,
                                               child: Text(
-                                                "Your Profile Information Updated Successfully",
+                                                LocaleKeys
+                                                    .verification_changes_screen_profile_updated_success
+                                                    .tr(),
                                                 style: Styles.styles21w700black
                                                     .copyWith(
                                                         fontWeight:
@@ -229,7 +239,9 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                                             height: 20.h,
                                           ),
                                           SignUpCustomButton(
-                                              buttonText: "Done",
+                                              buttonText: LocaleKeys
+                                                  .verfication_changes_screen_done
+                                                  .tr(),
                                               onPressed: () {
                                                 Navigator.of(context)
                                                     .pushNamed(homeLayout);
@@ -282,7 +294,9 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                     SizedBox(height: 15.h),
                     Center(
                       child: Text(
-                        "Didn’t receive verification Code?",
+                        LocaleKeys
+                            .verification_changes_screen_didnt_receive_code
+                            .tr(),
                         style: Styles.styles15w400Black,
                       ),
                     ),
@@ -291,7 +305,8 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                       child: GestureDetector(
                         onTap: _resendCode,
                         child: Text(
-                          "Resend Code",
+                          LocaleKeys.verfication_changes_screen_resend_code
+                              .tr(),
                           style: Styles.styles15w700Gold,
                         ),
                       ),

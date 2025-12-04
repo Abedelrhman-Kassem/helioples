@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters
+// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters, constant_identifier_names
 
 import 'dart:ui';
 
@@ -14,7 +14,7 @@ class CodegenLoader extends AssetLoader{
     return Future.value(mapLocales[locale.toString()]);
   }
 
-  static const Map<String,dynamic> ar = {
+  static const Map<String,dynamic> _ar = {
   "login_screen": {
     "login": "تسجيل الدخول",
     "phone_number": "رقم الهاتف",
@@ -59,7 +59,10 @@ class CodegenLoader extends AssetLoader{
     "error": "خطأ:",
     "no_location_found": "لم يتم العثور على موقع",
     "continue": "استمرار",
-    "location_sent": "تم إرسال الموقع"
+    "location_sent": "تم إرسال الموقع",
+    "unknown_location": "الموقع غير معروف",
+    "service_not_available": "خدمة تحديد الموقع غير متاحة حاليًا",
+    "error_getting_location": "حدث خطأ أثناء الحصول على الموقع"
   },
   "notification_screen": {
     "allow_us_to_send": "اسمح لنا بإرسال ",
@@ -76,15 +79,32 @@ class CodegenLoader extends AssetLoader{
     "enter_location_manually": "إدخال الموقع يدويًا"
   },
   "all_special_offers_screen": {
-    "special_offers": "العروض الخاصة"
+    "special_offers": "العروض الخاصة",
+    "view_all": "اظهار الكل"
+  },
+  "cart_modal": {
+    "select_order_type": "يرجى اختيار نوع الطلب",
+    "delivery": "توصيل",
+    "pickup": "استلام",
+    "continue": "استمرار",
+    "sub_total": "الإجمالي الفرعي",
+    "items": "عناصر",
+    "discount": "خصم",
+    "total_price": "السعر الإجمالي",
+    "checkout": "إتمام الطلب"
   },
   "cart_screen": {
     "cart": "عربة التسوق",
-    "initial_widget": "عنصر مبدئي"
+    "initial_widget": "عنصر مبدئي",
+    "cart_item_cant_add_more": "لا يمكنك إضافة أكثر من {pieces} قطعة",
+    "cart_item_pcs": "قطعة",
+    "cart_item_egp": "ج.م"
   },
   "sub_categories_screen": {
-    "loading": "جاري التحميل..."
+    "loading": "جاري التحميل...",
+    "No_Products_Found": "لم يتم العثور على منتجات"
   },
+  "home_screen_categories": "الفئات",
   "re_order_screen": {
     "checkout": "إتمام الطلب",
     "edit_order_terms": "يمكنك تعديل شروط الطلب وإعادة الطلب",
@@ -175,7 +195,8 @@ class CodegenLoader extends AssetLoader{
   },
   "liked_screen": {
     "initial": "مبدئي",
-    "likes": "المفضلة"
+    "likes": "المفضلة",
+    "You_must_login_first": "يجب عليك تسجيل الدخول أولاً"
   },
   "product_screen": {
     "related_products": "منتجات ذات صلة",
@@ -222,7 +243,9 @@ class CodegenLoader extends AssetLoader{
     "profile_updated_success": "تم تحديث معلومات حسابك بنجاح",
     "done": "تم",
     "didnt_receive_code": "لم تستلم رمز التحقق؟",
-    "resend_code": "إعادة إرسال الرمز"
+    "resend_code": "إعادة إرسال الرمز",
+    "number_empty": "لا يمكن أن يكون الرقم فارغًا",
+    "number_invalid": " رقم الهاتف يجب أن يكون 11 رقمًا"
   },
   "order_details_screen": {
     "something_went_wrong": "حدث خطأ ما",
@@ -241,27 +264,28 @@ class CodegenLoader extends AssetLoader{
   "history_screen": {
     "orders_history": "سجل الطلبات",
     "active_orders": "الطلبات النشطة",
-    "completed_orders": "الطلبات المكتملة"
+    "completed_orders": "الطلبات المكتملة",
+    "Active": "نشط"
   },
   "report_screen": {
-    "Choose Image Source": "اختر مصدر الصورة",
-    "Camera": "الكاميرا",
-    "Gallery": "المعرض",
-    "Report An Issue": "الإبلاغ عن مشكلة",
-    "First Name": "الاسم الأول",
-    "Last Name": "اسم العائلة",
-    "Phone Number": "رقم الهاتف",
-    "Your Message": "رسالتك",
-    "Enter Your Message In Details": "أدخل رسالتك بالتفصيل",
-    "Upload": "رفع",
-    "Submit Message": "إرسال الرسالة",
-    "Report Is Sent": "تم إرسال البلاغ"
+    "choose_image_source": "اختر مصدر الصورة",
+    "camera": "الكاميرا",
+    "gallery": "المعرض",
+    "report_an_issue": "الإبلاغ عن مشكلة",
+    "first_name": "الاسم الأول",
+    "last_name": "اسم العائلة",
+    "phone_number": "رقم الهاتف",
+    "your_message": "رسالتك",
+    "enter_your_message_in_details": "أدخل رسالتك بالتفصيل",
+    "upload": "رفع",
+    "submit_message": "إرسال الرسالة",
+    "report_is_sent": "تم إرسال البلاغ"
   },
   "help_center_screen": {
-    "Help Center": "مركز المساعدة",
-    "Report An Issue": "الإبلاغ عن مشكلة",
-    "FAQS": "الأسئلة الشائعة",
-    "Call Us": "اتصل بنا"
+    "help_center": "مركز المساعدة",
+    "report_an_issue": "الإبلاغ عن مشكلة",
+    "faqs": "الأسئلة الشائعة",
+    "call_us": "اتصل بنا"
   },
   "faqs_screen": {
     "FAQS": "الأسئلة الشائعة"
@@ -269,17 +293,136 @@ class CodegenLoader extends AssetLoader{
   "alerts_screen": {
     "Alerts": "التنبيهات",
     "Today": "اليوم",
-    "Order Confirmed Successfully": "تم تأكيد الطلب بنجاح",
-    "Lorem ipsum": "هذا نص تجريبي يستخدم في التصميم، سيتم استبداله بمحتوى حقيقي لاحقًا."
+    "Order_Confirmed_Successfully": "تم تأكيد الطلب بنجاح",
+    "Lorem_ipsum": "هذا نص تجريبي يستخدم في التصميم، سيتم استبداله بمحتوى حقيقي لاحقًا."
   },
   "special_offer_item_screen": {
-    "Special Offers": "العروض الخاصة",
-    "hello there": "مرحباً هناك"
+    "Special_Offers": "العروض الخاصة",
+    "hello_there": "مرحباً هناك"
+  },
+  "profile_profile_information": "معلومات الحساب",
+  "profile_orders_history": "سجل الطلبات",
+  "profile_alerts": "التنبيهات",
+  "profile_app_settings": "إعدادات التطبيق",
+  "profile_help_center": "مركز المساعدة",
+  "profile_chat_with_us": "تحدث معنا",
+  "profile_logout": "تسجيل الخروج",
+  "profile_user_profile": "الملف الشخصي",
+  "comleted_order_screen": {
+    "completed_order_screen_sign_in_now": "سجل الدخول الآن",
+    "completed_order_screen_no_profile_information": "لا توجد معلومات حساب",
+    "completed_order_screen_sign_in_to_control": "يجب عليك تسجيل الدخول للتحكم في معلوماتك الشخصية",
+    "completed_order_screen_refresh": "تحديث",
+    "completed_order_screen_error_occurred": "حدث خطأ",
+    "completed_order_screen_problem_refresh": "يبدو أن هناك مشكلة، يرجى التحديث",
+    "completed_order_screen_items": "عناصر",
+    "completed_order_screen_egp": "ج.م",
+    "completed_order_screen_location_sample": "١٣ صلاح سالم، رقم ٤٥ القاهرة مصر"
+  },
+  "cancel_order_bottom_sheet": {
+    "order_cancellation": "إلغاء الطلب",
+    "cancel_order_confirmation": "هل أنت متأكد أنك تريد إلغاء هذا الطلب؟",
+    "cancel_order": "إلغاء الطلب",
+    "dont_cancel": "لا تلغي",
+    "help_us_reason": "ساعدنا في فهم سبب الإلغاء",
+    "reason_just_changed": "غيرت رأيي فقط.",
+    "reason_placed_by_mistake": "قمت بالطلب عن طريق الخطأ",
+    "reason_modify_products": "أحتاج لتعديل منتجات الطلب",
+    "reason_change_address": "أحتاج لتغيير عنوان التوصيل",
+    "reason_change_payment": "أحتاج لتغيير طريقة الدفع",
+    "reason_other": "أخرى",
+    "submit": "إرسال"
+  },
+  "choose_bottom_sheet": {
+    "choose_how_to_proceed": "إذا لم نتمكن من التواصل معك خلال 15 دقيقة، كيف تريدنا أن نتابع؟",
+    "choose_for_me": "اختر لي",
+    "choose_for_me_desc": "اختر منتجات تقريبًا بنفس السعر",
+    "do_not_choose_alternative": "لا تختار بديل",
+    "do_not_choose_alternative_desc": "سنتجاهل العناصر الناقصة",
+    "submit": "إرسال"
+  },
+  "delivery_tips_container": {
+    "appreciate_delivery_with_tips": "قدر عامل التوصيل بالبقشيش",
+    "tips_amount_goes_to_labor": "مبلغ البقشيش سيذهب مباشرة لعامل التوصيل",
+    "10_egp": "١٠ جنيه",
+    "20_egp": "٢٠ جنيه",
+    "30_egp": "٣٠ جنيه",
+    "40_egp": "٤٠ جنيه",
+    "custom": "مخصص",
+    "tips_amount": "مبلغ البقشيش",
+    "enter_amount": "أدخل المبلغ",
+    "apply": "تطبيق",
+    "enter_valid_number": "أدخل رقم صحيح"
+  },
+  "exit_order_bottom": {
+    "exit_order": "خروج من الطلب",
+    "exit_order_confirmation": "هل أنت متأكد أنك تريد الخروج من الطلب؟",
+    "exit_order_button": "خروج من الطلب",
+    "cancel": "إلغاء"
+  },
+  "order_summary_screen": {
+    "sub_total": "الإجمالي الفرعي",
+    "items": "عناصر",
+    "discount": "الخصم",
+    "promocode_discount": "خصم كود الخصم",
+    "delivery_fees": "رسوم التوصيل",
+    "currency": "ج.م",
+    "title": "كود الخصم",
+    "hint": "أدخل كود الخصم",
+    "apply_button": "تطبيق",
+    "error_message": "كود الخصم غير صالح",
+    "success_message": "تم تطبيق كود الخصم بنجاح"
+  },
+  "schedule_screen": {
+    "schedule_delivery_time": "حدد وقت التوصيل",
+    "arrive_at": "الوصول في",
+    "schedule": "جدولة"
+  },
+  "search_delegate": {
+    "all_suggestions": "جميع الاقتراحات",
+    "search_for_groceries_and_more": "ابحث عن البقالة والمزيد",
+    "search_history": " سجل البحث",
+    "clear_history": "مسح السجل"
+  },
+  "location_widget": {
+    "delivery_duration": "مدة التوصيل:",
+    "delivery_time": "٣٥ دقيقة",
+    "delivery_address": "عنوان التوصيل",
+    "add_address": "إضافة عنوان",
+    "done": "تم"
+  },
+  "change_information": {
+    "profile_information": "معلومات الملف الشخصي",
+    "edit_your_personal_information": "تعديل معلوماتك الشخصية",
+    "first_name": "الاسم الأول",
+    "last_name": "اسم العائلة",
+    "phone_number": "رقم الهاتف",
+    "birthday_date": "تاريخ الميلاد",
+    "save": "حفظ"
+  },
+  "verfication_changes_screen": {
+    "profile_information": "معلومات الملف الشخصي",
+    "verify_phone_number": "تأكيد رقم الهاتف",
+    "code_sent_message": "تم إرسال رمز إلى رقمك",
+    "enter_code_prompt": "يرجى إدخال الرمز المرسل",
+    "verify_now": "تحقق الآن",
+    "update_success": "تم تحديث معلومات ملفك الشخصي بنجاح",
+    "done": "تم",
+    "no_code_received": "لم تستلم رمز التحقق؟",
+    "resend_code": "إعادة إرسال الرمز"
+  },
+  "validation": {
+    "empty_error": "لا يمكن أن يكون الحقل فارغًا",
+    "invalid_username": "اسم المستخدم غير صالح",
+    "invalid_email": "البريد الإلكتروني غير صالح",
+    "invalid_phone": "رقم الهاتف غير صالح",
+    "too_short": "يجب ألا يقل عن {min} أحرف",
+    "too_long": "يجب ألا يزيد عن {max} أحرف"
   }
 };
-static const Map<String,dynamic> en = {
+static const Map<String,dynamic> _en = {
   "login_screen": {
-    "Already Have An Account?": "Already Have An Account?",
+    "Already_Have_An_Account?": "Already Have An Account?",
     "login": "Login",
     "phone_number": "Phone Number",
     "password": "Password",
@@ -323,7 +466,10 @@ static const Map<String,dynamic> en = {
     "error": "Error:",
     "no_location_found": "No location found",
     "continue": "Continue",
-    "location_sent": "location sent "
+    "location_sent": "location sent ",
+    "unknown_location": "Unknown location",
+    "service_not_available": "Location service not available",
+    "error_getting_location": "Error while getting location"
   },
   "notification_screen": {
     "allow_us_to_send": "Allow Us To Send You ",
@@ -340,14 +486,30 @@ static const Map<String,dynamic> en = {
     "enter_location_manually": "Enter Location Manually"
   },
   "all_special_offers_screen": {
-    "special_offers": "Special Offers"
+    "special_offers": "Special Offers",
+    "view_all": "View All"
+  },
+  "cart_modal": {
+    "select_order_type": "Please Select Order Type",
+    "delivery": "Delivery",
+    "pickup": "Pickup",
+    "continue": "Continue",
+    "sub_total": "Sub Total",
+    "items": "Items",
+    "discount": "Discount",
+    "total_price": "Total Price",
+    "checkout": "Checkout"
   },
   "cart_screen": {
     "cart": "Cart",
-    "initial_widget": "Initial Widget"
+    "initial_widget": "Initial Widget",
+    "cart_item_cant_add_more": "You can't add more than {pieces} pieces",
+    "cart_item_pcs": "Pcs",
+    "cart_item_egp": "EGP"
   },
   "sub_categories_screen": {
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "No_Products_Found": "No Products Found"
   },
   "re_order_screen": {
     "checkout": "Checkout",
@@ -428,6 +590,8 @@ static const Map<String,dynamic> en = {
   "home_screen": {
     "hello_how": "hello how"
   },
+  "home_screen_view_all": "View All",
+  "home_screen_categories": "Categories",
   "intro_screen": {
     "better": "Better",
     "prices": "Prices,",
@@ -439,7 +603,8 @@ static const Map<String,dynamic> en = {
   },
   "liked_screen": {
     "initial": "Initial",
-    "likes": "Likes"
+    "likes": "Likes",
+    "You_must_login_first": "You must login first"
   },
   "product_screen": {
     "related_products": "Related Products",
@@ -486,7 +651,9 @@ static const Map<String,dynamic> en = {
     "profile_updated_success": "Your Profile Information Updated Successfully",
     "done": "Done",
     "didnt_receive_code": "Didn’t receive verification Code?",
-    "resend_code": "Resend Code"
+    "resend_code": "Resend Code",
+    "number_empty": "Number can't be empty",
+    "number_invalid": "Phone number must be 11 digits"
   },
   "order_details_screen": {
     "something_went_wrong": "Something went wrong",
@@ -505,27 +672,28 @@ static const Map<String,dynamic> en = {
   "history_screen": {
     "orders_history": "Orders History",
     "active_orders": "Active Orders",
-    "completed_orders": "Completed Orders"
+    "completed_orders": "Completed Orders",
+    "Active": "Active"
   },
   "report_screen": {
-    "Choose Image Source": "Choose Image Source",
-    "Camera": "Camera",
-    "Gallery": "Gallery",
-    "Report An Issue": "Report An Issue",
-    "First Name": "First Name",
-    "Last Name": "Last Name",
-    "Phone Number": "Phone Number",
-    "Your Message": "Your Message",
-    "Enter Your Message In Details": "Enter Your Message In Details",
-    "Upload": "Upload",
-    "Submit Message": "Submit Message",
-    "Report Is Sent": "Report Is Sent"
+    "choose_image_source": "Choose Image Source",
+    "camera": "Camera",
+    "gallery": "Gallery",
+    "report_an_issue": "Report An Issue",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "phone_number": "Phone Number",
+    "your_message": "Your Message",
+    "enter_your_message_in_details": "Enter Your Message In Details",
+    "upload": "Upload",
+    "submit_message": "Submit Message",
+    "report_is_sent": "Report Is Sent"
   },
   "help_center_screen": {
-    "Help Center": "Help Center",
-    "Report An Issue": "Report An Issue",
-    "FAQS": "FAQS",
-    "Call Us": "Call Us"
+    "help_center": "Help Center",
+    "report_an_issue": "Report An Issue",
+    "faqs": "FAQS",
+    "call_us": "Call Us"
   },
   "faqs_screen": {
     "FAQS": "FAQS"
@@ -533,13 +701,132 @@ static const Map<String,dynamic> en = {
   "alerts_screen": {
     "Alerts": "Alerts",
     "Today": "Today",
-    "Order Confirmed Successfully": "Order Confirmed Successfully",
-    "Lorem ipsum": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    "Order_Confirmed_Successfully": "Order Confirmed Successfully",
+    "Lorem_ipsum": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   },
   "special_offer_item_screen": {
-    "Special Offers": "Special Offers",
-    "hello there": "hello there"
+    "Special_Offers": "Special Offers",
+    "hello_there": "hello there"
+  },
+  "profile_profile_information": "Profile Information",
+  "profile_orders_history": "Orders History",
+  "profile_alerts": "Alerts",
+  "profile_app_settings": "App Settings",
+  "profile_help_center": "Help Center",
+  "profile_chat_with_us": "Chat with Us",
+  "profile_logout": "Logout",
+  "profile_user_profile": "User Profile",
+  "comleted_order_screen": {
+    "completed_order_screen_sign_in_now": "Sign In Now",
+    "completed_order_screen_no_profile_information": "No Profile Information",
+    "completed_order_screen_sign_in_to_control": "You need sign in to app in order to control your personal information",
+    "completed_order_screen_refresh": "Refresh",
+    "completed_order_screen_error_occurred": "Error Occurred",
+    "completed_order_screen_problem_refresh": "Seems like we got a problem, please refresh",
+    "completed_order_screen_items": "Items",
+    "completed_order_screen_egp": "EGP",
+    "completed_order_screen_location_sample": "13 Salah Salem, No 45 Cairo Egypt"
+  },
+  "cancel_order_bottom_sheet": {
+    "order_cancellation": "Order Cancellation",
+    "cancel_order_confirmation": "Are you sure you want to cancel this order?",
+    "cancel_order": "Cancel Order",
+    "dont_cancel": "Don't Cancel",
+    "help_us_reason": "Help Us understanding the reason beyond cancellation",
+    "reason_just_changed": "Just changed my mind.",
+    "reason_placed_by_mistake": "I placed the order by mistake",
+    "reason_modify_products": "I need to modify orders products",
+    "reason_change_address": "I need to change delivery address",
+    "reason_change_payment": "I need to change payment method",
+    "reason_other": "Other",
+    "submit": "Submit"
+  },
+  "choose_bottom_sheet": {
+    "choose_how_to_proceed": "If we couldn’t reach you in 15 minutes, how you want us to proceed?",
+    "choose_for_me": "Choose for me",
+    "choose_for_me_desc": "Choose products at approximately with the same price",
+    "do_not_choose_alternative": "Do not choose alternative",
+    "do_not_choose_alternative_desc": "We will ignore the missing items",
+    "submit": "Submit"
+  },
+  "delivery_tips_container": {
+    "appreciate_delivery_with_tips": "Appreciate delivery with tips",
+    "tips_amount_goes_to_labor": "Tips amount will go directly to the delivery labor",
+    "10_egp": "10 EGP",
+    "20_egp": "20 EGP",
+    "30_egp": "30 EGP",
+    "40_egp": "40 EGP",
+    "custom": "Custom",
+    "tips_amount": "Tips Amount",
+    "enter_amount": "Enter Amount",
+    "apply": "Apply",
+    "enter_valid_number": "enter valid nubmer"
+  },
+  "exit_order_bottom": {
+    "exit_order": "Exit Order",
+    "exit_order_confirmation": "Are you sure you want to exit order?",
+    "exit_order_button": "Exit Order",
+    "cancel": "Cancel"
+  },
+  "order_summary_screen": {
+    "sub_total": "Sub Total",
+    "items": "Items",
+    "discount": "Discount",
+    "promocode_discount": "Promocode Discount",
+    "delivery_fees": "Delivery Fees",
+    "currency": "EGP",
+    "title": "Promo code",
+    "hint": "Enter Promo code",
+    "apply_button": "Apply",
+    "error_message": "Invalid promo code",
+    "success_message": "Promo code applied successfully"
+  },
+  "schedule_screen": {
+    "schedule_delivery_time": "Schedule delivery time",
+    "arrive_at": "Arrive at",
+    "schedule": "Schedule"
+  },
+  "search_delegate": {
+    "all_suggestions": "All Suggestions",
+    "search_for_groceries_and_more": "Search for groceries and more",
+    "search_history": "Search History",
+    "clear_history": "Clear History"
+  },
+  "location_widget": {
+    "delivery_duration": "Delivery Duration:",
+    "delivery_time": " min",
+    "delivery_address": "Delivery Address",
+    "add_address": "Add Address",
+    "done": "Done"
+  },
+  "change_information": {
+    "profile_information": "Profile Information",
+    "edit_your_personal_information": "Edit Your Personal Information",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "phone_number": "Phone Number",
+    "birthday_date": "Birthday Date",
+    "save": "Save"
+  },
+  "verfication_changes_screen": {
+    "profile_information": "Profile Information",
+    "verify_phone_number": "Verify Phone Number",
+    "code_sent_message": "We have sent a code to your number",
+    "enter_code_prompt": "Please enter the code sent",
+    "verify_now": "Verify Now",
+    "update_success": "Your Profile Information Updated Successfully",
+    "done": "Done",
+    "no_code_received": "Didn’t receive verification code?",
+    "resend_code": "Resend Code"
+  },
+  "validation": {
+    "empty_error": "Can't be empty",
+    "invalid_username": "Not a valid username",
+    "invalid_email": "Not a valid email",
+    "invalid_phone": "Not a valid phone number",
+    "too_short": "Can't be less than {min} characters",
+    "too_long": "Can't be more than {max} characters"
   }
 };
-static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
+static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

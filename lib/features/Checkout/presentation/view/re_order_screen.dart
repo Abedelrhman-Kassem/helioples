@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,6 +21,7 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/ite
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/payment_details.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/promo_code_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class ReOrderScreen extends StatefulWidget {
   const ReOrderScreen({
@@ -84,7 +86,7 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
         builder: (context, state) {
           return PopScope(
             canPop: false,
-            onPopInvoked: (didPop) async {
+            onPopInvokedWithResult: (didPop, result) async {
               if (state is! CreateOrderLoading) {
                 return await showModalBottomSheet(
                   context: context,
@@ -94,6 +96,16 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                 );
               }
             },
+            // onPopInvoked: (didPop) async {
+            //   if (state is! CreateOrderLoading) {
+            //     return await showModalBottomSheet(
+            //       context: context,
+            //       builder: (context) {
+            //         return exitOrderBottomSheet(context);
+            //       },
+            //     );
+            //   }
+            // },
             child: Scaffold(
               appBar: AppBar(
                 backgroundColor: Colors.white,
@@ -111,7 +123,9 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                     }
                   },
                 ),
-                title: const Text('Checkout'),
+                title: Text(
+                  LocaleKeys.checkout_delivery_screen_checkout.tr(),
+                ),
               ),
               body: Container(
                 height: double.infinity,
@@ -136,7 +150,7 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                         child: Column(
                           children: [
                             Text(
-                              'You can edit order’s terms and re-order',
+                              LocaleKeys.re_order_screen_edit_order_terms.tr(),
                               style: Styles.styles17w400interFamily,
                             ),
                             SizedBox(height: 10.h),
@@ -151,7 +165,7 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                                   },
                                   borderRadius: BorderRadius.circular(40.r),
                                   splashColor:
-                                      MyColors.mainColor.withOpacity(0.5),
+                                      MyColors.mainColor.withValues(alpha: 0.5),
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 64.w,
@@ -180,7 +194,8 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                                           ),
                                         SizedBox(width: 5.w),
                                         Text(
-                                          'Re-Order',
+                                          LocaleKeys.re_order_screen_re_order
+                                              .tr(),
                                           style: Styles.styles17w500MainColor,
                                         ),
                                       ],
@@ -196,7 +211,7 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                         padding: EdgeInsets.all(20.r),
                         margin: EdgeInsets.symmetric(vertical: 20.h),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           borderRadius: BorderRadius.circular(15.r),
                         ),
                         child: ListView.builder(
@@ -216,7 +231,7 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                         ),
                       ),
                       TimeScheduleContainer(
-                        title: 'Delivery Time',
+                        title: LocaleKeys.re_order_screen_delivery_time.tr(),
                         createOrderModel: createOrderModel,
                       ),
                       DeliveryAddressContainer(

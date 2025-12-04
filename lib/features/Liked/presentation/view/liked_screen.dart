@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_container.dart';
@@ -10,6 +11,7 @@ import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/body_s
 import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/body_unauthorized.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view_model/cubit/liked_cubit.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class LikedScreen extends StatefulWidget {
   const LikedScreen({super.key});
@@ -42,7 +44,7 @@ class _LikedScreenState extends State<LikedScreen> {
           },
           context: context,
         ),
-        title: const Text('Likes'),
+        title: Text(LocaleKeys.liked_screen_likes.tr()),
         actions: const [
           CartCounter(),
         ],

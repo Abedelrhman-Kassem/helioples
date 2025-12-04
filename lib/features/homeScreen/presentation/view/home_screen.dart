@@ -1,12 +1,10 @@
 import 'dart:math';
-import 'dart:developer' as developer;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/controller/location_widget.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
@@ -17,9 +15,10 @@ import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
 import 'package:negmt_heliopolis/core/widgets/category_builder.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/loading_offer_wiget.dart';
-import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/location_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -165,8 +164,8 @@ class _HomeScreenState extends State<HomeScreen> {
             //               child: const Column(
             //                 mainAxisAlignment: MainAxisAlignment.center,
             //                 children: [
-            //                   Text('hello there how are you'),
-            //                   Text('hello there how are you'),
+            //                   Text(StringTranslateExtension(LocaleKeys.home_screen_hello_how).tr()),
+            //                   Text(StringTranslateExtension(LocaleKeys.home_screen_hello_how).tr()),
             //                 ],
             //               )),
             //         ),
@@ -217,7 +216,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Special Offers',
+                                  StringTranslateExtension(LocaleKeys
+                                          .all_special_offers_screen_special_offers)
+                                      .tr(),
                                   style: Styles.styles17w600interFamily,
                                 ),
                                 TextButton(
@@ -230,7 +231,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Row(
                                     children: [
                                       Text(
-                                        'View All',
+                                        StringTranslateExtension(LocaleKeys
+                                                .all_special_offers_screen_view_all)
+                                            .tr(),
                                         style: Styles.styles14w500interFamily,
                                       ),
                                       SizedBox(width: 4.w),
@@ -302,7 +305,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Categories',
+                                StringTranslateExtension(
+                                        LocaleKeys.home_screen_categories)
+                                    .tr(),
                                 style: Styles.styles17w600interFamily,
                               ),
                               IconButton(
@@ -476,7 +481,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
                                       Text(
-                                        'hello how',
+                                        StringTranslateExtension(LocaleKeys
+                                                .home_screen_hello_how)
+                                            .tr(),
                                         style: Styles.styles11w700interFamily
                                             .copyWith(fontSize: 11),
                                         textAlign: TextAlign.center,

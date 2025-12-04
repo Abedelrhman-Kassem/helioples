@@ -3,115 +3,84 @@ import 'package:dio/dio.dart';
 
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
-import 'package:negmt_heliopolis/features/Profile/data/model/Faqs.dart';
+import 'package:negmt_heliopolis/features/Profile/data/model/faqs.dart';
 import 'package:negmt_heliopolis/features/Profile/data/model/notification.dart';
 import 'package:negmt_heliopolis/features/Profile/data/model/report.dart';
 import 'package:negmt_heliopolis/features/Profile/data/repo/profile%20repo/profile_repo.dart';
 
-class ProfileRepoImp extends ProfileRepo 
-{
-
+class ProfileRepoImp extends ProfileRepo {
   final ApiService api;
 
   ProfileRepoImp({required this.api});
 
-  List<Faqs> faqs =[];
-  
+  List<Faqs> faqs = [];
+
   List<Alerts> alerts = [];
 
   @override
-  Future<Either<Failure,List<Faqs>>> getFaqs() async {
+  Future<Either<Failure, List<Faqs>>> getFaqs() async {
     try {
       await api.setAuthorizationHeader();
 
       var response = await api.get(endpoint: "api/faqs?isArabic=false");
       print(response['faqs']);
 
-      for(var item in response['faqs'])
-      {
+      for (var item in response['faqs']) {
         var f = Faqs.fromJson(item);
         faqs.add(f);
-
       }
 
       return right(faqs);
-      
-
-      
     } catch (e) {
-      if (e is DioException) 
-      {
+      if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
-
-      } else 
-      {
+      } else {
         return left(ServerFailure(e.toString()));
-
       }
-      
     }
   }
 
   @override
-  Future<Either<Failure, String>> sendReport(Report report) async{
+  Future<Either<Failure, String>> sendReport(Report report) async {
     try {
       // await api.setAuthorizationHeader();
 
-      var response = await api.post(endPoints: "api/report-issue", data: report.toJson());
+      var response =
+          await api.post(endPoints: "api/report-issue", data: report.toJson());
       print("44444444444444");
-      if(response.statusCode == 200)
-      {
+      if (response.statusCode == 200) {
         return right(response.data['msg']);
+      } else {
+        return left(
+            ServerFailure('Failed to Submit Report. Please try again.'));
       }
-      else
-      {
-         return left(ServerFailure('Failed to Submit Report. Please try again.'));
-      }
-
-
-      
-    } catch (e)
-     {
-      if (e is DioException)
-      {
+    } catch (e) {
+      if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
-
-      } else 
-      {
+      } else {
         return left(ServerFailure(e.toString()));
       }
-      
     }
   }
-  
-  @override
-  Future<Either<Failure,List<Alerts>>> getAlerts()  async {
-    try 
-    {
-      await api.setAuthorizationHeader();
-      var response = await api.get(endpoint: "api/protected/user/notifications/get");
 
-      for (var item in response['notifications']) 
-      {
+  @override
+  Future<Either<Failure, List<Alerts>>> getAlerts() async {
+    try {
+      await api.setAuthorizationHeader();
+      var response =
+          await api.get(endpoint: "api/protected/user/notifications/get");
+
+      for (var item in response['notifications']) {
         var a = Alerts.fromJson(item);
         alerts.add(a);
-        
       }
       return right(alerts);
-      
     } catch (e) {
-      if (e is DioException) 
-      {
+      if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
-      }
-      else
-      {
+      } else {
         return left(ServerFailure(e.toString()));
       }
-      
     }
-   
   }
-
 }
-

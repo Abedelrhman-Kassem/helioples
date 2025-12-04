@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +10,7 @@ import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/delivery_time_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class TimeScheduleContainer extends StatefulWidget {
   final String title;
@@ -76,7 +76,7 @@ class _TimeScheduleContainerState extends State<TimeScheduleContainer> {
                 padding: EdgeInsets.all(20.r),
                 margin: EdgeInsets.symmetric(vertical: 10.h),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   borderRadius: BorderRadius.circular(15.r),
                 ),
                 child: Row(
@@ -102,7 +102,7 @@ class _TimeScheduleContainerState extends State<TimeScheduleContainer> {
                             RichText(
                               overflow: TextOverflow.ellipsis,
                               text: TextSpan(
-                                text: 'Arrive at ',
+                                text: LocaleKeys.schedule_screen_arrive_at.tr(),
                                 style: Styles.styles12w400black,
                                 children: [
                                   TextSpan(
@@ -157,7 +157,7 @@ class _TimeScheduleContainerState extends State<TimeScheduleContainer> {
                             ),
                             SizedBox(width: 5.w),
                             Text(
-                              'Schedule',
+                              LocaleKeys.schedule_screen_schedule.tr(),
                               style: Styles.styles12w400MainColor,
                             ),
                           ],
@@ -219,7 +219,7 @@ class _TimeContainerState extends State<TimeContainer> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Delivery Time',
+                  LocaleKeys.checkout_delivery_screen_delivery_time.tr(),
                   style: Styles.styles17w700Black,
                 ),
                 InkWell(
@@ -228,7 +228,7 @@ class _TimeContainerState extends State<TimeContainer> {
                     Navigator.pop(context);
                   },
                   child: Text(
-                    'Done',
+                    LocaleKeys.verification_changes_screen_done.tr(),
                     style: Styles.styles14w400Black.copyWith(
                       color: const Color.fromRGBO(93, 92, 100, 1),
                     ),
@@ -268,7 +268,7 @@ class _TimeContainerState extends State<TimeContainer> {
               margin: EdgeInsets.symmetric(vertical: 20.h),
             ),
             Text(
-              'Schedule delivery time',
+              LocaleKeys.schedule_screen_schedule_delivery_time.tr(),
               style: Styles.styles12w300NormalBlack.copyWith(
                 color: const Color.fromRGBO(120, 120, 120, 1),
               ),

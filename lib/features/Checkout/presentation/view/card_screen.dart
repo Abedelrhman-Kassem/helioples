@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import 'package:negmt_heliopolis/core/widgets/radio_animated_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/card_text_field.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/card_cubit/card_cubit.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class StarEditingController extends TextEditingController {
   @override
@@ -57,7 +59,7 @@ class _CardScreenState extends State<CardScreen> {
                 },
               ),
               title: Text(
-                'Add Payment Card',
+                LocaleKeys.card_screen_add_card.tr(),
                 style: Styles.styles16w700interFamily,
               ),
             ),
@@ -77,7 +79,7 @@ class _CardScreenState extends State<CardScreen> {
                       SizedBox(height: 40.h),
                       cardTextField(
                         controller: cardCubit.cardNumberController,
-                        text: 'Card Number',
+                        text: LocaleKeys.card_screen_card_number.tr(),
                         type: TextInputType.number,
                         maxLength: 19,
                         onChanged: (value) {
@@ -93,7 +95,7 @@ class _CardScreenState extends State<CardScreen> {
                       SizedBox(height: 20.h),
                       cardTextField(
                         controller: cardCubit.cardNameController,
-                        text: 'Name On Card',
+                        text: LocaleKeys.card_screen_name_on_card.tr(),
                       ),
                       SizedBox(height: 20.h),
                       Row(
@@ -101,14 +103,14 @@ class _CardScreenState extends State<CardScreen> {
                           Expanded(
                             child: cardTextField(
                               controller: cardCubit.cardExpDateController,
-                              text: 'Expiration date',
+                              text: LocaleKeys.card_screen_expiration_date.tr(),
                             ),
                           ),
                           SizedBox(width: 20.h),
                           Expanded(
                             child: cardTextField(
                               controller: cvvController,
-                              text: 'CVV',
+                              text: LocaleKeys.card_screen_cvv.tr(),
                               maxLength: 3,
                             ),
                           ),
@@ -122,7 +124,7 @@ class _CardScreenState extends State<CardScreen> {
                         borderRadius: 37.r,
                         padding: EdgeInsets.symmetric(vertical: 20.h),
                         child: Text(
-                          'Add Card',
+                          LocaleKeys.card_screen_add_card.tr(),
                           style: Styles.styles17w500NormalWhite,
                         ),
                         onTap: () {
@@ -165,7 +167,7 @@ class _SaveCardContainerState extends State<SaveCardContainer> {
           radioAnimatedWidget(saveCard),
           SizedBox(width: 10.w),
           Text(
-            'Save Card to use later',
+            LocaleKeys.card_screen_save_card_to_use_later.tr(),
             style: Styles.styles13w400interFamily,
           ),
         ],

@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/db_change_notifier.dart';
@@ -54,11 +56,11 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Sub Total (${_dbChangeNotifier.dbData.count} Items)',
+                    '${LocaleKeys.cart_modal_sub_total.tr()} (${_dbChangeNotifier.dbData.count} ${LocaleKeys.cart_modal_items.tr()})',
                     style: Styles.styles14w400NormalWhite,
                   ),
                   Text(
-                    '${_dbChangeNotifier.dbData.totalPrice} EGP',
+                    '${_dbChangeNotifier.dbData.totalPrice} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
                     style: Styles.styles15w600NormalWhite,
                   ),
                 ],
@@ -68,11 +70,11 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Discount',
+                    LocaleKeys.cart_modal_discount.tr(),
                     style: Styles.styles14w400NormalWhite,
                   ),
                   Text(
-                    '${_dbChangeNotifier.dbData.totalDiscount} EGP',
+                    '${_dbChangeNotifier.dbData.totalDiscount} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
                     style: Styles.styles15w600NormalWhite,
                   ),
                 ],
@@ -87,11 +89,11 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Total Price',
+                    LocaleKeys.cart_modal_total_price.tr(),
                     style: Styles.styles14w400NormalWhite,
                   ),
                   Text(
-                    '${_dbChangeNotifier.dbData.totalPrice - _dbChangeNotifier.dbData.totalDiscount} EGP',
+                    '${_dbChangeNotifier.dbData.totalPrice - _dbChangeNotifier.dbData.totalDiscount} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
                     style: Styles.styles18w800NormalWhite,
                   ),
                 ],
@@ -131,12 +133,12 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
                       SizedBox(width: 10.w),
                       RichText(
                         text: TextSpan(
-                          text: 'Checkout ',
+                          text: '${LocaleKeys.cart_modal_checkout.tr()} ',
                           style: Styles.styles17w700MainColor,
                           children: [
                             TextSpan(
                               text:
-                                  '${_dbChangeNotifier.dbData.totalPrice - _dbChangeNotifier.dbData.totalDiscount} EGP',
+                                  '${_dbChangeNotifier.dbData.totalPrice - _dbChangeNotifier.dbData.totalDiscount} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
                               style: Styles.styles17w700MainColor,
                             ),
                           ],

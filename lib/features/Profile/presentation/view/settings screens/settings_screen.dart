@@ -6,6 +6,8 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/Widgets/settings_item.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -15,7 +17,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  String selectedMode = "Light Mode";
+  String selectedMode = LocaleKeys.settings_screen_light_mode.tr();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   width: 100.w,
                 ),
                 Text(
-                  "App Settings",
+                  LocaleKeys.settings_screen_app_settings.tr(),
                   style: Styles.styles16w400Black,
                 ),
               ],
@@ -48,7 +50,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             SettingsItem(
               leadingIconPath: "assets/svg_icons/change_language_icon.svg",
-              title: "Change Language",
+              title: LocaleKeys.settings_screen_change_language.tr(),
               onTap: () {
                 showModalBottomSheet(
                   context: context,
@@ -94,7 +96,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 15.w),
                                           child: Text(
-                                            "Change Language",
+                                            LocaleKeys
+                                                .settings_screen_change_language
+                                                .tr(),
                                             style: Styles.styles15w400Black,
                                           ),
                                         ),
@@ -121,7 +125,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         });
                                       },
                                       child: Text(
-                                        "English",
+                                        LocaleKeys.settings_screen_english.tr(),
                                         style: Styles.styles15w400Black,
                                       ),
                                     ),
@@ -138,7 +142,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         });
                                       },
                                       child: Text(
-                                        "Arabic (العربية)",
+                                        LocaleKeys.settings_screen_arabic.tr(),
                                         style: Styles.styles15w400Black,
                                       ),
                                     ),
@@ -146,7 +150,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       height: 10.h,
                                     ),
                                     SignUpCustomButton(
-                                      buttonText: "Update language",
+                                      buttonText: LocaleKeys
+                                          .settings_screen_update_language
+                                          .tr(),
                                       onPressed: () {
                                         if (selectedLang == 'en') {
                                           changeLocal(context, 'en');
@@ -175,7 +181,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             SettingsItem(
               leadingIconPath: "assets/svg_icons/dark_mode_icon.svg",
-              title: "App Mode",
+              title: LocaleKeys.settings_screen_app_mode.tr(),
               onTap: () {
                 showModalBottomSheet(
                   context: context,
@@ -221,7 +227,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 15.w),
                                           child: Text(
-                                            "App Mode",
+                                            LocaleKeys.settings_screen_app_mode
+                                                .tr(),
                                             style: Styles.styles15w400Black,
                                           ),
                                         ),
@@ -238,7 +245,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     Row(
                                       children: [
                                         RadioMenuButton<String>(
-                                          value: 'Light Mode',
+                                          value: LocaleKeys
+                                              .settings_screen_light_mode
+                                              .tr(),
                                           groupValue: selectedMode,
                                           onChanged: (value) {
                                             setState(() {
@@ -250,7 +259,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                             });
                                           },
                                           child: Text(
-                                            "Light Mode",
+                                            LocaleKeys
+                                                .settings_screen_light_mode
+                                                .tr(),
                                             style: Styles.styles15w400Black,
                                           ),
                                         ),
@@ -262,7 +273,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     Row(
                                       children: [
                                         RadioMenuButton<String>(
-                                          value: 'Dark Mode',
+                                          value: LocaleKeys
+                                              .settings_screen_dark_mode
+                                              .tr(),
                                           groupValue: selectedMode,
                                           onChanged: (value) {
                                             setState(() {
@@ -274,7 +287,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                             });
                                           },
                                           child: Text(
-                                            "Dark Mode",
+                                            LocaleKeys.settings_screen_dark_mode
+                                                .tr(),
                                             style: Styles.styles15w400Black,
                                           ),
                                         ),
@@ -287,7 +301,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       height: 10.h,
                                     ),
                                     SignUpCustomButton(
-                                        buttonText: "Update Mode",
+                                        buttonText: LocaleKeys
+                                            .settings_screen_update_mode
+                                            .tr(),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         }),
@@ -309,7 +325,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             SettingsItem(
               leadingIconPath: "assets/svg_icons/delete_acc_icon.svg",
-              title: "Delete Account",
+              title: LocaleKeys.settings_screen_delete_account.tr(),
               onTap: () {},
               trailingIconPath: "assets/svg_icons/sittengs_arrow_icon.svg",
             ),

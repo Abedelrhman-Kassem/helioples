@@ -1,14 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
-import 'package:negmt_heliopolis/features/Profile/data/model/Faqs.dart';
+import 'package:negmt_heliopolis/features/Profile/data/model/faqs.dart';
 import 'package:negmt_heliopolis/features/Profile/data/repo/profile%20repo/profile_repo_imp.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/Widgets/accordion_item.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view_model/profile%20cubit/faqs_cubit.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view_model/profile%20cubit/faqs_states.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:shimmer/shimmer.dart';
 
 class FaqsScreen extends StatelessWidget {
@@ -46,7 +48,7 @@ class FaqsScreen extends StatelessWidget {
                           width: 125.w,
                         ),
                         Text(
-                          "FAQS",
+                          LocaleKeys.help_center_screen_faqs.tr(),
                           style: Styles.styles16w400Black,
                         ),
                       ],
@@ -96,29 +98,22 @@ Widget buildFaqsShimmer() {
               //   height: 5.h,
               //   color: Colors.white,
               // )
-      
-      
             ],
           ),
-           SizedBox(height: 40.h),
-           Column(
-                children: List.generate(10, (index)
-                {
-                  return Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 10.0.w , vertical: 5.h),
-                    child: Container(
-                      width: double.infinity,
-                      height: 70.h,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20.r),
-                    
-                            )),
-                  );
-                })
-                 
-                
-              )
+          SizedBox(height: 40.h),
+          Column(
+              children: List.generate(10, (index) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 5.h),
+              child: Container(
+                  width: double.infinity,
+                  height: 70.h,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20.r),
+                  )),
+            );
+          }))
         ],
       ),
     ),

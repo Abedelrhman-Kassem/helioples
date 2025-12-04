@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +10,7 @@ import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view_model/cubit/special_offers_item_cubit.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/special_offer_model.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class SpecialOfferItemScreen extends StatefulWidget {
@@ -64,7 +66,7 @@ class _SpecialOfferItemScreenState extends State<SpecialOfferItemScreen> {
                 },
               ),
               title: Text(
-                'Special Offers',
+                LocaleKeys.all_special_offers_screen_special_offers.tr(),
                 style: Styles.styles16w700interFamily,
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +10,7 @@ import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Explore/presentation/view_model/cubit/explore_cubit.dart';
 import 'package:negmt_heliopolis/core/widgets/skeletonizer_loading.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   final ExploreCubit exploreCubit;
@@ -194,7 +196,7 @@ class CustomSearchDelegate extends SearchDelegate {
                   width: double.infinity,
                   color: const Color.fromRGBO(239, 239, 239, 1),
                   child: Text(
-                    'All Suggestions',
+                    LocaleKeys.search_delegate_all_suggestions.tr(),
                     style: Styles.styles12w400black,
                   ),
                 ),

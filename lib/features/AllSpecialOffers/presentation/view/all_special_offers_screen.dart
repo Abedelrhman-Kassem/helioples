@@ -9,6 +9,8 @@ import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
 import 'package:negmt_heliopolis/features/AllSpecialOffers/presentation/view_model/cubit/all_special_offer_cubit.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/special_offer_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/loading_offer_wiget.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AllSpecialOffersScreen extends StatefulWidget {
   const AllSpecialOffersScreen({super.key});
@@ -56,7 +58,7 @@ class _AllSpecialOffersScreenState extends State<AllSpecialOffersScreen> {
                 },
               ),
               title: Text(
-                'Special Offers',
+                LocaleKeys.all_special_offers_screen_special_offers.tr(),
                 style: Styles.styles16w700interFamily,
               ),
             ),

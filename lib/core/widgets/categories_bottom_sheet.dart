@@ -102,7 +102,8 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet> {
                                         path: 'assets/svg_icons/x-close.svg',
                                         width: 20.w,
                                         height: 20.h,
-                                        color: Colors.black.withOpacity(0.5),
+                                        color:
+                                            Colors.black.withValues(alpha: 0.5),
                                       ),
                                     ),
                                   ],

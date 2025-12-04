@@ -43,7 +43,10 @@
     "error": "خطأ:",
     "no_location_found": "لم يتم العثور على موقع",
     "continue": "استمرار",
-    "location_sent": "تم إرسال الموقع"
+    "location_sent": "تم إرسال الموقع",
+    "unknown_location": "الموقع غير معروف",
+    "service_not_available": "خدمة تحديد الموقع غير متاحة حاليًا",
+    "error_getting_location": "حدث خطأ أثناء الحصول على الموقع"
   },
   "notification_screen": {
     "allow_us_to_send": "اسمح لنا بإرسال ",
@@ -60,15 +63,35 @@
     "enter_location_manually": "إدخال الموقع يدويًا"
   },
   "all_special_offers_screen": {
-    "special_offers": "العروض الخاصة"
+    "special_offers": "العروض الخاصة",
+    "view_all": "اظهار الكل"
   },
+  "cart_modal": {
+  "select_order_type": "يرجى اختيار نوع الطلب",
+  "delivery": "توصيل",
+  "pickup": "استلام",
+  "continue": "استمرار",
+   "sub_total": "الإجمالي الفرعي",
+    "items": "عناصر",
+    "discount": "خصم",
+    "total_price": "السعر الإجمالي",
+    "checkout": "إتمام الطلب"
+},
   "cart_screen": {
-    "cart": "عربة التسوق",
-    "initial_widget": "عنصر مبدئي"
+  "cart": "عربة التسوق",
+  "initial_widget": "عنصر مبدئي",
+  "cart_item_cant_add_more": "لا يمكنك إضافة أكثر من {pieces} قطعة",
+  "cart_item_pcs": "قطعة",
+  "cart_item_egp": "ج.م"
   },
   "sub_categories_screen": {
-    "loading": "جاري التحميل..."
+    "loading": "جاري التحميل...",
+    "No_Products_Found": "لم يتم العثور على منتجات"
+
   },
+  "home_screen_categories": "الفئات",
+
+  
   "re_order_screen": {
     "checkout": "إتمام الطلب",
     "edit_order_terms": "يمكنك تعديل شروط الطلب وإعادة الطلب",
@@ -159,7 +182,8 @@
   },
   "liked_screen": {
     "initial": "مبدئي",
-    "likes": "المفضلة"
+    "likes": "المفضلة",
+    "You_must_login_first" : "يجب عليك تسجيل الدخول أولاً"
   },
   "product_screen": {
     "related_products": "منتجات ذات صلة",
@@ -206,7 +230,9 @@
     "profile_updated_success": "تم تحديث معلومات حسابك بنجاح",
     "done": "تم",
     "didnt_receive_code": "لم تستلم رمز التحقق؟",
-    "resend_code": "إعادة إرسال الرمز"
+    "resend_code": "إعادة إرسال الرمز",
+    "number_empty": "لا يمكن أن يكون الرقم فارغًا",
+    "number_invalid": " رقم الهاتف يجب أن يكون 11 رقمًا"
   },
   "order_details_screen": {
     "something_went_wrong": "حدث خطأ ما",
@@ -225,39 +251,172 @@
   "history_screen": {
     "orders_history": "سجل الطلبات",
     "active_orders": "الطلبات النشطة",
-    "completed_orders": "الطلبات المكتملة"
+    "completed_orders": "الطلبات المكتملة",
+    "Active": "نشط"
   },
-  "report_screen": {
-    "Choose Image Source": "اختر مصدر الصورة",
-    "Camera": "الكاميرا",
-    "Gallery": "المعرض",
-    "Report An Issue": "الإبلاغ عن مشكلة",
-    "First Name": "الاسم الأول",
-    "Last Name": "اسم العائلة",
-    "Phone Number": "رقم الهاتف",
-    "Your Message": "رسالتك",
-    "Enter Your Message In Details": "أدخل رسالتك بالتفصيل",
-    "Upload": "رفع",
-    "Submit Message": "إرسال الرسالة",
-    "Report Is Sent": "تم إرسال البلاغ"
-  },
-  "help_center_screen": {
-    "Help Center": "مركز المساعدة",
-    "Report An Issue": "الإبلاغ عن مشكلة",
-    "FAQS": "الأسئلة الشائعة",
-    "Call Us": "اتصل بنا"
-  },
+"report_screen": {
+  "choose_image_source": "اختر مصدر الصورة",
+  "camera": "الكاميرا",
+  "gallery": "المعرض",
+  "report_an_issue": "الإبلاغ عن مشكلة",
+  "first_name": "الاسم الأول",
+  "last_name": "اسم العائلة",
+  "phone_number": "رقم الهاتف",
+  "your_message": "رسالتك",
+  "enter_your_message_in_details": "أدخل رسالتك بالتفصيل",
+  "upload": "رفع",
+  "submit_message": "إرسال الرسالة",
+  "report_is_sent": "تم إرسال البلاغ"
+},
+"help_center_screen": {
+  "help_center": "مركز المساعدة",
+  "report_an_issue": "الإبلاغ عن مشكلة",
+  "faqs": "الأسئلة الشائعة",
+  "call_us": "اتصل بنا"
+}
+,
   "faqs_screen": {
     "FAQS": "الأسئلة الشائعة"
   },
   "alerts_screen": {
     "Alerts": "التنبيهات",
     "Today": "اليوم",
-    "Order Confirmed Successfully": "تم تأكيد الطلب بنجاح",
-    "Lorem ipsum": "هذا نص تجريبي يستخدم في التصميم، سيتم استبداله بمحتوى حقيقي لاحقًا."
+    "Order_Confirmed_Successfully": "تم تأكيد الطلب بنجاح",
+    "Lorem_ipsum": "هذا نص تجريبي يستخدم في التصميم، سيتم استبداله بمحتوى حقيقي لاحقًا."
   },
   "special_offer_item_screen": {
-    "Special Offers": "العروض الخاصة",
-    "hello there": "مرحباً هناك"
+    "Special_Offers": "العروض الخاصة",
+    "hello_there": "مرحباً هناك"
+  },
+  
+  "profile_profile_information": "معلومات الحساب",
+  "profile_orders_history": "سجل الطلبات",
+  "profile_alerts": "التنبيهات",
+  "profile_app_settings": "إعدادات التطبيق",
+  "profile_help_center": "مركز المساعدة",
+  "profile_chat_with_us": "تحدث معنا",
+  "profile_logout": "تسجيل الخروج",
+  "profile_user_profile": "الملف الشخصي",
+   "comleted_order_screen": {
+ "completed_order_screen_sign_in_now": "سجل الدخول الآن",
+    "completed_order_screen_no_profile_information": "لا توجد معلومات حساب",
+    "completed_order_screen_sign_in_to_control": "يجب عليك تسجيل الدخول للتحكم في معلوماتك الشخصية",
+    "completed_order_screen_refresh": "تحديث",
+    "completed_order_screen_error_occurred": "حدث خطأ",
+    "completed_order_screen_problem_refresh": "يبدو أن هناك مشكلة، يرجى التحديث",
+    "completed_order_screen_items": "عناصر",
+    "completed_order_screen_egp": "ج.م",
+    "completed_order_screen_location_sample": "١٣ صلاح سالم، رقم ٤٥ القاهرة مصر"
   }
+  ,
+  "cancel_order_bottom_sheet": {
+  "order_cancellation": "إلغاء الطلب",
+  "cancel_order_confirmation": "هل أنت متأكد أنك تريد إلغاء هذا الطلب؟",
+  "cancel_order": "إلغاء الطلب",
+  "dont_cancel": "لا تلغي",
+  "help_us_reason": "ساعدنا في فهم سبب الإلغاء",
+  "reason_just_changed": "غيرت رأيي فقط.",
+  "reason_placed_by_mistake": "قمت بالطلب عن طريق الخطأ",
+  "reason_modify_products": "أحتاج لتعديل منتجات الطلب",
+  "reason_change_address": "أحتاج لتغيير عنوان التوصيل",
+  "reason_change_payment": "أحتاج لتغيير طريقة الدفع",
+  "reason_other": "أخرى",
+  "submit": "إرسال"
+}
+,
+"choose_bottom_sheet":{
+  "choose_how_to_proceed": "إذا لم نتمكن من التواصل معك خلال 15 دقيقة، كيف تريدنا أن نتابع؟",
+  "choose_for_me": "اختر لي",
+  "choose_for_me_desc": "اختر منتجات تقريبًا بنفس السعر",
+  "do_not_choose_alternative": "لا تختار بديل",
+  "do_not_choose_alternative_desc": "سنتجاهل العناصر الناقصة",
+  "submit": "إرسال"
+}
+
+,
+"delivery_tips_container":{
+  "appreciate_delivery_with_tips": "قدر عامل التوصيل بالبقشيش",
+  "tips_amount_goes_to_labor": "مبلغ البقشيش سيذهب مباشرة لعامل التوصيل",
+  "10_egp": "١٠ جنيه",
+  "20_egp": "٢٠ جنيه",
+  "30_egp": "٣٠ جنيه",
+  "40_egp": "٤٠ جنيه",
+  "custom": "مخصص",
+  "tips_amount": "مبلغ البقشيش",
+  "enter_amount": "أدخل المبلغ",
+  "apply": "تطبيق",
+  "enter_valid_number": "أدخل رقم صحيح"
+},
+"exit_order_bottom":{
+  "exit_order": "خروج من الطلب",
+  "exit_order_confirmation": "هل أنت متأكد أنك تريد الخروج من الطلب؟",
+  "exit_order_button": "خروج من الطلب",
+  "cancel": "إلغاء"
+},
+"order_summary_screen": {
+    "sub_total": "الإجمالي الفرعي",
+    "items": "عناصر",
+    "discount": "الخصم",
+    "promocode_discount": "خصم كود الخصم",
+    "delivery_fees": "رسوم التوصيل",
+    "currency": "ج.م",
+      "title": "كود الخصم",
+    "hint": "أدخل كود الخصم",
+    "apply_button": "تطبيق",
+    "error_message": "كود الخصم غير صالح",
+    "success_message": "تم تطبيق كود الخصم بنجاح"
+  },
+  "schedule_screen": {
+    "schedule_delivery_time": "حدد وقت التوصيل",
+    "arrive_at": "الوصول في",
+    "schedule": "جدولة"
+  } ,
+  "search_delegate": {
+    "all_suggestions": "جميع الاقتراحات",
+    "search_for_groceries_and_more": "ابحث عن البقالة والمزيد",
+    "search_history":" سجل البحث",
+    "clear_history":"مسح السجل"
+
+  },
+  "location_widget": {
+    "delivery_duration": "مدة التوصيل:",
+    "delivery_time": "٣٥ دقيقة",
+    "delivery_address": "عنوان التوصيل",
+    "add_address": "إضافة عنوان",
+    "done": "تم"
+  },
+   "change_information": {
+    "profile_information": "معلومات الملف الشخصي",
+    "edit_your_personal_information": "تعديل معلوماتك الشخصية",
+    "first_name": "الاسم الأول",
+    "last_name": "اسم العائلة",
+    "phone_number": "رقم الهاتف",
+    "birthday_date": "تاريخ الميلاد",
+    "save": "حفظ"
+  },
+  "verfication_changes_screen": {
+    "profile_information": "معلومات الملف الشخصي",
+    "verify_phone_number": "تأكيد رقم الهاتف",
+    "code_sent_message": "تم إرسال رمز إلى رقمك",
+    "enter_code_prompt": "يرجى إدخال الرمز المرسل",
+    "verify_now": "تحقق الآن",
+    "update_success": "تم تحديث معلومات ملفك الشخصي بنجاح",
+    "done": "تم",
+    "no_code_received": "لم تستلم رمز التحقق؟",
+    "resend_code": "إعادة إرسال الرمز"
+  }
+
+   ,
+  "validation": 
+    
+ {
+  "empty_error": "لا يمكن أن يكون الحقل فارغًا",
+  "invalid_username": "اسم المستخدم غير صالح",
+  "invalid_email": "البريد الإلكتروني غير صالح",
+  "invalid_phone": "رقم الهاتف غير صالح",
+  "too_short": "يجب ألا يقل عن {min} أحرف",
+  "too_long": "يجب ألا يزيد عن {max} أحرف"
+}
+
+
 }

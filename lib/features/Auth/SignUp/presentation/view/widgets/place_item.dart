@@ -35,13 +35,12 @@ class PlaceItem extends StatelessWidget {
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
-                      '${suggestion.description.split(',')[0]}',
-                      style: Styles.styles14w400NormalBlack,
-                    ), 
+                        suggestion.description.split(',')[0],
+                        style: Styles.styles14w400NormalBlack,
+                      ),
                     ),
-                   
                     Text(
-                      '${suggestion.description.split(',')[1]}',
+                      suggestion.description.split(',')[1],
                       style: Styles.styles12w400black
                           .copyWith(color: const Color(0xFF7E7E7E)),
                     ),
@@ -52,11 +51,11 @@ class PlaceItem extends StatelessWidget {
           ),
         ),
         Divider(
-          thickness: 1, 
-          height: 16.h, 
-          color: const  Color(0xFFADADAD), 
-          indent: 16.w, 
-          endIndent: 16.w, 
+          thickness: 1,
+          height: 16.h,
+          color: const Color(0xFFADADAD),
+          indent: 16.w,
+          endIndent: 16.w,
         ),
       ],
     );

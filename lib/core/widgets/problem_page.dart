@@ -11,13 +11,13 @@ class InfoMessageWidget extends StatelessWidget {
   final VoidCallback onPressed;
 
   const InfoMessageWidget({
-    Key? key,
+    super.key,
     required this.imagePath,
     required this.title,
     required this.description,
     required this.buttonText,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

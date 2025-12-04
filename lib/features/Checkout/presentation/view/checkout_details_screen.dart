@@ -1,10 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/db_change_notifier.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
@@ -15,6 +15,7 @@ import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_mode
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/cancel_order_bottom_sheet.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/shipping_details_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/item_widget.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class CheckoutDetailsScreen extends StatefulWidget {
   final OrderDetailsModel orderDetailsModel;
@@ -44,13 +45,20 @@ class _CheckoutDetailsScreenState extends State<CheckoutDetailsScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         Navigator.pushNamedAndRemoveUntil(
           context,
           homeLayout,
           (route) => false,
         );
       },
+      // onPopInvoked: (didPop) {
+      //   Navigator.pushNamedAndRemoveUntil(
+      //     context,
+      //     homeLayout,
+      //     (route) => false,
+      //   );
+      // },
       child: Scaffold(
         appBar: AppBar(
           leading: returnArrow(
@@ -63,7 +71,7 @@ class _CheckoutDetailsScreenState extends State<CheckoutDetailsScreen> {
               );
             },
           ),
-          title: const Text('Order Details'),
+          title: Text(LocaleKeys.checkout_details_screen_order_details.tr()),
         ),
         body: Container(
           height: double.infinity,
@@ -90,7 +98,7 @@ class _CheckoutDetailsScreenState extends State<CheckoutDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Order Items',
+                        LocaleKeys.checkout_delivery_screen_order_items.tr(),
                         style: Styles.styles17w700Black,
                       ),
                       SizedBox(height: 20.h),
@@ -135,14 +143,14 @@ Widget addressContainer() {
     padding: EdgeInsets.all(20.r),
     margin: EdgeInsets.symmetric(vertical: 10.h),
     decoration: BoxDecoration(
-      color: Colors.white.withOpacity(0.9),
+      color: Colors.white.withValues(alpha: 0.9),
       borderRadius: BorderRadius.circular(15.r),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Delivery Address',
+          LocaleKeys.checkout_details_screen_delivery_address.tr(),
           style: Styles.styles17w700Black,
         ),
         SizedBox(height: 10.h),
@@ -165,11 +173,11 @@ Widget addressContainer() {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Home',
+                      LocaleKeys.checkout_details_screen_home.tr(),
                       style: Styles.styles16w400NormalBlack,
                     ),
                     Text(
-                      'Omar Ibn Al Khatab Street 436A',
+                      LocaleKeys.checkout_details_screen_address_sample.tr(),
                       style: Styles.styles12w400black,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -231,14 +239,14 @@ Widget paymentContainer(String paymentMethod) {
     padding: EdgeInsets.all(20.r),
     margin: EdgeInsets.symmetric(vertical: 10.h),
     decoration: BoxDecoration(
-      color: Colors.white.withOpacity(0.9),
+      color: Colors.white.withValues(alpha: 0.9),
       borderRadius: BorderRadius.circular(15.r),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Payment',
+          LocaleKeys.checkout_details_screen_payment.tr(),
           style: Styles.styles17w700Black,
         ),
         SizedBox(height: 20.h),
@@ -308,14 +316,14 @@ Widget scheduleContainer() {
     padding: EdgeInsets.all(20.r),
     margin: EdgeInsets.symmetric(vertical: 10.h),
     decoration: BoxDecoration(
-      color: Colors.white.withOpacity(0.9),
+      color: Colors.white.withValues(alpha: 0.9),
       borderRadius: BorderRadius.circular(15.r),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Delivery Time',
+          LocaleKeys.checkout_details_screen_delivery_time.tr(),
           style: Styles.styles17w700Black,
         ),
         SizedBox(height: 20.h),
@@ -341,13 +349,13 @@ Widget scheduleContainer() {
               SizedBox(width: 5.w),
               RichText(
                 text: TextSpan(
-                  text: 'Instant, ',
+                  text: LocaleKeys.checkout_details_screen_instant.tr(),
                   style: Styles.styles12w400black.copyWith(
                     color: Colors.black,
                   ),
                   children: [
                     TextSpan(
-                      text: 'Arrive at 7:30 PM',
+                      text: LocaleKeys.checkout_details_screen_arrive_at.tr(),
                       style: Styles.styles12w400Gold,
                     ),
                   ],
@@ -405,14 +413,14 @@ Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
     padding: EdgeInsets.all(20.r),
     margin: EdgeInsets.only(top: 10.h),
     decoration: BoxDecoration(
-      color: Colors.white.withOpacity(0.9),
+      color: Colors.white.withValues(alpha: 0.9),
       borderRadius: BorderRadius.circular(15.r),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Order Summery",
+          LocaleKeys.checkout_details_screen_order_summery.tr(),
           style: Styles.styles17w700Black
               .copyWith(color: const Color.fromRGBO(41, 41, 41, 1)),
         ),
@@ -422,7 +430,7 @@ Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
         Row(
           children: [
             Text(
-              'Order Number',
+              LocaleKeys.checkout_details_screen_order_number.tr(),
               style: Styles.styles14w400Black,
             ),
             const Spacer(),
@@ -449,11 +457,11 @@ Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Sub Total (${dbChangeNotifier.dbData.count} Items)',
+              '${LocaleKeys.checkout_details_screen_sub_total.tr()} (${dbChangeNotifier.dbData.count} ${LocaleKeys.checkout_details_screen_items.tr()})',
               style: Styles.styles14w400Black,
             ),
             Text(
-              '${order.order!.subTotal!.toStringAsFixed(2)} EGP',
+              '${order.order!.subTotal!.toStringAsFixed(2)} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
               style: Styles.styles15w600NormalBlack,
             ),
           ],
@@ -463,11 +471,11 @@ Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Promocode Discount',
+              LocaleKeys.checkout_details_screen_promocode_discount.tr(),
               style: Styles.styles14w400Black,
             ),
             Text(
-              '${order.order!.promoCodeDiscount!.toStringAsFixed(2)} EGP',
+              '${order.order!.promoCodeDiscount!.toStringAsFixed(2)} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
               style: Styles.styles15w600NormalBlack,
             ),
           ],
@@ -477,7 +485,7 @@ Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Delivery fees',
+              LocaleKeys.checkout_details_screen_delivery_fees.tr(),
               style: Styles.styles14w400Black,
             ),
             Text(
@@ -519,11 +527,11 @@ Widget bottomSheet(BuildContext context, OrderDetailsModel order) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Total Price',
+                LocaleKeys.checkout_details_screen_total_price.tr(),
                 style: Styles.styles18w500BlackWhite,
               ),
               Text(
-                '${order.order!.total!.toStringAsFixed(2)} EGP',
+                '${order.order!.total!.toStringAsFixed(2)} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
                 style: Styles.styles18w800Black,
               ),
             ],
@@ -548,10 +556,10 @@ Widget bottomSheet(BuildContext context, OrderDetailsModel order) {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(36.77.r),
-                color: MyColors.mainColor.withOpacity(.9),
+                color: MyColors.mainColor.withValues(alpha: .9),
               ),
               child: Text(
-                'Cancel Order',
+                LocaleKeys.checkout_details_screen_cancel_order.tr(),
                 style: Styles.styles17w500NormalWhite,
               ),
             ),

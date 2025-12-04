@@ -30,15 +30,15 @@ class Alerts {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['type'] = this.type;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['isRead'] = this.isRead;
-    data['router'] = this.router;
-    data['createdAt'] = this.createdAt;
-    data['userId'] = this.userId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['type'] = type;
+    data['title'] = title;
+    data['description'] = description;
+    data['isRead'] = isRead;
+    data['router'] = router;
+    data['createdAt'] = createdAt;
+    data['userId'] = userId;
     return data;
   }
 }

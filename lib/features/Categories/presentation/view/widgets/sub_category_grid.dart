@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/sub_categories_notifier.dart';
@@ -6,6 +7,7 @@ import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 import 'package:negmt_heliopolis/core/widgets/skeletonizer_loading.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class SubCategoryGrid extends StatefulWidget {
   final GlobalKey globalKey;
@@ -106,7 +108,7 @@ class _SubCategoryGridState extends State<SubCategoryGrid> {
           if (!notifier.isFetching[widget.subCategory.id!]! && products.isEmpty)
             Center(
               child: Text(
-                'No Products Found',
+                LocaleKeys.sub_categories_screen_No_Products_Found.tr(),
                 style: Styles.styles16w400Black,
               ),
             ),

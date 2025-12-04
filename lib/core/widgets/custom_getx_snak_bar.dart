@@ -4,10 +4,14 @@ import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
 void showCustomGetSnack({
+  bool isSnackOpen = true,
   required bool isGreen,
   required String text,
   Duration duration = const Duration(seconds: 5),
 }) {
+  if (isSnackOpen) {
+    if (Get.isSnackbarOpen) Get.back();
+  }
   Get.rawSnackbar(
     titleText: const SizedBox.shrink(),
     backgroundColor: Colors.transparent,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +20,7 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/pay
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/promo_code_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/time_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class PickupReorderScreen extends StatefulWidget {
   const PickupReorderScreen({super.key});
@@ -73,7 +75,7 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
               CustomSnackBar.show(
                 context: context,
                 duration: const Duration(seconds: 10),
-                text: 'the branch is null',
+                text: LocaleKeys.pickup_reorder_screen_the_branch_is_null.tr(),
                 isGreen: false,
               );
               return;
@@ -107,7 +109,7 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
         builder: (context, state) {
           return PopScope(
             canPop: false,
-            onPopInvoked: (didPop) async {
+            onPopInvokedWithResult: (didPop, result) async {
               if (state is! CreateOrderLoading) {
                 return await showModalBottomSheet(
                   context: context,
@@ -117,6 +119,16 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                 );
               }
             },
+            // onPopInvoked: (didPop) async {
+            //   if (state is! CreateOrderLoading) {
+            //     return await showModalBottomSheet(
+            //       context: context,
+            //       builder: (context) {
+            //         return exitOrderBottomSheet(context);
+            //       },
+            //     );
+            //   }
+            // },
             child: Scaffold(
               appBar: AppBar(
                 backgroundColor: Colors.white,
@@ -131,41 +143,43 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                         },
                       );
                     }),
-                title: const Text('Checkout'),
-                // actions: [
-                //   Padding(
-                //     padding: EdgeInsets.symmetric(horizontal: 10.w),
-                //     child: Material(
-                //       color: Colors.transparent,
-                //       child: InkWell(
-                //         borderRadius: BorderRadius.circular(100.r),
-                //         onTap: () async {
-                //           return await showModalBottomSheet(
-                //             context: context,
-                //             builder: (context) {
-                //               return exitOrderBottomSheet(context);
-                //             },
-                //           );
-                //         },
-                //         child: Container(
-                //           decoration: BoxDecoration(
-                //             border: Border.all(
-                //               width: 1.22.r,
-                //               color: const Color.fromRGBO(0, 0, 0, 0.1),
-                //             ),
-                //             shape: BoxShape.circle,
-                //           ),
-                //           child: svgIcon(
-                //             path: 'assets/svg_icons/x-close.svg',
-                //             width: 22.93.w,
-                //             height: 22.93.h,
-                //             color: const Color.fromRGBO(36, 36, 36, 1),
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ],
+                title: Text(
+                  LocaleKeys.pick_up_screen_checkout.tr(),
+                  // actions: [
+                  //   Padding(
+                  //     padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  //     child: Material(
+                  //       color: Colors.transparent,
+                  //       child: InkWell(
+                  //         borderRadius: BorderRadius.circular(100.r),
+                  //         onTap: () async {
+                  //           return await showModalBottomSheet(
+                  //             context: context,
+                  //             builder: (context) {
+                  //               return exitOrderBottomSheet(context);
+                  //             },
+                  //           );
+                  //         },
+                  //         child: Container(
+                  //           decoration: BoxDecoration(
+                  //             border: Border.all(
+                  //               width: 1.22.r,
+                  //               color: const Color.fromRGBO(0, 0, 0, 0.1),
+                  //             ),
+                  //             shape: BoxShape.circle,
+                  //           ),
+                  //           child: svgIcon(
+                  //             path: 'assets/svg_icons/x-close.svg',
+                  //             width: 22.93.w,
+                  //             height: 22.93.h,
+                  //             color: const Color.fromRGBO(36, 36, 36, 1),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ],
+                ),
               ),
               body: Container(
                 height: double.infinity,
@@ -190,7 +204,7 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                         child: Column(
                           children: [
                             Text(
-                              'You can edit order’s terms and re-order',
+                              LocaleKeys.re_order_screen_edit_order_terms.tr(),
                               style: Styles.styles17w400interFamily,
                             ),
                             SizedBox(height: 10.h),
@@ -205,7 +219,7 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                                   },
                                   borderRadius: BorderRadius.circular(40.r),
                                   splashColor:
-                                      MyColors.mainColor.withOpacity(0.5),
+                                      MyColors.mainColor.withValues(alpha: 0.5),
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 64.w,
@@ -234,7 +248,8 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                                           ),
                                         SizedBox(width: 5.w),
                                         Text(
-                                          'Re-Order',
+                                          LocaleKeys.re_order_screen_re_order
+                                              .tr(),
                                           style: Styles.styles17w500MainColor,
                                         ),
                                       ],
@@ -250,7 +265,7 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                         padding: EdgeInsets.all(20.r),
                         margin: EdgeInsets.symmetric(vertical: 20.h),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           borderRadius: BorderRadius.circular(15.r),
                         ),
                         child: ListView.builder(
@@ -270,7 +285,8 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                         ),
                       ),
                       TimeScheduleContainer(
-                        title: 'PickUp Time',
+                        title:
+                            LocaleKeys.pickup_reorder_screen_pickup_time.tr(),
                         createOrderModel: createOrderModel,
                       ),
                       if (state is BranchesLoading)

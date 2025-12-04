@@ -3,6 +3,7 @@ const String intialRoute = '/';
 const String introScreen = '/introScreen';
 const String homeLayout = '/homeLayout';
 const String signInScreen = '/signin_screen';
+// const String loginScreen = '/login_screen';
 const String specialOfferItemScreen = '/special_offer_item_screen';
 const String allspecialOffersScreen = '/all_special_offer_screen';
 const String signUpScreen = '/sign_up_screen';
@@ -56,3 +57,9 @@ const String cartItemDiscount = 'discount';
 const String searchTable = 'searchItems';
 const String searchItemId = 'id';
 const String searchItemName = 'name';
+
+// countries pages
+const String profileEmptyScreen = '/profile_empty_screen';
+const String historyEmptyScreen = '/historyEmpty_screen';
+const String alertsEmptyScreen = '/alertsEmpty_screen';
+const String serverUnavailable = '/server_unavailable_screen';

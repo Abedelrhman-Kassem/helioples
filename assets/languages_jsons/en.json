@@ -1,6 +1,6 @@
 {
   "login_screen": {
-    "Already Have An Account?": "Already Have An Account?",
+    "Already_Have_An_Account?": "Already Have An Account?",
 
     "login": "Login",
     "phone_number": "Phone Number",
@@ -45,7 +45,10 @@
     "error": "Error:",
     "no_location_found": "No location found",
     "continue": "Continue",
-    "location_sent": "location sent "
+    "location_sent": "location sent ",
+    "unknown_location": "Unknown location",
+    "service_not_available": "Location service not available",
+    "error_getting_location": "Error while getting location"
   },
   "notification_screen": {
     "allow_us_to_send": "Allow Us To Send You ",
@@ -62,14 +65,30 @@
     "enter_location_manually": "Enter Location Manually"
   },
   "all_special_offers_screen": {
-    "special_offers": "Special Offers"
+    "special_offers": "Special Offers",
+    "view_all": "View All"
   },
+  "cart_modal": {
+  "select_order_type": "Please Select Order Type",
+  "delivery": "Delivery",
+  "pickup": "Pickup",
+  "continue": "Continue",
+  "sub_total": "Sub Total",
+    "items": "Items",
+    "discount": "Discount",
+    "total_price": "Total Price",
+    "checkout": "Checkout"
+},
   "cart_screen": {
     "cart": "Cart",
-    "initial_widget": "Initial Widget"
+    "initial_widget": "Initial Widget",
+     "cart_item_cant_add_more": "You can't add more than {pieces} pieces",
+    "cart_item_pcs": "Pcs",
+    "cart_item_egp": "EGP"
   },
   "sub_categories_screen": {
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "No_Products_Found": "No Products Found"
   },
   "re_order_screen": {
     "checkout": "Checkout",
@@ -125,6 +144,7 @@
     "delivery_time": "Delivery Time",
     "total_price": "Total Price",
     "place_order": "Place Order"
+
   },
   "card_screen": {
     "add_payment_card": "Add Payment Card",
@@ -150,6 +170,8 @@
   "home_screen": {
     "hello_how": "hello how"
   },
+  "home_screen_view_all": "View All",
+  "home_screen_categories": "Categories",
   "intro_screen": {
     "better": "Better",
     "prices": "Prices,",
@@ -161,7 +183,9 @@
   },
   "liked_screen": {
     "initial": "Initial",
-    "likes": "Likes"
+    "likes": "Likes",
+    "You_must_login_first" : "You must login first"
+
   },
   "product_screen": {
     "related_products": "Related Products",
@@ -208,7 +232,9 @@
     "profile_updated_success": "Your Profile Information Updated Successfully",
     "done": "Done",
     "didnt_receive_code": "Didn’t receive verification Code?",
-    "resend_code": "Resend Code"
+    "resend_code": "Resend Code",
+    "number_empty": "Number can't be empty",
+    "number_invalid": "Phone number must be 11 digits"
   },
   "order_details_screen": {
     "something_went_wrong": "Something went wrong",
@@ -227,39 +253,172 @@
   "history_screen": {
     "orders_history": "Orders History",
     "active_orders": "Active Orders",
-    "completed_orders": "Completed Orders"
+    "completed_orders": "Completed Orders",
+    "Active": "Active"
   },
-  "report_screen": {
-    "Choose Image Source": "Choose Image Source",
-    "Camera": "Camera",
-    "Gallery": "Gallery",
-    "Report An Issue": "Report An Issue",
-    "First Name": "First Name",
-    "Last Name": "Last Name",
-    "Phone Number": "Phone Number",
-    "Your Message": "Your Message",
-    "Enter Your Message In Details": "Enter Your Message In Details",
-    "Upload": "Upload",
-    "Submit Message": "Submit Message",
-    "Report Is Sent": "Report Is Sent"
-  },
-  "help_center_screen": {
-    "Help Center": "Help Center",
-    "Report An Issue": "Report An Issue",
-    "FAQS": "FAQS",
-    "Call Us": "Call Us"
-  },
+ "report_screen": {
+  "choose_image_source": "Choose Image Source",
+  "camera": "Camera",
+  "gallery": "Gallery",
+  "report_an_issue": "Report An Issue",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "phone_number": "Phone Number",
+  "your_message": "Your Message",
+  "enter_your_message_in_details": "Enter Your Message In Details",
+  "upload": "Upload",
+  "submit_message": "Submit Message",
+  "report_is_sent": "Report Is Sent"
+},
+"help_center_screen": {
+  "help_center": "Help Center",
+  "report_an_issue": "Report An Issue",
+  "faqs": "FAQS",
+  "call_us": "Call Us"
+}
+,
   "faqs_screen": {
     "FAQS": "FAQS"
   },
   "alerts_screen": {
     "Alerts": "Alerts",
     "Today": "Today",
-    "Order Confirmed Successfully": "Order Confirmed Successfully",
-    "Lorem ipsum": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    "Order_Confirmed_Successfully": "Order Confirmed Successfully",
+    "Lorem_ipsum": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   },
   "special_offer_item_screen": {
-    "Special Offers": "Special Offers",
-    "hello there": "hello there"
+    "Special_Offers": "Special Offers",
+    "hello_there": "hello there"
+  },
+   "profile_profile_information": "Profile Information",
+  "profile_orders_history": "Orders History",
+  "profile_alerts": "Alerts",
+  "profile_app_settings": "App Settings",
+  "profile_help_center": "Help Center",
+  "profile_chat_with_us": "Chat with Us",
+  "profile_logout": "Logout",
+  "profile_user_profile": "User Profile"
+
+,
+  "comleted_order_screen": {
+"completed_order_screen_sign_in_now": "Sign In Now",
+    "completed_order_screen_no_profile_information": "No Profile Information",
+    "completed_order_screen_sign_in_to_control": "You need sign in to app in order to control your personal information",
+    "completed_order_screen_refresh": "Refresh",
+    "completed_order_screen_error_occurred": "Error Occurred",
+    "completed_order_screen_problem_refresh": "Seems like we got a problem, please refresh",
+    "completed_order_screen_items": "Items",
+    "completed_order_screen_egp": "EGP",
+    "completed_order_screen_location_sample": "13 Salah Salem, No 45 Cairo Egypt"
   }
+  ,
+  "cancel_order_bottom_sheet": {
+  "order_cancellation": "Order Cancellation",
+  "cancel_order_confirmation": "Are you sure you want to cancel this order?",
+  "cancel_order": "Cancel Order",
+  "dont_cancel": "Don't Cancel",
+  "help_us_reason": "Help Us understanding the reason beyond cancellation",
+  "reason_just_changed": "Just changed my mind.",
+  "reason_placed_by_mistake": "I placed the order by mistake",
+  "reason_modify_products": "I need to modify orders products",
+  "reason_change_address": "I need to change delivery address",
+  "reason_change_payment": "I need to change payment method",
+  "reason_other": "Other",
+  "submit": "Submit"
+}
+
+,
+"choose_bottom_sheet":{
+  "choose_how_to_proceed": "If we couldn’t reach you in 15 minutes, how you want us to proceed?",
+  "choose_for_me": "Choose for me",
+  "choose_for_me_desc": "Choose products at approximately with the same price",
+  "do_not_choose_alternative": "Do not choose alternative",
+  "do_not_choose_alternative_desc": "We will ignore the missing items",
+  "submit": "Submit"
+}
+,
+"delivery_tips_container":{
+  "appreciate_delivery_with_tips": "Appreciate delivery with tips",
+  "tips_amount_goes_to_labor": "Tips amount will go directly to the delivery labor",
+  "10_egp": "10 EGP",
+  "20_egp": "20 EGP",
+  "30_egp": "30 EGP",
+  "40_egp": "40 EGP",
+  "custom": "Custom",
+  "tips_amount": "Tips Amount",
+  "enter_amount": "Enter Amount",
+  "apply": "Apply",
+  "enter_valid_number": "enter valid nubmer"
+},
+"exit_order_bottom":{
+  "exit_order": "Exit Order",
+  "exit_order_confirmation": "Are you sure you want to exit order?",
+  "exit_order_button": "Exit Order",
+  "cancel": "Cancel"
+},
+"order_summary_screen": {
+    "sub_total": "Sub Total",
+    "items": "Items",
+    "discount": "Discount",
+    "promocode_discount": "Promocode Discount",
+    "delivery_fees": "Delivery Fees",
+    "currency": "EGP",
+    "title": "Promo code",
+    "hint": "Enter Promo code",
+    "apply_button": "Apply",
+    "error_message": "Invalid promo code",
+    "success_message": "Promo code applied successfully"
+  },
+   "schedule_screen": {
+    "schedule_delivery_time": "Schedule delivery time",
+    "arrive_at": "Arrive at",
+    "schedule": "Schedule"
+  }
+
+  ,
+  "search_delegate": {
+    "all_suggestions": "All Suggestions",
+    "search_for_groceries_and_more":"Search for groceries and more",
+    "search_history":"Search History",
+    "clear_history":"Clear History"
+  },
+  "location_widget": {
+    "delivery_duration": "Delivery Duration:",
+    "delivery_time": " min",
+    "delivery_address": "Delivery Address",
+    "add_address": "Add Address",
+    "done": "Done"
+  },
+  "change_information": {
+    "profile_information": "Profile Information",
+    "edit_your_personal_information": "Edit Your Personal Information",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "phone_number": "Phone Number",
+    "birthday_date": "Birthday Date",
+    "save": "Save"
+  },
+  "verfication_changes_screen": {
+    "profile_information": "Profile Information",
+    "verify_phone_number": "Verify Phone Number",
+    "code_sent_message": "We have sent a code to your number",
+    "enter_code_prompt": "Please enter the code sent",
+    "verify_now": "Verify Now",
+    "update_success": "Your Profile Information Updated Successfully",
+    "done": "Done",
+    "no_code_received": "Didn’t receive verification code?",
+    "resend_code": "Resend Code"
+  }
+
+  ,
+  "validation": 
+    {
+  "empty_error": "Can't be empty",
+  "invalid_username": "Not a valid username",
+  "invalid_email": "Not a valid email",
+  "invalid_phone": "Not a valid phone number",
+  "too_short": "Can't be less than {min} characters",
+  "too_long": "Can't be more than {max} characters"
+}
+
 }

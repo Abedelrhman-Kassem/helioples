@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,8 +11,8 @@ import 'package:negmt_heliopolis/core/widgets/add_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/delivery_address_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
-import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/screens/confirm_address_screen.dart';
 import 'package:negmt_heliopolis/features/Address/data/model/address_model.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class LocationWidget extends StatefulWidget {
   final AddressModel addressModel;
@@ -69,11 +68,12 @@ class _LocationWidgetState extends State<LocationWidget> {
                 ),
                 RichText(
                   text: TextSpan(
-                    text: 'Delivery Duration:',
+                    text: LocaleKeys.location_widget_delivery_duration.tr(),
                     style: Styles.styles13w300interFamily,
                     children: [
                       TextSpan(
-                        text: '35 min',
+                        text:
+                            '35 ${LocaleKeys.location_widget_delivery_time.tr()}',
                         style: Styles.styles13w400interFamily,
                       ),
                     ],
@@ -161,11 +161,11 @@ class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Delivery Address',
+                    LocaleKeys.location_widget_delivery_address.tr(),
                     style: Styles.styles17w700Black,
                   ),
                   addWidget(
-                    text: 'Add Address',
+                    text: LocaleKeys.location_widget_add_address.tr(),
                     onTap: () {
                       Navigator.pushNamed(context, setLocationScreen);
                     },
@@ -213,7 +213,7 @@ class _AddressModalBottomSheetState extends State<AddressModalBottomSheet> {
                 ),
                 borderRadius: 53.r,
                 child: Text(
-                  'Done',
+                  LocaleKeys.location_widget_done.tr(),
                   style: Styles.styles17w600White,
                 ),
                 onTap: () async {

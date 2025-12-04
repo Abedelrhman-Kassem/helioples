@@ -7,6 +7,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart'; // Import the flutter_svg package
 
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 class ConfirmationScreen extends StatefulWidget {
   const ConfirmationScreen({super.key});
 
@@ -24,18 +27,19 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
         child: Column(
           children: [
             AppBar(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              leading: returnArrow(context: context, onTap: (){
-                Navigator.of(context).pop();
-              })
-            ),
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                leading: returnArrow(
+                    context: context,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    })),
             SizedBox(
               height: 200.h,
             ),
             Center(
               child: Text(
-                "Your account has been created successfully!",
+                LocaleKeys.confirmation_screen_account_created.tr(),
                 textAlign: TextAlign.center,
                 style: Styles.styles24w400Black,
               ),
@@ -46,7 +50,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
             Center(
               child: Text.rich(
                 TextSpan(
-                  text: "Welcome to the board, you got a 10 % promocode ",
+                  text: LocaleKeys.confirmation_screen_welcome_promo.tr(),
                   style: Styles.styles16w400grey,
                   children: [
                     TextSpan(
@@ -79,7 +83,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Promocode",
+                        LocaleKeys.confirmation_screen_promocode.tr(),
                         style: Styles.styles12w400black,
                       ),
                       SizedBox(
@@ -89,7 +93,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Copied",
+                            LocaleKeys.confirmation_screen_copied.tr(),
                             style: Styles.styles12w400black,
                           ),
                           SizedBox(
@@ -107,18 +111,20 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                 : Container(),
             const Spacer(),
             SignUpCustomButton(
-                buttonText: "Allow Location Access", onPressed: () {
-                   Navigator.pushReplacementNamed(
-                                  context,
-                                  homeLayout,
-                                );
-                  
+                buttonText:
+                    LocaleKeys.confirmation_screen_allow_location_access.tr(),
+                onPressed: () {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    homeLayout,
+                  );
                 }),
             SizedBox(
               height: 15.h,
             ),
             SignUpCustomButton(
-              buttonText: "Enter Location Manually",
+              buttonText:
+                  LocaleKeys.confirmation_screen_enter_location_manually.tr(),
               onPressed: () {
                 Navigator.of(context).pushNamed(setLocationScreen);
               },

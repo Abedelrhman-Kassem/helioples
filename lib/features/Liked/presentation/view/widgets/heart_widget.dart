@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
-
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/liked_notifier.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
-import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Liked/data/models/liked_model.dart';
 import 'package:negmt_heliopolis/features/Liked/data/repo/liked_repo_imp.dart';
@@ -72,21 +71,30 @@ class _HeartWidgetState extends State<HeartWidget>
     } catch (e) {
       postLikedModel.isLiked = !postLikedModel.isLiked!;
       if (e is DioException) {
-        CustomSnackBar.show(
-          context: context,
-          duration: const Duration(seconds: 10),
-          text: ServerFailure.fromDioError(e).errorMessage,
-          isGreen: false,
-        );
+        showCustomGetSnack(
+            duration: const Duration(seconds: 10),
+            isGreen: false,
+            text: ServerFailure.fromDioError(e).errorMessage);
+
+        // CustomSnackBar.show(
+        //   context: context,
+        //   duration: const Duration(seconds: 10),
+        //   text: ServerFailure.fromDioError(e).errorMessage,
+        //   isGreen: false,
+        // );
         return;
       }
+      showCustomGetSnack(
+          duration: const Duration(seconds: 10),
+          isGreen: false,
+          text: ServerFailure(e.toString()).errorMessage);
 
-      CustomSnackBar.show(
-        context: context,
-        duration: const Duration(seconds: 10),
-        text: ServerFailure(e.toString()).errorMessage,
-        isGreen: false,
-      );
+      // CustomSnackBar.show(
+      //   context: context,
+      //   duration: const Duration(seconds: 10),
+      //   text: ServerFailure(e.toString()).errorMessage,
+      //   isGreen: false,
+      // );
     }
   }
 

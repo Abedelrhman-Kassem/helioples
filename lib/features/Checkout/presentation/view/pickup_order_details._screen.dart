@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +12,7 @@ import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_mode
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/checkout_details_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/shipping_details_container.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class PickupOrderDetails extends StatefulWidget {
   final OrderDetailsModel orderDetailsModel;
@@ -42,27 +44,34 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         Navigator.pushNamedAndRemoveUntil(
           context,
           homeLayout,
           (route) => false,
         );
       },
+      // onPopInvoked: (didPop) {
+      //   Navigator.pushNamedAndRemoveUntil(
+      //     context,
+      //     homeLayout,
+      //     (route) => false,
+      //   );
+      // },
       child: Scaffold(
         appBar: AppBar(
-          leading: returnArrow(
-            context: context,
-            onTap: () {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                homeLayout,
-                (route) => false,
-              );
-            },
-          ),
-          title: const Text('Order Details'),
-        ),
+            leading: returnArrow(
+              context: context,
+              onTap: () {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  homeLayout,
+                  (route) => false,
+                );
+              },
+            ),
+            title: Text(
+                LocaleKeys.pickup_order_details_screen_order_details.tr())),
         body: Container(
           height: double.infinity,
           decoration: const BoxDecoration(
@@ -81,14 +90,14 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
                   padding: EdgeInsets.all(20.r),
                   margin: EdgeInsets.symmetric(vertical: 20.h),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     borderRadius: BorderRadius.circular(15.r),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Order Items',
+                        LocaleKeys.pickup_order_details_screen_order_items.tr(),
                         style: Styles.styles17w700Black,
                       ),
                       SizedBox(height: 20.h),
@@ -113,14 +122,15 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
                   padding: EdgeInsets.all(20.r),
                   margin: EdgeInsets.symmetric(vertical: 20.h),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     borderRadius: BorderRadius.circular(15.r),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Pickup Branch",
+                        LocaleKeys.pickup_order_details_screen_pickup_branch
+                            .tr(),
                         style: Styles.styles17w700Black,
                       ),
                       SizedBox(
@@ -149,7 +159,9 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
                                       style: Styles.styles16w400NormalBlack,
                                     ),
                                     Text(
-                                      'Omar Ibn Al Khatab Street 436A',
+                                      LocaleKeys
+                                          .pickup_order_details_screen_address_sample
+                                          .tr(),
                                       style: Styles.styles12w400black,
                                       overflow: TextOverflow.ellipsis,
                                     ),

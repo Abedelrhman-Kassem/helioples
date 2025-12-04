@@ -1,11 +1,11 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:negmt_heliopolis/core/utlis/services/checkinternet.dart';
 
 class ApiService {
-  final baseUrl = 'http://167.88.169.140/';
-
   Dio dio = Dio();
   static const FlutterSecureStorage _storage = FlutterSecureStorage();
 
@@ -16,24 +16,21 @@ class ApiService {
 
   static Future<void> removeToken() async {
     await _storage.delete(key: 'token');
+    log('Token removed from secure storage');
   }
 
   var mainHeader = {
     'Content-Type': 'application/json',
-    'pass': 'GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+    // 'pass': 'GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
   };
 
   Future<void> setAuthorizationHeader() async {
     try {
-      // Retrieve token from secure storage
       final token = await _storage.read(key: 'token');
+      log('token api service $token');
 
-      // print('tokennnn $token');
-      // Check if token exists
       if (token != null) {
-        // Add token to the headers of the Dio instance
         mainHeader['token'] = token;
-        // print(mainHeader);
       } else {
         // If token is null, user is not authenticated
         // Handle the case accordingly, such as redirecting to login screen
@@ -61,7 +58,7 @@ class ApiService {
 
     try {
       var response = await dio.post(
-        '$baseUrl$endPoints',
+        endPoints,
         data: data,
         options: Options(
           method: 'POST',
@@ -71,7 +68,7 @@ class ApiService {
       return response;
     } catch (error) {
       debugPrint(' $error');
-      rethrow; // Re-throw the error for handling in the caller
+      rethrow;
     }
   }
 
@@ -90,7 +87,7 @@ class ApiService {
     mainHeader.addAll(headers ?? {});
     try {
       var response = await dio.get(
-        '$baseUrl$endpoint',
+        endpoint,
         options: Options(
           headers: mainHeader,
         ),
@@ -115,7 +112,7 @@ class ApiService {
     }
     try {
       var response = await dio.delete(
-        '$baseUrl$endPoints',
+        endPoints,
         options: Options(
           method: 'DELETE',
           headers: mainHeader,
@@ -139,7 +136,7 @@ class ApiService {
       await setAuthorizationHeader(); // Ensure authorization header is set
 
       var response = await dio.put(
-        '$baseUrl$endPoints',
+        endPoints,
         data: data,
         options: Options(
           method: 'PUT',

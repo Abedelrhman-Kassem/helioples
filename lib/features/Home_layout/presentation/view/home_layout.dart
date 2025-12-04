@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view/widgets/gbutton.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view_model/cubit/home_layout_cubit.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class HomeLayout extends StatefulWidget {
   const HomeLayout({super.key});
@@ -32,7 +34,7 @@ class _HomeLayoutState extends State<HomeLayout> {
 
           return PopScope(
             canPop: false,
-            onPopInvoked: (didPop) {
+            onPopInvokedWithResult: (didPop, result) {
               if (homeLayoutCubit.selectedIndex == 0) {
                 return;
               }
@@ -86,7 +88,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                           context: context,
                           activeSvgPath: 'assets/svg_icons/white-home.svg',
                           outlinedSvgPath: 'assets/svg_icons/home.svg',
-                          text: 'home',
+                          text: LocaleKeys.home_layout_screen_home.tr(),
                           index: 0,
                         ),
                         gButtonItem(
@@ -94,14 +96,14 @@ class _HomeLayoutState extends State<HomeLayout> {
                           activeSvgPath:
                               'assets/svg_icons/white-search-normal.svg',
                           outlinedSvgPath: 'assets/svg_icons/search-normal.svg',
-                          text: 'explore',
+                          text: LocaleKeys.home_layout_screen_explore.tr(),
                           index: 1,
                         ),
                         gButtonItem(
                           context: context,
                           activeSvgPath: 'assets/svg_icons/white-heart.svg',
                           outlinedSvgPath: 'assets/svg_icons/heart.svg',
-                          text: 'liked',
+                          text: LocaleKeys.home_layout_screen_liked.tr(),
                           index: 2,
                         ),
                         gButtonItem(
@@ -109,14 +111,14 @@ class _HomeLayoutState extends State<HomeLayout> {
                           activeSvgPath:
                               'assets/svg_icons/white-favorite-Cart.svg',
                           outlinedSvgPath: 'assets/svg_icons/favorite-Cart.svg',
-                          text: 'cart',
+                          text: LocaleKeys.home_layout_screen_cart.tr(),
                           index: 3,
                         ),
                         gButtonItem(
                           context: context,
                           activeSvgPath: 'assets/svg_icons/white-user.svg',
                           outlinedSvgPath: 'assets/svg_icons/user.svg',
-                          text: 'profile',
+                          text: LocaleKeys.home_layout_screen_profile.tr(),
                           index: 4,
                         ),
                       ],

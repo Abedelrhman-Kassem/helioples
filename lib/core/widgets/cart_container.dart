@@ -48,7 +48,7 @@ class _CartContainerState extends State<CartContainer> {
             color: MyColors.mainColor,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: Colors.black.withValues(alpha: 0.2),
                 spreadRadius: 3.sp,
                 blurRadius: 5.sp,
                 offset: const Offset(0, 5),

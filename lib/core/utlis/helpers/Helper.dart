@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
-import 'package:negmt_heliopolis/core/widgets/CustomButton.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_button.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'Loading.dart';
@@ -105,10 +105,15 @@ class Helper {
     showDialog(
       context: Get.context!,
       barrierDismissible: false,
-      builder: (_) => WillPopScope(
-        onWillPop: () async {
-          return false;
-        },
+      builder: (_) => PopScope(
+        canPop: false,
+        // onPopInvoked: (didPop) => false,
+        // onPopInvokedWithResult: (didPop, result) {
+        //   return false;
+        // },
+        // onWillPop: () async {
+        //   return false;
+        // },
         child: AlertDialog(
           content: Loading(
             title: title,

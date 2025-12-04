@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class PromoCodeContainer extends StatefulWidget {
   final CreateOrderModel createOrderModel;
@@ -52,14 +54,14 @@ class _PromoCodeContainerState extends State<PromoCodeContainer> {
           padding: EdgeInsets.all(20.r),
           margin: EdgeInsets.symmetric(vertical: 10.h),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.9),
+            color: Colors.white.withValues(alpha: 0.9),
             borderRadius: BorderRadius.circular(15.r),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Promo code',
+                LocaleKeys.order_summary_screen_title.tr(),
                 style: Styles.styles17w700Black,
               ),
               SizedBox(height: 20.h),
@@ -79,7 +81,7 @@ class _PromoCodeContainerState extends State<PromoCodeContainer> {
                       horizontal: 10.w,
                       vertical: 15.h,
                     ),
-                    hintText: 'Enter Promo code',
+                    hintText: LocaleKeys.order_summary_screen_hint.tr(),
                     border: InputBorder.none,
                     hintStyle: Styles.styles17w400interFamily.copyWith(
                       color: const Color.fromRGBO(181, 185, 190, 1),
@@ -101,7 +103,7 @@ class _PromoCodeContainerState extends State<PromoCodeContainer> {
                               }
                             },
                             child: Text(
-                              'Apply',
+                              LocaleKeys.order_summary_screen_apply_button.tr(),
                               style: Styles.styles17w500MainColor,
                             ),
                           ),

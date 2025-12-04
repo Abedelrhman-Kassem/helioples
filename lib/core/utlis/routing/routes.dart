@@ -3,16 +3,20 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/AllSpecialOffers/presentation/view/all_special_offers_screen.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/loginpage.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/repo/maps_repo.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/web%20services/places_web_services.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view%20model/set_location_cubit/set_location_cubit.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view_model/set_location_cubit/set_location_cubit.dart';
+import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view_model/sign_up_cubit/sent_otp_states.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/confirmation_screen.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/notification_screen.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/set_location.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/signup_screen.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/verfication_screen.dart';
+import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/cubit/verfy_and_register_cubit.dart';
+import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/repo/verify_and_register_repo_imp.dart';
+import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/presentation/verfy_and_register_screen.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/cart_screen.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view%20model/cubit/sub_categories_cubit.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view/sub_categories_screen.dart';
@@ -24,9 +28,11 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/pick_up_scr
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/pickup_order_details._screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/pickup_reorder_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/re_order_screen.dart';
+import 'package:negmt_heliopolis/features/countries_pages/view/persentaion/alerts_empty.dart';
+import 'package:negmt_heliopolis/features/countries_pages/view/persentaion/history_empty.dart';
+import 'package:negmt_heliopolis/features/countries_pages/view/persentaion/profile_empty.dart';
+import 'package:negmt_heliopolis/features/countries_pages/view/persentaion/server_unavailable.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
-import 'package:negmt_heliopolis/features/homeScreen/presentation/view/widgets/screens/confirm_address_screen.dart';
-import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 import 'package:negmt_heliopolis/features/Home_layout/presentation/view/home_layout.dart';
 import 'package:negmt_heliopolis/features/Intro/presentation/view/intro_screen.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/liked_screen.dart';
@@ -42,19 +48,45 @@ import 'package:negmt_heliopolis/features/Profile/presentation/view/profile%20in
 import 'package:negmt_heliopolis/features/Profile/presentation/view/profile%20information%20screens/verfication_changes_screen.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/settings%20screens/settings_screen.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/special_offer_item_screen.dart';
-import 'package:negmt_heliopolis/test_screen.dart';
 
 class AppRouter {
+  final bool isLoggedIn;
+  final bool serverError;
+  AppRouter({required this.isLoggedIn, this.serverError = false});
+  Widget _pageForName(String name) {
+    switch (name) {
+      case homeLayout:
+        return const HomeLayout();
+      case introScreen:
+        return const IntroScreen();
+      case serverUnavailable:
+        return const ServerUnavailable();
+      default:
+        return const PageNotFoundScreen(fromParent: 'from Main');
+    }
+  }
+
   Route generate(RouteSettings settings) {
     Widget page;
     bool fromRight;
     log("Navigating to: ${settings.name}");
 
+    if (settings.name == '/' || settings.name == intialRoute) {
+      // final target = isLoggedIn ? homeLayout : introScreen;
+      final target = serverError == true
+          ? serverUnavailable
+          : isLoggedIn
+              ? homeLayout
+              : introScreen;
+      return CustomPageRouteBuilder(
+          page: _pageForName(target), fromRight: false);
+    }
+
     switch (settings.name) {
       case intialRoute:
       case introScreen:
         page = const IntroScreen();
-        // page = const TestScreen();
+        // page = const TestPage();
         fromRight = false;
         break;
 
@@ -90,9 +122,13 @@ class AppRouter {
         break;
 
       case verficationScreen:
-        final args = settings.arguments as Map<String, dynamic>;
-        page = VerificationScreen(
-          phoneNumber: args['phoneNumber'],
+        final args = settings.arguments as Map<String, dynamic>? ?? {};
+        page = BlocProvider(
+          create: (_) => VerfyAndRegisterCubit(
+              otpModel: args['otpModel'] as OtpModel,
+              verifyAndRegisterRepo:
+                  VerifyAndRegisterRepoImp(apiService: ApiService())),
+          child: const VerificationScreen(),
         );
         fromRight = true;
         break;
@@ -231,6 +267,18 @@ class AppRouter {
 
       case pickupReorderScreen:
         page = const PickupReorderScreen();
+        fromRight = true;
+        break;
+      case profileEmptyScreen:
+        page = const ProfileEmpty();
+        fromRight = true;
+        break;
+      case historyEmptyScreen:
+        page = const HistoryEmpty();
+        fromRight = true;
+        break;
+      case alertsEmptyScreen:
+        page = const AlertsEmpty();
         fromRight = true;
         break;
 

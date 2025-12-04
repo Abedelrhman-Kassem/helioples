@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +12,7 @@ import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/cart_it
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view_model/cubit/cart_cubit.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class CartItemWidget extends StatefulWidget {
   final ItemUiModel itemUiModel;
@@ -98,7 +100,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    '${product.availablePieces} Pcs (${product.price} EGP)',
+                    '${product.availablePieces} ${LocaleKeys.cart_screen_cart_item_pcs.tr()} (${product.price} ${LocaleKeys.cart_screen_cart_item_egp.tr()})',
                     style: Styles.styles10w400interFamily,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -137,8 +139,11 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                           } else {
                             CustomSnackBar.show(
                               context: context,
-                              text:
-                                  'You can\'t add more than ${product.availablePieces} pieces',
+                              text: LocaleKeys
+                                  .cart_screen_cart_item_cant_add_more
+                                  .tr(namedArgs: {
+                                'pieces': product.availablePieces.toString()
+                              }),
                               duration: const Duration(seconds: 10),
                               isGreen: false,
                             );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/utils.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/egypt_code_widget.dart';
 
@@ -7,7 +8,6 @@ class PhoneNumberRow extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
   final EdgeInsets? padding;
-  
 
   const PhoneNumberRow({
     super.key,
@@ -35,7 +35,16 @@ class PhoneNumberRow extends StatelessWidget {
             const EgyptionCodeWidget(),
             SizedBox(width: 10.w),
             Expanded(
-              child: TextField(
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your phone number';
+                  }
+                  if (!GetUtils.isPhoneNumber(value)) {
+                    return 'Must be an 11-digit number';
+                  }
+                  return null;
+                },
                 controller: controller,
                 enabled: true,
                 keyboardType: TextInputType.number,

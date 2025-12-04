@@ -3,13 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
-
 class ProfileItem extends StatelessWidget {
-  final String imagePath;
+  final String? imagePath;
   final String label;
   final VoidCallback? onTap;
   const ProfileItem(
-      {super.key, required this.imagePath, required this.label, this.onTap});
+      {super.key, this.imagePath, required this.label, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +23,12 @@ class ProfileItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            svgIcon(
-                path: imagePath,
-                width: 50.w,
-                height: 50.h,
-                color: const Color.fromRGBO(41, 45, 50, 1)),
+            if (imagePath != null)
+              svgIcon(
+                  path: imagePath ?? '',
+                  width: 50.w,
+                  height: 50.h,
+                  color: const Color.fromRGBO(41, 45, 50, 1)),
             SizedBox(
               height: 8.h,
             ),
@@ -40,7 +40,6 @@ class ProfileItem extends StatelessWidget {
                     color: const Color.fromRGBO(41, 45, 50, 1),
                     fontSize: 14.sp),
                 textAlign: TextAlign.center,
-                
               ),
             )
           ],

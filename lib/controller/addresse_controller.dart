@@ -33,6 +33,12 @@ class AddressesControllerImpl extends AddressesController {
 
   @override
   fetchAddresses() async {
+    final String? token = await ApiService.getToken();
+
+    if (token == null) {
+      errorMessage = 'User not authenticated';
+      return;
+    }
     loading = false;
     errorMessage = null;
     update();
@@ -68,6 +74,8 @@ class AddressesControllerImpl extends AddressesController {
   @override
   getChossenAddress() async {
     int? addressId = await getChossenAddressId();
+
+    if (addressId == null) return;
 
     address = mainAddressModel.address!.firstWhere(
       (element) => element.id == addressId,

@@ -16,7 +16,15 @@ import 'package:negmt_heliopolis/features/homeScreen/presentation/view/home_scre
 part 'home_layout_state.dart';
 
 class HomeLayoutCubit extends Cubit<HomeLayoutState> {
-  HomeLayoutCubit() : super(HomeLayoutInitial());
+  HomeLayoutCubit() : super(HomeLayoutInitial()) {
+    _init();
+  }
+
+  String? token;
+
+  Future<void> _init() async {
+    token = await ApiService.getToken();
+  }
 
   int selectedIndex = 0;
   int previousIndex = 0;

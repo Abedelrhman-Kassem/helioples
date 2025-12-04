@@ -11,6 +11,8 @@ import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Product/presentation/view/widgets/product_widget.dart';
 import 'package:negmt_heliopolis/features/Product/presentation/view_model/cubit/product_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ProductScreen extends StatefulWidget {
   final int productId;
@@ -69,7 +71,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 20.0),
                             child: Text(
-                              'Related Products',
+                              LocaleKeys.product_screen_related_products.tr(),
                               style: Styles.styles16w600NormalBlack,
                             ),
                           ),
@@ -149,7 +151,8 @@ class _ProductScreenState extends State<ProductScreen> {
                                         assetsErrorPath:
                                             'assets/screens_background/home-category.png',
                                       ),
-                                      const Text('hello there'),
+                                      Text(LocaleKeys.product_screen_hello_there
+                                          .tr()),
                                     ],
                                   ),
                                 ),
@@ -165,13 +168,15 @@ class _ProductScreenState extends State<ProductScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(state.error),
+                        Text(state
+                            .error), // This is a variable, not a hardcoded string
                         TextButton(
                           onPressed: () {
                             BlocProvider.of<ProductCubit>(context)
                                 .getProductDetails(widget.productId);
                           },
-                          child: const Text('Tap to try again'),
+                          child: Text(
+                              LocaleKeys.product_screen_tap_to_try_again.tr()),
                         ),
                       ],
                     ),

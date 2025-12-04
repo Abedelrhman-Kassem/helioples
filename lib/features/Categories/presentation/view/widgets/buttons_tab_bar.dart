@@ -15,17 +15,19 @@ class CustomButtonsTabBar extends StatefulWidget {
   });
 
   @override
-  _CustomButtonsTabBarState createState() => _CustomButtonsTabBarState();
+  CustomButtonsTabBarState createState() => CustomButtonsTabBarState();
 }
 
-class _CustomButtonsTabBarState extends State<CustomButtonsTabBar> with TickerProviderStateMixin {
+class CustomButtonsTabBarState extends State<CustomButtonsTabBar>
+    with TickerProviderStateMixin {
   late List<AnimationController> _controllers;
 
   @override
   void initState() {
     super.initState();
     _controllers = List.generate(widget.subCategories.length, (index) {
-      return AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
+      return AnimationController(
+          vsync: this, duration: const Duration(milliseconds: 300));
     });
   }
 
@@ -70,7 +72,8 @@ class _CustomButtonsTabBarState extends State<CustomButtonsTabBar> with TickerPr
       tabs: [
         ...widget.subCategories.map((subCategory) {
           return Tab(
-            icon: Image.asset("assets/Icons_logos/${subCategory.toLowerCase()}.png"), // Adjust the icon path accordingly
+            icon: Image.asset(
+                "assets/Icons_logos/${subCategory.toLowerCase()}.png"), // Adjust the icon path accordingly
             text: subCategory,
           );
         }),

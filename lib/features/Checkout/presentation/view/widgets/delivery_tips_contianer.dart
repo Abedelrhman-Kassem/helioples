@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/tips_widget.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class Tips {
   String textValue;
@@ -65,7 +67,7 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
       padding: EdgeInsets.all(20.r),
       margin: EdgeInsets.symmetric(vertical: 10.h),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
+        color: Colors.white.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(15.r),
       ),
       child: Column(
@@ -77,11 +79,14 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Appreciate delivery with tips',
+                    LocaleKeys
+                        .delivery_tips_container_appreciate_delivery_with_tips
+                        .tr(),
                     style: Styles.styles17w700Black,
                   ),
                   Text(
-                    'Tips amount will go directly to the delivery labor',
+                    LocaleKeys.delivery_tips_container_tips_amount_goes_to_labor
+                        .tr(),
                     style: Styles.styles12w300NormalBlack.copyWith(
                       color: const Color.fromRGBO(120, 120, 120, 1),
                     ),
@@ -120,8 +125,8 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
                 ),
                 tipsWidget(
                   text: customTipsController.text.isEmpty
-                      ? 'Custom'
-                      : '${customTipsController.text} EGP',
+                      ? LocaleKeys.delivery_tips_container_custom.tr()
+                      : '${customTipsController.text} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
                   onTap: () {
                     isCustomTips = true;
                     tipsValue = customTipsController.text.isEmpty
@@ -141,7 +146,7 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
               children: [
                 SizedBox(height: 20.h),
                 Text(
-                  'Tips Amount',
+                  LocaleKeys.delivery_tips_container_enter_amount.tr(),
                   style: Styles.styles17w700Black,
                 ),
                 SizedBox(height: 20.h),
@@ -166,7 +171,9 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
                         CustomSnackBar.show(
                           context: context,
                           duration: const Duration(milliseconds: 5000),
-                          text: 'enter valid nubmer',
+                          text: LocaleKeys
+                              .delivery_tips_container_enter_valid_number
+                              .tr(),
                           isGreen: false,
                         );
                       }
@@ -178,7 +185,8 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
                         horizontal: 10.w,
                         vertical: 15.h,
                       ),
-                      hintText: 'Enter Amount',
+                      hintText:
+                          LocaleKeys.delivery_tips_container_enter_amount.tr(),
                       border: InputBorder.none,
                       hintStyle: Styles.styles17w400interFamily.copyWith(
                         color: const Color.fromRGBO(181, 185, 190, 1),
@@ -195,13 +203,15 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
                             CustomSnackBar.show(
                               context: context,
                               duration: const Duration(milliseconds: 5000),
-                              text: 'enter valid nubmer',
+                              text: LocaleKeys
+                                  .delivery_tips_container_enter_valid_number
+                                  .tr(),
                               isGreen: false,
                             );
                           }
                         },
                         child: Text(
-                          'Apply',
+                          LocaleKeys.delivery_tips_container_apply.tr(),
                           style: Styles.styles17w500MainColor,
                         ),
                       ),
