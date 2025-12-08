@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/controller/addresse_controller.dart';
+import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view_model/sign_up_cubit/sent_otp_states.dart';
 import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/repo/verify_and_register_repo.dart';
 import 'package:negmt_heliopolis/features/Auth/auth_controller.dart';
@@ -41,8 +42,7 @@ class VerfyAndRegisterCubit extends Cubit<VerfAndRegisterStates> {
       (failure) => emit(RegisterFailure(failure.errorMessage)),
       (result) async {
         emit(RegisterSuccess(result));
-        const storage = FlutterSecureStorage();
-        await storage.write(key: 'token', value: result.data);
+        ServicesHelper.saveLocal('token', result.data);
         final addressesCtrl = Get.find<AddressesControllerImpl>();
         final authC = Get.find<AuthController>();
         await addressesCtrl.fetchAddresses();

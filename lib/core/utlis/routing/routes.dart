@@ -5,7 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/AllSpecialOffers/presentation/view/all_special_offers_screen.dart';
+import 'package:negmt_heliopolis/features/Auth/Login/Verfication_login/data/cubit/verfy_login_cubit.dart';
+import 'package:negmt_heliopolis/features/Auth/Login/Verfication_login/presentation/verfy_login_screen.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/loginpage.dart';
+import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/models/login_model.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/repo/maps_repo.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/web%20services/places_web_services.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view_model/set_location_cubit/set_location_cubit.dart';
@@ -129,6 +132,17 @@ class AppRouter {
               verifyAndRegisterRepo:
                   VerifyAndRegisterRepoImp(apiService: ApiService())),
           child: const VerificationScreen(),
+        );
+        fromRight = true;
+        break;
+      case verficationLoginScreen:
+        final args = settings.arguments as Map<String, dynamic>? ?? {};
+        page = BlocProvider(
+          create: (_) => VerfyLoginCubit(
+              loginModel: args['loginModel'] as LoginModel,
+              verifyLoginRepo:
+                  VerifyAndRegisterRepoImp(apiService: ApiService())),
+          child: const VerfyLoginScreen(),
         );
         fromRight = true;
         break;

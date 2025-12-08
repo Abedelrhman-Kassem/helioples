@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:negmt_heliopolis/core/utlis/network/api_response.dart';
 import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/model/register_model.dart';
 
 sealed class SentOtpState extends Equatable {
@@ -11,6 +12,18 @@ sealed class SentOtpState extends Equatable {
 final class SentOtpInitial extends SentOtpState {}
 
 final class SentOtpLoading extends SentOtpState {}
+
+final class FailedUserExist extends SentOtpState {
+  final String errorMessage;
+
+  const FailedUserExist(this.errorMessage);
+}
+
+final class UserExist extends SentOtpState {
+  final ApiResponse apiResponse;
+
+  const UserExist(this.apiResponse);
+}
 
 final class SentOtpSuccess extends SentOtpState {
   final OtpModel otpModel;
@@ -26,7 +39,7 @@ final class SentOtpFailure extends SentOtpState {
 
 class OtpModel extends SentOtpState {
   final RegisterModel registerModel;
-  final String verificationId;
+  String verificationId;
 
-  const OtpModel(this.registerModel, this.verificationId);
+  OtpModel(this.registerModel, this.verificationId);
 }

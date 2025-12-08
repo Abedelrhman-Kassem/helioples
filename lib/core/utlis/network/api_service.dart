@@ -53,7 +53,7 @@ class ApiService {
     if (!await checkInternet()) {
       throw Exception('No internet connection');
     }
-    await setAuthorizationHeader();
+    // await setAuthorizationHeader();
     mainHeader.addAll(headers ?? {});
 
     try {
@@ -63,6 +63,8 @@ class ApiService {
         options: Options(
           method: 'POST',
           headers: mainHeader,
+          sendTimeout: const Duration(seconds: 20),
+          receiveTimeout: const Duration(seconds: 30),
         ),
       );
       return response;

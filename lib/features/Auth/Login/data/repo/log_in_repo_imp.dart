@@ -1,73 +1,68 @@
 import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/send_otp_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
+import 'package:negmt_heliopolis/core/utlis/network/app_urls.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/data/repo/log_in_repo.dart';
+import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/models/login_model.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class LogInRepoImp extends LogInRepo {
   final ApiService apiService;
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
   LogInRepoImp({required this.apiService});
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> signIn(
-      String phone, String password) async {
-    String? verificationId;
-    String? resendToken;
+  Future<Either<Failure, LoginModel>> signIn(String phone) async {
     try {
-      // await apiService.setAuthorizationHeader();
-      final formattedPhone = '+2$phone';
-      // print("b3d el phone");
+      final formattedPhone = phone;
       final data = {
-        'phone': formattedPhone,
-        'password': password,
+        "phone": formattedPhone,
       };
 
-      var response = await apiService.post(endPoints: 'auth/login', data: data);
+      var response =
+          await apiService.post(endPoints: AppUrls.login, data: data);
 
       if (response.statusCode == 200) {
-        final token = response.data['token'];
-        // final res = await SendOtpHelper.verifyPhone('+2$phone');
-        // res.fold(
-        //   (err) => {
-        //     showCustomGetSnack(
-        //       duration: const Duration(minutes: 10),
-        //       isGreen: false,
-        //       text: " failed send otp $err",
-        //     )
-        //   },
-        //   (data) => {
-        //     showCustomGetSnack(
-        //         isGreen: true,
-        //         text: LocaleKeys.login_screen_verification_sent.tr()),
-        //     // log('data: ${data.verificationId}'),
-        //     verificationId = data.verificationId,
-        //     resendToken = data.resendToken.toString()
-        //   },
-        // );
-        // print("token-----");
-        // print(response.data['token']);
-        // print("token-----");
+        // ===== 1) تحقق من OTP قبل ما ترجع Right =====
+        final otpResult = await SendOtpHelper.verifyPhone('+2$phone');
 
-        await _storage.write(key: 'token', value: token);
+        return otpResult.fold(
+          (err) {
+            // OTP Failed → رجّع Left ووقف
+            return left(ServerFailure("Failed to send OTP"));
+          },
+          (otpData) {
+            // OTP Success → كمل
+            Map<String, dynamic> finalResponse = {
+              "verificationId": otpData.verificationId,
+              "phoneNumber": formattedPhone,
+              "success": response.data['success'],
+              "message": response.data['message'],
+              "data": response.data['data'],
+            };
 
-        // await apiService.setAuthorizationHeader();
+            showCustomGetSnack(
+              isGreen: true,
+              text: LocaleKeys.login_screen_verification_sent.tr(),
+            );
 
-        return right({
-          'token': token,
-          'verificationId': verificationId,
-          'resendToken': resendToken,
-        });
+            return right(LoginModel.fromJson(finalResponse));
+          },
+        );
       } else {
-        return left(ServerFailure('Failed to sign in. Please try again.'));
+        return left(ServerFailure(response.data['message']));
       }
-    } catch (e) {
+    } catch (e, s) {
+      log('Exception during signIn: $s');
       if (e is DioException) {
         log('DioException during signIn: ${e.message}');
         return left(ServerFailure.fromDioError(e));
       } else {
+        log('Exception during signIn: ${e.toString()}');
         return left(ServerFailure(e.toString()));
       }
     }

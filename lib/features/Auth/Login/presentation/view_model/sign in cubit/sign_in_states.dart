@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/models/login_model.dart';
 
 sealed class SignInState extends Equatable {
   const SignInState();
@@ -26,7 +27,7 @@ final class SignInOtpSuccess extends SignInState {
 }
 
 final class SignInSuccess extends SignInState {
-  final Map<String, dynamic> result;
+  final LoginModel result;
 
   const SignInSuccess(this.result);
 }

@@ -7,7 +7,7 @@ import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/loading_button.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/data/repo/log_in_repo_imp.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/nh_logo.dart';
@@ -59,8 +59,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController phoneNumberController =
+      TextEditingController(text: "01");
 
   @override
   void initState() {
@@ -146,43 +146,29 @@ class _LoginScreenState extends State<LoginScreen> {
                             buttonText: LocaleKeys.login_screen_continue.tr(),
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
-                                print("valid");
+                                print(
+                                    "phoneNumberController.text : ${phoneNumberController.text}");
                                 cubit.signIn(
-                                    phoneNumberController.text, "12345678");
+                                  phoneNumberController.text,
+                                );
                               }
-
-                              //  Navigator.of(context).pushNamed(
-                              //   verficationScreen,
-                              //   arguments: {
-                              //     'phoneNumber': "+201145243378",
-                              //   },
-                              // );
                             },
                           ),
                         );
                       }
                     }, listener: (context, state) {
                       if (state is SignInFailure) {
-                        CustomSnackBar.show(
-                          context: context,
-                          duration: const Duration(milliseconds: 5000),
-                          text: state.errorMessage,
-                          isGreen: false,
-                        );
+                        showCustomGetSnack(
+                            isGreen: false, text: state.errorMessage);
                       } else if (state is SignInSuccess) {
-                        // CustomSnackBar.show(
-                        //   context: context,
-                        //   duration: const Duration(milliseconds: 5000),
-                        //   text: LocaleKeys.login_screen_verification_sent.tr(),
-                        //   isGreen: true,
-                        // );
-                        final cubit = context.read<SignInCubit>();
+                        // final cubit = context.read<SignInCubit>();
+                        showCustomGetSnack(
+                            isGreen: true, text: state.result.message);
+
                         Navigator.of(context).pushNamed(
-                          verficationScreen,
+                          verficationLoginScreen,
                           arguments: {
-                            'phoneNumber': phoneNumberController.text,
-                            'verificationId': cubit.verificationId,
-                            'tempToken': cubit.tempToken,
+                            'loginModel': state.result,
                           },
                         );
                       }

@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
+import 'package:negmt_heliopolis/core/utlis/network/api_response.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/data/repo/send_otp_repo.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view_model/sign_up_cubit/sent_otp_states.dart';
 import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/model/register_model.dart';
@@ -16,6 +19,17 @@ class SendOtpCubit extends Cubit<SentOtpState> {
     response.fold((failure) => emit(SentOtpFailure(failure.errorMessage)),
         (otpModel) {
       emit(SentOtpSuccess(otpModel));
+    });
+  }
+
+  Future<void> checkUser(RegisterModel registerModel) async {
+    emit(SentOtpLoading());
+    final Either<Failure, ApiResponse> response =
+        await sendOtpRepo.checkUser(registerModel);
+    response.fold((failure) => emit(FailedUserExist(failure.errorMessage)),
+        (apiResponse) {
+      sendOtp(registerModel);
+      log(apiResponse.success.toString());
     });
   }
 }

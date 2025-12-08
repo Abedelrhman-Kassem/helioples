@@ -8,6 +8,7 @@ const String specialOfferItemScreen = '/special_offer_item_screen';
 const String allspecialOffersScreen = '/all_special_offer_screen';
 const String signUpScreen = '/sign_up_screen';
 const String verficationScreen = '/verfication_screen';
+const String verficationLoginScreen = '/verfication_login_screen';
 const String confirmationScreen = '/confirmation_screen';
 const String setLocationScreen = '/set_location_screen';
 const String notificationScreen = '/notification_screen';

@@ -25,8 +25,7 @@ class ServerFailure extends Failure {
             dioError.response?.statusCode == 405) {
           // print(dioError.response!.data['message']);
           return ServerFailure(
-            dioError.response!.data['msg'] ??
-                dioError.response!.data['error'] ??
+            dioError.response!.data['message'] ??
                 dioError.response!.data['errors'],
           );
         } else {

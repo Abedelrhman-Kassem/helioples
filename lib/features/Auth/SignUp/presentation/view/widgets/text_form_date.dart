@@ -5,21 +5,58 @@ import 'package:flutter_svg/svg.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 
-class TextFormDate extends StatelessWidget {
-  final DateTime dateTime;
+class TextFormDate extends StatefulWidget {
+  final DateTime initialDate;
+
   final void Function(DateTime) onDateTimeChanged;
-  const TextFormDate(
-      {super.key, required this.dateTime, required this.onDateTimeChanged});
+  const TextFormDate({
+    super.key,
+    required this.initialDate,
+    required this.onDateTimeChanged,
+  });
+
+  @override
+  State<TextFormDate> createState() => _TextFormDateState();
+}
+
+class _TextFormDateState extends State<TextFormDate> {
+  late final TextEditingController _controller;
+  late DateTime _selectedDate;
+
+  String _format(DateTime dt) =>
+      '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDate = widget.initialDate;
+    _controller = TextEditingController(text: _format(_selectedDate));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onNewDate(DateTime newDate) {
+    setState(() {
+      _selectedDate = newDate;
+      _controller.text = _format(newDate);
+    });
+
+    widget.onDateTimeChanged(newDate);
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: _controller,
       decoration: InputDecoration(
         filled: true,
         fillColor: const Color.fromRGBO(246, 246, 246, 1),
         iconColor: MyColors.mainColor,
         focusColor: MyColors.mainColor,
-        hintText: '${dateTime.day}/${dateTime.month}/${dateTime.year}',
         suffixIcon: Padding(
           padding: const EdgeInsets.all(12.0),
           child: SvgPicture.asset(
@@ -49,7 +86,7 @@ class TextFormDate extends StatelessWidget {
       onTap: () {
         showCupertinoModalPopup(
           context: context,
-          builder: (BuildContext context) => Container(
+          builder: (BuildContext ctx) => Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30.r),
@@ -67,10 +104,11 @@ class TextFormDate extends StatelessWidget {
                   child: CupertinoDatePicker(
                     backgroundColor: Colors.white,
                     onDateTimeChanged: (DateTime newDate) {
-                      onDateTimeChanged(newDate);
+                      _onNewDate(newDate);
                     },
                     use24hFormat: true,
                     mode: CupertinoDatePickerMode.date,
+                    initialDateTime: _selectedDate,
                   ),
                 ),
               ),

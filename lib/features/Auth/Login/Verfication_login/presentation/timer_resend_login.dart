@@ -5,18 +5,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/send_otp_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
-import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/cubit/verfy_and_register_cubit.dart';
+import 'package:negmt_heliopolis/features/Auth/Login/Verfication_login/data/cubit/verfy_login_cubit.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class TimerResend extends StatefulWidget {
-  const TimerResend({super.key});
+class TimerResendLogin extends StatefulWidget {
+  const TimerResendLogin({super.key});
 
   @override
-  State<TimerResend> createState() => _TimerResendState();
+  State<TimerResendLogin> createState() => _TimerResendLoginState();
 }
 
-class _TimerResendState extends State<TimerResend> {
+class _TimerResendLoginState extends State<TimerResendLogin> {
   static const int initialSeconds = 3600; // الوقت الكامل بعد الإرسال
   int _remainingSeconds = 0;
   Timer? _timer;
@@ -30,20 +30,21 @@ class _TimerResendState extends State<TimerResend> {
 
     // نفحص الـ cubit: إذا فيه verificationId معناته الكود اتبعت من قبل -> نبدأ العداد
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final cubit = context.read<VerfyAndRegisterCubit>();
-      // if (cubit.otpModel.verificationId.isNotEmpty) {
-      // لو فيه قيمة نعتبر أن الكود سبق إرساله ونعطل زر resend ونبدأ العد
-      //   setState(() {
-      //     _canResend = false;
-      //   });
-      //   startCountdown(seconds: initialSeconds);
-      // } else {
-      // مفيش قيمة => اسمح بالارسال فورًا
-      setState(() {
-        _canResend = true;
-        _remainingSeconds = 0;
-      });
-      // }
+      final cubit = context.read<VerfyLoginCubit>();
+      if (cubit.loginModel?.verificationId?.isNotEmpty != null &&
+          cubit.loginModel!.verificationId!.isNotEmpty) {
+        // لو فيه قيمة نعتبر أن الكود سبق إرساله ونعطل زر resend ونبدأ العد
+        setState(() {
+          _canResend = false;
+        });
+        startCountdown(seconds: initialSeconds);
+      } else {
+        // مفيش قيمة => اسمح بالارسال فورًا
+        setState(() {
+          _canResend = true;
+          _remainingSeconds = 0;
+        });
+      }
     });
   }
 
@@ -86,8 +87,8 @@ class _TimerResendState extends State<TimerResend> {
       _canResend = false; // تأمين إضافي
     });
 
-    final cubit = context.read<VerfyAndRegisterCubit>();
-    final phone = cubit.otpModel.registerModel.phone;
+    final cubit = context.read<VerfyLoginCubit>();
+    final phone = cubit.loginModel!.phoneNumber;
     try {
       final res = await SendOtpHelper.verifyPhone('+2$phone');
       res.fold(
@@ -111,7 +112,7 @@ class _TimerResendState extends State<TimerResend> {
           );
 
           // خزّن القيم في cubit بشكل صحيح
-          cubit.otpModel.verificationId = data.verificationId;
+          cubit.loginModel!.verificationId = data.verificationId;
 
           // أعد تشغيل العدّ من البداية
           startCountdown(seconds: initialSeconds);
@@ -187,20 +188,6 @@ class _TimerResendState extends State<TimerResend> {
                   ),
           ),
         ),
-        // Center(
-        //   child: IconButton(
-        //     onPressed: () {
-        //       setState(() {
-        //         _canResend = true;
-        //         _remainingSeconds = 0;
-        //       });
-        //     },
-        //     icon: const Icon(
-        //       Icons.send,
-        //       color: Colors.black,
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }

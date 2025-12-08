@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/loading_button.dart';
@@ -53,6 +54,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     final String lang = getLocale(context);
+    log("build");
 
     return Scaffold(
       body: Stack(
@@ -117,26 +119,25 @@ class _SignupScreenState extends State<SignupScreen> {
                       height: 15.h,
                     ),
                     TextFormDate(
-                      dateTime: dateTime,
+                      initialDate: dateTime,
                       onDateTimeChanged: (DateTime newDate) {
-                        setState(() {
-                          dateTime = newDate;
-                        });
+                        dateTime = newDate;
                       },
                     ),
                     SizedBox(
                       height: 15.h,
                     ),
                     BlocProvider(
-                      create: (context) => SendOtpCubit(SendOtpRepoImpl()),
+                      create: (context) =>
+                          SendOtpCubit(SendOtpRepoImpl(ApiService())),
                       child: BlocConsumer<SendOtpCubit, SentOtpState>(
                         builder: (context, state) {
                           // ignore: unused_local_variable
-                          var cubit = BlocProvider.of<SendOtpCubit>(context);
+                          final cubit = BlocProvider.of<SendOtpCubit>(context);
                           if (state is SentOtpLoading) {
-                            return const LoadingButton(
-                              height: 60,
-                              radius: 10,
+                            return LoadingButton(
+                              height: 63.h,
+                              radius: 13.r,
                             );
                           } else {
                             return Center(
@@ -151,9 +152,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                       lastName: lastNameController.text,
                                       phone: phoneNumberController.text,
                                       birthdate:
-                                          "${dateTime.year}-${dateTime.month}-${dateTime.day}",
+                                          dateTime.toUtc().toIso8601String(),
                                     );
-                                    cubit.sendOtp(registerModel);
+                                    cubit.checkUser(registerModel);
                                   }
                                 },
                               ),
@@ -161,12 +162,18 @@ class _SignupScreenState extends State<SignupScreen> {
                           }
                         },
                         listener: (context, state) {
-                          if (state is SentOtpFailure) {
-                            log(state.errorMessage);
+                          if (state is FailedUserExist) {
                             showCustomGetSnack(
                               duration: const Duration(minutes: 10),
                               isGreen: false,
                               text: state.errorMessage,
+                            );
+                          } else if (state is SentOtpFailure) {
+                            log(state.errorMessage);
+                            showCustomGetSnack(
+                              duration: const Duration(minutes: 10),
+                              isGreen: false,
+                              text: "failed send otp",
                             );
                           } else if (state is SentOtpSuccess) {
                             showCustomGetSnack(
