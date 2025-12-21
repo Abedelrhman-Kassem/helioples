@@ -1,3 +1,4 @@
+import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 class SpecialOfferItemModel {
@@ -20,7 +21,7 @@ class OfferItem {
   String? badge;
   String? expiresAt;
   String? createdAt;
-  List<RelatedProductsModel>? products;
+  List<Products>? products;
 
   OfferItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -33,9 +34,9 @@ class OfferItem {
     expiresAt = json['expiresAt'];
     createdAt = json['createdAt'];
     if (json['products'] != null) {
-      products = <RelatedProductsModel>[];
+      products = <Products>[];
       json['products'].forEach((v) {
-        products!.add(RelatedProductsModel.fromJson(v));
+        products!.add(Products.fromJson(v));
       });
     }
   }

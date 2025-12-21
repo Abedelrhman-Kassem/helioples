@@ -7,7 +7,7 @@ class SubCategoriesStateInitial extends SubCategoriesState {}
 class LoadingMainSubCategories extends SubCategoriesState {}
 
 class GetMainSubCategoriesSuccess extends SubCategoriesState {
-  final List<SubCategories> subCategories;
+  final List<SubCatByCatidData> subCategories;
   GetMainSubCategoriesSuccess(this.subCategories);
 }
 

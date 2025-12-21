@@ -7,6 +7,7 @@ import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
+import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 import 'package:negmt_heliopolis/features/Explore/presentation/view_model/cubit/explore_cubit.dart';
 import 'package:negmt_heliopolis/core/widgets/skeletonizer_loading.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
@@ -86,7 +87,7 @@ class CustomSearchDelegate extends SearchDelegate {
 
     scrollController.addListener(getPages);
 
-    List<RelatedProductsModel> products = [];
+    List<Products> products = [];
     if (query.trim().length > 2) {
       exploreCubit.search(query, page);
       exploreCubit.insertSearchDbData(query.trim());
@@ -165,7 +166,7 @@ class CustomSearchDelegate extends SearchDelegate {
       query = historyValue!;
     }
 
-    List<RelatedProductsModel> products = [];
+    List<Products> products = [];
     if (query.trim().length > 2) {
       exploreCubit.search(query, 0);
     }

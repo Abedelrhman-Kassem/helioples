@@ -10,7 +10,7 @@ import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.d
 
 class CustomAppbar extends StatefulWidget {
   final String categoryName;
-  final List<SubCategories> subCategories;
+  final List<SubCatByCatidData> subCategories;
   final List<GlobalKey> listKeys;
   final double sectionBtnWidth;
   final ScrollController listViewScrollController;
@@ -126,8 +126,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                           children: [
                             Helper.loadNetworkImage(
                               assetsErrorPath: 'assets/Icons_logos/Donuts.png',
-                              url:
-                                  widget.subCategories[index].bannerImage ?? '',
+                              url: widget.subCategories[index].iconImage ?? '',
                               width: 30.w,
                             ),
                             const SizedBox(width: 10),

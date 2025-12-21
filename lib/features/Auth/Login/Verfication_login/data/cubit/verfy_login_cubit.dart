@@ -12,31 +12,31 @@ class VerfyLoginCubit extends Cubit<VerfyLoginStates> {
   final VerifyAndRegisterRepoImp verifyLoginRepo;
 
   VerfyLoginCubit({required this.verifyLoginRepo, required this.loginModel})
-      : super(VerfyLoginInitial());
+      : super(const VerfyLoginStates.initial());
   bool clearText = false;
 
   // static SignInCubit get(context) => BlocProvider.of(context);
 
   Future<void> verifyOtpAndLogin(String smsCode) async {
-    emit(VerfyLoginLoading());
+    emit(const VerfyLoginStates.loading());
 
     final result =
         await verifyLoginRepo.verifayCode(loginModel!.verificationId!, smsCode);
     result.fold(
-      (failure) => emit(VerfyLoginFailure(failure)),
+      (failure) => emit(VerfyLoginStates.failure(failure)),
       (status) async {
         ServicesHelper.saveLocal('token', loginModel!.data!);
         final addressesCtrl = Get.find<AddressesControllerImpl>();
         final authC = Get.find<AuthController>();
         await addressesCtrl.fetchAddresses();
         authC.login();
-        emit(VerfyLoginSuccess(status));
+        emit(VerfyLoginStates.success(status));
       },
     );
   }
 
   void changeClearText() {
     clearText = !clearText;
-    emit(ClearText());
+    emit(const VerfyLoginStates.clearText());
   }
 }

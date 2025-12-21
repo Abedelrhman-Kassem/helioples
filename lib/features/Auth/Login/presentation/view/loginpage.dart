@@ -2,6 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/route_manager.dart';
+
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
@@ -10,6 +13,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/loading_button.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/data/repo/log_in_repo_imp.dart';
+import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/models/login_model.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/nh_logo.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -18,7 +22,6 @@ import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/sig
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/phone_number_row.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_app_bar.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -35,28 +38,28 @@ class _LoginScreenState extends State<LoginScreen> {
   //   log("token : $myToken");
   // }
 
-  myRequestPermission() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
+  // myRequestPermission() async {
+  //   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: true,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
+  //   NotificationSettings settings = await messaging.requestPermission(
+  //     alert: true,
+  //     announcement: false,
+  //     badge: true,
+  //     carPlay: true,
+  //     criticalAlert: false,
+  //     provisional: false,
+  //     sound: true,
+  //   );
 
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted permission');
-    } else if (settings.authorizationStatus ==
-        AuthorizationStatus.provisional) {
-      print('User granted provisional permission');
-    } else {
-      print('User declined or has not accepted permission');
-    }
-  }
+  //   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+  //     print('User granted permission');
+  //   } else if (settings.authorizationStatus ==
+  //       AuthorizationStatus.provisional) {
+  //     print('User granted provisional permission');
+  //   } else {
+  //     print('User declined or has not accepted permission');
+  //   }
+  // }
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController phoneNumberController =
@@ -64,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    myRequestPermission();
+    // myRequestPermission();
     // getToken();
     super.initState();
   }
@@ -130,48 +133,49 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 14.h,
                   ),
                   BlocProvider(
-                    create: (context) =>
-                        SignInCubit((LogInRepoImp(apiService: ApiService()))),
-                    child: BlocConsumer<SignInCubit, SignInState>(
+                    create: (context) => SignInCubit(
+                        (LogInRepoImp(apiService: Get.find<ApiService>()))),
+                    child: BlocConsumer<SignInCubit, SignInStates>(
                         builder: (context, state) {
                       var cubit = BlocProvider.of<SignInCubit>(context);
-                      if (state is SignInLoading) {
-                        return const LoadingButton(
-                          height: 60,
-                          radius: 10,
-                        );
-                      } else {
-                        return Center(
+
+                      return state.maybeWhen(
+                        orElse: () => Center(
                           child: SignUpCustomButton(
                             buttonText: LocaleKeys.login_screen_continue.tr(),
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
-                                print(
-                                    "phoneNumberController.text : ${phoneNumberController.text}");
                                 cubit.signIn(
                                   phoneNumberController.text,
                                 );
                               }
                             },
                           ),
-                        );
-                      }
+                        ),
+                        loading: () => const LoadingButton(
+                          height: 60,
+                          radius: 10,
+                        ),
+                      );
                     }, listener: (context, state) {
-                      if (state is SignInFailure) {
-                        showCustomGetSnack(
-                            isGreen: false, text: state.errorMessage);
-                      } else if (state is SignInSuccess) {
-                        // final cubit = context.read<SignInCubit>();
-                        showCustomGetSnack(
-                            isGreen: true, text: state.result.message);
+                      state.maybeWhen(
+                        orElse: () {},
+                        success: (LoginModel result) {
+                          showCustomGetSnack(
+                              isGreen: true, text: result.message);
 
-                        Navigator.of(context).pushNamed(
-                          verficationLoginScreen,
-                          arguments: {
-                            'loginModel': state.result,
-                          },
-                        );
-                      }
+                          Navigator.of(context).pushNamed(
+                            verficationLoginScreen,
+                            arguments: {
+                              'loginModel': result,
+                            },
+                          );
+                        },
+                        failure: (String errorMessage) {
+                          showCustomGetSnack(
+                              isGreen: false, text: errorMessage);
+                        },
+                      );
                     }),
                   ),
                   SizedBox(

@@ -1,39 +1,15 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/models/login_model.dart';
 
-sealed class SignInState extends Equatable {
-  const SignInState();
+part 'sign_in_states.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-final class SignInInitial extends SignInState {}
-
-final class SignInLoading extends SignInState {}
-
-final class SignInOtpLoading extends SignInState {}
-
-final class SignInOtpFailure extends SignInState {
-  final String errorMessage;
-
-  const SignInOtpFailure(this.errorMessage);
-}
-
-final class SignInOtpSuccess extends SignInState {
-  final bool result;
-
-  const SignInOtpSuccess(this.result);
-}
-
-final class SignInSuccess extends SignInState {
-  final LoginModel result;
-
-  const SignInSuccess(this.result);
-}
-
-final class SignInFailure extends SignInState {
-  final String errorMessage;
-
-  const SignInFailure(this.errorMessage);
+@freezed
+class SignInStates with _$SignInStates {
+  const factory SignInStates.initial() = SignInInitial;
+  const factory SignInStates.loading() = SignInLoading;
+  const factory SignInStates.otpLoading() = SignInOtpLoading;
+  const factory SignInStates.otpFailure(String errorMessage) = SignInOtpFailure;
+  const factory SignInStates.otpSuccess(bool result) = SignInOtpSuccess;
+  const factory SignInStates.success(LoginModel result) = SignInSuccess;
+  const factory SignInStates.failure(String errorMessage) = SignInFailure;
 }

@@ -7,7 +7,7 @@ class ProductInitial extends ProductState {}
 class GetProductLoading extends ProductState {}
 
 class GetProductSuccess extends ProductState {
-  ProductModel productModel;
+  ProductDetailsModel productModel;
   GetProductSuccess(this.productModel);
 }
 

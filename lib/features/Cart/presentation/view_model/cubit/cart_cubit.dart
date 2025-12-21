@@ -63,7 +63,7 @@ class CartCubit extends Cubit<CartState> {
     tableValues = await DBHelper.queryData(table: cartTable);
 
     for (var product in updateCartModel.products!) {
-      if (product.availabelPieces! == 0) {
+      if (product.availableQuantity! == 0) {
         await DBHelper.deleteData(
           table: cartTable,
           where: 'id = ?',
@@ -72,13 +72,13 @@ class CartCubit extends Cubit<CartState> {
       } else {
         Map<String, dynamic> values = {
           cartItemPrice: product.price!,
-          cartItemDiscount: product.currentDiscount ?? 0,
+          cartItemDiscount: product.discount ?? 0,
         };
 
         for (var item in tableValues) {
           if (item[cartItemId] == product.id &&
-              item[cartItemQty] as int > product.availabelPieces!) {
-            values[cartItemQty] = product.availabelPieces;
+              item[cartItemQty] as int > product.availableQuantity!) {
+            values[cartItemQty] = product.availableQuantity;
           }
         }
 
@@ -93,7 +93,7 @@ class CartCubit extends Cubit<CartState> {
     return DBHelper.queryData(table: cartTable);
   }
 
-  Future<void> deleteItem(int id) async {
+  Future<void> deleteItem(String id) async {
     emit(CartLoadingState());
     try {
       await DBHelper.deleteData(
@@ -118,7 +118,7 @@ class CartCubit extends Cubit<CartState> {
   int getAvailablePieces(int id) {
     for (var product in updateCartModel!.products!) {
       if (product.id == id) {
-        return product.availabelPieces!;
+        return product.availableQuantity!;
       }
     }
     throw Exception('Product with id $id not found');

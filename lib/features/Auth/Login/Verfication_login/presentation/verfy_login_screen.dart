@@ -12,7 +12,6 @@ import 'package:negmt_heliopolis/features/Auth/Login/Verfication_login/data/cubi
 import 'package:negmt_heliopolis/features/Auth/Login/Verfication_login/presentation/timer_resend_login.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_app_bar.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart';
-import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/presentation/timer_resend.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/background_image.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/nh_logo.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
@@ -128,39 +127,40 @@ class _VerificationScreenState extends State<VerfyLoginScreen> {
                     SizedBox(height: 20.h),
                     BlocConsumer<VerfyLoginCubit, VerfyLoginStates>(
                       listener: (context, state) {
-                        if (state is VerfyLoginFailure) {
-                          showCustomGetSnack(
-                              duration: const Duration(minutes: 10),
-                              isGreen: false,
-                              text: state.errorMessage);
-                        }
-
-                        if (state is VerfyLoginSuccess) {
-                          showCustomGetSnack(
-                              isGreen: true, text: "we send you a new code");
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            homeLayout,
-                            (route) => false,
-                          );
-                        }
+                        state.maybeWhen(
+                          failure: (errorMessage) {
+                            showCustomGetSnack(
+                                duration: const Duration(minutes: 10),
+                                isGreen: false,
+                                text: errorMessage);
+                          },
+                          success: (result) {
+                            showCustomGetSnack(
+                                isGreen: true, text: "we send you a new code");
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              homeLayout,
+                              (route) => false,
+                            );
+                          },
+                          orElse: () {},
+                        );
                       },
                       builder: (context, state) {
-                        if (state is VerfyLoginLoading) {
-                          return const LoadingButton(
+                        return state.maybeWhen(
+                          loading: () => const LoadingButton(
                             height: 60,
                             radius: 10,
-                          );
-                        }
-
-                        return Center(
-                          child: SignUpCustomButton(
-                            buttonText: StringTranslateExtension(
-                              LocaleKeys.verification_screen_verify_now,
-                            ).tr(),
-                            onPressed: () {
-                              // cubit.verifyOtpAndLogin(smsCode)
-                            },
+                          ),
+                          orElse: () => Center(
+                            child: SignUpCustomButton(
+                              buttonText: StringTranslateExtension(
+                                LocaleKeys.verification_screen_verify_now,
+                              ).tr(),
+                              onPressed: () {
+                                // cubit.verifyOtpAndLogin(smsCode)
+                              },
+                            ),
                           ),
                         );
                       },

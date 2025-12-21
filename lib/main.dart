@@ -15,6 +15,7 @@ import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/routing/routes.dart';
 import 'package:negmt_heliopolis/core/utlis/services/notifcation_service.dart';
+import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/themes.dart';
 import 'package:negmt_heliopolis/firebase_options.dart';
 import 'package:negmt_heliopolis/generated/codegen_loader.g.dart';
@@ -51,9 +52,10 @@ void main() async {
       statusBarBrightness: Brightness.dark,
     ),
   );
-
+  // ServicesHelper.saveLocal('token',
+  //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijc1MzM4YWY1LTAzMmUtNDc4MC05MzE3LTg3ZGEwMzI0MDlhZSIsImZpcnN0TmFtZSI6Im1vaGFtZWQiLCJsYXN0TmFtZSI6Im1vaGFtZWQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9kYXRlb2ZiaXJ0aCI6IjEyLzEwLzIwMjUgODo0MjoxNSBBTSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL21vYmlsZXBob25lIjoiMDEyMDE4NTU0ODUiLCJpbWFnZSI6IiIsImV4cCI6MTc5NzAxMDE2MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ1In0.BL7pVPpgNWo6zTfj3A1pmrYBdMwohLzPWepTRJ7gED0');
   // check if user is logged in
-  final String? token = await ApiService.getToken();
+  final String? token = await ServicesHelper.getLocal('token');
   final bool isLoggedIn = token != null;
   bool serverError = false;
   final appRouter = AppRouter(

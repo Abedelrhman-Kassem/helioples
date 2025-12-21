@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
-import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
+import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
 
 class AuthController extends GetxController {
   final RxBool isLogged = false.obs;
 
   Future<void> checkAuth() async {
     try {
-      final String? token = await ApiService.getToken();
+      final String? token = await ServicesHelper.getLocal('token');
       isLogged.value = token != null;
     } catch (e) {
       isLogged.value = false;

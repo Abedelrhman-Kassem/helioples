@@ -121,7 +121,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                     showFieldAsBox: true,
                                     onCodeChanged: (String code) {},
                                     onSubmit: (String verificationCode) {
-                                      cubit.register();
+                                      cubit.verifyOtpAndRegister(
+                                          verificationCode);
                                     },
                                   );
                                 },
@@ -134,54 +135,59 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     SizedBox(height: 20.h),
                     BlocConsumer<VerfyAndRegisterCubit, VerfAndRegisterStates>(
                       listener: (context, state) {
-                        if (state is VerfOtpFailure) {
-                          showCustomGetSnack(
-                              duration: const Duration(minutes: 10),
-                              isGreen: false,
-                              text: state.errorMessage);
-                        }
-                        if (state is RegisterFailure) {
-                          log("RegisterFailure  ${state.errorMessage}");
-                          showCustomGetSnack(
-                              isSnackOpen: false,
-                              duration: const Duration(minutes: 10),
-                              isGreen: false,
-                              text: state.errorMessage);
-                        }
-                        if (state is VerfOtpSuccess) {
-                          showCustomGetSnack(
-                              isGreen: true,
-                              text: "success verification creating account");
-                        }
-                        if (state is RegisterSuccess) {
-                          showCustomGetSnack(
-                              isSnackOpen: false,
-                              isGreen: true,
-                              text: " success creating account");
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            homeLayout,
-                            (route) => false,
-                          );
-                        }
+                        state.maybeWhen(
+                          verfOtpFailure: (failure) {
+                            showCustomGetSnack(
+                                duration: const Duration(minutes: 10),
+                                isGreen: false,
+                                text: failure.errorMessage);
+                          },
+                          registerFailure: (errorMessage) {
+                            log("RegisterFailure  $errorMessage");
+                            showCustomGetSnack(
+                                isSnackOpen: false,
+                                duration: const Duration(minutes: 10),
+                                isGreen: false,
+                                text: errorMessage);
+                          },
+                          verfOtpSuccess: (result) {
+                            showCustomGetSnack(
+                                isGreen: true,
+                                text: "success verification creating account");
+                          },
+                          registerSuccess: (result) {
+                            showCustomGetSnack(
+                                isSnackOpen: false,
+                                isGreen: true,
+                                text: " success creating account");
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              homeLayout,
+                              (route) => false,
+                            );
+                          },
+                          orElse: () {},
+                        );
                       },
                       builder: (context, state) {
-                        if (state is VerfOtpLoading ||
-                            state is RegisterLoading) {
-                          return const LoadingButton(
+                        return state.maybeWhen(
+                          verfOtpLoading: () => const LoadingButton(
                             height: 60,
                             radius: 10,
-                          );
-                        }
-
-                        return Center(
-                          child: SignUpCustomButton(
-                            buttonText: StringTranslateExtension(
-                              LocaleKeys.verification_screen_verify_now,
-                            ).tr(),
-                            onPressed: () {
-                              cubit.register();
-                            },
+                          ),
+                          registerLoading: () => const LoadingButton(
+                            height: 60,
+                            radius: 10,
+                          ),
+                          orElse: () => Center(
+                            child: SignUpCustomButton(
+                              buttonText: StringTranslateExtension(
+                                LocaleKeys.verification_screen_verify_now,
+                              ).tr(),
+                              onPressed: () {
+                                cubit.register();
+                              },
+                            ),
                           ),
                         );
                       },

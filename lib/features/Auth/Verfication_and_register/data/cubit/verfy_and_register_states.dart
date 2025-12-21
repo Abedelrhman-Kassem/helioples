@@ -1,41 +1,21 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_response.dart';
 
-sealed class VerfAndRegisterStates extends Equatable {
-  const VerfAndRegisterStates();
+part 'verfy_and_register_states.freezed.dart';
 
-  @override
-  List<Object> get props => [];
+@freezed
+class VerfAndRegisterStates with _$VerfAndRegisterStates {
+  const factory VerfAndRegisterStates.initial() = VerfAndRegisterInitial;
+  const factory VerfAndRegisterStates.verfOtpLoading() = VerfOtpLoading;
+  const factory VerfAndRegisterStates.registerLoading() = RegisterLoading;
+  const factory VerfAndRegisterStates.verfOtpFailure(Failure errorMessage) =
+      VerfOtpFailure;
+  const factory VerfAndRegisterStates.registerFailure(String errorMessage) =
+      RegisterFailure;
+  const factory VerfAndRegisterStates.verfOtpSuccess(bool result) =
+      VerfOtpSuccess;
+  const factory VerfAndRegisterStates.registerSuccess(ApiResponse result) =
+      RegisterSuccess;
+  const factory VerfAndRegisterStates.clearText() = ClearText;
 }
-
-final class VerfAndRegisterInitial extends VerfAndRegisterStates {}
-
-final class VerfOtpLoading extends VerfAndRegisterStates {}
-
-final class RegisterLoading extends VerfAndRegisterStates {}
-
-final class VerfOtpFailure extends VerfAndRegisterStates {
-  final String errorMessage;
-
-  const VerfOtpFailure(this.errorMessage);
-}
-
-final class RegisterFailure extends VerfAndRegisterStates {
-  final String errorMessage;
-
-  const RegisterFailure(this.errorMessage);
-}
-
-final class VerfOtpSuccess extends VerfAndRegisterStates {
-  final bool result;
-
-  const VerfOtpSuccess(this.result);
-}
-
-final class RegisterSuccess extends VerfAndRegisterStates {
-  final ApiResponse result;
-
-  const RegisterSuccess(this.result);
-}
-
-final class ClearText extends VerfAndRegisterStates {}

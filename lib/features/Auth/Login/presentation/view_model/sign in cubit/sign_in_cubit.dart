@@ -5,21 +5,21 @@ import 'package:negmt_heliopolis/features/Auth/Login/data/repo/log_in_repo_imp.d
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/models/login_model.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/sign%20in%20cubit/sign_in_states.dart';
 
-class SignInCubit extends Cubit<SignInState> {
+class SignInCubit extends Cubit<SignInStates> {
   final LogInRepoImp signInRepo;
-  SignInCubit(this.signInRepo) : super(SignInInitial());
+  SignInCubit(this.signInRepo) : super(const SignInStates.initial());
   // LoginModel? loginModel;
 
   // static SignInCubit get(context) => BlocProvider.of(context);
 
   Future<void> signIn(String phone) async {
-    emit(SignInLoading());
+    emit(const SignInStates.loading());
     Either<Failure, LoginModel> result = await signInRepo.signIn(phone);
-    result.fold((failure) => emit(SignInFailure(failure.errorMessage)),
+    result.fold((failure) => emit(SignInStates.failure(failure.errorMessage)),
         (status) {
       // loginModel = status;
 
-      emit(SignInSuccess(status));
+      emit(SignInStates.success(status));
     });
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/db_change_notifier.dart';
@@ -18,13 +20,13 @@ class DBHelper {
         try {
           await db.execute('''
               CREATE TABLE $cartTable (
-              $cartItemId INTEGER PRIMARY KEY,
+              $cartItemId VARCHAR(255) PRIMARY KEY,
               $cartItemEnName TEXT NOT NULL,
               $cartItemEnDesc TEXT NOT NULL,
-              $cartItemName TEXT NOT NULL,
-              $cartItemDesc TEXT NOT NULL,
-              $cartItemQty INTEGER NOT NULL,
-              $cartItemImageUrl TEXT NOT NULL,
+              $cartItemName VARCHAR(255) NOT NULL,
+              $cartItemDesc VARCHAR(255) NOT NULL,
+              $cartItemQty REAL NOT NULL,
+              $cartItemImageUrl VARCHAR(255) NOT NULL,
               $cartItemPrice REAL NOT NULL,
               $cartItemDiscount REAL NOT NULL
               )
@@ -70,6 +72,7 @@ class DBHelper {
 
       return row;
     } catch (e) {
+      log(e.toString());
       throw '${values[cartItemName]} is not inserted succefully';
     }
   }

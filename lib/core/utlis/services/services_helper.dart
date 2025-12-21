@@ -1,9 +1,9 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ServicesHelper {
-  static void saveLocal(String key, String value) {
+  static void saveLocal(String key, String value) async {
     const storage = FlutterSecureStorage();
-    storage.write(key: key, value: value);
+    await storage.write(key: key, value: value);
   }
 
   static Future<String?> getLocal(String key) async {
@@ -12,8 +12,8 @@ class ServicesHelper {
     return token;
   }
 
-  static void removeLocalToken(String key) {
+  static void removeLocal(String key) async {
     const storage = FlutterSecureStorage();
-    storage.delete(key: key);
+    await storage.delete(key: key);
   }
 }

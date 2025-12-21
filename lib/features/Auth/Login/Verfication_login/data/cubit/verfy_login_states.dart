@@ -1,26 +1,13 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-sealed class VerfyLoginStates extends Equatable {
-  const VerfyLoginStates();
+part 'verfy_login_states.freezed.dart';
 
-  @override
-  List<Object> get props => [];
+@freezed
+class VerfyLoginStates with _$VerfyLoginStates {
+  const factory VerfyLoginStates.initial() = VerfyLoginInitial;
+  const factory VerfyLoginStates.loading() = VerfyLoginLoading;
+  const factory VerfyLoginStates.failure(String errorMessage) =
+      VerfyLoginFailure;
+  const factory VerfyLoginStates.success(bool result) = VerfyLoginSuccess;
+  const factory VerfyLoginStates.clearText() = ClearText;
 }
-
-final class VerfyLoginInitial extends VerfyLoginStates {}
-
-final class VerfyLoginLoading extends VerfyLoginStates {}
-
-final class VerfyLoginFailure extends VerfyLoginStates {
-  final String errorMessage;
-
-  const VerfyLoginFailure(this.errorMessage);
-}
-
-final class VerfyLoginSuccess extends VerfyLoginStates {
-  final bool result;
-
-  const VerfyLoginSuccess(this.result);
-}
-
-final class ClearText extends VerfyLoginStates {}

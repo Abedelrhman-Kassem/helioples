@@ -20,8 +20,6 @@ class ProfileRepoImp extends ProfileRepo {
   @override
   Future<Either<Failure, List<Faqs>>> getFaqs() async {
     try {
-      await api.setAuthorizationHeader();
-
       var response = await api.get(endpoint: "api/faqs?isArabic=false");
       print(response['faqs']);
 
@@ -66,7 +64,6 @@ class ProfileRepoImp extends ProfileRepo {
   @override
   Future<Either<Failure, List<Alerts>>> getAlerts() async {
     try {
-      await api.setAuthorizationHeader();
       var response =
           await api.get(endpoint: "api/protected/user/notifications/get");
 

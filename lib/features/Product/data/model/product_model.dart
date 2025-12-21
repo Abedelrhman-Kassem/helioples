@@ -1,150 +1,109 @@
-class ProductModel {
-  Category? category;
-  Product? product;
-  List<RelatedProductsModel>? related;
-
-  ProductModel.fromJson(Map<String, dynamic> json) {
-    category =
-        json['category'] != null ? Category.fromJson(json['category']) : null;
-    product =
-        json['product'] != null ? Product.fromJson(json['product']) : null;
-    if (json['related'] != null) {
-      related = [];
-      json['related'].forEach((v) {
-        related!.add(RelatedProductsModel.fromJson(v));
-      });
-    }
-  }
-}
-
-class Category {
-  int? id;
-  String? name;
-
-  Category.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-}
-
-class Product {
-  int? id;
-  String? name;
-  String? enDesc;
-  String? enName;
-  String? thumbnailImage;
-  String? description;
-  String? searchDescription;
-  int? availabelPieces;
-  double? price;
-  double? afterDiscount;
-  UnitOfMeasure? unitOfMeasure;
-  String? state;
-  String? createdAt;
-  double? discount;
-  bool? isLiked;
-
-  Product.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    enDesc = json['enDescription'];
-    enName = json['enName'];
-    thumbnailImage = json['thumbnailImage'];
-    description = json['description'];
-    searchDescription = json['searchDescription'];
-    availabelPieces = json['availabelPieces'];
-    price = json['price'] * 1.0;
-    afterDiscount = json['afterDiscount'];
-    unitOfMeasure = json['unitOfMeasure'] != null
-        ? UnitOfMeasure.fromJson(json['unitOfMeasure'])
-        : null;
-    state = json['state'];
-    createdAt = json['createdAt'];
-    discount = json['discount'];
-    isLiked = json['isLiked'];
-  }
-}
-
-class UnitOfMeasure {
-  int? id;
-  String? name;
-
-  UnitOfMeasure.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-}
-
-class RelatedProductsModel {
-  int? id;
-  String? barCodeId;
-  String? name;
-  String? enName;
-  String? thumbnailImage;
-  String? enDescription;
-  String? description;
-  String? searchDescription;
-  int? availabelPieces;
-  int? totalOrders;
-  double? price;
-  String? state;
-  int? views;
-  bool? active;
-  int? discountId;
-  String? createdAt;
-  String? updatedAt;
-  int? unitOfMeasureId;
-  double? currentDiscount;
-  double? afterDiscount;
-  bool? isLiked;
-
-  RelatedProductsModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    barCodeId = json['barCodeId'];
-    name = json['name'];
-    enName = json['enName'];
-    thumbnailImage = json['thumbnailImage'];
-    enDescription = json['enDescription'];
-    description = json['description'];
-    searchDescription = json['searchDescription'];
-    availabelPieces = json['availabelPieces'];
-    totalOrders = json['totalOrders'];
-    price = json['price'] * 1.0;
-    state = json['state'];
-    views = json['views'];
-    active = json['active'];
-    discountId = json['discountId'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    unitOfMeasureId = json['unitOfMeasureId'];
-    currentDiscount = (json['current_discount'] ?? 0) * 1.0;
-    afterDiscount = (json['afterDiscount'] ?? price) * 1.0;
-    isLiked = json['isLiked'];
-  }
-}
-
-class ItemUiModel {
-  int id;
-  String name;
-  String enName;
-  String enDesc;
-  String description;
-  String thumbnailImage;
-  double price;
-  double discount;
-  int availablePieces;
-  int quantity;
-
-  ItemUiModel({
-    required this.id,
-    required this.name,
-    required this.enName,
-    required this.enDesc,
-    required this.description,
-    required this.thumbnailImage,
-    required this.price,
-    required this.discount,
-    required this.availablePieces,
-    this.quantity = 0,
+class ProductDetailsModel {
+  ProductDetailsModel({
+    required this.success,
+    required this.message,
+    required this.data,
+    required this.errors,
   });
+
+  final bool? success;
+  final String? message;
+  final Products? data;
+  final dynamic errors;
+
+  factory ProductDetailsModel.fromJson(Map<String, dynamic> json) {
+    return ProductDetailsModel(
+      success: json["success"],
+      message: json["message"],
+      data: json["data"] == null ? null : Products.fromJson(json["data"]),
+      errors: json["errors"],
+    );
+  }
+}
+
+class RelatedProducts {
+  RelatedProducts({
+    required this.page,
+    required this.pageSize,
+    required this.totalCount,
+    required this.totalPages,
+    required this.items,
+  });
+
+  final int? page;
+  final int? pageSize;
+  final int? totalCount;
+  final int? totalPages;
+  final List<Products> items;
+
+  factory RelatedProducts.fromJson(Map<String, dynamic> json) {
+    return RelatedProducts(
+      page: json["page"],
+      pageSize: json["pageSize"],
+      totalCount: json["totalCount"],
+      totalPages: json["totalPages"],
+      items: json["items"] == null
+          ? []
+          : List<Products>.from(
+              json["items"]!.map((x) => Products.fromJson(x))),
+    );
+  }
+}
+
+class Products {
+  Products({
+    required this.id,
+    this.name,
+    this.enName,
+    this.description,
+    this.enDescription,
+    this.thumbnailImage,
+    this.unitOfMeasure,
+    this.price,
+    this.afterDiscount,
+    this.availableQuantity,
+    this.state,
+    this.discount,
+    this.isLiked,
+    required this.quantity,
+    this.relatedProducts,
+  });
+
+  final String? id;
+  final String? name;
+  final String? enName;
+  final String? description;
+  final String? enDescription;
+  final String? thumbnailImage;
+  final String? unitOfMeasure;
+  final double? price;
+  final double? afterDiscount;
+  final int? availableQuantity;
+  final String? state;
+  final double? discount;
+  final bool? isLiked;
+  int quantity;
+  final RelatedProducts? relatedProducts;
+
+  factory Products.fromJson(Map<String, dynamic> json) {
+    return Products(
+      id: json["id"],
+      name: json["name"],
+      enName: json["enName"],
+      description: json["description"],
+      enDescription: json["enDescription"],
+      thumbnailImage: json["thumbnailImage"],
+      unitOfMeasure: json["unitOfMeasure"],
+      price: json["price"]?.toDouble(),
+      afterDiscount: json["afterDiscount"]?.toDouble(),
+      availableQuantity: json["availableQuantity"],
+      state: json["state"].toString(),
+      discount: json["discount"]?.toDouble(),
+      isLiked: json["isLiked"],
+      quantity: json["quantity"] ?? 0,
+      relatedProducts: json["relatedProducts"] == null
+          ? null
+          : RelatedProducts.fromJson(json["relatedProducts"]),
+    );
+  }
 }

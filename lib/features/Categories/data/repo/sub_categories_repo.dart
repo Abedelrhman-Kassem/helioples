@@ -4,15 +4,14 @@ import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.d
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 abstract class SubCategoriesRepo {
-  Future<Either<Failure, List<SubCategories>>> getSubCategories(int id);
+  Future<Either<Failure, List<SubCatByCatidData>>> getSubCategories(String id);
 
-  Future<Either<Failure, List<RelatedProductsModel>>> getProductsInSubCategory(
-    int subCategoryId,
+  Future<Either<Failure, List<Products>>> getProductsInSubCategory(
+    String subCategoryId,
     int page,
   );
 
-  Future<Either<Failure, List<RelatedProductsModel>>>
-      getAllProductsOfSubCategory(
+  Future<Either<Failure, List<Products>>> getAllProductsOfSubCategory(
     int subCategoryId,
   );
 }

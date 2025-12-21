@@ -9,7 +9,7 @@ import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart'
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductWidget extends StatefulWidget {
-  final Product product;
+  final Products product;
   const ProductWidget({super.key, required this.product});
 
   @override
@@ -38,12 +38,9 @@ class _ProductWidgetState extends State<ProductWidget> {
             children: [
               Align(
                 alignment: Alignment.center,
-                child: PageView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 1,
-                  controller: _pageController,
-                  itemBuilder: (context, index) => Helper.loadNetworkImage(
+                child: Hero(
+                  tag: widget.product.id!,
+                  child: Helper.loadNetworkImage(
                     url: widget.product.thumbnailImage ?? '',
                     assetsErrorPath:
                         'assets/ayman/—Pngtree—3d beauty cosmetics product design_6380191 (2).png',
@@ -52,6 +49,22 @@ class _ProductWidgetState extends State<ProductWidget> {
                   ),
                 ),
               ),
+              // Align(
+              //   alignment: Alignment.center,
+              //   child: PageView.builder(
+              //     physics: const BouncingScrollPhysics(),
+              //     scrollDirection: Axis.horizontal,
+              //     itemCount: 1,
+              //     controller: _pageController,
+              //     itemBuilder: (context, index) => Helper.loadNetworkImage(
+              //       url: widget.product.thumbnailImage ?? '',
+              //       assetsErrorPath:
+              //           'assets/ayman/—Pngtree—3d beauty cosmetics product design_6380191 (2).png',
+              //       // assetsErrorPath: 'assets/test_images/white-toast.png',
+              //       fit: BoxFit.contain,
+              //     ),
+              //   ),
+              // ),
               Text(
                 widget.product.state!,
                 style: Styles.styles14w400Gold,
@@ -61,7 +74,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                 end: 0,
                 top: 0,
                 child: HeartWidget(
-                  isFavorite: widget.product.isLiked!,
+                  isFavorite: widget.product.isLiked ?? false,
                   width: 30.w,
                   height: 28.h,
                   productId: widget.product.id!,
@@ -102,21 +115,22 @@ class _ProductWidgetState extends State<ProductWidget> {
                 maxWidth: MediaQuery.of(context).size.width - 170.w,
               ),
               child: Text(
-                widget.product.enDesc!,
+                widget.product.description ?? '',
                 style: Styles.styles18w500BlackWhite,
               ),
             ),
             ItemCounterWidget(
-              itemUiModel: ItemUiModel(
+              itemUiModel: Products(
                 id: widget.product.id!,
                 name: widget.product.name!,
                 description: widget.product.description ?? 'description',
                 enName: widget.product.enName ?? 'enName',
-                enDesc: widget.product.enDesc ?? 'enDesc',
+                enDescription: widget.product.enDescription ?? 'enDesc',
                 thumbnailImage: widget.product.thumbnailImage ?? '',
                 price: widget.product.price!,
-                availablePieces: widget.product.availabelPieces!,
+                availableQuantity: widget.product.availableQuantity!,
                 discount: widget.product.discount ?? 0,
+                quantity: widget.product.quantity,
               ),
             )
           ],
@@ -130,7 +144,7 @@ class _ProductWidgetState extends State<ProductWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${widget.product.availabelPieces!} Pcs',
+                  '${widget.product.availableQuantity!} Pcs',
                   style: Styles.styles14w400NormalBlack,
                 ),
                 Text(

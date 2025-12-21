@@ -7,11 +7,11 @@ class LikedNotifier with ChangeNotifier {
 
   factory LikedNotifier() => _instance;
 
-  int _productId = 0;
+  String _productId = '';
 
-  int get productId => _productId;
+  String get productId => _productId;
 
-  set productValue(int newValue) {
+  set productValue(String newValue) {
     _productId = newValue;
   }
 

@@ -15,8 +15,8 @@ import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart'
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class CartItemWidget extends StatefulWidget {
-  final ItemUiModel itemUiModel;
-  final Future<void> Function(int) onDelete;
+  final Products itemUiModel;
+  final Future<void> Function(String) onDelete;
 
   const CartItemWidget({
     super.key,
@@ -80,7 +80,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
               ),
               child: Center(
                 child: Helper.loadNetworkImage(
-                  url: product.thumbnailImage,
+                  url: product.thumbnailImage!,
                   assetsErrorPath: 'assets/test_images/water-bottle.png',
                   fit: BoxFit.contain,
                   width: double.infinity,
@@ -94,13 +94,13 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.name,
+                    product.name!,
                     style: Styles.styles15w500Black,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    '${product.availablePieces} ${LocaleKeys.cart_screen_cart_item_pcs.tr()} (${product.price} ${LocaleKeys.cart_screen_cart_item_egp.tr()})',
+                    '${product.availableQuantity} ${LocaleKeys.cart_screen_cart_item_pcs.tr()} (${product.price} ${LocaleKeys.cart_screen_cart_item_egp.tr()})',
                     style: Styles.styles10w400interFamily,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -117,10 +117,10 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                             await updateQty();
                             setState(() {});
                           } else {
-                            await widget.onDelete(product.id);
+                            await widget.onDelete(product.id!);
                           }
                         },
-                        isBiggerThanOne: product.quantity > 1,
+                        isBiggerThanOne: product.quantity! > 1,
                         minusSvgPath: 'assets/svg_icons/empty-minus.svg',
                       ),
                       SizedBox(width: 10.w),
@@ -132,8 +132,8 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                       cartItemIconWidget(
                         svgPath: 'assets/svg_icons/empty-plus.svg',
                         onTap: () {
-                          if (product.quantity < product.availablePieces) {
-                            product.quantity++;
+                          if (product.quantity! < product.availableQuantity!) {
+                            product.quantity--;
                             updateQty();
                             setState(() {});
                           } else {
@@ -142,7 +142,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                               text: LocaleKeys
                                   .cart_screen_cart_item_cant_add_more
                                   .tr(namedArgs: {
-                                'pieces': product.availablePieces.toString()
+                                'pieces': product.availableQuantity.toString()
                               }),
                               duration: const Duration(seconds: 10),
                               isGreen: false,
@@ -164,7 +164,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 children: [
                   InkWell(
                     onTap: () async {
-                      await widget.onDelete(product.id);
+                      await widget.onDelete(product.id!);
                     },
                     child: svgIcon(
                       path: 'assets/svg_icons/trash.svg',
@@ -175,12 +175,12 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   ),
                   RichText(
                     text: TextSpan(
-                      text: '${(product.price * product.quantity).toInt()}.',
+                      text: '${(product.price! * product.quantity).toInt()}.',
                       style: Styles.styles26w600NormalBlack,
                       children: [
                         TextSpan(
                           text:
-                              '${(((product.price * product.quantity) - (product.price * product.quantity).toInt()) * 100).round()}',
+                              '${(((product.price! * product.quantity) - (product.price! * product.quantity).toInt()) * 100).round()}',
                           style: Styles.styles14w300NormalBlack,
                         ),
                       ],

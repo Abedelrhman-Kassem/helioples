@@ -23,7 +23,7 @@ class _HomeLayoutState extends State<HomeLayout> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeLayoutCubit()
-        ..getAllCategories(homeScreen: true, page: 0)
+        ..getAllCategories(homeScreen: true, page: 1, pageSize: 20)
         ..getConfigs()
         ..getSpecialOffers(homeScreen: true, page: 0),
       child: BlocConsumer<HomeLayoutCubit, HomeLayoutState>(
@@ -41,23 +41,33 @@ class _HomeLayoutState extends State<HomeLayout> {
               homeLayoutCubit.returnIndex(context);
             },
             child: Scaffold(
-              body: PageTransitionSwitcher(
-                duration: const Duration(milliseconds: 300),
-                reverse: homeLayoutCubit.selectedIndex <
-                    homeLayoutCubit.previousIndex,
-                transitionBuilder:
-                    (child, primaryAnimation, secondaryAnimation) {
-                  Tween<Offset> myTween = Tween<Offset>(
-                    begin: const Offset(1, 0),
-                    end: const Offset(0, 0),
-                  );
-
-                  return SlideTransition(
-                    position: myTween.animate(primaryAnimation),
-                    child: child,
-                  );
+              body: RefreshIndicator(
+                color: MyColors.mainColor,
+                backgroundColor: Colors.transparent,
+                onRefresh: () async {
+                  homeLayoutCubit.getAllCategories(
+                      homeScreen: true, page: 1, pageSize: 20);
+                  homeLayoutCubit.getConfigs();
+                  homeLayoutCubit.getSpecialOffers(homeScreen: true, page: 0);
                 },
-                child: homeLayoutCubit.screens[homeLayoutCubit.selectedIndex],
+                child: PageTransitionSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  reverse: homeLayoutCubit.selectedIndex <
+                      homeLayoutCubit.previousIndex,
+                  transitionBuilder:
+                      (child, primaryAnimation, secondaryAnimation) {
+                    Tween<Offset> myTween = Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: const Offset(0, 0),
+                    );
+
+                    return SlideTransition(
+                      position: myTween.animate(primaryAnimation),
+                      child: child,
+                    );
+                  },
+                  child: homeLayoutCubit.screens[homeLayoutCubit.selectedIndex],
+                ),
               ),
               bottomNavigationBar: Offstage(
                 offstage: homeLayoutCubit.selectedIndex == 3,

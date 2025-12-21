@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/AllSpecialOffers/presentation/view/all_special_offers_screen.dart';
@@ -21,6 +22,7 @@ import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/cub
 import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/repo/verify_and_register_repo_imp.dart';
 import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/presentation/verfy_and_register_screen.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/cart_screen.dart';
+import 'package:negmt_heliopolis/features/Categories/data/repo/sub_categories_repo_imp.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view%20model/cubit/sub_categories_cubit.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view/sub_categories_screen.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
@@ -171,8 +173,9 @@ class AppRouter {
         final category = args['category'] as CategoryModel;
 
         page = BlocProvider(
-          create: (context) =>
-              SubCategoriesCubit()..fetchSubCategories(category.id),
+          create: (context) => SubCategoriesCubit(
+              repo: SubCategoriesRepoImp(api: Get.find<ApiService>()))
+            ..fetchSubCategories(category.id!),
           child: SubCategoriesScreen(
             category: args['category'],
           ),
@@ -184,6 +187,7 @@ class AppRouter {
         final args = settings.arguments as Map<String, dynamic>;
         page = ProductScreen(
           productId: args['productId'],
+          product: args['product'],
         );
         fromRight = false;
         break;

@@ -11,7 +11,7 @@ import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 class ItemCounterWidget extends StatefulWidget {
-  final ItemUiModel itemUiModel;
+  final Products itemUiModel;
 
   const ItemCounterWidget({
     super.key,
@@ -98,7 +98,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
         cartItemId: widget.itemUiModel.id,
         cartItemName: widget.itemUiModel.name,
         cartItemEnName: widget.itemUiModel.enName,
-        cartItemEnDesc: widget.itemUiModel.enDesc,
+        cartItemEnDesc: widget.itemUiModel.description,
         cartItemDesc: widget.itemUiModel.description,
         cartItemQty: newCounter,
         cartItemImageUrl: widget.itemUiModel.thumbnailImage,
@@ -170,7 +170,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
           ],
           InkWell(
             onTap: () async {
-              if (counter < widget.itemUiModel.availablePieces) {
+              if (counter < widget.itemUiModel.availableQuantity!) {
                 setState(() => counter++);
                 await _updateCounterInDB(counter);
               } else {
@@ -178,7 +178,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
                   context: context,
                   duration: const Duration(seconds: 10),
                   text:
-                      "You can't increase above ${widget.itemUiModel.availablePieces}",
+                      "You can't increase above ${widget.itemUiModel.availableQuantity}",
                   isGreen: false,
                 );
               }

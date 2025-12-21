@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/cart_screen.dart';
@@ -17,14 +18,14 @@ part 'home_layout_state.dart';
 
 class HomeLayoutCubit extends Cubit<HomeLayoutState> {
   HomeLayoutCubit() : super(HomeLayoutInitial()) {
-    _init();
+    // _init();
   }
 
   String? token;
 
-  Future<void> _init() async {
-    token = await ApiService.getToken();
-  }
+  // Future<void> _init() async {
+  //   token = await ApiService.getToken();
+  // }
 
   int selectedIndex = 0;
   int previousIndex = 0;
@@ -80,12 +81,13 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
   }
 
   HomeScreenRepoImp homeScreenImp = HomeScreenRepoImp(
-    apiService: ApiService(),
+    apiService: Get.find<ApiService>(),
   );
 
   Future<void> getAllCategories({
     required bool homeScreen,
     required int page,
+    required int pageSize,
   }) async {
     emit(FetchCategoriesLoading());
 
@@ -93,6 +95,7 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
         await homeScreenImp.getAllCategories(
       homeScreen: homeScreen,
       page: page,
+      pageSize: pageSize,
     );
 
     res.fold(

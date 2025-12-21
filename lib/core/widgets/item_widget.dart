@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/notification_button_controlled.dart';
+import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/heart_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_counter_widget.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
@@ -10,7 +14,7 @@ import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/wi
 
 class ItemWidget extends StatefulWidget {
   final Color? color;
-  final RelatedProductsModel relatedProductsModel;
+  final Products relatedProductsModel;
 
   const ItemWidget({
     super.key,
@@ -34,7 +38,7 @@ class _ItemWidgetState extends State<ItemWidget> {
         Navigator.pushNamed(
           context,
           productScreen,
-          arguments: {'productId': product.id},
+          arguments: {'productId': product.id, 'product': product},
         );
       },
       child: Container(
@@ -55,12 +59,15 @@ class _ItemWidgetState extends State<ItemWidget> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  Helper.loadNetworkImage(
-                    url: product.thumbnailImage ?? '',
-                    // assetsErrorPath: 'assets/test_images/white-toast.png',
-                    assetsErrorPath:
-                        'assets/ayman/—Pngtree—3d beauty cosmetics product design_6380191 (1).png',
-                    fit: BoxFit.contain,
+                  Hero(
+                    tag: product.id!,
+                    child: Helper.loadNetworkImage(
+                      url: product.thumbnailImage ?? '',
+                      // assetsErrorPath: 'assets/test_images/white-toast.png',
+                      assetsErrorPath:
+                          'assets/ayman/—Pngtree—3d beauty cosmetics product design_6380191 (1).png',
+                      fit: BoxFit.contain,
+                    ),
                   ),
                   Positioned.directional(
                     textDirection: Directionality.of(context),
@@ -68,53 +75,53 @@ class _ItemWidgetState extends State<ItemWidget> {
                     bottom: 0,
                     child: SizedBox(
                         height: 30,
-                        child: product.availabelPieces! > 0
+                        child: product.availableQuantity! > 0
                             ? ItemCounterWidget(
-                                itemUiModel: ItemUiModel(
+                                itemUiModel: Products(
                                   id: product.id!,
                                   name: product.name!,
                                   enName: product.enName ?? 'enName',
-                                  enDesc:
-                                      product.enDescription ?? 'enDescription',
+                                  enDescription:
+                                      product.description ?? 'enDescription',
                                   description:
-                                      product.enDescription ?? 'description',
+                                      product.description ?? 'description',
                                   thumbnailImage: product.thumbnailImage ?? '',
                                   price: product.price!,
-                                  discount: product.currentDiscount ?? 0,
-                                  availablePieces: product.availabelPieces!,
+                                  discount: product.discount ?? 0,
+                                  availableQuantity: product.availableQuantity!,
                                   quantity: counter,
                                 ),
                               )
                             : NotificationButtonControlled(
-                                isnotification: true,
+                                isnotification: false,
                                 addNotiOrRemoveNoti: () {},
                               )),
                   ),
                   Align(
                     alignment: Alignment.topCenter,
                     child: Row(
-                      mainAxisAlignment: product.availabelPieces == 0
+                      mainAxisAlignment: product.price! == 0
                           ? MainAxisAlignment.spaceBetween
                           : MainAxisAlignment.end,
                       children: [
-                        if (product.availabelPieces == 0)
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 7.34,
-                              vertical: 3.67,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(248, 147, 31, 0.1),
-                              borderRadius: BorderRadius.circular(3.67),
-                            ),
-                            child: Text(
-                              'Sold Out',
-                              style: Styles.styles8w400interFamily
-                                  .copyWith(fontSize: 8),
-                            ),
-                          ),
+                        // if (product.availableQuantity == 0)
+                        // Container(
+                        //   padding: const EdgeInsets.symmetric(
+                        //     horizontal: 7.34,
+                        //     vertical: 3.67,
+                        //   ),
+                        //   decoration: BoxDecoration(
+                        //     color: const Color.fromRGBO(248, 147, 31, 0.1),
+                        //     borderRadius: BorderRadius.circular(3.67),
+                        //   ),
+                        //   child: Text(
+                        //     'Sold Out',
+                        //     style: Styles.styles8w400interFamily
+                        //         .copyWith(fontSize: 8),
+                        //   ),
+                        // ),
                         HeartWidget(
-                          isFavorite: product.isLiked!,
+                          isFavorite: product.isLiked ?? false,
                           width: 22,
                           height: 20.37,
                           productId: product.id!,
@@ -122,6 +129,12 @@ class _ItemWidgetState extends State<ItemWidget> {
                       ],
                     ),
                   ),
+                  if (product.state != "InStock")
+                    Positioned(
+                      left: 3.w,
+                      top: 13.h,
+                      child: _statusItem(product.state!),
+                    ),
                 ],
               ),
             ),
@@ -136,8 +149,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                   ),
                   child: RichText(
                     text: TextSpan(
-                      text:
-                          '${product.afterDiscount ?? product.price!.toInt()}',
+                      text: '${product.price ?? product.price!.toInt()}',
                       style:
                           Styles.styles16w800interFamily.copyWith(fontSize: 16),
                       children: [
@@ -152,16 +164,18 @@ class _ItemWidgetState extends State<ItemWidget> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                if (product.currentDiscount != 0)
-                  discountWidget(
-                    discount: '${product.price!}',
-                    alignBottom: 6,
-                    color: const Color.fromRGBO(204, 42, 40, 1),
-                    textStyle: const TextStyle(
-                      fontFamily: interFamily,
-                      color: Color.fromRGBO(204, 42, 40, 1),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 10,
+                if (product.discount != 0)
+                  Expanded(
+                    child: discountWidget(
+                      discount: '${product.price!}',
+                      alignBottom: 6,
+                      color: const Color.fromRGBO(204, 42, 40, 1),
+                      textStyle: const TextStyle(
+                        fontFamily: interFamily,
+                        color: Color.fromRGBO(204, 42, 40, 1),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 10,
+                      ),
                     ),
                   ),
               ],
@@ -179,6 +193,22 @@ class _ItemWidgetState extends State<ItemWidget> {
   }
 }
 
+Widget _statusItem(String status) {
+  return Container(
+    padding: const EdgeInsets.symmetric(
+      horizontal: 7.34,
+      vertical: 3.67,
+    ),
+    decoration: BoxDecoration(
+      color: const Color.fromRGBO(248, 147, 31, 0.1),
+      borderRadius: BorderRadius.circular(3.67),
+    ),
+    child: Text(
+      status,
+      style: Styles.styles8w400interFamily.copyWith(fontSize: 8),
+    ),
+  );
+}
 
 // Column(
 //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -290,4 +320,3 @@ class _ItemWidgetState extends State<ItemWidget> {
 //               ),
 //             ],
 //           ),
-        

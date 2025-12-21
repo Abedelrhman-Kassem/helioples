@@ -8,6 +8,7 @@ import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view_model/si
 import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/repo/verify_and_register_repo.dart';
 import 'package:negmt_heliopolis/features/Auth/auth_controller.dart';
 import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/cubit/verfy_and_register_states.dart';
+import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 
 class VerfyAndRegisterCubit extends Cubit<VerfAndRegisterStates> {
   final OtpModel otpModel;
@@ -15,33 +16,35 @@ class VerfyAndRegisterCubit extends Cubit<VerfAndRegisterStates> {
 
   VerfyAndRegisterCubit(
       {required this.otpModel, required this.verifyAndRegisterRepo})
-      : super(VerfAndRegisterInitial());
+      : super(const VerfAndRegisterStates.initial());
   bool clearText = false;
 
   // static SignInCubit get(context) => BlocProvider.of(context);
 
   Future<void> verifyOtpAndRegister(String smsCode) async {
-    emit(VerfOtpLoading());
+    emit(const VerfAndRegisterStates.verfOtpLoading());
     log('verificationId: ${otpModel.verificationId}');
 
     final result = await verifyAndRegisterRepo.verifayCode(
         otpModel.verificationId, smsCode);
     result.fold(
-      (failure) => emit(VerfOtpFailure(failure)),
+      (failure) =>
+          emit(VerfAndRegisterStates.verfOtpFailure(ServerFailure(failure))),
       (status) async {
-        emit(VerfOtpSuccess(status));
+        emit(VerfAndRegisterStates.verfOtpSuccess(status));
         await register();
       },
     );
   }
 
   Future<void> register() async {
-    emit(RegisterLoading());
+    emit(const VerfAndRegisterStates.registerLoading());
     final result = await verifyAndRegisterRepo.signUp(otpModel.registerModel);
     result.fold(
-      (failure) => emit(RegisterFailure(failure.errorMessage)),
+      (failure) =>
+          emit(VerfAndRegisterStates.registerFailure(failure.errorMessage)),
       (result) async {
-        emit(RegisterSuccess(result));
+        emit(VerfAndRegisterStates.registerSuccess(result));
         ServicesHelper.saveLocal('token', result.data);
         final addressesCtrl = Get.find<AddressesControllerImpl>();
         final authC = Get.find<AuthController>();
@@ -53,6 +56,6 @@ class VerfyAndRegisterCubit extends Cubit<VerfAndRegisterStates> {
 
   void changeClearText() {
     clearText = !clearText;
-    emit(ClearText());
+    emit(const VerfAndRegisterStates.clearText());
   }
 }

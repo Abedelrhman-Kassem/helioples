@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
@@ -14,7 +16,7 @@ class HeartWidget extends StatefulWidget {
   final bool isFavorite;
   final double width;
   final double height;
-  final int productId;
+  final String productId;
 
   const HeartWidget({
     super.key,
@@ -44,7 +46,7 @@ class _HeartWidgetState extends State<HeartWidget>
 
     likedRepoImp = LikedRepoImp(ApiService());
     postLikedModel = PostLikedModel.fromJson({});
-    postLikedModel.isLiked = widget.isFavorite;
+    postLikedModel.data = widget.isFavorite;
 
     _favoriteAnimationController = AnimationController(
       vsync: this,
@@ -62,6 +64,7 @@ class _HeartWidgetState extends State<HeartWidget>
   void postLike() async {
     try {
       var res = await likedRepoImp.postLikedProduct(widget.productId);
+      log(res.data.toString());
 
       if (res.statusCode! < 400) {
         postLikedModel = PostLikedModel.fromJson(res.data);
@@ -69,7 +72,7 @@ class _HeartWidgetState extends State<HeartWidget>
         likedNotifier.triggerNotification();
       }
     } catch (e) {
-      postLikedModel.isLiked = !postLikedModel.isLiked!;
+      postLikedModel.data = !postLikedModel.data!;
       if (e is DioException) {
         showCustomGetSnack(
             duration: const Duration(seconds: 10),
@@ -105,9 +108,9 @@ class _HeartWidgetState extends State<HeartWidget>
   }
 
   void _toggleFavorite() {
-    postLikedModel.isLiked = !postLikedModel.isLiked!;
+    postLikedModel.data = !postLikedModel.data!;
 
-    if (postLikedModel.isLiked!) {
+    if (postLikedModel.data!) {
       _favoriteAnimationController
           .forward()
           .then((_) => _favoriteAnimationController.reverse());
@@ -130,7 +133,7 @@ class _HeartWidgetState extends State<HeartWidget>
         },
         child: svgIcon(
           path: 'assets/svg_icons/white-heart.svg',
-          color: postLikedModel.isLiked!
+          color: postLikedModel.data!
               ? MyColors.mainColor
               : const Color.fromRGBO(181, 185, 190, 1),
           width: widget.width,

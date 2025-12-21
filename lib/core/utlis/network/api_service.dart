@@ -6,118 +6,104 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:negmt_heliopolis/core/utlis/services/checkinternet.dart';
 
 class ApiService {
-  Dio dio = Dio();
-  static const FlutterSecureStorage _storage = FlutterSecureStorage();
-
-  static Future<String?> getToken() async {
-    final String? token = await _storage.read(key: 'token');
-    return token;
+  ApiService._internal() {
+    _initDio();
   }
+  static final ApiService _instance = ApiService._internal();
+  factory ApiService() => _instance;
 
-  static Future<void> removeToken() async {
-    await _storage.delete(key: 'token');
-    log('Token removed from secure storage');
-  }
+  final Dio _dio = Dio();
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
-  var mainHeader = {
+  final _defaultHeaders = {
     'Content-Type': 'application/json',
-    // 'pass': 'GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
   };
 
-  Future<void> setAuthorizationHeader() async {
-    try {
-      final token = await _storage.read(key: 'token');
-      log('token api service $token');
+  void _initDio() {
+    _dio.options = BaseOptions(
+      connectTimeout: const Duration(seconds: 60),
+      sendTimeout: const Duration(seconds: 60),
+      receiveTimeout: const Duration(seconds: 60),
+      headers: _defaultHeaders,
+    );
 
-      if (token != null) {
-        mainHeader['token'] = token;
-      } else {
-        // If token is null, user is not authenticated
-        // Handle the case accordingly, such as redirecting to login screen
-        // or displaying an error message
-        // Example: throw Exception('User not authenticated');
-      }
-    } catch (error) {
-      // Handle error retrieving token from secure storage
-      // Example: print('Error retrieving token: $error');
-      // You can rethrow the error or handle it gracefully based on your requirements
-      // rethrow;
-    }
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          try {
+            final token = await _storage.read(key: 'token');
+            if (token != null && token.isNotEmpty) {
+              options.headers['Authorization'] = 'Bearer $token';
+            }
+          } catch (e) {
+            log('Error reading token in interceptor: $e');
+          }
+          return handler.next(options);
+        },
+        onError: (error, handler) {
+          return handler.next(error);
+        },
+      ),
+    );
   }
 
   Future<Response> post({
     required String endPoints,
-    required Map<String, dynamic> data,
-    Map<String, String>? headers,
+    Object? data,
+    Map<String, String>? extraHeaders,
+    CancelToken? cancelToken,
   }) async {
     if (!await checkInternet()) {
       throw Exception('No internet connection');
     }
-    // await setAuthorizationHeader();
-    mainHeader.addAll(headers ?? {});
+    final headers = Map<String, dynamic>.from(_defaultHeaders);
+    if (extraHeaders != null) headers.addAll(extraHeaders);
 
     try {
-      var response = await dio.post(
+      final response = await _dio.post(
         endPoints,
         data: data,
-        options: Options(
-          method: 'POST',
-          headers: mainHeader,
-          sendTimeout: const Duration(seconds: 20),
-          receiveTimeout: const Duration(seconds: 30),
-        ),
+        options: Options(headers: headers),
+        cancelToken: cancelToken,
       );
       return response;
-    } catch (error) {
-      debugPrint(' $error');
+    } catch (e) {
       rethrow;
     }
   }
 
   Future<Map<String, dynamic>> get({
     required String endpoint,
-    Map<String, String>? headers,
+    Map<String, String>? extraHeaders,
     CancelToken? cancelToken,
   }) async {
     if (!await checkInternet()) {
       throw Exception('No internet connection');
     }
-    await setAuthorizationHeader();
-    // print('Request Headers: ${dio.options.headers}');
-    // print(endpoint);
+    final headers = Map<String, dynamic>.from(_defaultHeaders);
+    if (extraHeaders != null) headers.addAll(extraHeaders);
 
-    mainHeader.addAll(headers ?? {});
-    try {
-      var response = await dio.get(
-        endpoint,
-        options: Options(
-          headers: mainHeader,
-        ),
-        cancelToken: cancelToken,
-      );
-      return response.data;
-    } catch (e) {
-      if (e is DioException) {
-        if (CancelToken.isCancel(e)) {
-          print("Request canceled: $e");
-        }
-        rethrow;
-      } else {
-        rethrow;
-      }
-    }
+    final response = await _dio.get(
+      endpoint,
+      options: Options(headers: headers),
+      cancelToken: cancelToken,
+    );
+    return response.data as Map<String, dynamic>;
   }
 
-  Future<Response> delete({required String endPoints}) async {
+  Future<Response> delete(
+      {required String endPoints, Map<String, String>? extraHeaders}) async {
     if (!await checkInternet()) {
       throw Exception('No internet connection');
     }
+    final headers = Map<String, dynamic>.from(_defaultHeaders);
+    if (extraHeaders != null) headers.addAll(extraHeaders);
     try {
-      var response = await dio.delete(
+      var response = await _dio.delete(
         endPoints,
         options: Options(
           method: 'DELETE',
-          headers: mainHeader,
+          headers: headers,
         ),
       );
       return response;
@@ -130,25 +116,26 @@ class ApiService {
   Future<Response> put({
     required String endPoints,
     required Map<String, dynamic> data,
+    Map<String, String>? extraHeaders,
   }) async {
     if (!await checkInternet()) {
       throw Exception('No internet connection');
     }
+    final headers = Map<String, dynamic>.from(_defaultHeaders);
+    if (extraHeaders != null) headers.addAll(extraHeaders);
     try {
-      await setAuthorizationHeader(); // Ensure authorization header is set
-
-      var response = await dio.put(
+      var response = await _dio.put(
         endPoints,
         data: data,
         options: Options(
           method: 'PUT',
-          headers: mainHeader,
+          headers: headers,
         ),
       );
       return response;
     } catch (error) {
       debugPrint('Put error: $error');
-      rethrow; // Re-throw the error for handling in the caller
+      rethrow;
     }
   }
 }

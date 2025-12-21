@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
+import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
 import 'package:negmt_heliopolis/features/Address/data/model/address_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/repo/address_repo_imp.dart';
 
@@ -33,7 +34,7 @@ class AddressesControllerImpl extends AddressesController {
 
   @override
   fetchAddresses() async {
-    final String? token = await ApiService.getToken();
+    final String? token = await ServicesHelper.getLocal('token');
 
     if (token == null) {
       errorMessage = 'User not authenticated';

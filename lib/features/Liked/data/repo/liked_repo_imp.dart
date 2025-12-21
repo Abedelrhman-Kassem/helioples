@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
+import 'package:negmt_heliopolis/core/utlis/network/app_urls.dart';
 import 'package:negmt_heliopolis/features/Liked/data/models/liked_model.dart';
 import 'package:negmt_heliopolis/features/Liked/data/repo/liked_repo.dart';
 
@@ -30,10 +31,10 @@ class LikedRepoImp extends LikedRepo {
   }
 
   @override
-  Future<Response<dynamic>> postLikedProduct(int prodcutId) async {
+  Future<Response<dynamic>> postLikedProduct(String prodcutId) async {
     try {
       var result = await apiService.post(
-        endPoints: 'api/protected/products/like',
+        endPoints: AppUrls.postLikedProductUrl,
         data: {"productId": prodcutId},
       );
 

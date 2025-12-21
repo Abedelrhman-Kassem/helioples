@@ -1,7 +1,11 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
+import 'package:negmt_heliopolis/core/utlis/network/app_urls.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/home_slider_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/special_offer_model.dart';
@@ -14,23 +18,42 @@ class HomeScreenRepoImp extends GetHomeScreenRepo {
 
   @override
   Future<Either<Failure, AllCategoriesModel>> getAllCategories({
-    required bool homeScreen,
+    bool? homeScreen,
     required int page,
+    required int pageSize,
   }) async {
+    // log(
+    //   "start getAllCategories",
+    //   time: DateTime.now(),
+    //   zone: Zone.current,
+    // );
     AllCategoriesModel allCategoriesModel = AllCategoriesModel.fromJson({});
     try {
-      allCategoriesModel = AllCategoriesModel.fromJson(
-        await apiService.get(
-          endpoint: 'api/categories?homeScreen=$homeScreen&page=$page',
+      log("url ${AppUrls.getCategoriesUrl(
+        homeScreen: homeScreen,
+        page: page,
+        pageSize: pageSize,
+      )}");
+      var response = await apiService.get(
+        endpoint: AppUrls.getCategoriesUrl(
+          homeScreen: homeScreen,
+          page: page,
+          pageSize: pageSize,
         ),
       );
+      log("response $response");
+      allCategoriesModel = AllCategoriesModel.fromJson(response);
+      // log("allCategories SUCCESS");
+      // log("allCategories ${allCategoriesModel.categories.length}");
 
       return right(allCategoriesModel);
     } catch (e) {
       if (e is DioException) {
+        log("e $e");
         return left(ServerFailure.fromDioError(e));
       }
 
+      log("e $e");
       return left(ServerFailure(e.toString()));
     }
   }

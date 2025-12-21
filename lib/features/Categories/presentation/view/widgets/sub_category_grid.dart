@@ -11,7 +11,7 @@ import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class SubCategoryGrid extends StatefulWidget {
   final GlobalKey globalKey;
-  final SubCategories subCategory;
+  final SubCatByCatidData subCategory;
   final int? index;
 
   const SubCategoryGrid({
@@ -27,7 +27,7 @@ class SubCategoryGrid extends StatefulWidget {
 
 class _SubCategoryGridState extends State<SubCategoryGrid> {
   final SubCategoriesNotifier notifier = SubCategoriesNotifier();
-  List<RelatedProductsModel> products = [];
+  List<Products> products = [];
   bool endFetching = false;
 
   void refreshState() {
@@ -44,6 +44,7 @@ class _SubCategoryGridState extends State<SubCategoryGrid> {
 
   @override
   void initState() {
+    products = widget.subCategory.products;
     notifier.addListener(refreshState);
 
     super.initState();
@@ -61,7 +62,7 @@ class _SubCategoryGridState extends State<SubCategoryGrid> {
     int addedQty =
         modules == 6 ? products.length + 6 : products.length - modules + 6;
 
-    int itemCount = notifier.isFetching[widget.subCategory.id!]!
+    int itemCount = (notifier.isFetching[widget.subCategory.id!] ?? false)
         ? addedQty
         : products.length;
 
@@ -105,7 +106,8 @@ class _SubCategoryGridState extends State<SubCategoryGrid> {
           ),
           // if (notifier.isFetching[widget.subCategory.id!]!)
           //   gridProductsLoading(6),
-          if (!notifier.isFetching[widget.subCategory.id!]! && products.isEmpty)
+          if (!(notifier.isFetching[widget.subCategory.id!] ?? false) &&
+              products.isEmpty)
             Center(
               child: Text(
                 LocaleKeys.sub_categories_screen_No_Products_Found.tr(),

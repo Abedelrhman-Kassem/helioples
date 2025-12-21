@@ -75,15 +75,13 @@ class _CartScreenState extends State<CartScreen> {
                           physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.symmetric(horizontal: 10.w),
                           itemBuilder: (context, index) => CartItemWidget(
-                            itemUiModel: ItemUiModel(
-                              id: tableValues[index][cartItemId] as int,
+                            itemUiModel: Products(
+                              id: tableValues[index][cartItemId] as String,
                               name: tableValues[index][cartItemName] as String,
                               enName:
                                   tableValues[index][cartItemEnName] as String,
-                              enDesc:
-                                  tableValues[index][cartItemEnDesc] as String,
                               description:
-                                  tableValues[index][cartItemDesc] as String,
+                                  tableValues[index][cartItemEnDesc] as String,
                               thumbnailImage: tableValues[index]
                                   [cartItemImageUrl] as String,
                               price:
@@ -91,7 +89,7 @@ class _CartScreenState extends State<CartScreen> {
                               discount: tableValues[index][cartItemDiscount]
                                   as double,
                               quantity: tableValues[index][cartItemQty] as int,
-                              availablePieces: cartCubit.getAvailablePieces(
+                              availableQuantity: cartCubit.getAvailablePieces(
                                 tableValues[index][cartItemId] as int,
                               ),
                             ),

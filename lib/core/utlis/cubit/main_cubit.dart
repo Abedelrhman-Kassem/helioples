@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
@@ -73,40 +76,35 @@ class MainCubit extends Cubit<MainState> {
   }
 
   HomeScreenRepoImp homeScreenImp = HomeScreenRepoImp(
-    apiService: ApiService(),
+    apiService: Get.put(ApiService(), permanent: true),
   );
 
   bool loadingCategories = false;
   bool endFetching = false;
-  AllCategoriesModel categories = AllCategoriesModel.fromJson({
-    'categories': <CategoryModel>[],
-  });
-  int page = 0;
+  List<CategoryModel> categories = [];
+  int page = 1;
 
-  Future<void> getAllCategories({
-    required bool homeScreen,
-  }) async {
-    if (loadingCategories || endFetching) return;
-
+  Future<void> getAllCategories() async {
     emit(FetchMainCubitCategoriesLoading());
     loadingCategories = true;
-
+    log("page $page");
     Either<Failure, AllCategoriesModel> res =
         await homeScreenImp.getAllCategories(
-      homeScreen: homeScreen,
+      // homeScreen: homeScreen,
       page: page,
+      pageSize: 20,
     );
-
     res.fold(
       (failure) => emit(
         FetchMainCubitCategoriesFailure(failure.errorMessage),
       ),
       (categoriesModel) {
-        if (categoriesModel.categories!.isEmpty) {
+        if (categoriesModel.categories.isEmpty) {
           endFetching = true;
         }
-
-        categories.categories?.addAll(categoriesModel.categories!);
+        log("categoriesModel ${categoriesModel.categories.length}");
+        categories.addAll(categoriesModel.categories);
+        log("categories ${categories.length}");
 
         page++;
         emit(FetchMainCubitCategoriesSuccess(categoriesModel));

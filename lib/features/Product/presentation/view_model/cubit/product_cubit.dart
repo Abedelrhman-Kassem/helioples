@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
@@ -11,16 +13,20 @@ class ProductCubit extends Cubit<ProductState> {
   ProductCubit() : super(ProductInitial());
 
   GetProductImp getCategoriesImp = GetProductImp(
-    apiService: ApiService(),
+    apiService: Get.find<ApiService>(),
   );
+  bool isLoading = false;
 
-  ProductModel? productModel;
-
-  void getProductDetails(int product) async {
+  ProductDetailsModel? productModel;
+  int page = 1;
+  int pageSize = 15;
+  List<Products> products = [];
+  void getProductDetails(String product) async {
+    isLoading = true;
     emit(GetProductLoading());
 
-    Either<Failure, ProductModel> res =
-        await getCategoriesImp.getProductDetails(product);
+    Either<Failure, ProductDetailsModel> res =
+        await getCategoriesImp.getProductDetails(product, page, pageSize);
 
     res.fold(
       (failure) => {
@@ -32,6 +38,7 @@ class ProductCubit extends Cubit<ProductState> {
           }
       },
       (product) => {
+        products.addAll(product.data!.relatedProducts!.items),
         if (!isClosed)
           {
             emit(
@@ -40,5 +47,7 @@ class ProductCubit extends Cubit<ProductState> {
           }
       },
     );
+    isLoading = false;
+    page++;
   }
 }

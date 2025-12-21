@@ -43,7 +43,7 @@ Widget categoryBuilder(
                 horizontal: 16,
               ),
               child: Text(
-                category.name,
+                category.name!,
                 style: Styles.styles11w700interFamily.copyWith(fontSize: 11),
                 textAlign: TextAlign.center,
                 maxLines: 2,

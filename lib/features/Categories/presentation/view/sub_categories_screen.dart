@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,14 +33,14 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
   List<GlobalKey> listKeys = [];
   List<double> _listHeights = [];
   double sectionBtnWidth = 145;
-  List<SubCategories> subCategories = [];
-  List<int> subCategoriesIdsList = [];
+  List<SubCatByCatidData> subCategories = [];
+  List<String> subCategoriesIdsList = [];
 
   @override
   void initState() {
     subCategoriesCubit = BlocProvider.of<SubCategoriesCubit>(context);
     notifier.subCategoriesIds
-        .addAll({widget.category.id: subCategoriesIdsList});
+        .addAll({widget.category.id!: subCategoriesIdsList});
 
     super.initState();
     _scrollController.addListener(_calculateListHeights);
@@ -106,20 +108,25 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
           break;
         }
 
-        await _listViewScrollController.animateTo(
-          sectionBtnWidth * notifier.activeSection,
-          duration: const Duration(seconds: 1),
-          curve: Curves.ease,
-        );
+        if (mounted) {
+          await _listViewScrollController.animateTo(
+            sectionBtnWidth * notifier.activeSection,
+            duration: const Duration(seconds: 1),
+            curve: Curves.ease,
+          );
+        }
 
         break;
       }
     }
 
+    if (!mounted) return;
+
     _checkFetchingMore();
   }
 
   void _checkFetchingMore() {
+    if (!_scrollController.hasClients) return;
     double scrollPosition = _scrollController.position.pixels;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -127,8 +134,8 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
         _listHeights[notifier.activeSection]) {
       //
       if (!notifier.allowFetch) return;
-
-      int subCategoryId = notifier
+      log("fetching more");
+      String subCategoryId = notifier
           .subCategoriesIds[widget.category.id]![notifier.activeSection];
       subCategoriesCubit.fetchProductsInSubCategory(subCategoryId, context);
     }
@@ -141,6 +148,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
         var subCategroiesCubit = BlocProvider.of<SubCategoriesCubit>(context);
 
         if (state is GetMainSubCategoriesFailed) {
+          log("state:======== ${state.message}");
           CustomSnackBar.show(
             context: context,
             duration: const Duration(seconds: 10),
@@ -150,6 +158,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
         }
 
         if (state is GetMainSubCategoriesSuccess) {
+          log("state: ${state.subCategories}");
           subCategories = state.subCategories;
 
           for (var subCategory in subCategories) {
@@ -162,19 +171,19 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
             listKeys.add(GlobalKey());
           }
 
-          for (var subCategory in subCategories) {
-            subCategroiesCubit.fetchProductsInSubCategory(
-                subCategory.id!, context);
-          }
+          // for (var subCategory in subCategories) {
+          //   subCategroiesCubit.fetchProductsInSubCategory(
+          //       subCategory.id!, context);
+          // }
         }
       },
       builder: (context, state) {
-        if (subCategories.isNotEmpty) {
+        if (state is GetMainSubCategoriesSuccess) {
           return Scaffold(
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(150.h),
               child: CustomAppbar(
-                categoryName: widget.category.name,
+                categoryName: widget.category.name!,
                 subCategories: subCategories,
                 listKeys: listKeys,
                 sectionBtnWidth: sectionBtnWidth,
@@ -229,7 +238,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
               preferredSize: Size.fromHeight(150.h),
               child: Skeletonizer(
                 child: CustomAppbar(
-                  categoryName: widget.category.name,
+                  categoryName: widget.category.name!,
                   subCategories: subCategories,
                   listKeys: listKeys,
                   sectionBtnWidth: sectionBtnWidth,

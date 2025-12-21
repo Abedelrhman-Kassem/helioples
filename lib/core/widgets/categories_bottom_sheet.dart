@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
+import 'package:negmt_heliopolis/core/utlis/services/scroll_pagination_service.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/category_builder.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
+import 'package:negmt_heliopolis/core/widgets/widget_category_botton_sheet.dart/gategory_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/widget_category_botton_sheet.dart/head_category.dart';
+import 'package:negmt_heliopolis/core/widgets/widget_category_botton_sheet.dart/loading_category.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class CategoriesBottomSheet extends StatefulWidget {
   final String title;
@@ -24,20 +25,12 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet> {
   @override
   void initState() {
     mainCubit = BlocProvider.of<MainCubit>(context);
-    if (mainCubit.categories.categories?.isEmpty ?? true) {
-      mainCubit.getAllCategories(
-        homeScreen: false,
-      );
-    }
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mainCubit.categories.isEmpty) {
+        mainCubit.getAllCategories();
+      }
+    });
     super.initState();
-  }
-
-  void getPages(
-      ScrollController scrollController, dynamic Function() function) {
-    if (scrollController.position.pixels >=
-        (scrollController.position.maxScrollExtent - 300)) {
-      function();
-    }
   }
 
   @override
@@ -56,13 +49,11 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet> {
                     maxChildSize: 0.9,
                     minChildSize: 0.5,
                     builder: (context, scrollController) {
-                      scrollController.addListener(() {
-                        getPages(scrollController, () {
-                          mainCubit.getAllCategories(
-                            homeScreen: false,
-                          );
-                        });
-                      });
+                      ScrollPaginationService.addPaginationListener(
+                        scrollController: scrollController,
+                        onLoadMore: () => mainCubit.getAllCategories(),
+                        isLoading: () => mainCubit.loadingCategories,
+                      );
 
                       return BlocConsumer<MainCubit, MainState>(
                         listener: (context, state) {
@@ -86,107 +77,17 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet> {
                             ),
                             child: Column(
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Categories',
-                                      style: Styles.styles15w700NormalBlack,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: svgIcon(
-                                        path: 'assets/svg_icons/x-close.svg',
-                                        width: 20.w,
-                                        height: 20.h,
-                                        color:
-                                            Colors.black.withValues(alpha: 0.5),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                const HeadCategory(),
                                 SizedBox(height: 20.h),
-                                if (state is FetchMainCubitCategoriesLoading)
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 18.w,
-                                    ),
-                                    child: GridView.builder(
-                                      padding: EdgeInsets.only(top: 5.h),
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: 9,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                                        maxCrossAxisExtent: 125,
-                                        mainAxisSpacing: 10,
-                                        crossAxisSpacing: 10,
-                                        // childAspectRatio: 1 / 1.5,
-                                        mainAxisExtent: 135,
-                                      ),
-                                      itemBuilder: (context, index) =>
-                                          Skeletonizer(
-                                        child: SizedBox(
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.all(10),
-                                                decoration: const BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(25),
-                                                  ),
-                                                ),
-                                                child: Helper.loadNetworkImage(
-                                                  assetsErrorPath:
-                                                      'assets/screens_background/home-category.png',
-                                                ),
-                                              ),
-                                              Text(
-                                                'hello how',
-                                                style: Styles
-                                                    .styles11w700interFamily
-                                                    .copyWith(fontSize: 11),
-                                                textAlign: TextAlign.center,
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                if (mainCubit
-                                        .categories.categories?.isNotEmpty ??
-                                    false)
-                                  Expanded(
-                                    child: GridView.builder(
-                                      controller: scrollController,
-                                      padding: EdgeInsets.only(top: 5.h),
-                                      physics: const BouncingScrollPhysics(),
-                                      itemCount: mainCubit
-                                          .categories.categories!.length,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                                        maxCrossAxisExtent: 125,
-                                        mainAxisSpacing: 10,
-                                        crossAxisSpacing: 10,
-                                        mainAxisExtent: 135,
-                                      ),
-                                      itemBuilder: (context, index) =>
-                                          categoryBuilder(
-                                        islistview: false,
-                                        context: context,
-                                        category: mainCubit
-                                            .categories.categories![index],
-                                      ),
-                                    ),
+                                // Show initial loading skeleton only when no categories exist
+                                if (state is FetchMainCubitCategoriesLoading &&
+                                    mainCubit.categories.isEmpty)
+                                  const LoadingCategory(),
+                                // Show categories when available
+                                if (mainCubit.categories.isNotEmpty)
+                                  GategoryWidget(
+                                    scrollController: scrollController,
+                                    mainCubit: mainCubit,
                                   ),
                               ],
                             ),
