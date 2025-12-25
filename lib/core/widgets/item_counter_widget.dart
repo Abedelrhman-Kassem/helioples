@@ -13,10 +13,7 @@ import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart'
 class ItemCounterWidget extends StatefulWidget {
   final Products itemUiModel;
 
-  const ItemCounterWidget({
-    super.key,
-    required this.itemUiModel,
-  });
+  const ItemCounterWidget({super.key, required this.itemUiModel});
 
   @override
   State<ItemCounterWidget> createState() => _ItemCounterWidgetState();
@@ -64,7 +61,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
     );
 
     if (value.isNotEmpty) {
-      counter = value[0][cartItemQty] as int;
+      counter = int.parse(value.first[cartItemQty].toString());
       if (mounted) {
         setState(() {});
       }
@@ -161,8 +158,9 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
                   ? Text(
                       '$counter',
                       key: ValueKey(counter),
-                      style:
-                          Styles.styles12w400NormalWhite.copyWith(fontSize: 12),
+                      style: Styles.styles12w400NormalWhite.copyWith(
+                        fontSize: 12,
+                      ),
                     )
                   : const SizedBox.shrink(),
             ),

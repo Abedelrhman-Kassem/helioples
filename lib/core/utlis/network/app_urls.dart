@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class AppUrls {
   static const String _baseUrl = 'http://144.172.109.90:5000/api/v1';
   //                         Auth
@@ -31,7 +33,7 @@ class AppUrls {
       int page = 1,
       int pageSize = 10}) {
     final uri = Uri.parse(
-        '$_baseUrl/Product/subcategory/$id?Page=$page&PageSize=$pageSize&Active=$active');
+        '$_baseUrl/SubCategory/$id?Page=$page&PageSize=$pageSize&Active=true');
 
     return uri.toString();
   }
@@ -46,12 +48,36 @@ class AppUrls {
   }
 
   //                         Liked
-  // static String getLikedProductsUrl({int page = 1, int pageSize = 10}) {
-  //   final uri = Uri.parse(
-  //       '$_baseUrl/Liked?Page=$page&PageSize=$pageSize&Active=true');
-
-  //   return uri.toString();
-  // }
-
   static const String postLikedProductUrl = '$_baseUrl/Likes/toggle';
+
+  //                         Offers
+  static String getOffersUrl(int page, bool? homeScreen, int pageSize) {
+    final params = <String, String>{
+      'Page': page.toString(),
+      'PageSize': pageSize.toString(),
+      'Active': 'true',
+    };
+
+    if (homeScreen != null) params['HomeScreen'] = homeScreen.toString();
+
+    final uri = Uri.parse('$_baseUrl/Offers').replace(
+      queryParameters: params.isEmpty ? null : params,
+    );
+    log(uri.toString());
+    return uri.toString();
+  }
+
+  static String getOfferItemUrl(String id, int page, int pageSize) =>
+      '$_baseUrl/Offers/$id?Page=$page&PageSize=$pageSize&Active=true';
+
+  //                         Slider
+  static String getSliderUrl(int page, int pageSize) =>
+      '$_baseUrl/ImageSlider?Page=$page&PageSize=$pageSize&Active=true';
+
+  static String getFeaturesUrl(String categoryId) =>
+      '$_baseUrl/Featured/category/$categoryId';
+
+  static String getProductsFeaturedUrl(
+          String featureId, int page, int pageSize) =>
+      '$_baseUrl/Featured/$featureId?Page=$page&PageSize=$pageSize&Active=true';
 }

@@ -1,4 +1,3 @@
-// import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 class SubCatByCatidModel {

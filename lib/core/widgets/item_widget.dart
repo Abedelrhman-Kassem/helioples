@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/notification_button_controlled.dart';
-import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/heart_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_counter_widget.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
@@ -15,11 +12,13 @@ import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/wi
 class ItemWidget extends StatefulWidget {
   final Color? color;
   final Products relatedProductsModel;
+  final String? heroTagPrefix;
 
   const ItemWidget({
     super.key,
     this.color,
     required this.relatedProductsModel,
+    this.heroTagPrefix,
   });
 
   @override
@@ -60,7 +59,9 @@ class _ItemWidgetState extends State<ItemWidget> {
                 alignment: Alignment.center,
                 children: [
                   Hero(
-                    tag: product.id!,
+                    tag: widget.heroTagPrefix != null
+                        ? "${widget.heroTagPrefix}${product.id}"
+                        : product.id!,
                     child: Helper.loadNetworkImage(
                       url: product.thumbnailImage ?? '',
                       // assetsErrorPath: 'assets/test_images/white-toast.png',

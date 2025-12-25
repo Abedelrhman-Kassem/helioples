@@ -12,11 +12,13 @@ class SpecialOfferWidget extends StatelessWidget {
   final Offer offer;
   final bool canNavigate;
   final bool isSmall;
+  final double padding;
   const SpecialOfferWidget({
     super.key,
     required this.offer,
     required this.canNavigate,
     this.isSmall = false,
+    this.padding = 10,
   });
 
   @override
@@ -35,7 +37,7 @@ class SpecialOfferWidget extends StatelessWidget {
         }
       },
       child: Padding(
-        padding: EdgeInsets.only(left: 20.w),
+        padding: EdgeInsets.only(left: padding.w),
         child: SizedBox(
           width: double.infinity,
           child: Column(
@@ -211,7 +213,7 @@ Widget descriptionOfferWidget(Offer offer, bool isSmall) {
                           ),
                           children: [
                             TextSpan(
-                              text: formatDuration(offer.expiresAt!),
+                              text: formatDuration(offer.expiresAt!.toString()),
                               style: Styles.styles12w500interFamily.copyWith(
                                 fontSize: isSmall
                                     ? 8.5.sp

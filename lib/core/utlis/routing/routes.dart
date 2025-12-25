@@ -111,7 +111,7 @@ class AppRouter {
         break;
 
       case specialOfferItemScreen:
-        final args = settings.arguments as int;
+        final args = settings.arguments as String;
         page = SpecialOfferItemScreen(id: args);
         fromRight = true;
         break;

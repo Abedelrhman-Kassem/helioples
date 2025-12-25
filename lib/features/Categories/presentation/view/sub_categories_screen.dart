@@ -5,14 +5,21 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/sub_categories_notifier.dart';
-import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+
+import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view%20model/cubit/sub_categories_cubit.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view/widgets/custom_appbar.dart';
+import 'package:negmt_heliopolis/features/Categories/presentation/view/widgets/featuer_widget.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view/widgets/sub_category_grid.dart';
 import 'package:negmt_heliopolis/core/widgets/skeletonizer_loading.dart';
+
 import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:negmt_heliopolis/features/Categories/data/model/featur_model.dart';
+import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
+import 'package:negmt_heliopolis/core/widgets/pagination_listener.dart';
 
 class SubCategoriesScreen extends StatefulWidget {
   final CategoryModel category;
@@ -34,13 +41,15 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
   List<double> _listHeights = [];
   double sectionBtnWidth = 145;
   List<SubCatByCatidData> subCategories = [];
+  List<FeaturData> features = [];
   List<String> subCategoriesIdsList = [];
 
   @override
   void initState() {
     subCategoriesCubit = BlocProvider.of<SubCategoriesCubit>(context);
-    notifier.subCategoriesIds
-        .addAll({widget.category.id!: subCategoriesIdsList});
+    notifier.subCategoriesIds.addAll({
+      widget.category.id!: subCategoriesIdsList,
+    });
 
     super.initState();
     _scrollController.addListener(_calculateListHeights);
@@ -57,6 +66,15 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
       notifier.subCategoriesProducts.remove(subCategory.id);
       notifier.subCategoriesIds.remove(subCategory.id);
       subCategoriesCubit.subCategoriesPages.remove(subCategory.id);
+    }
+
+    for (var feature in features) {
+      if (feature.id != null) {
+        notifier.isFetching.remove(feature.id);
+        notifier.endFetching.remove(feature.id);
+        notifier.productsFeatured.remove(feature.id);
+        subCategoriesCubit.productsFeaturedPages.remove(feature.id);
+      }
     }
 
     super.dispose();
@@ -147,19 +165,15 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
       listener: (context, state) {
         var subCategroiesCubit = BlocProvider.of<SubCategoriesCubit>(context);
 
-        if (state is GetMainSubCategoriesFailed) {
-          log("state:======== ${state.message}");
-          CustomSnackBar.show(
-            context: context,
-            duration: const Duration(seconds: 10),
-            text: state.message,
-            isGreen: false,
-          );
-        }
-
         if (state is GetMainSubCategoriesSuccess) {
           log("state: ${state.subCategories}");
           subCategories = state.subCategories;
+          features = state.features;
+
+          listKeys.clear();
+          if (features.isNotEmpty) {
+            listKeys.add(GlobalKey());
+          }
 
           for (var subCategory in subCategories) {
             notifier.isFetching.addAll({subCategory.id!: false});
@@ -178,60 +192,8 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
         }
       },
       builder: (context, state) {
-        if (state is GetMainSubCategoriesSuccess) {
-          return Scaffold(
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(150.h),
-              child: CustomAppbar(
-                categoryName: widget.category.name!,
-                subCategories: subCategories,
-                listKeys: listKeys,
-                sectionBtnWidth: sectionBtnWidth,
-                listViewScrollController: _listViewScrollController,
-              ),
-            ),
-            body: Padding(
-              padding: EdgeInsets.all(10.r),
-              child: CustomScrollView(
-                controller: _scrollController,
-                physics: const BouncingScrollPhysics(),
-                slivers: [
-                  // FEATURED
-                  // SliverToBoxAdapter(
-                  //   child: Container(
-                  //     height: 200,
-                  //     color: Colors.black,
-                  //     margin: EdgeInsets.only(
-                  //       top: 40.h,
-                  //       bottom: 20.h,
-                  //     ),
-                  //     child: Text(
-                  //       widget.category.name,
-                  //       style: TextStyle(
-                  //         fontSize: 30.sp,
-                  //         fontWeight: FontWeight.bold,
-                  //         color: Colors.white,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  ...List.generate(
-                    subCategories.length,
-                    (index) {
-                      var subCategory = subCategories[index];
-
-                      return SubCategoryGrid(
-                        globalKey: listKeys[index],
-                        index: index,
-                        subCategory: subCategory,
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
+        // Show loading if we are loading main categories OR features (only if no content yet)
+        // Show loading if we are loading main categories
         if (state is LoadingMainSubCategories) {
           return Scaffold(
             appBar: PreferredSize(
@@ -243,11 +205,52 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                   listKeys: listKeys,
                   sectionBtnWidth: sectionBtnWidth,
                   listViewScrollController: _listViewScrollController,
+                  showFeatured: features.isNotEmpty,
                 ),
               ),
             ),
-            body: Skeletonizer(
-              child: gridProductsLoading(9),
+            body: Skeletonizer(child: gridProductsLoading(9)),
+          );
+        }
+
+        // Show content if main categories are loaded OR if we have data and state is something else (like features success/loading)
+        if (state is GetMainSubCategoriesSuccess || subCategories.isNotEmpty) {
+          return Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(150.h),
+              child: CustomAppbar(
+                categoryName: widget.category.name!,
+                subCategories: subCategories,
+                listKeys: listKeys,
+                sectionBtnWidth: sectionBtnWidth,
+                listViewScrollController: _listViewScrollController,
+                showFeatured: features.isNotEmpty,
+              ),
+            ),
+            body: Padding(
+              padding: EdgeInsets.all(10.r),
+              child: CustomScrollView(
+                controller: _scrollController,
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  // FEATURED
+                  FeaturedProductsWidget(
+                    key: features.isNotEmpty ? listKeys[0] : null,
+                    features: features,
+                    subCategoriesCubit: subCategoriesCubit,
+                  ),
+                  ...List.generate(subCategories.length, (index) {
+                    var subCategory = subCategories[index];
+                    int keyIndex = index + (features.isNotEmpty ? 1 : 0);
+
+                    return SubCategoryGrid(
+                      globalKey: listKeys[keyIndex],
+                      index: index,
+                      subCategory: subCategory,
+                    );
+                  }),
+                ],
+              ),
             ),
           );
         }

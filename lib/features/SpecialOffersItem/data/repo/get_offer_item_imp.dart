@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
+import 'package:negmt_heliopolis/core/utlis/network/app_urls.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/data/model/offer_item_model.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/data/repo/get_offer_item_repo.dart';
 
@@ -11,16 +12,18 @@ class GetOfferItemImp extends GetOfferItemRepo {
 
   @override
   Future<Either<Failure, SpecialOfferItemModel>> getSpecialOfferItem({
-    required int id,
+    required String id,
     required int page,
+    required int pageSize,
   }) async {
     SpecialOfferItemModel specialOfferItemModel;
 
     try {
+      final response = await apiService.get(
+        endpoint: AppUrls.getOfferItemUrl(id, page, pageSize),
+      );
       specialOfferItemModel = SpecialOfferItemModel.fromJson(
-        await apiService.get(
-          endpoint: 'api/offers/$id?page=$page',
-        ),
+        response,
       );
 
       return right(specialOfferItemModel);

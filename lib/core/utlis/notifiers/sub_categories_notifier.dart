@@ -17,6 +17,7 @@ class SubCategoriesNotifier with ChangeNotifier {
   Map<String, bool> isFetching = {};
   Map<String, bool> endFetching = {};
   Map<String, List<Products>> subCategoriesProducts = {};
+  Map<String, List<Products>> productsFeatured = {};
   Map<String, List<String>> subCategoriesIds = {};
 
   void triggerNotification() {

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/sub_categories_notifier.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
+import 'package:negmt_heliopolis/features/Categories/data/model/featur_model.dart';
 import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 import 'package:negmt_heliopolis/features/Categories/data/repo/sub_categories_repo_imp.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
@@ -17,16 +18,40 @@ class SubCategoriesCubit extends Cubit<SubCategoriesState> {
   SubCategoriesCubit({required this.repo}) : super(SubCategoriesStateInitial());
 
   final SubCategoriesNotifier notifier = SubCategoriesNotifier();
+  List<FeaturData> featuresList = [];
+  List<Products> productsListFeatured = [];
 
   Future<void> fetchSubCategories(String categoryId) async {
     emit(LoadingMainSubCategories());
 
-    Either<Failure, List<SubCatByCatidData>> response =
-        await repo.getSubCategories(categoryId);
+    // Fetch both requests concurrently
+    final results = await Future.wait([
+      repo.getSubCategories(categoryId),
+      repo.getFeatures(categoryId),
+    ]);
 
-    response.fold(
+    final subCategoriesResult =
+        results[0] as Either<Failure, List<SubCatByCatidData>>;
+    final featuresResult = results[1] as Either<Failure, FeaturMdel>;
+
+    // Handle SubCategories result
+    subCategoriesResult.fold(
       (failure) => emit(GetMainSubCategoriesFailed(failure.errorMessage)),
-      (subCategories) => emit(GetMainSubCategoriesSuccess(subCategories)),
+      (subCategories) {
+        // Handle Features result inside success of SubCategories
+        featuresResult.fold(
+          (failure) {
+            // Log error but proceed with empty features
+            // log("Failed to fetch features: ${failure.errorMessage}");
+          },
+          (featuresModel) {
+            featuresList = featuresModel.features;
+          },
+        );
+
+        emit(
+            GetMainSubCategoriesSuccess(subCategories, features: featuresList));
+      },
     );
   }
 
@@ -40,11 +65,11 @@ class SubCategoriesCubit extends Cubit<SubCategoriesState> {
         notifier.endFetching[subCategoryId] == true) {
       return;
     }
-    log("subCategoriesPages ${subCategoriesPages[subCategoryId]! + 2}");
-    log(
-      "fetchProductsInSubCategory $subCategoryId",
-      time: DateTime.now(),
-    );
+    // log("subCategoriesPages ${subCategoriesPages[subCategoryId]! + 2}");
+    // log(
+    //   "fetchProductsInSubCategory $subCategoryId",
+    //   time: DateTime.now(),
+    // );
 
     notifier.isFetching[subCategoryId] = true;
     notifier.triggerNotification();
@@ -85,5 +110,59 @@ class SubCategoriesCubit extends Cubit<SubCategoriesState> {
     );
   }
 
-  Future<void> fetchAllPRoductsOfSubCategory(int subCategoryId) async {}
+  Map<String, int> productsFeaturedPages = {};
+
+  Future<void> fetchProductsFeatured(
+      String featureId, BuildContext context) async {
+    if (notifier.isFetching[featureId] == true ||
+        notifier.endFetching[featureId] == true) {
+      return;
+    }
+    // log("subCategoriesPages ${subCategoriesPages[subCategoryId]! + 2}");
+    // log(
+    //   "fetchProductsInSubCategory $subCategoryId",
+    //   time: DateTime.now(),
+    // );
+
+    notifier.isFetching[featureId] = true;
+    notifier.triggerNotification();
+
+    Either<Failure, List<Products>> response = await repo.getProductsFeatured(
+      featureId,
+      productsFeaturedPages[featureId]! + 2,
+      10,
+    );
+
+    response.fold(
+      (failure) {
+        log("failure ${failure.errorMessage}");
+        CustomSnackBar.show(
+          context: context,
+          duration: const Duration(seconds: 10),
+          text: failure.errorMessage,
+          isGreen: false,
+        );
+
+        notifier.isFetching[featureId] = false;
+        notifier.endFetching[featureId] = true;
+        notifier.triggerNotification();
+      },
+      (subCategoriesProducts) {
+        if (subCategoriesProducts.isEmpty) {
+          notifier.endFetching[featureId] = true;
+        }
+
+        productsFeaturedPages[featureId] =
+            productsFeaturedPages[featureId]! + 1;
+
+        notifier.productsFeatured[featureId] = subCategoriesProducts;
+
+        notifier.isFetching[featureId] = false;
+
+        notifier.triggerNotification();
+      },
+    );
+  }
+
+  // Future<void> fetchAllPRoductsOfSubCategory(int subCategoryId) async {}
 }

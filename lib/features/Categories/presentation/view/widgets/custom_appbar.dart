@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/sub_categories_notifier.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/cart_counter.dart';
 import 'package:negmt_heliopolis/core/widgets/categories_bottom_sheet.dart';
@@ -14,6 +15,7 @@ class CustomAppbar extends StatefulWidget {
   final List<GlobalKey> listKeys;
   final double sectionBtnWidth;
   final ScrollController listViewScrollController;
+  final bool showFeatured;
 
   const CustomAppbar({
     super.key,
@@ -22,6 +24,7 @@ class CustomAppbar extends StatefulWidget {
     required this.listKeys,
     required this.sectionBtnWidth,
     required this.listViewScrollController,
+    this.showFeatured = false,
   });
 
   @override
@@ -63,12 +66,8 @@ class _CustomAppbarState extends State<CustomAppbar> {
           Navigator.pop(context);
         },
       ),
-      title: CategoriesBottomSheet(
-        title: widget.categoryName,
-      ),
-      actions: const [
-        CartCounter(),
-      ],
+      title: CategoriesBottomSheet(title: widget.categoryName),
+      actions: const [CartCounter()],
       bottom: PreferredSize(
         preferredSize: Size.fromHeight(70.h),
         child: Row(
@@ -80,9 +79,13 @@ class _CustomAppbarState extends State<CustomAppbar> {
                 child: ListView.builder(
                   controller: widget.listViewScrollController,
                   scrollDirection: Axis.horizontal,
-                  itemCount: widget.subCategories.length,
+                  itemCount:
+                      widget.subCategories.length +
+                      (widget.showFeatured ? 1 : 0),
                   itemBuilder: (context, index) {
-                    print('bulid ');
+                    bool isFeatured = widget.showFeatured && index == 0;
+                    int dataIndex = widget.showFeatured ? index - 1 : index;
+
                     return Container(
                       margin: const EdgeInsets.symmetric(horizontal: 5),
                       width: widget.sectionBtnWidth,
@@ -91,12 +94,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                             ? null
                             : Border.all(
                                 // strokeAlign: 1,
-                                color: const Color.fromRGBO(
-                                  170,
-                                  170,
-                                  170,
-                                  1,
-                                ),
+                                color: const Color.fromRGBO(170, 170, 170, 1),
                               ),
                         borderRadius: BorderRadius.circular(50.r),
                         color: activeSection == index
@@ -122,33 +120,55 @@ class _CustomAppbarState extends State<CustomAppbar> {
                             },
                           );
                         },
-                        child: Row(
-                          children: [
-                            Helper.loadNetworkImage(
-                              assetsErrorPath: 'assets/Icons_logos/Donuts.png',
-                              url: widget.subCategories[index].iconImage ?? '',
-                              width: 30.w,
-                            ),
-                            const SizedBox(width: 10),
-                            Container(
-                              constraints: BoxConstraints(
-                                maxWidth: 95.w,
-                              ),
-                              child: Text(
-                                widget.subCategories[index].name ?? '',
-                                overflow: TextOverflow.ellipsis,
-                                style: Styles.styles15w500interFamily.copyWith(
-                                  color: const Color.fromRGBO(
-                                    150,
-                                    150,
-                                    150,
-                                    1,
+                        child: isFeatured
+                            ? Row(
+                                spacing: 2.w,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("👑", style: TextStyle(fontSize: 20.sp)),
+                                  SizedBox(width: 5.w),
+                                  Text(
+                                    "Featured",
+                                    style: Styles.styles15w500interFamily
+                                        .copyWith(
+                                          color: MyColors.mainColor,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                   ),
-                                ),
+                                ],
+                              )
+                            : Row(
+                                children: [
+                                  Helper.loadNetworkImage(
+                                    assetsErrorPath:
+                                        'assets/Icons_logos/Donuts.png',
+                                    url:
+                                        widget
+                                            .subCategories[dataIndex]
+                                            .iconImage ??
+                                        '',
+                                    width: 30.w,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Container(
+                                    constraints: BoxConstraints(maxWidth: 95.w),
+                                    child: Text(
+                                      widget.subCategories[dataIndex].name ??
+                                          '',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Styles.styles15w500interFamily
+                                          .copyWith(
+                                            color: const Color.fromRGBO(
+                                              150,
+                                              150,
+                                              150,
+                                              1,
+                                            ),
+                                          ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
                       ),
                     );
                   },

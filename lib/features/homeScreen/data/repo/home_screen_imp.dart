@@ -58,13 +58,15 @@ class HomeScreenRepoImp extends GetHomeScreenRepo {
     }
   }
 
+  int page = 1;
+  int pageSize = 5;
   @override
   Future<Either<Failure, HomeSliderModel>> getConfigs() async {
     HomeSliderModel homeSliderModel = HomeSliderModel.fromJson({});
     try {
       homeSliderModel = HomeSliderModel.fromJson(
         await apiService.get(
-          endpoint: 'api/configs',
+          endpoint: AppUrls.getSliderUrl(page, pageSize),
         ),
       );
 
@@ -80,17 +82,20 @@ class HomeScreenRepoImp extends GetHomeScreenRepo {
 
   @override
   Future<Either<Failure, SpecialOfferModel>> getSpecialOffers({
-    required bool homeScreen,
+    bool? homeScreen,
     required int page,
   }) async {
     SpecialOfferModel specialOfferModel;
 
     try {
-      specialOfferModel = SpecialOfferModel.fromJson(
-        await apiService.get(
-          endpoint: 'api/offers?homeScreen=$homeScreen&page=$page',
+      final response = await apiService.get(
+        endpoint: AppUrls.getOffersUrl(
+          page,
+          homeScreen,
+          10,
         ),
       );
+      specialOfferModel = SpecialOfferModel.fromJson(response);
 
       return right(specialOfferModel);
     } catch (e) {

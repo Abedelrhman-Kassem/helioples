@@ -20,7 +20,7 @@ class ServerFailure extends Failure {
       case DioExceptionType.badResponse:
         if (dioError.response?.statusCode == 401 ||
             dioError.response?.statusCode == 400 ||
-            dioError.response?.statusCode == 404 ||
+            // dioError.response?.statusCode == 404 ||
             dioError.response?.statusCode == 403 ||
             dioError.response?.statusCode == 405) {
           // print(dioError.response!.data['message']);

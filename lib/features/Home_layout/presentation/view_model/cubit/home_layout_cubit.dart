@@ -13,12 +13,13 @@ import 'package:negmt_heliopolis/features/homeScreen/data/model/home_slider_mode
 import 'package:negmt_heliopolis/features/homeScreen/data/model/special_offer_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/repo/home_screen_imp.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/home_screen.dart';
+import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
 
 part 'home_layout_state.dart';
 
 class HomeLayoutCubit extends Cubit<HomeLayoutState> {
   HomeLayoutCubit() : super(HomeLayoutInitial()) {
-    // _init();
+    loadCategoryPreference();
   }
 
   String? token;
@@ -71,13 +72,22 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
 
   List<CategoryModel> categories = [];
 
-  List<String> configs = [];
+  List<ItemSlider> configs = [];
 
   List<Offer> offers = [];
 
   void changeCategory() {
     isCategoryRow = !isCategoryRow;
+    ServicesHelper.saveLocal('isCategoryRow', isCategoryRow.toString());
     emit(ChangeHomeScreenCategory());
+  }
+
+  void loadCategoryPreference() async {
+    final savedIsCategoryRow = await ServicesHelper.getLocal('isCategoryRow');
+    if (savedIsCategoryRow != null) {
+      isCategoryRow = savedIsCategoryRow == 'true';
+      emit(ChangeHomeScreenCategory());
+    }
   }
 
   HomeScreenRepoImp homeScreenImp = HomeScreenRepoImp(
@@ -127,10 +137,14 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
     );
   }
 
+  int page = 1;
+  bool isLoading = false;
+  bool isLastPage = false;
   Future<void> getSpecialOffers({
     required bool homeScreen,
-    required int page,
   }) async {
+    if (isLastPage) return;
+    isLoading = true;
     emit(FetchOffersLoading());
 
     Either<Failure, SpecialOfferModel> res =
@@ -140,11 +154,20 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
     );
 
     res.fold(
-      (failure) => emit(
-        FetchOffersFailed(failure.errorMessage),
-      ),
+      (failure) {
+        isLoading = false;
+        emit(
+          FetchOffersFailed(failure.errorMessage),
+        );
+      },
       (offersModel) {
+        isLoading = false;
         gettingOffers = true;
+        offers.addAll(offersModel.data!.items);
+        page++;
+        if (offersModel.data!.items.isEmpty) {
+          isLastPage = true;
+        }
         emit(FetchOffersSuccess(offersModel));
       },
     );

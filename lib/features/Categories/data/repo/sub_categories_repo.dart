@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
+import 'package:negmt_heliopolis/features/Categories/data/model/featur_model.dart';
 import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
@@ -13,5 +14,13 @@ abstract class SubCategoriesRepo {
 
   Future<Either<Failure, List<Products>>> getAllProductsOfSubCategory(
     int subCategoryId,
+  );
+  Future<Either<Failure, FeaturMdel>> getFeatures(
+    String categoryId,
+  );
+  Future<Either<Failure, List<Products>>> getProductsFeatured(
+    String featureId,
+    int page,
+    int pageSize,
   );
 }

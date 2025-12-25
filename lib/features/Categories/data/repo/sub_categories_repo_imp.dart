@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/network/app_urls.dart';
+import 'package:negmt_heliopolis/features/Categories/data/model/featur_model.dart';
 import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 import 'package:negmt_heliopolis/features/Categories/data/repo/sub_categories_repo.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
@@ -27,7 +28,7 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
 
       log("success loading sub categories");
 
-      final List<dynamic> rawList = response['data']['items'] ?? [];
+      final List<dynamic> rawList = response['data'] ?? [];
 
       final List<SubCatByCatidData> subCategories =
           rawList.map((item) => SubCatByCatidData.fromJson(item)).toList();
@@ -56,7 +57,7 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
       );
       List<Products> products = [];
 
-      for (var item in response['data']['items']) {
+      for (var item in response['data']['pagedProducts']['items']) {
         try {
           products.add(Products.fromJson(item));
         } catch (e) {
@@ -102,6 +103,50 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
         return left(ServerFailure.fromDioError(e));
       } else {
         // log("error loading products in sub category");
+        return left(ServerFailure(e.toString()));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, FeaturMdel>> getFeatures(String categoryId) async {
+    try {
+      var response = await api.get(
+        endpoint: AppUrls.getFeaturesUrl(categoryId),
+      );
+      log("success loading features $response");
+      return right(FeaturMdel.fromJson(response));
+    } catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure.fromDioError(e));
+      } else {
+        return left(ServerFailure(e.toString()));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Products>>> getProductsFeatured(
+      String featureId, int page, int pageSize) async {
+    try {
+      var response = await api.get(
+        endpoint: AppUrls.getProductsFeaturedUrl(featureId, page, pageSize),
+      );
+      log("${AppUrls.getProductsFeaturedUrl(featureId, page, pageSize)}");
+      // log("success loading products featured $response");
+      List<Products> products = [];
+      if (response['data'] != null &&
+          response['data']['pagedProducts'] != null &&
+          response['data']['pagedProducts']['items'] != null) {
+        for (var item in response['data']['pagedProducts']['items']) {
+          products.add(Products.fromJson(item));
+        }
+      }
+      return right(products);
+    } catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure.fromDioError(e));
+      } else {
         return left(ServerFailure(e.toString()));
       }
     }

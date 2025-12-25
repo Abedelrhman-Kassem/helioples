@@ -15,10 +15,24 @@ class DBHelper {
     String path = join(databasesPath, DB_Name);
     database = await openDatabase(
       path,
-      version: 1,
-      onCreate: (db, version) async {
-        try {
-          await db.execute('''
+      version: 2,
+      onCreate: _onCreate,
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute("DROP TABLE IF EXISTS $cartTable");
+          await db.execute("DROP TABLE IF EXISTS $searchTable");
+          await _onCreate(db, newVersion);
+        }
+      },
+      onOpen: (db) {
+        //
+      },
+    );
+  }
+
+  static Future<void> _onCreate(Database db, int version) async {
+    try {
+      await db.execute('''
               CREATE TABLE $cartTable (
               $cartItemId VARCHAR(255) PRIMARY KEY,
               $cartItemEnName TEXT NOT NULL,
@@ -32,27 +46,22 @@ class DBHelper {
               )
             ''');
 
-          await db.execute('''
+      await db.execute('''
               CREATE TABLE $searchTable (
               $searchItemId INTEGER PRIMARY KEY,
               $searchItemName TEXT NOT NULL UNIQUE
               )
             ''');
 
-          if (kDebugMode) {
-            print('$cartTable table created');
-            print('$searchTable table created');
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-        }
-      },
-      onOpen: (db) {
-        //
-      },
-    );
+      if (kDebugMode) {
+        print('$cartTable table created');
+        print('$searchTable table created');
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+    }
   }
 
   static Future<int> insertData({
@@ -138,8 +147,9 @@ class DBHelper {
   }
 
   static Future<int> getCartItemCount() async {
-    final List<Map<String, dynamic>> result =
-        await database.rawQuery('SELECT COUNT(*) as count FROM $cartTable');
+    final List<Map<String, dynamic>> result = await database.rawQuery(
+      'SELECT COUNT(*) as count FROM $cartTable',
+    );
 
     int count = Sqflite.firstIntValue(result) ?? 0;
 
@@ -156,7 +166,7 @@ class DBHelper {
     double totalDiscount = 0;
 
     for (var item in items) {
-      int qty = item[cartItemQty] as int;
+      double qty = item[cartItemQty] as double;
       double price = item[cartItemPrice] as double;
       double discount = item[cartItemDiscount] as double;
 
@@ -173,11 +183,13 @@ class DBHelper {
   }
 
   static Future<List<String>> getTables(Database database) async {
-    List<Map<String, Object?>> tables = await database
-        .rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
+    List<Map<String, Object?>> tables = await database.rawQuery(
+      "SELECT name FROM sqlite_master WHERE type='table'",
+    );
 
-    List<String> tableNames =
-        tables.map((table) => table['name'] as String).toList();
+    List<String> tableNames = tables
+        .map((table) => table['name'] as String)
+        .toList();
 
     return tableNames;
   }

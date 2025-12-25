@@ -2,19 +2,20 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/pagination_listener.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/core/widgets/special_offer_widget.dart';
+import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/widgets/loading_product.dart';
+import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/widgets/special_offer_item_loading.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view_model/cubit/special_offers_item_cubit.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/special_offer_model.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class SpecialOfferItemScreen extends StatefulWidget {
-  final int id;
+  final String id;
   const SpecialOfferItemScreen({
     super.key,
     required this.id,
@@ -25,7 +26,7 @@ class SpecialOfferItemScreen extends StatefulWidget {
 }
 
 class _SpecialOfferItemScreenState extends State<SpecialOfferItemScreen> {
-  late Offer offer;
+  Offer? offer;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,8 @@ class _SpecialOfferItemScreenState extends State<SpecialOfferItemScreen> {
               thumbnailImage: state.specialOfferItemModel.offer!.thumbnailImage,
               visits: state.specialOfferItemModel.offer!.visits,
               companyImage: state.specialOfferItemModel.offer!.companyImage,
-              createdAt: state.specialOfferItemModel.offer!.createdAt,
+              active: state.specialOfferItemModel.offer!.active,
+              pagedProducts: state.specialOfferItemModel.offer!.pagedProducts,
               expiresAt: state.specialOfferItemModel.offer!.expiresAt,
               homeScreen: state.specialOfferItemModel.offer!.homeScreen,
             );
@@ -57,6 +59,7 @@ class _SpecialOfferItemScreenState extends State<SpecialOfferItemScreen> {
           }
         },
         builder: (context, state) {
+          final cubit = context.read<SpecialOffersItemCubit>();
           return Scaffold(
             appBar: AppBar(
               leading: returnArrow(
@@ -70,94 +73,60 @@ class _SpecialOfferItemScreenState extends State<SpecialOfferItemScreen> {
                 style: Styles.styles16w700interFamily,
               ),
             ),
-            body: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(17.0.r),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (state is SpecialOffersSuccess) ...[
-                      SpecialOfferWidget(
-                        offer: offer,
-                        canNavigate: false,
+            body: PaginationListener(
+              isLoading: cubit.isLoading,
+              onLoadMore: () {
+                cubit.getOffer(id: widget.id);
+              },
+              child: CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  if (offer != null) ...[
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.all(17.0.r),
+                        child: Column(
+                          children: [
+                            SpecialOfferWidget(
+                              padding: 0,
+                              offer: offer!,
+                              canNavigate: false,
+                            ),
+                            SizedBox(height: 20.h),
+                          ],
+                        ),
                       ),
-                      SizedBox(height: 30.h),
-                      GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount:
-                            state.specialOfferItemModel.offer!.products!.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                    ),
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(horizontal: 17.0.r),
+                      sliver: SliverGrid(
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: 150,
                           crossAxisSpacing: 7,
                           mainAxisSpacing: 10,
-                          mainAxisExtent: 220,
-                          // childAspectRatio: 1 / 2,
+                          mainAxisExtent: 300.h,
                         ),
-                        itemBuilder: (context, index) => ItemWidget(
-                          relatedProductsModel: state
-                              .specialOfferItemModel.offer!.products![index],
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            if (index < cubit.products.length) {
+                              return ItemWidget(
+                                relatedProductsModel: cubit.products[index],
+                              );
+                            } else {
+                              return const LoadingProduct();
+                            }
+                          },
+                          childCount:
+                              cubit.products.length + (cubit.isLoading ? 6 : 0),
                         ),
                       ),
-                    ] else
-                      Skeletonizer(
-                        child: Column(
-                          children: [
-                            Helper.loadNetworkImage(
-                              assetsErrorPath:
-                                  'assets/screens_background/home-category.png',
-                            ),
-                            SizedBox(height: 30.h),
-                            GridView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: 9,
-                              gridDelegate:
-                                  const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 150,
-                                crossAxisSpacing: 7,
-                                mainAxisSpacing: 10,
-                                mainAxisExtent: 220,
-                              ),
-                              itemBuilder: (context, index) => Skeletonizer(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 25, horizontal: 10),
-                                  height: 240,
-                                  width: 130,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[100],
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Icon(Icons.heart_broken),
-                                        ],
-                                      ),
-                                      Helper.loadNetworkImage(
-                                        assetsErrorPath:
-                                            'assets/screens_background/home-category.png',
-                                      ),
-                                      const Text('hello there'),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                  ],
-                ),
+                    ),
+                    SliverToBoxAdapter(child: SizedBox(height: 20.h)),
+                  ] else
+                    const SliverToBoxAdapter(
+                      child: SpecialOfferItemLoading(),
+                    ),
+                ],
               ),
             ),
           );

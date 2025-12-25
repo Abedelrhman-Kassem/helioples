@@ -25,7 +25,7 @@ class _HomeLayoutState extends State<HomeLayout> {
       create: (context) => HomeLayoutCubit()
         ..getAllCategories(homeScreen: true, page: 1, pageSize: 20)
         ..getConfigs()
-        ..getSpecialOffers(homeScreen: true, page: 0),
+        ..getSpecialOffers(homeScreen: true),
       child: BlocConsumer<HomeLayoutCubit, HomeLayoutState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -48,7 +48,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                   homeLayoutCubit.getAllCategories(
                       homeScreen: true, page: 1, pageSize: 20);
                   homeLayoutCubit.getConfigs();
-                  homeLayoutCubit.getSpecialOffers(homeScreen: true, page: 0);
+                  homeLayoutCubit.getSpecialOffers(homeScreen: true);
                 },
                 child: PageTransitionSwitcher(
                   duration: const Duration(milliseconds: 300),

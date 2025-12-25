@@ -4,7 +4,8 @@ import 'package:negmt_heliopolis/features/SpecialOffersItem/data/model/offer_ite
 
 abstract class GetOfferItemRepo {
   Future<Either<Failure, SpecialOfferItemModel>> getSpecialOfferItem({
-    required int id,
+    required String id,
     required int page,
+    required int pageSize,
   });
 }
