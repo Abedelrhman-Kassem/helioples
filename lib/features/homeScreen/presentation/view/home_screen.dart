@@ -4,7 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:negmt_heliopolis/controller/location_widget.dart';
+import 'package:negmt_heliopolis/features/maps/widget/location_widget.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
@@ -137,54 +137,6 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             const LocationWidgetWithGetX(),
-            // const FeaturedProductsWidget(),
-            // BlocConsumer<MainCubit, MainState>(
-            //   listener: (context, state) {
-            //     if (state is GetAddressesFailed) {
-            //       CustomSnackBar.show(
-            //         context: context,
-            //         duration: const Duration(seconds: 10),
-            //         text: state.error,
-            //         isGreen: false,
-            //       );
-            //     }
-            //   },
-            //   builder: (context, state) {
-            //     if (state is LoadingAddresses) {
-            //       return FractionalTranslation(
-            //         translation: const Offset(0, -0.5),
-            //         child: Skeletonizer(
-            //           child: Container(
-            //               padding: EdgeInsets.symmetric(
-            //                 horizontal: 50.w,
-            //                 vertical: 10.h,
-            //               ),
-            //               height: 100.h,
-            //               decoration: BoxDecoration(
-            //                 color: Colors.grey[100],
-            //                 borderRadius: BorderRadius.circular(10.r),
-            //               ),
-            //               child: const Column(
-            //                 mainAxisAlignment: MainAxisAlignment.center,
-            //                 children: [
-            //                   Text(StringTranslateExtension(LocaleKeys.home_screen_hello_how).tr()),
-            //                   Text(StringTranslateExtension(LocaleKeys.home_screen_hello_how).tr()),
-            //                 ],
-            //               )),
-            //         ),
-            //       );
-            //     } else if (state is GetAddressesSuccessfully) {
-            //       return const FractionalTranslation(
-            //         translation: Offset(0, -0.5),
-            //         child: LocationWidgetWithGetX(),
-            //       );
-            //     } else {
-            //       return SizedBox(
-            //         height: 50.h,
-            //       );
-            //     }
-            //   },
-            // ),
             Column(
               children: [
                 // Special Offers -----------------------------------------------

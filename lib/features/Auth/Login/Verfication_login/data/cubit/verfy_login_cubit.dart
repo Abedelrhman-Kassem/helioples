@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:negmt_heliopolis/controller/addresse_controller.dart';
+import 'package:negmt_heliopolis/controller/map/addresse_controller.dart';
 import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/Verfication_login/data/cubit/verfy_login_states.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/models/login_model.dart';
@@ -12,7 +12,7 @@ class VerfyLoginCubit extends Cubit<VerfyLoginStates> {
   final VerifyAndRegisterRepoImp verifyLoginRepo;
 
   VerfyLoginCubit({required this.verifyLoginRepo, required this.loginModel})
-      : super(const VerfyLoginStates.initial());
+    : super(const VerfyLoginStates.initial());
   bool clearText = false;
 
   // static SignInCubit get(context) => BlocProvider.of(context);
@@ -20,19 +20,20 @@ class VerfyLoginCubit extends Cubit<VerfyLoginStates> {
   Future<void> verifyOtpAndLogin(String smsCode) async {
     emit(const VerfyLoginStates.loading());
 
-    final result =
-        await verifyLoginRepo.verifayCode(loginModel!.verificationId!, smsCode);
-    result.fold(
-      (failure) => emit(VerfyLoginStates.failure(failure)),
-      (status) async {
-        ServicesHelper.saveLocal('token', loginModel!.data!);
-        final addressesCtrl = Get.find<AddressesControllerImpl>();
-        final authC = Get.find<AuthController>();
-        await addressesCtrl.fetchAddresses();
-        authC.login();
-        emit(VerfyLoginStates.success(status));
-      },
+    final result = await verifyLoginRepo.verifayCode(
+      loginModel!.verificationId!,
+      smsCode,
     );
+    result.fold((failure) => emit(VerfyLoginStates.failure(failure)), (
+      status,
+    ) async {
+      ServicesHelper.saveLocal('token', loginModel!.data!);
+      final addressesCtrl = Get.find<AddressesControllerImpl>();
+      final authC = Get.find<AuthController>();
+      await addressesCtrl.fetchAddresses();
+      authC.login();
+      emit(VerfyLoginStates.success(status));
+    });
   }
 
   void changeClearText() {

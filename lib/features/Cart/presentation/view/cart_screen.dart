@@ -53,8 +53,9 @@ class _CartScreenState extends State<CartScreen> {
                 context: context,
                 onTap: () {
                   try {
-                    BlocProvider.of<HomeLayoutCubit>(context)
-                        .returnIndex(context);
+                    BlocProvider.of<HomeLayoutCubit>(
+                      context,
+                    ).returnIndex(context);
                   } catch (e) {
                     if (Navigator.canPop(context)) {
                       Navigator.pop(context);
@@ -82,24 +83,25 @@ class _CartScreenState extends State<CartScreen> {
                                   tableValues[index][cartItemEnName] as String,
                               description:
                                   tableValues[index][cartItemEnDesc] as String,
-                              thumbnailImage: tableValues[index]
-                                  [cartItemImageUrl] as String,
+                              thumbnailImage:
+                                  tableValues[index][cartItemImageUrl]
+                                      as String,
                               price:
                                   tableValues[index][cartItemPrice] as double,
-                              discount: tableValues[index][cartItemDiscount]
-                                  as double,
-                              quantity: tableValues[index][cartItemQty] as int,
+                              discount:
+                                  tableValues[index][cartItemDiscount]
+                                      as double,
+                              quantity:
+                                  tableValues[index][cartItemQty] as double,
                               availableQuantity: cartCubit.getAvailablePieces(
-                                tableValues[index][cartItemId] as int,
+                                tableValues[index][cartItemId] as String,
                               ),
                             ),
                             onDelete: cartCubit.deleteItem,
                           ),
                           itemCount: tableValues.length,
                         ),
-                        SizedBox(
-                          height: 293.h,
-                        ),
+                        SizedBox(height: 293.h),
                       ],
                     ),
                   )

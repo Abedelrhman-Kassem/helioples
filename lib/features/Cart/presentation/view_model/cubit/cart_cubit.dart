@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
@@ -15,8 +18,9 @@ part 'cart_state.dart';
 class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartInitial());
 
-  GetPricesRepoImp getPricesRepoImp =
-      GetPricesRepoImp(apiService: ApiService());
+  GetPricesRepoImp getPricesRepoImp = GetPricesRepoImp(
+    apiService: Get.find<ApiService>(),
+  );
 
   UpdateCartModel? updateCartModel;
 
@@ -25,8 +29,9 @@ class CartCubit extends Cubit<CartState> {
 
   void getCartProducts() async {
     emit(CartLoadingState());
+    log("start getCartProducts");
 
-    List<int> ids = [];
+    List<String> ids = [];
 
     tableIdValues = await DBHelper.queryData(
       table: cartTable,
@@ -34,15 +39,15 @@ class CartCubit extends Cubit<CartState> {
     );
 
     for (var value in tableIdValues) {
-      ids.add(value[cartItemId] as int);
+      ids.add(value[cartItemId] as String);
     }
 
-    Either<Failure, UpdateCartModel> res =
-        await getPricesRepoImp.getCartProducts(ids);
+    Either<Failure, UpdateCartModel> res = await getPricesRepoImp
+        .getCartProducts(ids);
 
     res.fold(
       (failure) => {
-        if (!isClosed) {emit(CartFailedState(error: failure.errorMessage))}
+        if (!isClosed) {emit(CartFailedState(error: failure.errorMessage))},
       },
       (updateCart) async {
         tableValues = await updateDBData(updateCart);
@@ -115,7 +120,7 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  int getAvailablePieces(int id) {
+  int getAvailablePieces(String id) {
     for (var product in updateCartModel!.products!) {
       if (product.id == id) {
         return product.availableQuantity!;

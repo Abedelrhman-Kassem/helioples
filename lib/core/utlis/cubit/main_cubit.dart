@@ -9,7 +9,7 @@ import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
-import 'package:negmt_heliopolis/features/Address/data/model/address_model.dart';
+import 'package:negmt_heliopolis/features/maps/model/address_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/repo/address_repo_imp.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/repo/home_screen_imp.dart';
@@ -28,52 +28,52 @@ class MainCubit extends Cubit<MainState> {
 
   GetAddressessImp getAddressessImp = GetAddressessImp(ApiService());
 
-  AddressModel mainaddressModel = AddressModel(address: []);
+  // AddressModel mainaddressModel = AddressModel(address: []);
 
-  Future<void> getAddressess() async {
-    emit(LoadingAddresses());
+  // Future<void> getAddressess() async {
+  //   emit(LoadingAddresses());
 
-    Either<Failure, AddressModel> res = await getAddressessImp.getAddressess();
+  //   Either<Failure, AddressModel> res = await getAddressessImp.getAddressess();
 
-    res.fold(
-      (failure) {
-        emit(
-          GetAddressesFailed(failure.errorMessage),
-        );
-      },
-      (addressModel) async {
-        mainaddressModel = addressModel;
-        await getChossenAddress();
-        emit(
-          GetAddressesSuccessfully(addressModel),
-        );
-      },
-    );
-  }
+  //   res.fold(
+  //     (failure) {
+  //       emit(
+  //         GetAddressesFailed(failure.errorMessage),
+  //       );
+  //     },
+  //     (addressModel) async {
+  //       mainaddressModel = addressModel;
+  //       await getChossenAddress();
+  //       emit(
+  //         GetAddressesSuccessfully(addressModel),
+  //       );
+  //     },
+  //   );
+  // }
 
-  Address? address;
+  // Address? address;
 
-  Future<void> getChossenAddress() async {
-    int? addressId = await getChossenAddressId();
+  // Future<void> getChossenAddress() async {
+  //   int? addressId = await getChossenAddressId();
 
-    address = mainaddressModel.address!.firstWhere(
-      (element) => element.id == addressId,
-      orElse: () => mainaddressModel.address!.first,
-    );
-  }
+  //   address = mainaddressModel.address!.firstWhere(
+  //     (element) => element.id == addressId,
+  //     orElse: () => mainaddressModel.address!.first,
+  //   );
+  // }
 
-  Future<int?> getChossenAddressId() async {
-    return await CacheHelper.getSharedPreferenceData(key: 'addressId');
-  }
+  // Future<int?> getChossenAddressId() async {
+  //   return await CacheHelper.getSharedPreferenceData(key: 'addressId');
+  // }
 
-  Future<void> setChossenAddress(int addressId) async {
-    await CacheHelper.saveSharedPreferencesData(
-      key: 'addressId',
-      value: addressId,
-    );
+  // Future<void> setChossenAddress(int addressId) async {
+  //   await CacheHelper.saveSharedPreferencesData(
+  //     key: 'addressId',
+  //     value: addressId,
+  //   );
 
-    getChossenAddress();
-  }
+  //   getChossenAddress();
+  // }
 
   HomeScreenRepoImp homeScreenImp = HomeScreenRepoImp(
     apiService: Get.put(ApiService(), permanent: true),
@@ -88,16 +88,14 @@ class MainCubit extends Cubit<MainState> {
     emit(FetchMainCubitCategoriesLoading());
     loadingCategories = true;
     log("page $page");
-    Either<Failure, AllCategoriesModel> res =
-        await homeScreenImp.getAllCategories(
-      // homeScreen: homeScreen,
-      page: page,
-      pageSize: 20,
-    );
+    Either<Failure, AllCategoriesModel> res = await homeScreenImp
+        .getAllCategories(
+          // homeScreen: homeScreen,
+          page: page,
+          pageSize: 20,
+        );
     res.fold(
-      (failure) => emit(
-        FetchMainCubitCategoriesFailure(failure.errorMessage),
-      ),
+      (failure) => emit(FetchMainCubitCategoriesFailure(failure.errorMessage)),
       (categoriesModel) {
         if (categoriesModel.categories.isEmpty) {
           endFetching = true;

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
-import 'package:negmt_heliopolis/features/Address/data/model/address_model.dart';
+import 'package:negmt_heliopolis/features/maps/model/address_model.dart';
 
 class ConfirmAddress extends StatefulWidget {
   final Address address;
@@ -20,13 +20,8 @@ class _ConfirmAddressState extends State<ConfirmAddress> {
 
     return SingleChildScrollView(
       child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 20.w,
-          vertical: 25.h,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30.r),
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 25.h),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.r)),
         child: Column(
           children: [
             Row(
@@ -196,10 +191,7 @@ class _ConfirmAddressState extends State<ConfirmAddress> {
                       vertical: 20.h,
                     ),
                     borderRadius: 53.r,
-                    border: Border.all(
-                      color: MyColors.mainColor,
-                      width: 1.5.r,
-                    ),
+                    border: Border.all(color: MyColors.mainColor, width: 1.5.r),
                     child: Text(
                       'Use Once',
                       style: Styles.styles17w600White.copyWith(
@@ -223,57 +215,53 @@ class _ConfirmAddressState extends State<ConfirmAddress> {
 }
 
 InputDecoration textInputDecoration(String hint) => InputDecoration(
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: 15.w,
-        vertical: 15.h,
-      ),
-      hintText: hint,
-      hintStyle: Styles.styles17w400interFamily.copyWith(
-        color: const Color.fromRGBO(181, 185, 190, 1),
-      ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(40.r),
-        borderSide: const BorderSide(
-          color: Color.fromRGBO(210, 210, 210, 1),
-          width: 1.0,
-        ),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(40.r),
-        borderSide: const BorderSide(
-          color: Color.fromRGBO(210, 210, 210, 1), // Color for enabled state
-          width: 1.0,
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(40.r),
-        borderSide: BorderSide(
-          color: MyColors.mainColor, // Color for focused state
-          width: 2.0, // Width for focused state
-        ),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(40.r),
-        borderSide: const BorderSide(
-          color: Color.fromRGBO(255, 0, 0, 1), // Color for error state
-          width: 1.5,
-        ),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(40.r),
-        borderSide: const BorderSide(
-          color:
-              Color.fromRGBO(255, 50, 50, 1), // Color for focused error state
-          width: 2.0,
-        ),
-      ),
-    );
+  contentPadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+  hintText: hint,
+  hintStyle: Styles.styles17w400interFamily.copyWith(
+    color: const Color.fromRGBO(181, 185, 190, 1),
+  ),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(40.r),
+    borderSide: const BorderSide(
+      color: Color.fromRGBO(210, 210, 210, 1),
+      width: 1.0,
+    ),
+  ),
+  enabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(40.r),
+    borderSide: const BorderSide(
+      color: Color.fromRGBO(210, 210, 210, 1), // Color for enabled state
+      width: 1.0,
+    ),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(40.r),
+    borderSide: BorderSide(
+      color: MyColors.mainColor, // Color for focused state
+      width: 2.0, // Width for focused state
+    ),
+  ),
+  errorBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(40.r),
+    borderSide: const BorderSide(
+      color: Color.fromRGBO(255, 0, 0, 1), // Color for error state
+      width: 1.5,
+    ),
+  ),
+  focusedErrorBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(40.r),
+    borderSide: const BorderSide(
+      color: Color.fromRGBO(255, 50, 50, 1), // Color for focused error state
+      width: 2.0,
+    ),
+  ),
+);
 
 BoxDecoration containerBoxDecoration() => BoxDecoration(
-      color: const Color.fromRGBO(246, 246, 246, 1),
-      borderRadius: BorderRadius.circular(40.r),
-      border: Border.all(
-        color: const Color.fromRGBO(210, 210, 210, 1),
-        width: 1.5.r,
-      ),
-    );
+  color: const Color.fromRGBO(246, 246, 246, 1),
+  borderRadius: BorderRadius.circular(40.r),
+  border: Border.all(
+    color: const Color.fromRGBO(210, 210, 210, 1),
+    width: 1.5.r,
+  ),
+);

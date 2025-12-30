@@ -26,7 +26,7 @@ class ItemWidget extends StatefulWidget {
 }
 
 class _ItemWidgetState extends State<ItemWidget> {
-  int counter = 0;
+  double counter = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +42,7 @@ class _ItemWidgetState extends State<ItemWidget> {
       },
       child: Container(
         width: 120,
-        padding: const EdgeInsets.symmetric(
-          vertical: 5,
-          horizontal: 6,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 6),
         decoration: BoxDecoration(
           color: widget.color ?? const Color.fromRGBO(241, 241, 241, 1),
           borderRadius: BorderRadius.circular(15.5),
@@ -75,28 +72,29 @@ class _ItemWidgetState extends State<ItemWidget> {
                     end: 0,
                     bottom: 0,
                     child: SizedBox(
-                        height: 30,
-                        child: product.availableQuantity! > 0
-                            ? ItemCounterWidget(
-                                itemUiModel: Products(
-                                  id: product.id!,
-                                  name: product.name!,
-                                  enName: product.enName ?? 'enName',
-                                  enDescription:
-                                      product.description ?? 'enDescription',
-                                  description:
-                                      product.description ?? 'description',
-                                  thumbnailImage: product.thumbnailImage ?? '',
-                                  price: product.price!,
-                                  discount: product.discount ?? 0,
-                                  availableQuantity: product.availableQuantity!,
-                                  quantity: counter,
-                                ),
-                              )
-                            : NotificationButtonControlled(
-                                isnotification: false,
-                                addNotiOrRemoveNoti: () {},
-                              )),
+                      height: 30,
+                      child: product.availableQuantity! > 0
+                          ? ItemCounterWidget(
+                              itemUiModel: Products(
+                                id: product.id!,
+                                name: product.name!,
+                                enName: product.enName ?? 'enName',
+                                enDescription:
+                                    product.description ?? 'enDescription',
+                                description:
+                                    product.description ?? 'description',
+                                thumbnailImage: product.thumbnailImage ?? '',
+                                price: product.price!,
+                                discount: product.discount ?? 0,
+                                availableQuantity: product.availableQuantity!,
+                                quantity: counter,
+                              ),
+                            )
+                          : NotificationButtonControlled(
+                              isnotification: false,
+                              addNotiOrRemoveNoti: () {},
+                            ),
+                    ),
                   ),
                   Align(
                     alignment: Alignment.topCenter,
@@ -145,20 +143,20 @@ class _ItemWidgetState extends State<ItemWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  constraints: const BoxConstraints(
-                    maxWidth: 74,
-                  ),
+                  constraints: const BoxConstraints(maxWidth: 74),
                   child: RichText(
                     text: TextSpan(
                       text: '${product.price ?? product.price!.toInt()}',
-                      style:
-                          Styles.styles16w800interFamily.copyWith(fontSize: 16),
+                      style: Styles.styles16w800interFamily.copyWith(
+                        fontSize: 16,
+                      ),
                       children: [
                         TextSpan(
                           text:
                               '.${((product.price! - product.price!.toInt()) * 100).round()}',
-                          style: Styles.styles9w300interFamily
-                              .copyWith(fontSize: 9),
+                          style: Styles.styles9w300interFamily.copyWith(
+                            fontSize: 9,
+                          ),
                         ),
                       ],
                     ),
@@ -196,10 +194,7 @@ class _ItemWidgetState extends State<ItemWidget> {
 
 Widget _statusItem(String status) {
   return Container(
-    padding: const EdgeInsets.symmetric(
-      horizontal: 7.34,
-      vertical: 3.67,
-    ),
+    padding: const EdgeInsets.symmetric(horizontal: 7.34, vertical: 3.67),
     decoration: BoxDecoration(
       color: const Color.fromRGBO(248, 147, 31, 0.1),
       borderRadius: BorderRadius.circular(3.67),

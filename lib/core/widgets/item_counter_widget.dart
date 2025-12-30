@@ -40,7 +40,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
     super.dispose();
   }
 
-  int counter = 0;
+  double counter = 0;
   late bool isExpanded;
 
   @override
@@ -61,7 +61,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
     );
 
     if (value.isNotEmpty) {
-      counter = int.parse(value.first[cartItemQty].toString());
+      counter = value[0][cartItemQty] as double;
       if (mounted) {
         setState(() {});
       }
@@ -88,7 +88,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
     }
   }
 
-  Future<void> _updateCounterInDB(int newCounter) async {
+  Future<void> _updateCounterInDB(double newCounter) async {
     await DBHelper.insertData(
       table: cartTable,
       values: {

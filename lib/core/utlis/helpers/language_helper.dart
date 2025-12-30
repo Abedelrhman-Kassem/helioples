@@ -14,3 +14,12 @@ String getLocale(BuildContext context) {
 bool isRtl(BuildContext context) {
   return getLocale(context) == 'ar';
 }
+
+String detectLangFromQuery(String query) {
+  final hasArabic = RegExp(r'[\u0600-\u06FF]').hasMatch(query);
+  if (hasArabic) {
+    return 'ar';
+  } else {
+    return 'en';
+  }
+}

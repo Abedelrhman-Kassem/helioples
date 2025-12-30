@@ -45,7 +45,8 @@ class RelatedProducts {
       items: json["items"] == null
           ? []
           : List<Products>.from(
-              json["items"]!.map((x) => Products.fromJson(x))),
+              json["items"]!.map((x) => Products.fromJson(x)),
+            ),
     );
   }
 }
@@ -82,7 +83,7 @@ class Products {
   final String? state;
   final double? discount;
   final bool? isLiked;
-  int quantity;
+  double quantity;
   final RelatedProducts? relatedProducts;
 
   factory Products.fromJson(Map<String, dynamic> json) {

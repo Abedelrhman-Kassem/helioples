@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
-import 'package:negmt_heliopolis/controller/addresse_controller.dart';
+import 'package:negmt_heliopolis/controller/map/addresse_controller.dart';
 import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view_model/sign_up_cubit/sent_otp_states.dart';
 import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/repo/verify_and_register_repo.dart';
@@ -14,9 +14,10 @@ class VerfyAndRegisterCubit extends Cubit<VerfAndRegisterStates> {
   final OtpModel otpModel;
   final VerifyAndRegisterRepo verifyAndRegisterRepo;
 
-  VerfyAndRegisterCubit(
-      {required this.otpModel, required this.verifyAndRegisterRepo})
-      : super(const VerfAndRegisterStates.initial());
+  VerfyAndRegisterCubit({
+    required this.otpModel,
+    required this.verifyAndRegisterRepo,
+  }) : super(const VerfAndRegisterStates.initial());
   bool clearText = false;
 
   // static SignInCubit get(context) => BlocProvider.of(context);
@@ -26,7 +27,9 @@ class VerfyAndRegisterCubit extends Cubit<VerfAndRegisterStates> {
     log('verificationId: ${otpModel.verificationId}');
 
     final result = await verifyAndRegisterRepo.verifayCode(
-        otpModel.verificationId, smsCode);
+      otpModel.verificationId,
+      smsCode,
+    );
     result.fold(
       (failure) =>
           emit(VerfAndRegisterStates.verfOtpFailure(ServerFailure(failure))),

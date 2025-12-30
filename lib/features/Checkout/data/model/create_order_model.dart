@@ -4,7 +4,7 @@ class CreateOrderModel {
   double? tips;
   String? alternativeProduct;
   int? branchId;
-  int? addressId;
+  String? addressId;
   bool? chooseForMe;
   String? promoCode;
   int? deliverTimeId;

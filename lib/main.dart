@@ -52,16 +52,15 @@ void main() async {
       statusBarBrightness: Brightness.dark,
     ),
   );
-  // ServicesHelper.saveLocal('token',
-  //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijc1MzM4YWY1LTAzMmUtNDc4MC05MzE3LTg3ZGEwMzI0MDlhZSIsImZpcnN0TmFtZSI6Im1vaGFtZWQiLCJsYXN0TmFtZSI6Im1vaGFtZWQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9kYXRlb2ZiaXJ0aCI6IjEyLzEwLzIwMjUgODo0MjoxNSBBTSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL21vYmlsZXBob25lIjoiMDEyMDE4NTU0ODUiLCJpbWFnZSI6IiIsImV4cCI6MTc5NzAxMDE2MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ1In0.BL7pVPpgNWo6zTfj3A1pmrYBdMwohLzPWepTRJ7gED0');
+  // ServicesHelper.saveLocal(
+  //   'token',
+  //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImQ5ZDk4OGMyLTZkNmItNGMxNC1hZTIyLTQ3NTQ0NWEwMWQ2ZiIsImZpcnN0TmFtZSI6InN0cmluZyIsImxhc3ROYW1lIjoic3RyaW5nIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZGF0ZW9mYmlydGgiOiIxMi8wNy8yMDI1IDEyOjQwOjE2IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIwMTIwMTg1NTQ4NSIsImltYWdlIjoic3RyaW5nIiwiZXhwIjoxNzk4NDc4NzE4LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUxNDUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUxNDUifQ.SidkbdCUf6AsgdmwG92GhCCU6Ck_1hR5-_lIrMkuCxY',
+  // );
   // check if user is logged in
   final String? token = await ServicesHelper.getLocal('token');
   final bool isLoggedIn = token != null;
   bool serverError = false;
-  final appRouter = AppRouter(
-    isLoggedIn: isLoggedIn,
-    serverError: serverError,
-  );
+  final appRouter = AppRouter(isLoggedIn: isLoggedIn, serverError: serverError);
   // ----------------------------------------------------------------------
 
   runApp(

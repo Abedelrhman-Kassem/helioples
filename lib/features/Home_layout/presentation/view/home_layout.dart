@@ -3,7 +3,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:negmt_heliopolis/controller/map/addresse_controller.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
@@ -29,8 +31,9 @@ class _HomeLayoutState extends State<HomeLayout> {
       child: BlocConsumer<HomeLayoutCubit, HomeLayoutState>(
         listener: (context, state) {},
         builder: (context, state) {
-          HomeLayoutCubit homeLayoutCubit =
-              BlocProvider.of<HomeLayoutCubit>(context);
+          HomeLayoutCubit homeLayoutCubit = BlocProvider.of<HomeLayoutCubit>(
+            context,
+          );
 
           return PopScope(
             canPop: false,
@@ -46,26 +49,31 @@ class _HomeLayoutState extends State<HomeLayout> {
                 backgroundColor: Colors.transparent,
                 onRefresh: () async {
                   homeLayoutCubit.getAllCategories(
-                      homeScreen: true, page: 1, pageSize: 20);
+                    homeScreen: true,
+                    page: 1,
+                    pageSize: 20,
+                  );
                   homeLayoutCubit.getConfigs();
                   homeLayoutCubit.getSpecialOffers(homeScreen: true);
+                  Get.find<AddressesControllerImpl>().fetchAddresses();
                 },
                 child: PageTransitionSwitcher(
                   duration: const Duration(milliseconds: 300),
-                  reverse: homeLayoutCubit.selectedIndex <
+                  reverse:
+                      homeLayoutCubit.selectedIndex <
                       homeLayoutCubit.previousIndex,
                   transitionBuilder:
                       (child, primaryAnimation, secondaryAnimation) {
-                    Tween<Offset> myTween = Tween<Offset>(
-                      begin: const Offset(1, 0),
-                      end: const Offset(0, 0),
-                    );
+                        Tween<Offset> myTween = Tween<Offset>(
+                          begin: const Offset(1, 0),
+                          end: const Offset(0, 0),
+                        );
 
-                    return SlideTransition(
-                      position: myTween.animate(primaryAnimation),
-                      child: child,
-                    );
-                  },
+                        return SlideTransition(
+                          position: myTween.animate(primaryAnimation),
+                          child: child,
+                        );
+                      },
                   child: homeLayoutCubit.screens[homeLayoutCubit.selectedIndex],
                 ),
               ),
@@ -74,16 +82,14 @@ class _HomeLayoutState extends State<HomeLayout> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(75.r),
-                    ),
-                    boxShadow: [
-                      MyBoxShadows.gNavBoxSahdow,
-                    ],
+                    borderRadius: BorderRadius.all(Radius.circular(75.r)),
+                    boxShadow: [MyBoxShadows.gNavBoxSahdow],
                   ),
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 15.r, vertical: 20.r),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 15.r,
+                      vertical: 20.r,
+                    ),
                     child: GNav(
                       textStyle: Styles.styles12w500sFProTextFamily,
                       selectedIndex: homeLayoutCubit.selectedIndex,
@@ -98,7 +104,9 @@ class _HomeLayoutState extends State<HomeLayout> {
                           context: context,
                           activeSvgPath: 'assets/svg_icons/white-home.svg',
                           outlinedSvgPath: 'assets/svg_icons/home.svg',
-                          text: LocaleKeys.home_layout_screen_home.tr(),
+                          text: StringTranslateExtension(
+                            LocaleKeys.home_layout_screen_home,
+                          ).tr(),
                           index: 0,
                         ),
                         gButtonItem(
@@ -106,14 +114,18 @@ class _HomeLayoutState extends State<HomeLayout> {
                           activeSvgPath:
                               'assets/svg_icons/white-search-normal.svg',
                           outlinedSvgPath: 'assets/svg_icons/search-normal.svg',
-                          text: LocaleKeys.home_layout_screen_explore.tr(),
+                          text: StringTranslateExtension(
+                            LocaleKeys.home_layout_screen_explore,
+                          ).tr(),
                           index: 1,
                         ),
                         gButtonItem(
                           context: context,
                           activeSvgPath: 'assets/svg_icons/white-heart.svg',
                           outlinedSvgPath: 'assets/svg_icons/heart.svg',
-                          text: LocaleKeys.home_layout_screen_liked.tr(),
+                          text: StringTranslateExtension(
+                            LocaleKeys.home_layout_screen_liked,
+                          ).tr(),
                           index: 2,
                         ),
                         gButtonItem(
@@ -121,14 +133,18 @@ class _HomeLayoutState extends State<HomeLayout> {
                           activeSvgPath:
                               'assets/svg_icons/white-favorite-Cart.svg',
                           outlinedSvgPath: 'assets/svg_icons/favorite-Cart.svg',
-                          text: LocaleKeys.home_layout_screen_cart.tr(),
+                          text: StringTranslateExtension(
+                            LocaleKeys.home_layout_screen_cart,
+                          ).tr(),
                           index: 3,
                         ),
                         gButtonItem(
                           context: context,
                           activeSvgPath: 'assets/svg_icons/white-user.svg',
                           outlinedSvgPath: 'assets/svg_icons/user.svg',
-                          text: LocaleKeys.home_layout_screen_profile.tr(),
+                          text: StringTranslateExtension(
+                            LocaleKeys.home_layout_screen_profile,
+                          ).tr(),
                           index: 4,
                         ),
                       ],

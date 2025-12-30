@@ -3,17 +3,13 @@ import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/trkey_helper.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
-enum ValidateInput {
-  username,
-  email,
-  phoneNumber,
-}
+enum ValidateInput { username, email, phoneNumber }
 
 vlidateInPut({
   required String val,
   required int min,
   required int max,
-  required ValidateInput type,
+  ValidateInput? type,
 }) {
   if (val.isEmpty) {
     return trKey(LocaleKeys.validation_empty_error);
@@ -35,11 +31,15 @@ vlidateInPut({
     }
   }
   if (val.length < min) {
-    return trKey(LocaleKeys.validation_too_short,
-        namedArgs: {"min": min.toString()});
+    return trKey(
+      LocaleKeys.validation_too_short,
+      namedArgs: {"min": min.toString()},
+    );
   }
   if (val.length > max) {
-    return trKey(LocaleKeys.validation_too_long,
-        namedArgs: {"max": max.toString()});
+    return trKey(
+      LocaleKeys.validation_too_long,
+      namedArgs: {"max": max.toString()},
+    );
   }
 }

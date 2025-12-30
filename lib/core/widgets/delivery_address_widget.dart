@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_animated_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
@@ -9,6 +10,7 @@ Widget deliveryAddressWidget({
   required bool isChossen,
   required String location,
   required void Function() onTap,
+  required void Function() onEdit,
 }) {
   return Material(
     color: Colors.transparent,
@@ -33,10 +35,7 @@ Widget deliveryAddressWidget({
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    title,
-                    style: Styles.styles16w400NormalBlack,
-                  ),
+                  Text(title, style: Styles.styles16w400NormalBlack),
                   Text(
                     location,
                     style: Styles.styles12w400black,
@@ -46,6 +45,11 @@ Widget deliveryAddressWidget({
               ),
             ),
             const Spacer(),
+            IconButton(
+              onPressed: onEdit,
+              icon: Icon(Icons.edit, color: MyColors.mainColor, size: 25.r),
+            ),
+            SizedBox(width: 10.w),
             radioAnimatedWidget(isChossen),
           ],
         ),

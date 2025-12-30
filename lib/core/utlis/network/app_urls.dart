@@ -14,9 +14,9 @@ class AppUrls {
     if (page != null) params['Page'] = page.toString();
     if (pageSize != null) params['PageSize'] = pageSize.toString();
 
-    final uri = Uri.parse('$_baseUrl/Categories').replace(
-      queryParameters: params.isEmpty ? null : params,
-    );
+    final uri = Uri.parse(
+      '$_baseUrl/Categories',
+    ).replace(queryParameters: params.isEmpty ? null : params);
 
     return uri.toString();
   }
@@ -27,22 +27,28 @@ class AppUrls {
     return uri.toString();
   }
 
-  static String getProductsInSubCategoryUrl(
-      {required String id,
-      bool active = true,
-      int page = 1,
-      int pageSize = 10}) {
+  static String getProductsInSubCategoryUrl({
+    required String id,
+    bool active = true,
+    int page = 1,
+    int pageSize = 10,
+  }) {
     final uri = Uri.parse(
-        '$_baseUrl/SubCategory/$id?Page=$page&PageSize=$pageSize&Active=true');
+      '$_baseUrl/SubCategory/$id?Page=$page&PageSize=$pageSize&Active=true',
+    );
 
     return uri.toString();
   }
 
-//                         Product
-  static String getProductDetailsUrl(
-      {required String id, int page = 1, int pageSize = 10}) {
+  //                         Product
+  static String getProductDetailsUrl({
+    required String id,
+    int page = 1,
+    int pageSize = 10,
+  }) {
     final uri = Uri.parse(
-        '$_baseUrl/Product/$id?Page=$page&PageSize=$pageSize&Active=true');
+      '$_baseUrl/Product/$id?Page=$page&PageSize=$pageSize&Active=true',
+    );
 
     return uri.toString();
   }
@@ -60,9 +66,9 @@ class AppUrls {
 
     if (homeScreen != null) params['HomeScreen'] = homeScreen.toString();
 
-    final uri = Uri.parse('$_baseUrl/Offers').replace(
-      queryParameters: params.isEmpty ? null : params,
-    );
+    final uri = Uri.parse(
+      '$_baseUrl/Offers',
+    ).replace(queryParameters: params.isEmpty ? null : params);
     log(uri.toString());
     return uri.toString();
   }
@@ -78,6 +84,14 @@ class AppUrls {
       '$_baseUrl/Featured/category/$categoryId';
 
   static String getProductsFeaturedUrl(
-          String featureId, int page, int pageSize) =>
+    String featureId,
+    int page,
+    int pageSize,
+  ) =>
       '$_baseUrl/Featured/$featureId?Page=$page&PageSize=$pageSize&Active=true';
+
+  //                         Address
+  static String getAddressesUrl() => '$_baseUrl/Address/user';
+  static String addAddressesUrl() => '$_baseUrl/Address';
+  static String updateAddressesUrl(String id) => '$_baseUrl/Address/$id';
 }

@@ -9,17 +9,17 @@ sealed class MainState extends Equatable {
 
 final class MainInitial extends MainState {}
 
-final class LoadingAddresses extends MainState {}
+// final class LoadingAddresses extends MainState {}
 
-final class GetAddressesSuccessfully extends MainState {
-  final AddressModel addressModel;
-  const GetAddressesSuccessfully(this.addressModel);
-}
+// final class GetAddressesSuccessfully extends MainState {
+//   final AddressModel addressModel;
+//   const GetAddressesSuccessfully(this.addressModel);
+// }
 
-final class GetAddressesFailed extends MainState {
-  final String error;
-  const GetAddressesFailed(this.error);
-}
+// final class GetAddressesFailed extends MainState {
+//   final String error;
+//   const GetAddressesFailed(this.error);
+// }
 
 final class FetchMainCubitCategoriesLoading extends MainState {}
 

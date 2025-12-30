@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/instance_manager.dart';
-import 'package:negmt_heliopolis/controller/addresse_controller.dart';
+import 'package:negmt_heliopolis/controller/map/addresse_controller.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/sign_up_custom_button.dart';
@@ -20,58 +20,51 @@ class NotificationScreen extends StatelessWidget {
         child: Column(
           children: [
             AppBar(
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                leading: returnArrow(
-                    context: context,
-                    onTap: () async {
-                      Navigator.of(context).pop();
-                      final addressesCtrl = Get.find<AddressesControllerImpl>();
-                      await addressesCtrl.fetchAddresses();
-                    })),
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              leading: returnArrow(
+                context: context,
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  final addressesCtrl = Get.find<AddressesControllerImpl>();
+                  await addressesCtrl.fetchAddresses();
+                },
+              ),
+            ),
             // SizedBox(
             //   height: 20.h,
             // ),
-            Image.asset(
-              "assets/Icons_logos/notification_logo.png",
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
+            Image.asset("assets/Icons_logos/notification_logo.png"),
+            SizedBox(height: 20.h),
             Text(
               StringTranslateExtension(
-                      LocaleKeys.notification_screen_allow_us_to_send)
-                  .tr(),
+                LocaleKeys.notification_screen_allow_us_to_send,
+              ).tr(),
               style: Styles.styles25w600Black,
             ),
-            SizedBox(
-              height: 5.h,
-            ),
+            SizedBox(height: 5.h),
             Text(
               StringTranslateExtension(
-                      LocaleKeys.notification_screen_notifications)
-                  .tr(),
+                LocaleKeys.notification_screen_notifications,
+              ).tr(),
               style: Styles.styles25w600Black,
             ),
-            SizedBox(
-              height: 20.h,
-            ),
-            SignUpCustomButton(
-                buttonText: StringTranslateExtension(
-                        LocaleKeys.notification_screen_allow_notification)
-                    .tr(),
-                onPressed: () {}),
-            SizedBox(
-              height: 15.h,
-            ),
+            SizedBox(height: 20.h),
             SignUpCustomButton(
               buttonText: StringTranslateExtension(
-                      LocaleKeys.notification_screen_maybe_later)
-                  .tr(),
+                LocaleKeys.notification_screen_allow_notification,
+              ).tr(),
+              onPressed: () {},
+            ),
+            SizedBox(height: 15.h),
+            SignUpCustomButton(
+              buttonText: StringTranslateExtension(
+                LocaleKeys.notification_screen_maybe_later,
+              ).tr(),
               onPressed: () {},
               buttonColor: const Color.fromRGBO(0, 126, 143, 0.1),
               textColor: const Color.fromRGBO(0, 126, 143, 1),
-            )
+            ),
           ],
         ),
       ),

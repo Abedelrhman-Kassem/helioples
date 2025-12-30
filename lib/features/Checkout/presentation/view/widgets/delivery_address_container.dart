@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:negmt_heliopolis/controller/map/addresse_controller.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/add_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/delivery_address_widget.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
-import 'package:negmt_heliopolis/features/Address/data/model/address_model.dart';
+import 'package:negmt_heliopolis/features/maps/model/address_model.dart';
 
 class DeliveryAddressContainer extends StatefulWidget {
   final CreateOrderModel createOrderModel;
 
-  const DeliveryAddressContainer({
-    super.key,
-    required this.createOrderModel,
-  });
+  const DeliveryAddressContainer({super.key, required this.createOrderModel});
 
   @override
   State<DeliveryAddressContainer> createState() =>
@@ -24,21 +21,22 @@ class DeliveryAddressContainer extends StatefulWidget {
 
 class _DeliveryAddressContainerState extends State<DeliveryAddressContainer> {
   late AddressModel addressModel;
-  late MainCubit mainCubit;
+  late AddressesControllerImpl addressesControllerImpl;
+  // late MainCubit mainCubit;
 
   @override
   void initState() {
-    mainCubit = BlocProvider.of<MainCubit>(context);
-    addressModel = mainCubit.mainaddressModel;
+    addressesControllerImpl = Get.find<AddressesControllerImpl>();
+    // mainCubit = BlocProvider.of<MainCubit>(context);
+    addressModel = addressesControllerImpl.mainAddressModel!;
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MainCubit, MainState>(
-      listener: (context, state) {},
-      builder: (context, state) {
+    return GetBuilder<AddressesControllerImpl>(
+      builder: (controller) {
         return Container(
           padding: EdgeInsets.all(20.r),
           margin: EdgeInsets.symmetric(vertical: 10.h),
@@ -51,10 +49,7 @@ class _DeliveryAddressContainerState extends State<DeliveryAddressContainer> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Delivery Address',
-                    style: Styles.styles17w700Black,
-                  ),
+                  Text('Delivery Address', style: Styles.styles17w700Black),
                   addWidget(
                     text: 'Add Address',
                     onTap: () {
@@ -72,15 +67,21 @@ class _DeliveryAddressContainerState extends State<DeliveryAddressContainer> {
                   title: addressModel.address![index].locationStr!,
                   location: addressModel.address![index].street!,
                   isChossen:
-                      mainCubit.address!.id == addressModel.address![index].id,
+                      addressesControllerImpl.address!.id ==
+                      addressModel.address![index].id,
                   onTap: () {
                     setState(() {
-                      mainCubit.address = addressModel.address![index];
-                      mainCubit.setChossenAddress(mainCubit.address!.id!);
+                      addressesControllerImpl.address =
+                          addressModel.address![index];
+                      addressesControllerImpl.setChossenAddress(
+                        addressesControllerImpl.address!.id!,
+                      );
                       widget.createOrderModel.addressId =
-                          mainCubit.address!.id!;
+                          addressesControllerImpl.address!.id!;
                     });
                   },
+
+                  onEdit: () {},
                 ),
               ),
             ],

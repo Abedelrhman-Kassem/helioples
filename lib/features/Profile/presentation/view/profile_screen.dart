@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:negmt_heliopolis/controller/addresse_controller.dart';
+import 'package:negmt_heliopolis/controller/map/addresse_controller.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/trkey_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
@@ -38,7 +38,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void goToPage(
-      BuildContext context, String pageIfNotLoggedIn, String pageIfLoggedIn) {
+    BuildContext context,
+    String pageIfNotLoggedIn,
+    String pageIfLoggedIn,
+  ) {
     if (token == null) {
       Navigator.of(context).pushNamed(pageIfNotLoggedIn);
     } else {
@@ -89,52 +92,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
         },
       ),
       ProfileItem(
-          imagePath: "assets/svg_icons/chat_icon.svg",
-          label: trKey(LocaleKeys.profile_screen_chat_with_us)),
+        imagePath: "assets/svg_icons/chat_icon.svg",
+        label: trKey(LocaleKeys.profile_screen_chat_with_us),
+      ),
       ProfileItem(
-          onTap: () async {
-            if (authC.isLogged.value) {
-              await DialogBackground(
-                blur: 5,
-                barrierColor: Colors.black.withValues(alpha: 0.2),
-                dialog: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    CustButtonProfail(
-                        title: "Logout Now",
-                        onPressed: () async {
-                          ServicesHelper.removeLocal('token');
-                          final addressesCtrl =
-                              Get.find<AddressesControllerImpl>();
-                          await addressesCtrl.fetchAddresses();
-                          Navigator.of(context)
-                              .pushReplacementNamed(homeLayout);
-                          authC.logout();
-                        }),
-                    CustButtonProfail(
-                        title: "Cancel",
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                  ],
-                ),
-              ).show(
-                context,
-                transitionType: DialogTransitionType.bottomToTop,
-              );
-            } else {
-              Navigator.of(context).pushNamed(signInScreen);
-            }
-          },
-          imagePath: authC.isLogged.value
-              ? "assets/svg_icons/logout_icon.svg"
-              : "assets/svg_icons/logout_icon.svg",
-          label: authC.isLogged.value
-              ? trKey(LocaleKeys.profile_screen_logout)
-              : trKey(LocaleKeys.login_screen_login)),
+        onTap: () async {
+          if (authC.isLogged.value) {
+            await DialogBackground(
+              blur: 5,
+              barrierColor: Colors.black.withValues(alpha: 0.2),
+              dialog: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CustButtonProfail(
+                    title: "Logout Now",
+                    onPressed: () async {
+                      ServicesHelper.removeLocal('token');
+                      final addressesCtrl = Get.find<AddressesControllerImpl>();
+                      await addressesCtrl.fetchAddresses();
+                      Navigator.of(context).pushReplacementNamed(homeLayout);
+                      authC.logout();
+                    },
+                  ),
+                  CustButtonProfail(
+                    title: "Cancel",
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  SizedBox(height: 20.h),
+                ],
+              ),
+            ).show(context, transitionType: DialogTransitionType.bottomToTop);
+          } else {
+            Navigator.of(context).pushNamed(signInScreen);
+          }
+        },
+        imagePath: authC.isLogged.value
+            ? "assets/svg_icons/logout_icon.svg"
+            : "assets/svg_icons/logout_icon.svg",
+        label: authC.isLogged.value
+            ? trKey(LocaleKeys.profile_screen_logout)
+            : trKey(LocaleKeys.login_screen_login),
+      ),
     ];
 
     HomeLayoutCubit homeLayoutCubit = BlocProvider.of<HomeLayoutCubit>(context);
@@ -152,46 +152,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   top: 60.h,
                 ),
                 sliver: SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      Row(
-                        children: [
-                          returnArrow(
-                            context: context,
-                            onTap: () {
-                              homeLayoutCubit.returnIndex(context);
-                            },
-                          ),
-                          SizedBox(width: 100.w),
-                          Text(
-                            trKey(LocaleKeys.profile_screen_user_profile),
-                            style: Styles.styles17w600interFamily,
-                          ),
-                          SizedBox(width: 0.w),
-                        ],
-                      ),
-                      SizedBox(height: 40.h),
-                    ],
-                  ),
+                  delegate: SliverChildListDelegate([
+                    Row(
+                      children: [
+                        returnArrow(
+                          context: context,
+                          onTap: () {
+                            homeLayoutCubit.returnIndex(context);
+                          },
+                        ),
+                        SizedBox(width: 100.w),
+                        Text(
+                          trKey(LocaleKeys.profile_screen_user_profile),
+                          style: Styles.styles17w600interFamily,
+                        ),
+                        SizedBox(width: 0.w),
+                      ],
+                    ),
+                    SizedBox(height: 40.h),
+                  ]),
                 ),
               ),
               Obx(() {
                 final isLogin = authC.isLogged.value;
                 return SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    sliver: SliverGrid(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) => items[index],
-                        childCount: isLogin ? items.length : items.length,
-                      ),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 8.0,
-                        mainAxisSpacing: 12.0,
-                      ),
-                    ));
-              })
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  sliver: SliverGrid(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) => items[index],
+                      childCount: isLogin ? items.length : items.length,
+                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 8.0,
+                          mainAxisSpacing: 12.0,
+                        ),
+                  ),
+                );
+              }),
             ],
           ),
         ],

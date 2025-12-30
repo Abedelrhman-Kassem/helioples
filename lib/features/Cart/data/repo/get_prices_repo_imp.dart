@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
@@ -12,16 +14,16 @@ class GetPricesRepoImp extends GetPricesRepo {
 
   @override
   Future<Either<Failure, UpdateCartModel>> getCartProducts(
-      List<int> ids) async {
+    List<String> ids,
+  ) async {
     UpdateCartModel updateCartModel;
 
     try {
       var response = await apiService.post(
         endPoints: 'api/products/update-cart',
-        data: {
-          "ids": ids,
-        },
+        data: {"ids": ids},
       );
+      log("response: ${response.data}");
 
       updateCartModel = UpdateCartModel.fromJson(response.data);
 

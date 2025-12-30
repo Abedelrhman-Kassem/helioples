@@ -10,13 +10,9 @@ import 'package:negmt_heliopolis/features/Auth/Login/Verfication_login/data/cubi
 import 'package:negmt_heliopolis/features/Auth/Login/Verfication_login/presentation/verfy_login_screen.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/loginpage.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/models/login_model.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/data/repo/maps_repo.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/data/web%20services/places_web_services.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view_model/set_location_cubit/set_location_cubit.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view_model/sign_up_cubit/sent_otp_states.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/confirmation_screen.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/notification_screen.dart';
-import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/set_location.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/signup_screen.dart';
 import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/cubit/verfy_and_register_cubit.dart';
 import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/repo/verify_and_register_repo_imp.dart';
@@ -53,6 +49,7 @@ import 'package:negmt_heliopolis/features/Profile/presentation/view/profile%20in
 import 'package:negmt_heliopolis/features/Profile/presentation/view/profile%20information%20screens/verfication_changes_screen.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/settings%20screens/settings_screen.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/special_offer_item_screen.dart';
+import 'package:negmt_heliopolis/features/maps/map_screen.dart';
 
 class AppRouter {
   final bool isLoggedIn;
@@ -81,10 +78,12 @@ class AppRouter {
       final target = serverError == true
           ? serverUnavailable
           : isLoggedIn
-              ? homeLayout
-              : introScreen;
+          ? homeLayout
+          : introScreen;
       return CustomPageRouteBuilder(
-          page: _pageForName(target), fromRight: false);
+        page: _pageForName(target),
+        fromRight: false,
+      );
     }
 
     switch (settings.name) {
@@ -130,9 +129,11 @@ class AppRouter {
         final args = settings.arguments as Map<String, dynamic>? ?? {};
         page = BlocProvider(
           create: (_) => VerfyAndRegisterCubit(
-              otpModel: args['otpModel'] as OtpModel,
-              verifyAndRegisterRepo:
-                  VerifyAndRegisterRepoImp(apiService: ApiService())),
+            otpModel: args['otpModel'] as OtpModel,
+            verifyAndRegisterRepo: VerifyAndRegisterRepoImp(
+              apiService: ApiService(),
+            ),
+          ),
           child: const VerificationScreen(),
         );
         fromRight = true;
@@ -141,9 +142,9 @@ class AppRouter {
         final args = settings.arguments as Map<String, dynamic>? ?? {};
         page = BlocProvider(
           create: (_) => VerfyLoginCubit(
-              loginModel: args['loginModel'] as LoginModel,
-              verifyLoginRepo:
-                  VerifyAndRegisterRepoImp(apiService: ApiService())),
+            loginModel: args['loginModel'] as LoginModel,
+            verifyLoginRepo: VerifyAndRegisterRepoImp(apiService: ApiService()),
+          ),
           child: const VerfyLoginScreen(),
         );
         fromRight = true;
@@ -154,17 +155,21 @@ class AppRouter {
         fromRight = true;
         break;
 
-      case setLocationScreen:
-        page = BlocProvider(
-          create: (BuildContext context) =>
-              MapsCubit(MapsRepository(PlacesWebservices())),
-          child: const SetLocationScreen(),
-        );
-        fromRight = true;
-        break;
+      // case setLocationScreen:
+      //   page = BlocProvider(
+      //     create: (BuildContext context) =>
+      //         MapsCubit(MapsRepository(PlacesWebservices())),
+      //     child: const SetLocationScreen(),
+      //   );
+      //   fromRight = true;
+      //   break;
 
       case notificationScreen:
         page = const NotificationScreen();
+        fromRight = true;
+        break;
+      case addAddressScreen:
+        page = const MapScreen();
         fromRight = true;
         break;
 
@@ -174,11 +179,9 @@ class AppRouter {
 
         page = BlocProvider(
           create: (context) => SubCategoriesCubit(
-              repo: SubCategoriesRepoImp(api: Get.find<ApiService>()))
-            ..fetchSubCategories(category.id!),
-          child: SubCategoriesScreen(
-            category: args['category'],
-          ),
+            repo: SubCategoriesRepoImp(api: Get.find<ApiService>()),
+          )..fetchSubCategories(category.id!),
+          child: SubCategoriesScreen(category: args['category']),
         );
         fromRight = true;
         break;
@@ -199,9 +202,7 @@ class AppRouter {
 
       case verficationChangesScreen:
         final args = settings.arguments as Map<String, dynamic>;
-        page = VerficationChangesScreen(
-          phoneNumber: args['phoneNumber'],
-        );
+        page = VerficationChangesScreen(phoneNumber: args['phoneNumber']);
         fromRight = true;
         break;
 
@@ -212,9 +213,7 @@ class AppRouter {
 
       case orderDetailsScreen:
         final args = settings.arguments as Map<String, dynamic>;
-        page = OrderDetailsScreen(
-          order: args['order'],
-        );
+        page = OrderDetailsScreen(order: args['order']);
         fromRight = true;
         break;
 
@@ -306,9 +305,7 @@ class AppRouter {
       //   break;
 
       default:
-        page = const PageNotFoundScreen(
-          fromParent: 'from Main',
-        );
+        page = const PageNotFoundScreen(fromParent: 'from Main');
         fromRight = true;
         break;
     }
@@ -323,30 +320,23 @@ class CustomPageRouteBuilder extends PageRouteBuilder {
   final Widget page;
   final bool fromRight;
 
-  CustomPageRouteBuilder({
-    required this.page,
-    required this.fromRight,
-  }) : super(
-          pageBuilder: (context, animation, secondaryAnimation) => page,
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            var begin = fromRight ? const Offset(1, 0) : const Offset(0, 1);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
+  CustomPageRouteBuilder({required this.page, required this.fromRight})
+    : super(
+        pageBuilder: (context, animation, secondaryAnimation) => page,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = fromRight ? const Offset(1, 0) : const Offset(0, 1);
+          const end = Offset.zero;
+          const curve = Curves.easeInOut;
 
-            var tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-            var offsetAnimation = animation.drive(tween);
+          var tween = Tween(
+            begin: begin,
+            end: end,
+          ).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
 
-            return SlideTransition(
-              position: offsetAnimation,
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(
-            milliseconds: 300,
-          ),
-          reverseTransitionDuration: const Duration(
-            milliseconds: 300,
-          ),
-        );
+          return SlideTransition(position: offsetAnimation, child: child);
+        },
+        transitionDuration: const Duration(milliseconds: 300),
+        reverseTransitionDuration: const Duration(milliseconds: 300),
+      );
 }
