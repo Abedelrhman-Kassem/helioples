@@ -77,6 +77,12 @@ class _CartScreenState extends State<CartScreen> {
                           padding: EdgeInsets.symmetric(horizontal: 10.w),
                           itemBuilder: (context, index) => CartItemWidget(
                             itemUiModel: Products(
+                              isLiked: cartCubit.getIsLiked(
+                                tableValues[index][cartItemId] as String,
+                              ),
+                              state: cartCubit.getProductState(
+                                tableValues[index][cartItemId] as String,
+                              ),
                               id: tableValues[index][cartItemId] as String,
                               name: tableValues[index][cartItemName] as String,
                               enName:

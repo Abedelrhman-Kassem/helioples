@@ -3,5 +3,7 @@ import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/features/Cart/data/model/update_cart_model.dart';
 
 abstract class GetPricesRepo {
-  Future<Either<Failure, UpdateCartModel>> getCartProducts(List<String> ids);
+  Future<Either<Failure, UpdateCartModel>> getCartProducts(
+    List<Map<String, dynamic>> infoProducts,
+  );
 }

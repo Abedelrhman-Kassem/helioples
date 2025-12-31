@@ -156,7 +156,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> with RouteAware {
               duration: const Duration(milliseconds: 200),
               child: _showDetails
                   ? Text(
-                      '$counter',
+                      counter.toStringAsFixed(0),
                       key: ValueKey(counter),
                       style: Styles.styles12w400NormalWhite.copyWith(
                         fontSize: 12,

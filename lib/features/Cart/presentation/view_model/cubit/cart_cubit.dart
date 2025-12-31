@@ -31,33 +31,40 @@ class CartCubit extends Cubit<CartState> {
     emit(CartLoadingState());
     log("start getCartProducts");
 
-    List<String> ids = [];
+    List<Map<String, dynamic>> ids = [];
 
     tableIdValues = await DBHelper.queryData(
       table: cartTable,
-      columns: [cartItemId],
+      columns: [cartItemId, cartItemQty],
     );
-
+    log("tableIdValues: $tableIdValues");
     for (var value in tableIdValues) {
-      ids.add(value[cartItemId] as String);
+      ids.add({
+        "productId": value[cartItemId],
+        "quantity": num.parse(value[cartItemQty].toString()).toInt(),
+      });
     }
-
+    log("ids: $ids");
     Either<Failure, UpdateCartModel> res = await getPricesRepoImp
         .getCartProducts(ids);
 
     res.fold(
       (failure) => {
+        log("failure: ${failure.errorMessage}"),
         if (!isClosed) {emit(CartFailedState(error: failure.errorMessage))},
       },
       (updateCart) async {
+        print("------------------------------------------");
         tableValues = await updateDBData(updateCart);
+        print("------------------------------------------");
+        log("tableValues: $tableValues");
         DbChangeNotifier productsCount = DbChangeNotifier();
         productsCount.fetchItemCount();
         updateCartModel = updateCart;
 
-        if (!isClosed) {
-          emit(CartSuccessState(updateCartModel: updateCart));
-        }
+        // if (!isClosed) {
+        emit(CartSuccessState(updateCartModel: updateCart));
+        // }
       },
     );
   }
@@ -67,7 +74,7 @@ class CartCubit extends Cubit<CartState> {
   ) async {
     tableValues = await DBHelper.queryData(table: cartTable);
 
-    for (var product in updateCartModel.products!) {
+    for (var product in updateCartModel.products) {
       if (product.availableQuantity! == 0) {
         await DBHelper.deleteData(
           table: cartTable,
@@ -82,7 +89,7 @@ class CartCubit extends Cubit<CartState> {
 
         for (var item in tableValues) {
           if (item[cartItemId] == product.id &&
-              item[cartItemQty] as int > product.availableQuantity!) {
+              item[cartItemQty] as double > product.availableQuantity!) {
             values[cartItemQty] = product.availableQuantity;
           }
         }
@@ -121,11 +128,29 @@ class CartCubit extends Cubit<CartState> {
   }
 
   int getAvailablePieces(String id) {
-    for (var product in updateCartModel!.products!) {
+    for (var product in updateCartModel!.products) {
       if (product.id == id) {
         return product.availableQuantity!;
       }
     }
     throw Exception('Product with id $id not found');
+  }
+
+  String getProductState(String id) {
+    for (var product in updateCartModel!.products) {
+      if (product.id == id) {
+        return product.state!;
+      }
+    }
+    return '';
+  }
+
+  bool getIsLiked(String id) {
+    for (var product in updateCartModel!.products) {
+      if (product.id == id) {
+        return product.isLiked!;
+      }
+    }
+    return false;
   }
 }

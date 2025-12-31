@@ -71,8 +71,9 @@ class _PickUpScreenState extends State<PickUpScreen> {
       create: (context) => CreateOrderCubit()..getBranches(),
       child: BlocConsumer<CreateOrderCubit, CreateOrderState>(
         listener: (context, state) async {
-          CreateOrderCubit createOrderCubit =
-              BlocProvider.of<CreateOrderCubit>(context);
+          CreateOrderCubit createOrderCubit = BlocProvider.of<CreateOrderCubit>(
+            context,
+          );
 
           if (state is CreateOrderSuccess) {
             if (createOrderCubit.branch == null) {
@@ -155,11 +156,12 @@ class _PickUpScreenState extends State<PickUpScreen> {
                             itemBuilder: (context, index) {
                               return itemWidget(
                                 quantity:
-                                    tableValues[index][cartItemQty] as int,
+                                    tableValues[index][cartItemQty] as double,
                                 name:
                                     tableValues[index][cartItemName] as String,
-                                imageUrl: tableValues[index][cartItemImageUrl]
-                                    as String,
+                                imageUrl:
+                                    tableValues[index][cartItemImageUrl]
+                                        as String,
                                 price:
                                     tableValues[index][cartItemPrice] as double,
                               );
@@ -182,13 +184,9 @@ class _PickUpScreenState extends State<PickUpScreen> {
                         branchesModel: branchesModel,
                         createOrderModel: createOrderModel,
                       ),
-                    PromoCodeContainer(
-                      createOrderModel: createOrderModel,
-                    ),
+                    PromoCodeContainer(createOrderModel: createOrderModel),
                     PaymentDetails(createOrderModel: createOrderModel),
-                    AlternativeContainer(
-                      createOrderModel: createOrderModel,
-                    ),
+                    AlternativeContainer(createOrderModel: createOrderModel),
                     SizedBox(height: 160.h),
                   ],
                 ),

@@ -16,6 +16,7 @@ class ProductCubit extends Cubit<ProductState> {
     apiService: Get.find<ApiService>(),
   );
   bool isLoading = false;
+  bool isFirstFetch = true;
 
   ProductDetailsModel? productModel;
   int page = 1;
@@ -25,29 +26,25 @@ class ProductCubit extends Cubit<ProductState> {
     isLoading = true;
     emit(GetProductLoading());
 
-    Either<Failure, ProductDetailsModel> res =
-        await getCategoriesImp.getProductDetails(product, page, pageSize);
+    Either<Failure, ProductDetailsModel> res = await getCategoriesImp
+        .getProductDetails(product, page, pageSize);
 
     res.fold(
       (failure) => {
-        if (!isClosed)
-          {
-            emit(
-              GetProductFailure(failure.errorMessage),
-            )
-          }
+        if (!isClosed) {emit(GetProductFailure(failure.errorMessage))},
       },
       (product) => {
+        productModel = product,
         products.addAll(product.data!.relatedProducts!.items),
-        if (!isClosed)
-          {
-            emit(
-              GetProductSuccess(product),
-            )
-          }
+        if (!isClosed) {emit(GetProductSuccess(product))},
       },
     );
     isLoading = false;
     page++;
+    if (isFirstFetch) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        isFirstFetch = false;
+      });
+    }
   }
 }

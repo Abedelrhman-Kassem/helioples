@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
@@ -28,7 +30,6 @@ class _ProductWidgetState extends State<ProductWidget> {
   @override
   Widget build(BuildContext context) {
     final TextDirection textDirection = Directionality.of(context);
-
     return Column(
       children: [
         Container(
@@ -65,16 +66,14 @@ class _ProductWidgetState extends State<ProductWidget> {
               //     ),
               //   ),
               // ),
-              Text(
-                widget.product.state!,
-                style: Styles.styles14w400Gold,
-              ),
+              Text(widget.product.state!, style: Styles.styles14w400Gold),
               Positioned.directional(
                 textDirection: textDirection,
                 end: 0,
                 top: 0,
                 child: HeartWidget(
-                  isFavorite: widget.product.isLiked ?? false,
+                  key: ValueKey(widget.product.isLiked),
+                  isFavorite: widget.product.isLiked!,
                   width: 30.w,
                   height: 28.h,
                   productId: widget.product.id!,
@@ -132,7 +131,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                 discount: widget.product.discount ?? 0,
                 quantity: widget.product.quantity,
               ),
-            )
+            ),
           ],
         ),
         SizedBox(height: 20.h),
@@ -147,10 +146,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                   '${widget.product.availableQuantity!} Pcs',
                   style: Styles.styles14w400NormalBlack,
                 ),
-                Text(
-                  'Damfi',
-                  style: Styles.styles14w400NormalBlack,
-                ),
+                Text('Damfi', style: Styles.styles14w400NormalBlack),
               ],
             ),
             Column(
@@ -164,7 +160,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                       TextSpan(
                         text: ' EGP',
                         style: Styles.styles25w500MainColor,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -181,10 +177,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                           borderRadius: BorderRadius.circular(20.r),
                           color: const Color.fromRGBO(254, 237, 229, 1),
                         ),
-                        child: Text(
-                          '12% off',
-                          style: Styles.styles12w600Gold,
-                        ),
+                        child: Text('12% off', style: Styles.styles12w600Gold),
                       ),
                       SizedBox(width: 10.w),
                       Text(
@@ -193,7 +186,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                           decoration: TextDecoration.lineThrough,
                         ),
                         // selectionColor: Colors.red,
-                      )
+                      ),
                     ],
                   ),
               ],

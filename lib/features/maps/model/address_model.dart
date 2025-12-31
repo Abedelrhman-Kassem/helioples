@@ -81,14 +81,14 @@ class Address {
   Map<String, dynamic> toJson() => {
     "id": id,
     "locationStr": locationStr,
-    "latitude": latitude,
-    "longitude": longitude,
+    if (latitude != null) "latitude": latitude,
+    if (longitude != null) "longitude": longitude,
     "buildingNo": buildingNo,
     "floor": floor,
     "street": street,
     "department": department,
-    "branchId": branchId,
-    "branchName": branchName,
-    "createdAt": createdAt?.toIso8601String(),
+    if (branchId != null) "branchId": branchId,
+    if (branchName != null) "branchName": branchName,
+    if (createdAt != null) "createdAt": createdAt?.toIso8601String(),
   };
 }

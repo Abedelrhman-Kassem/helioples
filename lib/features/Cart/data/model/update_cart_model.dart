@@ -1,24 +1,26 @@
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 class UpdateCartModel {
-  List<int>? notFoundIds;
-  List<Products>? products;
+  UpdateCartModel({
+    required this.success,
+    required this.message,
+    required this.products,
+    required this.statusCode,
+  });
 
-  UpdateCartModel({this.notFoundIds, this.products});
+  final bool? success;
+  final String? message;
+  final List<Products> products;
+  final int? statusCode;
 
-  UpdateCartModel.fromJson(Map<String, dynamic> json) {
-    if (json['notFoundIds'] != null) {
-      notFoundIds = <int>[];
-      json['notFoundIds'].forEach((v) {
-        notFoundIds!.add(v);
-      });
-    }
-
-    if (json['products'] != null) {
-      products = <Products>[];
-      json['products'].forEach((v) {
-        products!.add(Products.fromJson(v));
-      });
-    }
+  factory UpdateCartModel.fromJson(Map<String, dynamic> json) {
+    return UpdateCartModel(
+      success: json["success"],
+      message: json["message"],
+      products: json["data"] == null
+          ? []
+          : List<Products>.from(json["data"]!.map((x) => Products.fromJson(x))),
+      statusCode: json["statusCode"],
+    );
   }
 }

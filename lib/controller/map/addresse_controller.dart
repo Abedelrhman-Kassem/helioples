@@ -65,12 +65,12 @@ class AddressesControllerImpl extends AddressesController {
             setChossenAddress(addressModel.address.first.id!);
           }
           await getChossenAddress();
+          update(['addressId']);
         },
       );
     } catch (e) {
       errorMessage = 'Something went wrong';
     } finally {
-      log("finally");
       loading = false;
       update(['ChossenAddressId']);
       update();
@@ -126,7 +126,7 @@ class AddressesControllerImpl extends AddressesController {
   Future<void> updateAddress(Address address) async {
     updateAddressesstatusrequest = Statusrequest.loading;
     update(['updateAddresses']);
-
+    log("address json: ${address.toJson()}");
     final result = await getAddressessImp.updateAddress(address: address);
 
     result.fold(
@@ -134,14 +134,14 @@ class AddressesControllerImpl extends AddressesController {
         updateAddressesstatusrequest = Statusrequest.failuer;
         showCustomGetSnack(isGreen: false, text: failure.errorMessage);
       },
-      (successMessage) async {
+      (successMessage) {
         updateAddressesstatusrequest = Statusrequest.success;
-        await fetchAddresses();
-        update(['updateAddresses']);
-        update(['addressId']);
+        fetchAddresses();
+
         Get.back();
         showCustomGetSnack(isGreen: true, text: successMessage);
       },
     );
+    update(['updateAddresses']);
   }
 }

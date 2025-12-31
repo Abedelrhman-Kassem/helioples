@@ -5,6 +5,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:negmt_heliopolis/controller/map/addresse_controller.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/handlingdata.dart';
 import 'package:negmt_heliopolis/core/utlis/services/location_servisess.dart';
 import 'package:negmt_heliopolis/core/utlis/services/map_places_serviese.dart';
@@ -20,38 +21,24 @@ import 'package:negmt_heliopolis/features/maps/repo/add_address_repo_impl.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class AddressController extends GetxController {
-  // Future<void> fetchAddresses();
   Future<void> addAddress(Address address);
-  // Future<void> updateAddress(Address address);
-  // Future<void> deleteAddress({required int addressId});
 }
 
 class AddressControllerImpl extends AddressController {
-  TextEditingController searchController = TextEditingController();
+  TextEditingController searchController = .new();
   FocusNode searchFocusNode = .new();
   final AddAddressRepo addAddressRepo = AddAddressRepoImpl(
     Get.find<ApiService>(),
   );
   MapPlacesServiese mapPlacesServiese = MapPlacesServiese(Get.find());
-  // MyServises myServises = Get.find();
-  // GetAddressesData getAddressesData = GetAddressesData(Get.find());
-  // AddAddressesData addAddressesData = AddAddressesData(Get.find());
-  // UpdateAddressesData updateAddressesData = UpdateAddressesData(Get.find());
-  // RemoveAddresseData removeAddresseData = RemoveAddresseData(Get.find());
-  // MapPlacesServiese mapPlacesServiese = MapPlacesServiese(Get.find());
 
-  Statusrequest fetchAddressesstatusrequest = Statusrequest.loading;
   Statusrequest addAddressesstatusrequest = Statusrequest.none;
-  Statusrequest updateAddressesstatusrequest = Statusrequest.none;
-  Statusrequest deleteAddressesstatusrequest = Statusrequest.none;
   Statusrequest autoCompletestatusrequest = Statusrequest.none;
   Statusrequest placeDetailsstatusrequest = Statusrequest.none;
   Statusrequest mapstatusrequest = Statusrequest.loading;
-  // List<Datum> addresses = [];
   List<Prediction> predictions = [];
   Result? resultDetails;
 
-  // String? userId;
   bool isSearch = false;
 
   late LocationServisess locationServisess;
@@ -88,7 +75,6 @@ class AddressControllerImpl extends AddressController {
   @override
   void onInit() {
     super.onInit();
-    // userId = myServises.sharedPreferences.getString("user_id");
     locationServisess = LocationServisess();
     initialCameraPosition = const CameraPosition(target: LatLng(0, 0));
     uUid = const Uuid();
@@ -102,27 +88,6 @@ class AddressControllerImpl extends AddressController {
     );
     update();
   }
-
-  // Future<BitmapDescriptor> svgToBitmapDescriptor(
-  //   String assetPath,
-  //   Size size,
-  // ) async {
-  //   final String svgString = await rootBundle.loadString(assetPath);
-  //   final PictureInfo pictureInfo = await vg.loadPicture(
-  //     SvgStringLoader(svgString),
-  //     null,
-  //   );
-
-  //   final ui.Image image = await pictureInfo.picture.toImage(
-  //     size.width.toInt(),
-  //     size.height.toInt(),
-  //   );
-  //   final ByteData? bytes = await image.toByteData(
-  //     format: ui.ImageByteFormat.png,
-  //   );
-
-  //   return BitmapDescriptor.bytes(bytes!.buffer.asUint8List());
-  // }
 
   void ubdataCameraPosition({
     bool isontap = false,
@@ -181,58 +146,6 @@ class AddressControllerImpl extends AddressController {
     }
   }
 
-  // @override
-  // fetchAddresses() async {
-  //   userId = myServises.sharedPreferences.getString("user_id");
-  //   log("userId $userId");
-  //   try {
-  //     if (userId == null) return;
-  //     fetchAddressesstatusrequest = Statusrequest.loading;
-  //     final response = await getAddressesData.getAddress(userId: userId!);
-
-  //     fetchAddressesstatusrequest = handlingData(response);
-  //     log("fetchAddressesstatusrequest $fetchAddressesstatusrequest");
-
-  //     if (fetchAddressesstatusrequest == Statusrequest.success) {
-  //       if (response['status'] == 'success' && response['data'].isNotEmpty) {
-  //         addresses.clear();
-
-  //         if (response['data'] is List) {
-  //           addresses = (response['data'] as List)
-  //               .map((e) => Datum.fromJson(e as Map<String, dynamic>))
-  //               .toList();
-  //           int myaddressId =
-  //               myServises.sharedPreferences.getInt("default_address") ?? 0;
-  //           if (myaddressId != addresses[0].addressId!) {
-  //             myServises.sharedPreferences.setInt(
-  //               "default_address",
-  //               addresses[0].addressId!,
-  //             );
-  //           }
-  //           log(
-  //             "myaddressId ${myServises.sharedPreferences.getInt("default_address")}",
-  //           );
-  //         } else if (response['data'] is Map) {
-  //           addresses = [
-  //             Datum.fromJson(response['data'] as Map<String, dynamic>),
-  //           ];
-  //         }
-
-  //         fetchAddressesstatusrequest = Statusrequest.success;
-  //       }
-  //       //  else {
-  //       //   fetchAddressesstatusrequest = Statusrequest.failuer;
-  //       // }
-  //     }
-
-  //     update();
-  //   } catch (e) {
-  //     fetchAddressesstatusrequest = Statusrequest.failuer;
-  //     update();
-  //   }
-  //   log("fetchAddressesstatusrequest $fetchAddressesstatusrequest");
-  // }
-
   @override
   addAddress(Address address) async {
     addAddressesstatusrequest = Statusrequest.loading;
@@ -253,88 +166,13 @@ class AddressControllerImpl extends AddressController {
         addAddressesstatusrequest = Statusrequest.success;
         Get.back();
         showCustomGetSnack(isGreen: true, text: successMessage);
+        Get.find<AddressesControllerImpl>().fetchAddresses().then((value) {
+          update(['addressId']);
+        });
       },
     );
     update();
   }
-
-  // @override
-  // updateAddress(Datum address) async {
-  //   if (userId == null) return;
-
-  //   try {
-  //     fetchAddressesstatusrequest = Statusrequest.loading;
-  //     update();
-
-  //     final response = await updateAddressesData.updateAddress(
-  //       data: address.toJson(),
-  //     );
-
-  //     fetchAddressesstatusrequest = handlingData(response);
-
-  //     if (fetchAddressesstatusrequest == Statusrequest.success) {
-  //       if (response['status'] == 'success' && response['data'] != null) {
-  //         Future.delayed(const Duration(seconds: 1), () {
-  //           showCustomGetSnack(isGreen: true, text: "تم التعديل بنجاح");
-  //         });
-  //         fetchAddresses();
-  //         fetchAddressesstatusrequest = Statusrequest.success;
-  //       }
-  //     } else {
-  //       fetchAddressesstatusrequest = Statusrequest.failuer;
-  //     }
-
-  //     // update();
-  //   } catch (e) {
-  //     print(e);
-  //     fetchAddressesstatusrequest = Statusrequest.failuer;
-  //     update();
-  //   }
-  // }
-
-  // @override
-  // deleteAddress({required int addressId}) async {
-  //   if (userId == null) return;
-  //   int defaultAddressId =
-  //       myServises.sharedPreferences.getInt("default_address") ?? 0;
-  //   if (addressId == defaultAddressId) {
-  //     myServises.sharedPreferences.setInt(
-  //       "default_address",
-  //       addresses[0].addressId!,
-  //     );
-  //     updateAddress(Datum(isDefault: 1, addressId: addresses[0].addressId!));
-  //   }
-
-  //   try {
-  //     updateAddressesstatusrequest = Statusrequest.loading;
-
-  //     final response = await removeAddresseData.removeAddresse(
-  //       addressId: addressId,
-  //     );
-
-  //     updateAddressesstatusrequest = handlingData(response);
-
-  //     if (updateAddressesstatusrequest == Statusrequest.success) {
-  //       if (response['status'] == 'success') {
-  //         fetchAddresses();
-  //         updateAddressesstatusrequest = Statusrequest.success;
-  //       }
-  //     } else {
-  //       updateAddressesstatusrequest = Statusrequest.failuer;
-  //     }
-
-  //     // update();
-  //   } catch (e) {
-  //     print(e);
-  //     updateAddressesstatusrequest = Statusrequest.failuer;
-  //     update();
-  //   }
-  // }
-
-  // @override
-  // void addAddess() {
-  //   Get.toNamed(AppRoutesname.addAddresses);
-  // }
 
   placesAutocomplete(String text) async {
     autoCompletestatusrequest = Statusrequest.loading;
@@ -346,9 +184,7 @@ class AddressControllerImpl extends AddressController {
       sessionToken!,
       detectLangFromQuery(searchController.text),
     );
-    // log("response: $response");
-    // final status = handlingData(response);
-    // if (status == Statusrequest.success) {
+
     if (response['status'] == 'OK') {
       final places = MapPlacesModel.fromJson(response);
       predictions.clear();
@@ -357,7 +193,6 @@ class AddressControllerImpl extends AddressController {
       autoCompletestatusrequest = Statusrequest.success;
     } else {
       autoCompletestatusrequest = Statusrequest.failuer;
-      // }
     }
     update(['search']);
   }
@@ -388,7 +223,6 @@ class AddressControllerImpl extends AddressController {
         country = resultDetails?.addressComponents.last.longName ?? "";
         city = resultDetails?.addressComponents.first.longName ?? "";
         update();
-        searchController.clear();
         sessionToken = null;
 
         placeDetailsstatusrequest = Statusrequest.success;
@@ -427,26 +261,4 @@ class AddressControllerImpl extends AddressController {
       }
     });
   }
-
-  // @override
-  // Future<void> updateAddress(Address address) async{
-
-  //   updateAddressesstatusrequest = Statusrequest.loading;
-  //   update();
-
-  //   final result = await addAddressRepo.updateAddress(address: address);
-
-  //   result.fold(
-  //     (failure) {
-  //       updateAddressesstatusrequest = Statusrequest.failuer;
-  //       update();
-  //       showCustomGetSnack(isGreen: false, text: failure.errorMessage);
-  //     },
-  //     (successMessage) {
-  //       updateAddressesstatusrequest = Statusrequest.success;
-  //       update();
-  //       showCustomGetSnack(isGreen: true, text: successMessage);
-  //     },
-  //   );
-  // }
 }

@@ -24,9 +24,7 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/creat
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class ReOrderScreen extends StatefulWidget {
-  const ReOrderScreen({
-    super.key,
-  });
+  const ReOrderScreen({super.key});
 
   @override
   State<ReOrderScreen> createState() => _ReOrderScreenState();
@@ -123,9 +121,7 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                     }
                   },
                 ),
-                title: Text(
-                  LocaleKeys.checkout_delivery_screen_checkout.tr(),
-                ),
+                title: Text(LocaleKeys.checkout_delivery_screen_checkout.tr()),
               ),
               body: Container(
                 height: double.infinity,
@@ -160,12 +156,14 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                                 color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () {
-                                    BlocProvider.of<CreateOrderCubit>(context)
-                                        .createOrder(createOrderModel);
+                                    BlocProvider.of<CreateOrderCubit>(
+                                      context,
+                                    ).createOrder(createOrderModel);
                                   },
                                   borderRadius: BorderRadius.circular(40.r),
-                                  splashColor:
-                                      MyColors.mainColor.withValues(alpha: 0.5),
+                                  splashColor: MyColors.mainColor.withValues(
+                                    alpha: 0.5,
+                                  ),
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 64.w,
@@ -219,10 +217,12 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return itemWidget(
-                              quantity: tableValues[index][cartItemQty] as int,
+                              quantity:
+                                  tableValues[index][cartItemQty] as double,
                               name: tableValues[index][cartItemName] as String,
-                              imageUrl: tableValues[index][cartItemImageUrl]
-                                  as String,
+                              imageUrl:
+                                  tableValues[index][cartItemImageUrl]
+                                      as String,
                               price:
                                   tableValues[index][cartItemPrice] as double,
                             );
@@ -240,18 +240,10 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                       DeliveryPaymentContianer(
                         createOrderModel: createOrderModel,
                       ),
-                      DeliveryTipsContianer(
-                        createOrderModel: createOrderModel,
-                      ),
-                      PromoCodeContainer(
-                        createOrderModel: createOrderModel,
-                      ),
-                      PaymentDetails(
-                        createOrderModel: createOrderModel,
-                      ),
-                      AlternativeContainer(
-                        createOrderModel: createOrderModel,
-                      ),
+                      DeliveryTipsContianer(createOrderModel: createOrderModel),
+                      PromoCodeContainer(createOrderModel: createOrderModel),
+                      PaymentDetails(createOrderModel: createOrderModel),
+                      AlternativeContainer(createOrderModel: createOrderModel),
                     ],
                   ),
                 ),

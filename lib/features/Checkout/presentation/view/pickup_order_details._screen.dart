@@ -60,18 +60,20 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
       // },
       child: Scaffold(
         appBar: AppBar(
-            leading: returnArrow(
-              context: context,
-              onTap: () {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  homeLayout,
-                  (route) => false,
-                );
-              },
-            ),
-            title: Text(
-                LocaleKeys.pickup_order_details_screen_order_details.tr())),
+          leading: returnArrow(
+            context: context,
+            onTap: () {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                homeLayout,
+                (route) => false,
+              );
+            },
+          ),
+          title: Text(
+            LocaleKeys.pickup_order_details_screen_order_details.tr(),
+          ),
+        ),
         body: Container(
           height: double.infinity,
           decoration: const BoxDecoration(
@@ -106,7 +108,7 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return itemWidget(
-                            quantity: tableValues[index][cartItemQty] as int,
+                            quantity: tableValues[index][cartItemQty] as double,
                             name: tableValues[index][cartItemName] as String,
                             imageUrl:
                                 tableValues[index][cartItemImageUrl] as String,
@@ -145,9 +147,7 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
                                 height: 21.h,
                                 color: const Color.fromRGBO(71, 71, 71, 1),
                               ),
-                              SizedBox(
-                                width: 10.w,
-                              ),
+                              SizedBox(width: 10.w),
                               SizedBox(
                                 height: 240.h,
                                 child: Column(
@@ -167,7 +167,7 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
                                     ),
                                   ],
                                 ),
-                              )
+                              ),
                             ],
                           ),
                           trailing: Container(
@@ -197,18 +197,13 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
                   ),
                 ),
                 paymentDetails(context, order),
-                SizedBox(
-                  height: 160.h,
-                ),
+                SizedBox(height: 160.h),
               ],
             ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: bottomSheet(
-          context,
-          order,
-        ),
+        floatingActionButton: bottomSheet(context, order),
       ),
     );
   }

@@ -19,10 +19,7 @@ import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class CheckoutDetailsScreen extends StatefulWidget {
   final OrderDetailsModel orderDetailsModel;
-  const CheckoutDetailsScreen({
-    super.key,
-    required this.orderDetailsModel,
-  });
+  const CheckoutDetailsScreen({super.key, required this.orderDetailsModel});
 
   @override
   State<CheckoutDetailsScreen> createState() => _CheckoutDetailsScreenState();
@@ -107,7 +104,7 @@ class _CheckoutDetailsScreenState extends State<CheckoutDetailsScreen> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return itemWidget(
-                            quantity: tableValues[index][cartItemQty] as int,
+                            quantity: tableValues[index][cartItemQty] as double,
                             name: tableValues[index][cartItemName] as String,
                             imageUrl:
                                 tableValues[index][cartItemImageUrl] as String,
@@ -129,10 +126,7 @@ class _CheckoutDetailsScreenState extends State<CheckoutDetailsScreen> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: bottomSheet(
-          context,
-          order,
-        ),
+        floatingActionButton: bottomSheet(context, order),
       ),
     );
   }
@@ -276,8 +270,9 @@ Widget paymentContainer(String paymentMethod) {
                 children: [
                   Text(
                     payment.title,
-                    style:
-                        Styles.styles15w400Black.copyWith(color: Colors.black),
+                    style: Styles.styles15w400Black.copyWith(
+                      color: Colors.black,
+                    ),
                   ),
                 ],
               ),
@@ -350,9 +345,7 @@ Widget scheduleContainer() {
               RichText(
                 text: TextSpan(
                   text: LocaleKeys.checkout_details_screen_instant.tr(),
-                  style: Styles.styles12w400black.copyWith(
-                    color: Colors.black,
-                  ),
+                  style: Styles.styles12w400black.copyWith(color: Colors.black),
                   children: [
                     TextSpan(
                       text: LocaleKeys.checkout_details_screen_arrive_at.tr(),
@@ -393,18 +386,14 @@ Widget scheduleContainer() {
 
 Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
   void copyToClipboard(BuildContext context) {
-    Clipboard.setData(
-      ClipboardData(text: '${order.order!.id}'),
-    ).then(
-      (_) {
-        CustomSnackBar.show(
-          context: context,
-          duration: const Duration(seconds: 5),
-          text: 'Copied to clipboard!',
-          isGreen: true,
-        );
-      },
-    );
+    Clipboard.setData(ClipboardData(text: '${order.order!.id}')).then((_) {
+      CustomSnackBar.show(
+        context: context,
+        duration: const Duration(seconds: 5),
+        text: 'Copied to clipboard!',
+        isGreen: true,
+      );
+    });
   }
 
   final DbChangeNotifier dbChangeNotifier = DbChangeNotifier();
@@ -421,12 +410,11 @@ Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
       children: [
         Text(
           LocaleKeys.checkout_details_screen_order_summery.tr(),
-          style: Styles.styles17w700Black
-              .copyWith(color: const Color.fromRGBO(41, 41, 41, 1)),
+          style: Styles.styles17w700Black.copyWith(
+            color: const Color.fromRGBO(41, 41, 41, 1),
+          ),
         ),
-        SizedBox(
-          height: 10.h,
-        ),
+        SizedBox(height: 10.h),
         Row(
           children: [
             Text(
@@ -446,10 +434,7 @@ Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
               ),
             ),
             SizedBox(width: 10.w),
-            Text(
-              '${order.order!.id}',
-              style: Styles.styles15w600NormalBlack,
-            ),
+            Text('${order.order!.id}', style: Styles.styles15w600NormalBlack),
           ],
         ),
         SizedBox(height: 15.h),
@@ -511,16 +496,10 @@ Widget bottomSheet(BuildContext context, OrderDetailsModel order) {
       children: [
         Container(
           margin: EdgeInsets.only(bottom: 20.h),
-          padding: EdgeInsets.only(
-            left: 5.w,
-            right: 5.w,
-            bottom: 5.w,
-          ),
+          padding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 5.w),
           decoration: const BoxDecoration(
             border: Border(
-              bottom: BorderSide(
-                color: Color.fromRGBO(210, 210, 210, 1),
-              ),
+              bottom: BorderSide(color: Color.fromRGBO(210, 210, 210, 1)),
             ),
           ),
           child: Row(

@@ -44,9 +44,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
     Future<void> updateQty() async {
       await DBHelper.updateData(
         table: cartTable,
-        values: {
-          cartItemQty: product.quantity,
-        },
+        values: {cartItemQty: product.quantity},
         where: 'id = ?',
         whereArgs: [product.id],
       );
@@ -57,7 +55,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
         await Navigator.pushNamed(
           context,
           productScreen,
-          arguments: {'productId': product.id},
+          arguments: {'productId': product.id, 'product': product},
         );
 
         cartCubit.getCartProducts();
@@ -74,9 +72,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15.r),
-                boxShadow: [
-                  MyBoxShadows.cartCardBoxShadow,
-                ],
+                boxShadow: [MyBoxShadows.cartCardBoxShadow],
               ),
               child: Center(
                 child: Helper.loadNetworkImage(
@@ -120,20 +116,20 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                             await widget.onDelete(product.id!);
                           }
                         },
-                        isBiggerThanOne: product.quantity! > 1,
+                        isBiggerThanOne: product.quantity > 1,
                         minusSvgPath: 'assets/svg_icons/empty-minus.svg',
                       ),
                       SizedBox(width: 10.w),
                       Text(
-                        '${product.quantity}',
+                        product.quantity.toStringAsFixed(0),
                         style: Styles.styles15w400NormalBlack,
                       ),
                       SizedBox(width: 10.w),
                       cartItemIconWidget(
                         svgPath: 'assets/svg_icons/empty-plus.svg',
                         onTap: () {
-                          if (product.quantity! < product.availableQuantity!) {
-                            product.quantity--;
+                          if (product.quantity < product.availableQuantity!) {
+                            product.quantity++;
                             updateQty();
                             setState(() {});
                           } else {
@@ -141,9 +137,12 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                               context: context,
                               text: LocaleKeys
                                   .cart_screen_cart_item_cant_add_more
-                                  .tr(namedArgs: {
-                                'pieces': product.availableQuantity.toString()
-                              }),
+                                  .tr(
+                                    namedArgs: {
+                                      'pieces': product.availableQuantity
+                                          .toString(),
+                                    },
+                                  ),
                               duration: const Duration(seconds: 10),
                               isGreen: false,
                             );
@@ -188,7 +187,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

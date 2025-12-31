@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,8 +20,11 @@ import 'package:easy_localization/easy_localization.dart';
 class ProductScreen extends StatefulWidget {
   final String productId;
   final Products product;
-  const ProductScreen(
-      {super.key, required this.productId, required this.product});
+  const ProductScreen({
+    super.key,
+    required this.productId,
+    required this.product,
+  });
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
@@ -34,9 +39,14 @@ class _ProductScreenState extends State<ProductScreen> {
       create: (context) => ProductCubit()..getProductDetails(widget.productId),
       child: BlocConsumer<ProductCubit, ProductState>(
         listener: (context, state) {
-          // if (state is GetProductSuccess) {
-          //   title = state.productModel.category!.name!;
-          // }
+          final cubit = BlocProvider.of<ProductCubit>(context);
+
+          if (state is GetProductSuccess && cubit.isFirstFetch) {
+            log("دخل هنا");
+            widget.product.isLiked = state.productModel.data!.isLiked!;
+            widget.product.state = state.productModel.data!.state!;
+            setState(() {});
+          }
         },
         builder: (context, state) {
           final cubit = BlocProvider.of<ProductCubit>(context);
@@ -48,12 +58,8 @@ class _ProductScreenState extends State<ProductScreen> {
                   Navigator.pop(context);
                 },
               ),
-              title: CategoriesBottomSheet(
-                title: title,
-              ),
-              actions: const [
-                CartCounter(),
-              ],
+              title: CategoriesBottomSheet(title: title),
+              actions: const [CartCounter()],
             ),
             body: Column(
               children: [
@@ -65,9 +71,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(20.0),
-                          child: ProductWidget(
-                            product: widget.product,
-                          ),
+                          child: ProductWidget(product: widget.product),
                         ),
                         SizedBox(height: 30.h),
                         Padding(
@@ -82,38 +86,40 @@ class _ProductScreenState extends State<ProductScreen> {
                           SizedBox(
                             height: 210,
                             child: PaginationListener(
+                              scrollDirection: Axis.horizontal,
+                              isLoading: cubit.isLoading,
+                              onLoadMore: () {
+                                cubit.getProductDetails(widget.productId);
+                              },
+                              child: CustomScrollView(
+                                physics: const BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
-                                isLoading: cubit.isLoading,
-                                onLoadMore: () {
-                                  cubit.getProductDetails(widget.productId);
-                                },
-                                child: CustomScrollView(
-                                  physics: const BouncingScrollPhysics(),
-                                  scrollDirection: Axis.horizontal,
-                                  slivers: [
+                                slivers: [
+                                  const SliverToBoxAdapter(
+                                    child: SizedBox(width: 20),
+                                  ),
+                                  SliverList.separated(
+                                    itemBuilder: (context, index) => ItemWidget(
+                                      relatedProductsModel:
+                                          cubit.products[index],
+                                    ),
+                                    separatorBuilder: (context, index) =>
+                                        SizedBox(width: 10.w),
+                                    itemCount: cubit.products.length,
+                                  ),
+                                  // const SliverToBoxAdapter(
+                                  //   child: SizedBox(width: 20),
+                                  // ),
+                                  if (state is GetProductLoading)
                                     const SliverToBoxAdapter(
-                                      child: SizedBox(width: 20),
-                                    ),
-                                    SliverList.separated(
-                                      itemBuilder: (context, index) =>
-                                          ItemWidget(
-                                        relatedProductsModel:
-                                            cubit.products[index],
+                                      child: SizedBox(
+                                        width: 1000,
+                                        child: RelatedProdLoading(),
                                       ),
-                                      separatorBuilder: (context, index) =>
-                                          SizedBox(width: 10.w),
-                                      itemCount: cubit.products.length,
                                     ),
-                                    // const SliverToBoxAdapter(
-                                    //   child: SizedBox(width: 20),
-                                    // ),
-                                    if (state is GetProductLoading)
-                                      const SliverToBoxAdapter(
-                                          child: SizedBox(
-                                              width: 1000,
-                                              child: RelatedProdLoading())),
-                                  ],
-                                )),
+                                ],
+                              ),
+                            ),
                           )
                         else if (state is GetProductLoading)
                           const RelatedProdLoading(),
@@ -127,15 +133,18 @@ class _ProductScreenState extends State<ProductScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(state
-                            .error), // This is a variable, not a hardcoded string
+                        Text(
+                          state.error,
+                        ), // This is a variable, not a hardcoded string
                         TextButton(
                           onPressed: () {
-                            BlocProvider.of<ProductCubit>(context)
-                                .getProductDetails(widget.productId);
+                            BlocProvider.of<ProductCubit>(
+                              context,
+                            ).getProductDetails(widget.productId);
                           },
                           child: Text(
-                              LocaleKeys.product_screen_tap_to_try_again.tr()),
+                            LocaleKeys.product_screen_tap_to_try_again.tr(),
+                          ),
                         ),
                       ],
                     ),

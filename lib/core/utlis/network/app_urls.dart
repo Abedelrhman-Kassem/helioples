@@ -94,4 +94,7 @@ class AppUrls {
   static String getAddressesUrl() => '$_baseUrl/Address/user';
   static String addAddressesUrl() => '$_baseUrl/Address';
   static String updateAddressesUrl(String id) => '$_baseUrl/Address/$id';
+
+  //                          Update Cart
+  static String updateCartUrl() => '$_baseUrl/Product/update-cart';
 }

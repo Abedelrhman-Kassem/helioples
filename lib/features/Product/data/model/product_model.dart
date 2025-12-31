@@ -80,9 +80,9 @@ class Products {
   final double? price;
   final double? afterDiscount;
   final int? availableQuantity;
-  final String? state;
+  String? state;
   final double? discount;
-  final bool? isLiked;
+  bool? isLiked;
   double quantity;
   final RelatedProducts? relatedProducts;
 
@@ -101,7 +101,7 @@ class Products {
       state: json["state"].toString(),
       discount: json["discount"]?.toDouble(),
       isLiked: json["isLiked"],
-      quantity: json["quantity"] ?? 0,
+      quantity: (json["quantity"] as num?)?.toDouble() ?? 0.0,
       relatedProducts: json["relatedProducts"] == null
           ? null
           : RelatedProducts.fromJson(json["relatedProducts"]),

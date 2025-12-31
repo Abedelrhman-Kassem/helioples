@@ -311,40 +311,54 @@ class CustWidgetaddress extends StatelessWidget {
   }
 }
 
-class EditLocation extends StatelessWidget {
+class EditLocation extends StatefulWidget {
   final Address address;
 
   const EditLocation({super.key, required this.address});
 
   @override
-  Widget build(BuildContext context) {
-    GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  State<EditLocation> createState() => _EditLocationState();
+}
 
+class _EditLocationState extends State<EditLocation> {
+  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  late final TextEditingController addressTitle;
+  late final TextEditingController street;
+  late final TextEditingController buildingNumber;
+  late final TextEditingController floor;
+  late final TextEditingController apartment;
+
+  @override
+  void initState() {
+    super.initState();
+    addressTitle = TextEditingController(text: widget.address.locationStr);
+    street = TextEditingController(text: widget.address.street);
+    buildingNumber = TextEditingController(text: widget.address.buildingNo);
+    floor = TextEditingController(text: widget.address.floor);
+    apartment = TextEditingController(text: widget.address.department);
+  }
+
+  @override
+  void dispose() {
+    addressTitle.dispose();
+    street.dispose();
+    buildingNumber.dispose();
+    floor.dispose();
+    apartment.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return GetBuilder<AddressesControllerImpl>(
       id: 'updateAddresses',
       builder: (controller) {
-        TextEditingController addressTitle = TextEditingController(
-          text: address.locationStr,
-        );
-        TextEditingController street = TextEditingController(
-          text: address.street,
-        );
-        TextEditingController buildingNumber = TextEditingController(
-          text: address.buildingNo,
-        );
-        TextEditingController floor = TextEditingController(
-          text: address.floor,
-        );
-        TextEditingController apartment = TextEditingController(
-          text: address.department,
-        );
         return Form(
           key: formkey,
           child: SingleChildScrollView(
             child: Column(
               spacing: 10.h,
               children: [
-                // SizedBox(height: 20.h),
                 Custtextfeld(
                   hint: "address title",
                   controller: addressTitle,
@@ -396,13 +410,14 @@ class EditLocation extends StatelessWidget {
                       onTap: () async {
                         if (formkey.currentState!.validate()) {
                           Address address = Address(
-                            id: this.address.id,
+                            id: widget.address.id,
                             locationStr: addressTitle.text,
                             street: street.text,
                             department: apartment.text,
                             buildingNo: buildingNumber.text,
                             floor: floor.text,
                           );
+                          log(address.toJson().toString());
                           controller.updateAddress(address);
                         }
                       },

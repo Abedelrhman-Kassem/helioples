@@ -119,10 +119,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Order Items',
-                            style: Styles.styles17w700Black,
-                          ),
+                          Text('Order Items', style: Styles.styles17w700Black),
                           SizedBox(height: 20.h),
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
@@ -130,11 +127,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             itemBuilder: (context, index) {
                               return itemWidget(
                                 quantity:
-                                    tableValues[index][cartItemQty] as int,
+                                    tableValues[index][cartItemQty] as double,
                                 name:
                                     tableValues[index][cartItemName] as String,
-                                imageUrl: tableValues[index][cartItemImageUrl]
-                                    as String,
+                                imageUrl:
+                                    tableValues[index][cartItemImageUrl]
+                                        as String,
                                 price:
                                     tableValues[index][cartItemPrice] as double,
                               );
@@ -154,18 +152,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     DeliveryPaymentContianer(
                       createOrderModel: createOrderModel,
                     ),
-                    DeliveryTipsContianer(
-                      createOrderModel: createOrderModel,
-                    ),
-                    PromoCodeContainer(
-                      createOrderModel: createOrderModel,
-                    ),
-                    PaymentDetails(
-                      createOrderModel: createOrderModel,
-                    ),
-                    AlternativeContainer(
-                      createOrderModel: createOrderModel,
-                    ),
+                    DeliveryTipsContianer(createOrderModel: createOrderModel),
+                    PromoCodeContainer(createOrderModel: createOrderModel),
+                    PaymentDetails(createOrderModel: createOrderModel),
+                    AlternativeContainer(createOrderModel: createOrderModel),
                     SizedBox(height: 160.h),
                   ],
                 ),
@@ -235,7 +225,8 @@ class _CheckOutBottomSheetState extends State<CheckOutBottomSheet> {
         }
       },
       builder: (context, state) {
-        double totalPrice = tips +
+        double totalPrice =
+            tips +
             dbChangeNotifier.dbData.totalPrice -
             (dbChangeNotifier.dbData.totalDiscount + promoCodeValue);
 
@@ -252,16 +243,10 @@ class _CheckOutBottomSheetState extends State<CheckOutBottomSheet> {
             children: [
               Container(
                 margin: EdgeInsets.only(bottom: 20.h),
-                padding: EdgeInsets.only(
-                  left: 5.w,
-                  right: 5.w,
-                  bottom: 5.w,
-                ),
+                padding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 5.w),
                 decoration: const BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(
-                      color: Color.fromRGBO(210, 210, 210, 1),
-                    ),
+                    bottom: BorderSide(color: Color.fromRGBO(210, 210, 210, 1)),
                   ),
                 ),
                 child: Row(

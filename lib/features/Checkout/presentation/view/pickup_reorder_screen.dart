@@ -67,8 +67,9 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
       create: (context) => CreateOrderCubit()..getBranches(),
       child: BlocConsumer<CreateOrderCubit, CreateOrderState>(
         listener: (context, state) async {
-          CreateOrderCubit createOrderCubit =
-              BlocProvider.of<CreateOrderCubit>(context);
+          CreateOrderCubit createOrderCubit = BlocProvider.of<CreateOrderCubit>(
+            context,
+          );
 
           if (state is CreateOrderSuccess) {
             if (createOrderCubit.branch == null) {
@@ -134,15 +135,16 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                 backgroundColor: Colors.white,
                 elevation: 0,
                 leading: returnArrow(
-                    context: context,
-                    onTap: () async {
-                      return await showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return exitOrderBottomSheet(context);
-                        },
-                      );
-                    }),
+                  context: context,
+                  onTap: () async {
+                    return await showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return exitOrderBottomSheet(context);
+                      },
+                    );
+                  },
+                ),
                 title: Text(
                   LocaleKeys.pick_up_screen_checkout.tr(),
                   // actions: [
@@ -214,12 +216,14 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                                 color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () {
-                                    BlocProvider.of<CreateOrderCubit>(context)
-                                        .createOrder(createOrderModel);
+                                    BlocProvider.of<CreateOrderCubit>(
+                                      context,
+                                    ).createOrder(createOrderModel);
                                   },
                                   borderRadius: BorderRadius.circular(40.r),
-                                  splashColor:
-                                      MyColors.mainColor.withValues(alpha: 0.5),
+                                  splashColor: MyColors.mainColor.withValues(
+                                    alpha: 0.5,
+                                  ),
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 64.w,
@@ -273,10 +277,12 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return itemWidget(
-                              quantity: tableValues[index][cartItemQty] as int,
+                              quantity:
+                                  tableValues[index][cartItemQty] as double,
                               name: tableValues[index][cartItemName] as String,
-                              imageUrl: tableValues[index][cartItemImageUrl]
-                                  as String,
+                              imageUrl:
+                                  tableValues[index][cartItemImageUrl]
+                                      as String,
                               price:
                                   tableValues[index][cartItemPrice] as double,
                             );
@@ -285,8 +291,8 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                         ),
                       ),
                       TimeScheduleContainer(
-                        title:
-                            LocaleKeys.pickup_reorder_screen_pickup_time.tr(),
+                        title: LocaleKeys.pickup_reorder_screen_pickup_time
+                            .tr(),
                         createOrderModel: createOrderModel,
                       ),
                       if (state is BranchesLoading)
@@ -298,15 +304,9 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                           branchesModel: branchesModel,
                           createOrderModel: createOrderModel,
                         ),
-                      PromoCodeContainer(
-                        createOrderModel: createOrderModel,
-                      ),
-                      PaymentDetails(
-                        createOrderModel: createOrderModel,
-                      ),
-                      AlternativeContainer(
-                        createOrderModel: createOrderModel,
-                      ),
+                      PromoCodeContainer(createOrderModel: createOrderModel),
+                      PaymentDetails(createOrderModel: createOrderModel),
+                      AlternativeContainer(createOrderModel: createOrderModel),
                     ],
                   ),
                 ),
