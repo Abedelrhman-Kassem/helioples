@@ -43,8 +43,8 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
     for (var value in tableValues) {
       itemsArray.add(
         Item(
-          productId: value[cartItemId] as int,
-          number: value[cartItemQty] as int,
+          productId: value[cartItemId] as String,
+          number: (value[cartItemQty] as num).toInt(),
         ),
       );
     }
@@ -291,6 +291,7 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                         ),
                       ),
                       TimeScheduleContainer(
+                        isDelivery: false,
                         title: LocaleKeys.pickup_reorder_screen_pickup_time
                             .tr(),
                         createOrderModel: createOrderModel,

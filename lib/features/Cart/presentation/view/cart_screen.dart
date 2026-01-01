@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/cart_item_widget.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/floating_button_widget.dart';
@@ -29,6 +30,24 @@ class _CartScreenState extends State<CartScreen> {
       create: (context) => CartCubit()..getCartProducts(),
       child: BlocConsumer<CartCubit, CartState>(
         listener: (context, state) {
+          CartCubit cartCubit = BlocProvider.of<CartCubit>(context);
+          if (state is CartSuccessState) {
+            if (cartCubit.lengthBeforeUpdate !=
+                state.updateCartModel.products.length) {
+              String message = state.updateCartModel.message ?? "";
+              List<String> st = message.split(".");
+              for (String mass in st) {
+                if (mass.trim().isNotEmpty) {
+                  showCustomGetSnack(
+                    isGreen: false,
+                    text: mass,
+                    isSnackOpen: false,
+                    duration: const Duration(seconds: 3),
+                  );
+                }
+              }
+            }
+          }
           if (state is CartLoadingState) {
             initialWidget = Center(
               child: CircularProgressIndicator(color: MyColors.mainColor),
@@ -75,36 +94,44 @@ class _CartScreenState extends State<CartScreen> {
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.symmetric(horizontal: 10.w),
-                          itemBuilder: (context, index) => CartItemWidget(
-                            itemUiModel: Products(
-                              isLiked: cartCubit.getIsLiked(
-                                tableValues[index][cartItemId] as String,
+                          itemBuilder: (context, index) {
+                            return CartItemWidget(
+                              itemUiModel: Products(
+                                isLiked: cartCubit.getIsLiked(
+                                  tableValues[index][cartItemId] as String,
+                                ),
+                                state: cartCubit.getProductState(
+                                  tableValues[index][cartItemId] as String,
+                                ),
+                                id: tableValues[index][cartItemId] as String,
+                                name:
+                                    tableValues[index][cartItemName] as String,
+                                enName:
+                                    tableValues[index][cartItemEnName]
+                                        as String,
+                                description:
+                                    tableValues[index][cartItemEnDesc]
+                                        as String,
+                                thumbnailImage:
+                                    tableValues[index][cartItemImageUrl]
+                                        as String,
+                                price:
+                                    (tableValues[index][cartItemPrice] as num)
+                                        .toDouble(),
+                                discount:
+                                    (tableValues[index][cartItemDiscount]
+                                            as num)
+                                        .toDouble(),
+                                quantity:
+                                    (tableValues[index][cartItemQty] as num)
+                                        .toDouble(),
+                                availableQuantity: cartCubit.getAvailablePieces(
+                                  tableValues[index][cartItemId] as String,
+                                ),
                               ),
-                              state: cartCubit.getProductState(
-                                tableValues[index][cartItemId] as String,
-                              ),
-                              id: tableValues[index][cartItemId] as String,
-                              name: tableValues[index][cartItemName] as String,
-                              enName:
-                                  tableValues[index][cartItemEnName] as String,
-                              description:
-                                  tableValues[index][cartItemEnDesc] as String,
-                              thumbnailImage:
-                                  tableValues[index][cartItemImageUrl]
-                                      as String,
-                              price:
-                                  tableValues[index][cartItemPrice] as double,
-                              discount:
-                                  tableValues[index][cartItemDiscount]
-                                      as double,
-                              quantity:
-                                  tableValues[index][cartItemQty] as double,
-                              availableQuantity: cartCubit.getAvailablePieces(
-                                tableValues[index][cartItemId] as String,
-                              ),
-                            ),
-                            onDelete: cartCubit.deleteItem,
-                          ),
+                              onDelete: cartCubit.deleteItem,
+                            );
+                          },
                           itemCount: tableValues.length,
                         ),
                         SizedBox(height: 293.h),

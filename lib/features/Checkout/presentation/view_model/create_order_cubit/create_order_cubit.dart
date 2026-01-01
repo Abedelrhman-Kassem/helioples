@@ -19,23 +19,18 @@ part 'create_order_state.dart';
 class CreateOrderCubit extends Cubit<CreateOrderState> {
   CreateOrderCubit() : super(CreateOrderInitial());
 
-  CreateOrderImp createOrderImp = CreateOrderImp(
-    apiService: ApiService(),
-  );
+  CreateOrderImp createOrderImp = CreateOrderImp(apiService: ApiService());
 
   void createOrder(CreateOrderModel data) async {
     emit(CreateOrderLoading());
 
-    Either<Failure, OrderDetailsModel> res =
-        await createOrderImp.createOrder(data);
+    Either<Failure, OrderDetailsModel> res = await createOrderImp.createOrder(
+      data,
+    );
 
     res.fold(
-      (failure) => emit(
-        CreateOrderFailed(failure.errorMessage),
-      ),
-      (orderDetailsModel) => emit(
-        CreateOrderSuccess(orderDetailsModel),
-      ),
+      (failure) => emit(CreateOrderFailed(failure.errorMessage)),
+      (orderDetailsModel) => emit(CreateOrderSuccess(orderDetailsModel)),
     );
   }
 
@@ -45,19 +40,17 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
     );
   }
 
-  void checkPromoCode(String code) async {
+  void checkPromoCode(String code, double originalAmount) async {
     emit(CheckPromoCodeLoading());
 
-    Either<Failure, PromoCodeModel> res =
-        await createOrderImp.checkPromoCode(code.trim());
+    Either<Failure, PromoCodeModel> res = await createOrderImp.checkPromoCode(
+      code.trim(),
+      originalAmount,
+    );
 
     res.fold(
-      (failure) => emit(
-        CheckPromoCodeFailed(failure.errorMessage),
-      ),
-      (promoCodeModel) => emit(
-        CheckPromoCodeSuccess(promoCodeModel),
-      ),
+      (failure) => emit(CheckPromoCodeFailed(failure.errorMessage)),
+      (promoCodeModel) => emit(CheckPromoCodeSuccess(promoCodeModel)),
     );
   }
 
@@ -68,16 +61,14 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
   void cancelOrder(String reason, int orderId) async {
     emit(CancelOrderLoading());
 
-    Either<Failure, CancelOrderModel> res =
-        await createOrderImp.cancelOrder(orderId, reason);
+    Either<Failure, CancelOrderModel> res = await createOrderImp.cancelOrder(
+      orderId,
+      reason,
+    );
 
     res.fold(
-      (failure) => emit(
-        CancelOrderFailed(failure.errorMessage),
-      ),
-      (cancelOrderModel) => emit(
-        CancelOrderSuccess(cancelOrderModel),
-      ),
+      (failure) => emit(CancelOrderFailed(failure.errorMessage)),
+      (cancelOrderModel) => emit(CancelOrderSuccess(cancelOrderModel)),
     );
   }
 
@@ -88,12 +79,8 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
     Either<Failure, BranchesModel> res = await createOrderImp.getAllBranches();
 
     res.fold(
-      (failure) => emit(
-        BranchesFailed(failure.errorMessage),
-      ),
-      (branches) => emit(
-        BranchesSuccess(branches),
-      ),
+      (failure) => emit(BranchesFailed(failure.errorMessage)),
+      (branches) => emit(BranchesSuccess(branches)),
     );
   }
 
@@ -121,28 +108,39 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
   }
 
   AvailableTime? availableTime;
-  void getDeliveryTime() async {
+  Future<void> getDeliveryTime() async {
     emit(LoadingDeliveryTime());
 
-    Either<Failure, DeliveryTimeModel> res =
-        await createOrderImp.getDeliveryTime();
+    Either<Failure, DeliveryTimeModel> res = await createOrderImp
+        .getDeliveryTime();
 
-    res.fold(
-      (failure) => emit(
-        GetDeliveryTimeFailed(failure.errorMessage),
-      ),
-      (deliveryTimeModel) {
-        if (deliveryTimeModel.available!.isEmpty) {
-          emit(
-            GetDeliveryTimeFailed('No available time'),
-          );
-          return;
-        }
-        availableTime = deliveryTimeModel.available!.first;
-        emit(
-          GetDeliveryTimeSuccess(deliveryTimeModel),
-        );
-      },
-    );
+    res.fold((failure) => emit(GetDeliveryTimeFailed(failure.errorMessage)), (
+      deliveryTimeModel,
+    ) {
+      if (deliveryTimeModel.availableTime.isEmpty) {
+        emit(GetDeliveryTimeFailed('No available time'));
+        return;
+      }
+      availableTime = deliveryTimeModel.availableTime.first;
+      emit(GetDeliveryTimeSuccess(deliveryTimeModel));
+    });
+  }
+
+  Future<void> getPickupTime() async {
+    emit(LoadingDeliveryTime());
+
+    Either<Failure, DeliveryTimeModel> res = await createOrderImp
+        .getPickupTime();
+
+    res.fold((failure) => emit(GetDeliveryTimeFailed(failure.errorMessage)), (
+      deliveryTimeModel,
+    ) {
+      if (deliveryTimeModel.availableTime.isEmpty) {
+        emit(GetDeliveryTimeFailed('No available time'));
+        return;
+      }
+      availableTime = deliveryTimeModel.availableTime.first;
+      emit(GetDeliveryTimeSuccess(deliveryTimeModel));
+    });
   }
 }

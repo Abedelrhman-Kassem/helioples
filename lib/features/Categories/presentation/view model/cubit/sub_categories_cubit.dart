@@ -50,7 +50,8 @@ class SubCategoriesCubit extends Cubit<SubCategoriesState> {
         );
 
         emit(
-            GetMainSubCategoriesSuccess(subCategories, features: featuresList));
+          GetMainSubCategoriesSuccess(subCategories, features: featuresList),
+        );
       },
     );
   }
@@ -74,11 +75,11 @@ class SubCategoriesCubit extends Cubit<SubCategoriesState> {
     notifier.isFetching[subCategoryId] = true;
     notifier.triggerNotification();
 
-    Either<Failure, List<Products>> response =
-        await repo.getProductsInSubCategory(
-      subCategoryId,
-      subCategoriesPages[subCategoryId]! + 2,
-    );
+    Either<Failure, List<Products>> response = await repo
+        .getProductsInSubCategory(
+          subCategoryId,
+          (subCategoriesPages[subCategoryId] ?? 0) + 2,
+        );
 
     response.fold(
       (failure) {
@@ -99,7 +100,7 @@ class SubCategoriesCubit extends Cubit<SubCategoriesState> {
         }
 
         subCategoriesPages[subCategoryId] =
-            subCategoriesPages[subCategoryId]! + 1;
+            (subCategoriesPages[subCategoryId] ?? 0) + 1;
 
         notifier.subCategoriesProducts[subCategoryId] = subCategoriesProducts;
 
@@ -113,7 +114,9 @@ class SubCategoriesCubit extends Cubit<SubCategoriesState> {
   Map<String, int> productsFeaturedPages = {};
 
   Future<void> fetchProductsFeatured(
-      String featureId, BuildContext context) async {
+    String featureId,
+    BuildContext context,
+  ) async {
     if (notifier.isFetching[featureId] == true ||
         notifier.endFetching[featureId] == true) {
       return;
@@ -129,7 +132,7 @@ class SubCategoriesCubit extends Cubit<SubCategoriesState> {
 
     Either<Failure, List<Products>> response = await repo.getProductsFeatured(
       featureId,
-      productsFeaturedPages[featureId]! + 2,
+      (productsFeaturedPages[featureId] ?? 0) + 2,
       10,
     );
 
@@ -153,7 +156,7 @@ class SubCategoriesCubit extends Cubit<SubCategoriesState> {
         }
 
         productsFeaturedPages[featureId] =
-            productsFeaturedPages[featureId]! + 1;
+            (productsFeaturedPages[featureId] ?? 0) + 1;
 
         notifier.productsFeatured[featureId] = subCategoriesProducts;
 

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -23,13 +21,13 @@ class CartCubit extends Cubit<CartState> {
   );
 
   UpdateCartModel? updateCartModel;
+  int lengthBeforeUpdate = 0;
 
   List<Map<String, Object?>> tableValues = [];
   List<Map<String, Object?>> tableIdValues = [];
 
   void getCartProducts() async {
     emit(CartLoadingState());
-    log("start getCartProducts");
 
     List<Map<String, dynamic>> ids = [];
 
@@ -37,34 +35,29 @@ class CartCubit extends Cubit<CartState> {
       table: cartTable,
       columns: [cartItemId, cartItemQty],
     );
-    log("tableIdValues: $tableIdValues");
     for (var value in tableIdValues) {
       ids.add({
         "productId": value[cartItemId],
         "quantity": num.parse(value[cartItemQty].toString()).toInt(),
       });
     }
-    log("ids: $ids");
+    lengthBeforeUpdate = ids.length;
     Either<Failure, UpdateCartModel> res = await getPricesRepoImp
         .getCartProducts(ids);
 
     res.fold(
       (failure) => {
-        log("failure: ${failure.errorMessage}"),
         if (!isClosed) {emit(CartFailedState(error: failure.errorMessage))},
       },
       (updateCart) async {
-        print("------------------------------------------");
         tableValues = await updateDBData(updateCart);
-        print("------------------------------------------");
-        log("tableValues: $tableValues");
         DbChangeNotifier productsCount = DbChangeNotifier();
         productsCount.fetchItemCount();
         updateCartModel = updateCart;
 
-        // if (!isClosed) {
-        emit(CartSuccessState(updateCartModel: updateCart));
-        // }
+        if (!isClosed) {
+          emit(CartSuccessState(updateCartModel: updateCart));
+        }
       },
     );
   }
@@ -73,6 +66,21 @@ class CartCubit extends Cubit<CartState> {
     UpdateCartModel updateCartModel,
   ) async {
     tableValues = await DBHelper.queryData(table: cartTable);
+
+    List<String> apiProductIds = updateCartModel.products
+        .map((p) => p.id!)
+        .toList();
+
+    for (var item in tableValues) {
+      String localId = item[cartItemId] as String;
+      if (!apiProductIds.contains(localId)) {
+        await DBHelper.deleteData(
+          table: cartTable,
+          where: 'id = ?',
+          whereArgs: [localId],
+        );
+      }
+    }
 
     for (var product in updateCartModel.products) {
       if (product.availableQuantity! == 0) {
@@ -85,6 +93,11 @@ class CartCubit extends Cubit<CartState> {
         Map<String, dynamic> values = {
           cartItemPrice: product.price!,
           cartItemDiscount: product.discount ?? 0,
+          cartItemImageUrl: product.thumbnailImage,
+          cartItemName: product.name,
+          cartItemEnName: product.enName,
+          cartItemEnDesc: product.enDescription ?? product.description,
+          cartItemDesc: product.description,
         };
 
         for (var item in tableValues) {
@@ -128,15 +141,17 @@ class CartCubit extends Cubit<CartState> {
   }
 
   int getAvailablePieces(String id) {
+    if (updateCartModel == null) return 0;
     for (var product in updateCartModel!.products) {
       if (product.id == id) {
         return product.availableQuantity!;
       }
     }
-    throw Exception('Product with id $id not found');
+    return 0;
   }
 
   String getProductState(String id) {
+    if (updateCartModel == null) return '';
     for (var product in updateCartModel!.products) {
       if (product.id == id) {
         return product.state!;
@@ -146,6 +161,7 @@ class CartCubit extends Cubit<CartState> {
   }
 
   bool getIsLiked(String id) {
+    if (updateCartModel == null) return false;
     for (var product in updateCartModel!.products) {
       if (product.id == id) {
         return product.isLiked!;

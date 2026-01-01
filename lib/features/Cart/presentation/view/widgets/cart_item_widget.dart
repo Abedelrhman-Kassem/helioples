@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,7 +41,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var product = widget.itemUiModel;
+    Products product = widget.itemUiModel;
 
     Future<void> updateQty() async {
       await DBHelper.updateData(
@@ -77,7 +79,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
               child: Center(
                 child: Helper.loadNetworkImage(
                   url: product.thumbnailImage!,
-                  assetsErrorPath: 'assets/test_images/water-bottle.png',
+                  // assetsErrorPath: 'assets/test_images/water-bottle.png',
                   fit: BoxFit.contain,
                   width: double.infinity,
                 ),

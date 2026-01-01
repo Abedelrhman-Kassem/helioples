@@ -10,7 +10,7 @@ void showCustomGetSnack({
   Duration duration = const Duration(seconds: 5),
 }) {
   if (isSnackOpen) {
-    if (Get.isSnackbarOpen) Get.back();
+    if (Get.isSnackbarOpen) Get.closeCurrentSnackbar();
   }
   Get.rawSnackbar(
     titleText: const SizedBox.shrink(),
@@ -42,9 +42,7 @@ void showCustomGetSnack({
           Container(
             width: 36.w,
             height: 36.w,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-            ),
+            decoration: const BoxDecoration(shape: BoxShape.circle),
             child: Center(
               child: svgIcon(
                 path: isGreen
@@ -69,7 +67,7 @@ void showCustomGetSnack({
             ),
           ),
           GestureDetector(
-            onTap: () => Get.back(),
+            onTap: () => Get.closeCurrentSnackbar(),
             child: const Icon(Icons.close, size: 18, color: Colors.black26),
           ),
         ],

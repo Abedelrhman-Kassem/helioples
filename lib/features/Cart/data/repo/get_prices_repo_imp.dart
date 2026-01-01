@@ -24,15 +24,11 @@ class GetPricesRepoImp extends GetPricesRepo {
         endPoints: AppUrls.updateCartUrl(),
         data: infoProducts,
       );
-      log("response: ${response.data}");
 
       updateCartModel = UpdateCartModel.fromJson(response.data);
 
       return right(updateCartModel);
-    } catch (e, stackTrace) {
-      print("------------------------------------------");
-      log("e: $e");
-      log("stackTrace: $stackTrace");
+    } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
       }

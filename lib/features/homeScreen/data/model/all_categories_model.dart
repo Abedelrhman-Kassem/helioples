@@ -21,8 +21,13 @@ class CategoriesData {
   int? totalPages;
   List<CategoryModel>? items;
 
-  CategoriesData(
-      {this.page, this.pageSize, this.totalCount, this.totalPages, this.items});
+  CategoriesData({
+    this.page,
+    this.pageSize,
+    this.totalCount,
+    this.totalPages,
+    this.items,
+  });
 
   CategoriesData.fromJson(Map<String, dynamic> json) {
     page = json['page'];
@@ -43,6 +48,7 @@ class CategoryModel {
   String? name;
   String? description;
   String? enName;
+  String? image;
   String? enDescription;
   String? systemName;
   String? systemDescription;
@@ -50,23 +56,26 @@ class CategoryModel {
   bool? active;
   bool? homeScreen;
 
-  CategoryModel(
-      {this.id,
-      this.name,
-      this.description,
-      this.enName,
-      this.enDescription,
-      this.systemName,
-      this.systemDescription,
-      this.code,
-      this.active,
-      this.homeScreen});
+  CategoryModel({
+    this.id,
+    this.name,
+    this.description,
+    this.enName,
+    this.image,
+    this.enDescription,
+    this.systemName,
+    this.systemDescription,
+    this.code,
+    this.active,
+    this.homeScreen,
+  });
 
   CategoryModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     description = json['description'];
     enName = json['enName'];
+    image = json['image'];
     enDescription = json['enDescription'];
     systemName = json['systemName'];
     systemDescription = json['systemDescription'];

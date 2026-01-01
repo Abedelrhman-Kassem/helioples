@@ -2,26 +2,25 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/utlis/notifiers/db_change_notifier.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class PromoCodeContainer extends StatefulWidget {
   final CreateOrderModel createOrderModel;
-  const PromoCodeContainer({
-    super.key,
-    required this.createOrderModel,
-  });
+  const PromoCodeContainer({super.key, required this.createOrderModel});
 
   @override
   State<PromoCodeContainer> createState() => _PromoCodeContainerState();
 }
 
 class _PromoCodeContainerState extends State<PromoCodeContainer> {
-  TextEditingController promoCodeController = TextEditingController();
+  TextEditingController promoCodeController = .new();
+  final DbChangeNotifier dbChangeNotifier = DbChangeNotifier();
 
   @override
   void dispose() {
@@ -34,12 +33,7 @@ class _PromoCodeContainerState extends State<PromoCodeContainer> {
     return BlocConsumer<CreateOrderCubit, CreateOrderState>(
       listener: (context, state) {
         if (state is CheckPromoCodeFailed) {
-          CustomSnackBar.show(
-            context: context,
-            duration: const Duration(seconds: 10),
-            text: state.error,
-            isGreen: false,
-          );
+          showCustomGetSnack(isGreen: false, text: state.error);
         }
 
         if (state is CheckPromoCodeSuccess) {
@@ -98,8 +92,10 @@ class _PromoCodeContainerState extends State<PromoCodeContainer> {
                         : TextButton(
                             onPressed: () {
                               if (promoCodeController.text.isNotEmpty) {
-                                createOrderCubit
-                                    .checkPromoCode(promoCodeController.text);
+                                createOrderCubit.checkPromoCode(
+                                  promoCodeController.text,
+                                  dbChangeNotifier.dbData.totalPrice,
+                                );
                               }
                             },
                             child: Text(

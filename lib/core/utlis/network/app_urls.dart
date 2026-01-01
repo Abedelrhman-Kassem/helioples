@@ -97,4 +97,15 @@ class AppUrls {
 
   //                          Update Cart
   static String updateCartUrl() => '$_baseUrl/Product/update-cart';
+
+  //                         Time
+  static String deliveryTimeUrl() =>
+      'http://144.172.109.90:5000/api/DeliveryTime';
+  static String pickupTimeUrl() => 'http://144.172.109.90:5000/api/PickupTime';
+
+  //                         promo code
+  static String promoCodeUrl() => 'http://144.172.109.90:5000/api/PromoCode';
+
+  //                         branches
+  static String branchesUrl() => 'http://144.172.109.90:5000/api/Branch';
 }

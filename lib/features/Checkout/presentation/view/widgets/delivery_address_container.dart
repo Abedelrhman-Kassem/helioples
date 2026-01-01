@@ -62,17 +62,17 @@ class _DeliveryAddressContainerState extends State<DeliveryAddressContainer> {
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: addressModel.address!.length,
+                itemCount: addressModel.address.length,
                 itemBuilder: (context, index) => deliveryAddressWidget(
-                  title: addressModel.address![index].locationStr!,
-                  location: addressModel.address![index].street!,
+                  title: addressModel.address[index].locationStr!,
+                  location: addressModel.address[index].street!,
                   isChossen:
                       addressesControllerImpl.address!.id ==
-                      addressModel.address![index].id,
+                      addressModel.address[index].id,
                   onTap: () {
                     setState(() {
                       addressesControllerImpl.address =
-                          addressModel.address![index];
+                          addressModel.address[index];
                       addressesControllerImpl.setChossenAddress(
                         addressesControllerImpl.address!.id!,
                       );

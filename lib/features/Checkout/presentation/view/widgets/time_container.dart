@@ -1,10 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:intl/intl.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_animated_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
@@ -13,6 +14,7 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/creat
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class TimeScheduleContainer extends StatefulWidget {
+  final bool isDelivery;
   final String title;
   final CreateOrderModel createOrderModel;
 
@@ -20,6 +22,7 @@ class TimeScheduleContainer extends StatefulWidget {
     super.key,
     required this.title,
     required this.createOrderModel,
+    required this.isDelivery,
   });
 
   @override
@@ -33,7 +36,11 @@ class _TimeScheduleContainerState extends State<TimeScheduleContainer> {
   @override
   void initState() {
     createOrderCubit = BlocProvider.of<CreateOrderCubit>(context);
-    createOrderCubit.getDeliveryTime();
+    if (widget.isDelivery) {
+      createOrderCubit.getDeliveryTime();
+    } else {
+      createOrderCubit.getPickupTime();
+    }
     super.initState();
   }
 
@@ -50,12 +57,7 @@ class _TimeScheduleContainerState extends State<TimeScheduleContainer> {
     return BlocConsumer<CreateOrderCubit, CreateOrderState>(
       listener: (context, state) {
         if (state is GetDeliveryTimeFailed) {
-          CustomSnackBar.show(
-            context: context,
-            text: state.error,
-            duration: const Duration(seconds: 10),
-            isGreen: false,
-          );
+          // Error handling moved to PickUpScreen listener for better consistency
         }
 
         if (state is GetDeliveryTimeSuccess) {
@@ -65,12 +67,8 @@ class _TimeScheduleContainerState extends State<TimeScheduleContainer> {
       builder: (context, state) {
         return Column(
           children: [
-            if (state is LoadingDeliveryTime)
-              Center(
-                child: CircularProgressIndicator(
-                  color: MyColors.mainColor,
-                ),
-              ),
+            if (deliveryTimeModel == null && state is! GetDeliveryTimeFailed)
+              _buildLoading(),
             if (deliveryTimeModel != null)
               Container(
                 padding: EdgeInsets.all(20.r),
@@ -86,10 +84,7 @@ class _TimeScheduleContainerState extends State<TimeScheduleContainer> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.title,
-                          style: Styles.styles17w700Black,
-                        ),
+                        Text(widget.title, style: Styles.styles17w700Black),
                         SizedBox(height: 20.h),
                         Row(
                           children: [
@@ -102,12 +97,12 @@ class _TimeScheduleContainerState extends State<TimeScheduleContainer> {
                             RichText(
                               overflow: TextOverflow.ellipsis,
                               text: TextSpan(
-                                text: LocaleKeys.schedule_screen_arrive_at.tr(),
+                                text: "Instant,",
                                 style: Styles.styles12w400black,
                                 children: [
                                   TextSpan(
                                     text:
-                                        '${createOrderCubit.availableTime?.from!}  -  ${createOrderCubit.availableTime?.to}',
+                                        ' ${widget.isDelivery ? 'Arrive at' : 'Receive at'} ${createOrderCubit.availableTime?.to != null ? DateFormat('h:mm a').format(createOrderCubit.availableTime!.to!) : ''}',
                                     style: Styles.styles12w400Gold,
                                   ),
                                 ],
@@ -134,6 +129,7 @@ class _TimeScheduleContainerState extends State<TimeScheduleContainer> {
                                   return BlocProvider<CreateOrderCubit>.value(
                                     value: createOrderCubit,
                                     child: TimeContainer(
+                                      isDelivery: widget.isDelivery,
                                       scrollController: scrollController,
                                       deliveryTimeModel: deliveryTimeModel!,
                                     ),
@@ -172,13 +168,56 @@ class _TimeScheduleContainerState extends State<TimeScheduleContainer> {
       },
     );
   }
+
+  Widget _buildLoading() {
+    return Skeletonizer(
+      enabled: true,
+      child: Container(
+        padding: EdgeInsets.all(20.r),
+        margin: EdgeInsets.symmetric(vertical: 10.h),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.9),
+          borderRadius: BorderRadius.circular(15.r),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.title, style: Styles.styles17w700Black),
+                SizedBox(height: 20.h),
+                Row(
+                  children: [
+                    const Icon(Icons.access_time, size: 18),
+                    SizedBox(width: 5.w),
+                    const Text("Instant, Arrive at 00:00 AM"),
+                  ],
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Icon(Icons.calendar_today, size: 18),
+                SizedBox(width: 5.w),
+                const Text("Schedule"),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class TimeContainer extends StatefulWidget {
+  final bool isDelivery;
   final ScrollController scrollController;
   final DeliveryTimeModel deliveryTimeModel;
   const TimeContainer({
     super.key,
+    required this.isDelivery,
     required this.scrollController,
     required this.deliveryTimeModel,
   });
@@ -194,7 +233,7 @@ class _TimeContainerState extends State<TimeContainer> {
 
   @override
   void initState() {
-    availableTime = widget.deliveryTimeModel.available!;
+    availableTime = widget.deliveryTimeModel.availableTime;
     createOrderCubit = BlocProvider.of<CreateOrderCubit>(context);
     selectedTime = createOrderCubit.availableTime!;
 
@@ -209,9 +248,7 @@ class _TimeContainerState extends State<TimeContainer> {
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 25.h),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.r),
-        ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.r)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -219,7 +256,9 @@ class _TimeContainerState extends State<TimeContainer> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  LocaleKeys.checkout_delivery_screen_delivery_time.tr(),
+                  widget.isDelivery
+                      ? LocaleKeys.checkout_delivery_screen_delivery_time.tr()
+                      : LocaleKeys.pickup_reorder_screen_pickup_time.tr(),
                   style: Styles.styles17w700Black,
                 ),
                 InkWell(
@@ -268,7 +307,9 @@ class _TimeContainerState extends State<TimeContainer> {
               margin: EdgeInsets.symmetric(vertical: 20.h),
             ),
             Text(
-              LocaleKeys.schedule_screen_schedule_delivery_time.tr(),
+              widget.isDelivery
+                  ? LocaleKeys.schedule_screen_schedule_delivery_time.tr()
+                  : "Schedule pickup time",
               style: Styles.styles12w300NormalBlack.copyWith(
                 color: const Color.fromRGBO(120, 120, 120, 1),
               ),
@@ -281,7 +322,7 @@ class _TimeContainerState extends State<TimeContainer> {
               itemBuilder: (context, index) {
                 return radioTimeItem(
                   title: Text(
-                    '${availableTime[index].from!} - ${availableTime[index].to!}',
+                    '${availableTime[index].from != null ? DateFormat('h:mm a').format(availableTime[index].from!) : ''} - ${availableTime[index].to != null ? DateFormat('h:mm a').format(availableTime[index].to!) : ''}',
                     style: Styles.styles15w400Black.copyWith(
                       color: const Color.fromRGBO(41, 41, 41, 1),
                     ),

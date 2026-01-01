@@ -8,14 +8,16 @@ import 'package:negmt_heliopolis/features/Checkout/data/model/delivery_time_mode
 import 'package:negmt_heliopolis/features/Checkout/data/model/promocode_model.dart';
 
 abstract class CreateOrder {
-  Future<Either<Failure, OrderDetailsModel>> createOrder(
-    CreateOrderModel data,
+  Future<Either<Failure, OrderDetailsModel>> createOrder(CreateOrderModel data);
+  Future<Either<Failure, PromoCodeModel>> checkPromoCode(
+    String code,
+    double originalAmount,
   );
-  Future<Either<Failure, PromoCodeModel>> checkPromoCode(String code);
 
   Future<Either<Failure, CancelOrderModel>> cancelOrder(int id, String reason);
 
   Future<Either<Failure, BranchesModel>> getAllBranches();
 
   Future<Either<Failure, DeliveryTimeModel>> getDeliveryTime();
+  Future<Either<Failure, DeliveryTimeModel>> getPickupTime();
 }

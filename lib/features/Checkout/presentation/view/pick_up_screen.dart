@@ -7,6 +7,7 @@ import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/branches_model.dart';
@@ -51,8 +52,8 @@ class _PickUpScreenState extends State<PickUpScreen> {
         for (var value in tableValues) {
           itemsArray.add(
             Item(
-              productId: value[cartItemId] as int,
-              number: value[cartItemQty] as int,
+              productId: value[cartItemId] as String,
+              number: (value[cartItemQty] as num).toInt(),
             ),
           );
         }
@@ -99,12 +100,7 @@ class _PickUpScreenState extends State<PickUpScreen> {
           }
 
           if (state is CreateOrderFailed) {
-            CustomSnackBar.show(
-              context: context,
-              duration: const Duration(seconds: 10),
-              text: state.error,
-              isGreen: false,
-            );
+            showCustomGetSnack(isGreen: false, text: state.error);
           }
 
           if (state is BranchesSuccess) {
@@ -156,14 +152,16 @@ class _PickUpScreenState extends State<PickUpScreen> {
                             itemBuilder: (context, index) {
                               return itemWidget(
                                 quantity:
-                                    tableValues[index][cartItemQty] as double,
+                                    (tableValues[index][cartItemQty] as num)
+                                        .toDouble(),
                                 name:
                                     tableValues[index][cartItemName] as String,
                                 imageUrl:
                                     tableValues[index][cartItemImageUrl]
                                         as String,
                                 price:
-                                    tableValues[index][cartItemPrice] as double,
+                                    (tableValues[index][cartItemPrice] as num)
+                                        .toDouble(),
                               );
                             },
                             itemCount: tableValues.length,
@@ -172,14 +170,15 @@ class _PickUpScreenState extends State<PickUpScreen> {
                       ),
                     ),
                     TimeScheduleContainer(
+                      isDelivery: false,
                       title: LocaleKeys.pick_up_screen_pickup_time.tr(),
                       createOrderModel: createOrderModel,
                     ),
                     if (state is BranchesLoading)
                       Helper.loadingWidget()
-                    else if (state is BranchesFailed)
-                      Text(state.error)
-                    else if (branchesModel.branches != null)
+                    // else if (state is BranchesFailed)
+                    //   Text(state.error)
+                    else if (branchesModel.data != null)
                       BranchesRow(
                         branchesModel: branchesModel,
                         createOrderModel: createOrderModel,

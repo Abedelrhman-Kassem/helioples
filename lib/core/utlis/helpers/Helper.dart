@@ -26,7 +26,7 @@ class Helper {
 
   static Widget loadNetworkImage({
     String url = '',
-    required String assetsErrorPath,
+    String? assetsErrorPath,
     BoxFit fit = BoxFit.cover,
     double width = double.infinity,
     double minShimmerHeight = 50,
@@ -35,15 +35,18 @@ class Helper {
     if (imageHeight != null) {
       minShimmerHeight = imageHeight;
     }
+    Widget brokenImageWidget() => SizedBox(
+      height: imageHeight,
+      width: width,
+      child: const Icon(Icons.broken_image, color: Colors.grey),
+    );
 
     Widget errorWidget() => Image(
-          height: imageHeight,
-          width: width,
-          fit: fit,
-          image: AssetImage(
-            assetsErrorPath,
-          ),
-        );
+      height: imageHeight,
+      width: width,
+      fit: fit,
+      image: AssetImage(assetsErrorPath ?? ""),
+    );
 
     if (url.isNotEmpty) {
       bool validUrl = Uri.parse(url).isAbsolute;
@@ -57,21 +60,25 @@ class Helper {
             constraints: BoxConstraints(minHeight: minShimmerHeight),
             child: Shimmer(
               gradient: LinearGradient(
-                colors: [
-                  Colors.grey.shade300,
-                  Colors.grey.shade400,
-                ],
+                colors: [Colors.grey.shade300, Colors.grey.shade400],
               ),
               child: const SizedBox(),
             ),
           ),
-          errorWidget: (ctx, str, obj) => errorWidget(),
+          errorWidget: (ctx, str, obj) =>
+              (assetsErrorPath == null || assetsErrorPath.isEmpty)
+              ? brokenImageWidget()
+              : errorWidget(),
         );
       } else {
-        return errorWidget();
+        return (assetsErrorPath == null || assetsErrorPath.isEmpty)
+            ? brokenImageWidget()
+            : errorWidget();
       }
     } else {
-      return errorWidget();
+      return (assetsErrorPath == null || assetsErrorPath.isEmpty)
+          ? brokenImageWidget()
+          : errorWidget();
     }
   }
 
@@ -81,11 +88,13 @@ class Helper {
     required double roundness,
   }) {
     return Shimmer(
-      gradient: LinearGradient(colors: [
-        Colors.grey.shade300,
-        Colors.grey.shade400,
-        Colors.grey.shade300,
-      ]),
+      gradient: LinearGradient(
+        colors: [
+          Colors.grey.shade300,
+          Colors.grey.shade400,
+          Colors.grey.shade300,
+        ],
+      ),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.grey.shade300,
@@ -115,10 +124,7 @@ class Helper {
         //   return false;
         // },
         child: AlertDialog(
-          content: Loading(
-            title: title,
-            content: content,
-          ),
+          content: Loading(title: title, content: content),
         ),
       ),
     );
@@ -129,17 +135,13 @@ class Helper {
   }
 
   static bool isValidEmail(String email) => RegExp(
-          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-      .hasMatch(email);
+    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+  ).hasMatch(email);
 
-  static void showSnackBarMessage(
-    BuildContext context,
-    String content,
-  ) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(content),
-      showCloseIcon: true,
-    ));
+  static void showSnackBarMessage(BuildContext context, String content) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(content), showCloseIcon: true));
   }
 
   static Future<void> showMessage(
@@ -161,27 +163,15 @@ class Helper {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      icon,
-                      size: 90,
-                      color: iconColor,
-                    ),
+                    Icon(icon, size: 90, color: iconColor),
                     const SizedBox(height: 20),
                   ],
                 ),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20,
-                ),
-              ),
+              Text(title, style: const TextStyle(fontSize: 20)),
               const SizedBox(height: 10),
               Flexible(
                 child: SingleChildScrollView(
-                  child: Text(
-                    message,
-                    textAlign: TextAlign.center,
-                  ),
+                  child: Text(message, textAlign: TextAlign.center),
                 ),
               ),
               const SizedBox(height: 30),
@@ -200,16 +190,12 @@ class Helper {
     );
   }
 
-  static Future<void> showBottomSheetWidget(
-    Widget child,
-  ) async {
+  static Future<void> showBottomSheetWidget(Widget child) async {
     await showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(15),
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
       ),
       builder: (ctx) => Stack(
         clipBehavior: Clip.none,
@@ -223,13 +209,8 @@ class Helper {
                 onPressed: () {
                   Get.back();
                 },
-                style: IconButton.styleFrom(
-                  backgroundColor: Colors.white,
-                ),
-                icon: const Icon(
-                  Icons.close,
-                  color: Colors.black,
-                ),
+                style: IconButton.styleFrom(backgroundColor: Colors.white),
+                icon: const Icon(Icons.close, color: Colors.black),
               ),
             ),
           ),
@@ -238,10 +219,7 @@ class Helper {
             maxChildSize: 1,
             builder: (ctx, ctrl) => SizedBox(
               width: double.infinity,
-              child: SingleChildScrollView(
-                controller: ctrl,
-                child: child,
-              ),
+              child: SingleChildScrollView(controller: ctrl, child: child),
             ),
           ),
         ],
@@ -268,11 +246,7 @@ class Helper {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      icon,
-                      size: 90,
-                      color: iconColor,
-                    ),
+                    Icon(icon, size: 90, color: iconColor),
                     const SizedBox(height: 20),
                   ],
                 ),
@@ -284,10 +258,7 @@ class Helper {
                 ),
               ),
               const SizedBox(height: 10),
-              Text(
-                message,
-                textAlign: TextAlign.center,
-              ),
+              Text(message, textAlign: TextAlign.center),
               const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -321,9 +292,6 @@ class Helper {
 
   static Size size(BuildContext context) => MediaQuery.of(context).size;
 
-  static Widget loadingWidget() => Center(
-        child: CircularProgressIndicator(
-          color: MyColors.mainColor,
-        ),
-      );
+  static Widget loadingWidget() =>
+      Center(child: CircularProgressIndicator(color: MyColors.mainColor));
 }

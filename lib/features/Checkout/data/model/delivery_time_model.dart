@@ -1,44 +1,55 @@
 class DeliveryTimeModel {
-  List<AvailableTime>? available;
+  DeliveryTimeModel({
+    required this.success,
+    required this.message,
+    required this.availableTime,
+    required this.statusCode,
+    required this.errors,
+  });
 
-  DeliveryTimeModel({this.available});
+  final bool? success;
+  final String? message;
+  final List<AvailableTime> availableTime;
+  final int? statusCode;
+  final dynamic errors;
 
-  DeliveryTimeModel.fromJson(Map<String, dynamic> json) {
-    if (json['available'] != null) {
-      available = <AvailableTime>[];
-      json['available'].forEach((v) {
-        available!.add(AvailableTime.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (available != null) {
-      data['available'] = available!.map((v) => v.toJson()).toList();
-    }
-    return data;
+  factory DeliveryTimeModel.fromJson(Map<String, dynamic> json) {
+    return DeliveryTimeModel(
+      success: json["success"],
+      message: json["message"],
+      availableTime: json["data"] == null
+          ? []
+          : List<AvailableTime>.from(
+              json["data"]!.map((x) => AvailableTime.fromJson(x)),
+            ),
+      statusCode: json["statusCode"],
+      errors: json["errors"],
+    );
   }
 }
 
 class AvailableTime {
-  int? id;
-  String? from;
-  String? to;
+  AvailableTime({
+    required this.id,
+    required this.from,
+    required this.to,
+    required this.active,
+    required this.maxCapacity,
+  });
 
-  AvailableTime({this.id, this.from, this.to});
+  final String? id;
+  final DateTime? from;
+  final DateTime? to;
+  final bool? active;
+  final int? maxCapacity;
 
-  AvailableTime.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    from = json['from'];
-    to = json['to'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['from'] = from;
-    data['to'] = to;
-    return data;
+  factory AvailableTime.fromJson(Map<String, dynamic> json) {
+    return AvailableTime(
+      id: json["id"],
+      from: DateTime.tryParse(json["from"] ?? ""),
+      to: DateTime.tryParse(json["to"] ?? ""),
+      active: json["active"],
+      maxCapacity: json["maxCapacity"],
+    );
   }
 }

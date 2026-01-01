@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +10,7 @@ import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/db_change_notifier.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/alternative_container.dart';
@@ -48,8 +47,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         for (var value in tableValues) {
           itemsArray.add(
             Item(
-              productId: value[cartItemId] as int,
-              number: value[cartItemQty] as int,
+              productId: value[cartItemId] as String,
+              number: (value[cartItemQty] as num).toInt(),
             ),
           );
         }
@@ -77,11 +76,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           }
 
           if (state is CreateOrderFailed) {
-            CustomSnackBar.show(
-              context: context,
-              duration: const Duration(seconds: 10),
-              text: state.error,
+            showCustomGetSnack(
               isGreen: false,
+              text: state.error,
+              isSnackOpen: false,
+              duration: const Duration(seconds: 3),
             );
           }
         },
@@ -94,7 +93,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   Navigator.pop(context);
                 },
               ),
-              title: const Text(LocaleKeys.cart_modal_checkout),
+              title: Text(LocaleKeys.cart_modal_checkout.tr()),
             ),
             body: Container(
               height: double.infinity,
@@ -127,14 +126,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             itemBuilder: (context, index) {
                               return itemWidget(
                                 quantity:
-                                    tableValues[index][cartItemQty] as double,
+                                    (tableValues[index][cartItemQty] as num)
+                                        .toDouble(),
                                 name:
                                     tableValues[index][cartItemName] as String,
                                 imageUrl:
                                     tableValues[index][cartItemImageUrl]
                                         as String,
                                 price:
-                                    tableValues[index][cartItemPrice] as double,
+                                    (tableValues[index][cartItemPrice] as num)
+                                        .toDouble(),
                               );
                             },
                             itemCount: tableValues.length,
@@ -143,6 +144,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                     ),
                     TimeScheduleContainer(
+                      isDelivery: true,
                       title: LocaleKeys.re_order_screen_delivery_time.tr(),
                       createOrderModel: createOrderModel,
                     ),
@@ -273,7 +275,7 @@ class _CheckOutBottomSheetState extends State<CheckOutBottomSheet> {
                     splashColor: MyColors.mainColor,
                     onTap: () {
                       log(widget.createOrderModel.deliverTimeId.toString());
-                      createOrderCubit.createOrder(widget.createOrderModel);
+                      // createOrderCubit.createOrder(widget.createOrderModel);
                     },
                     child: Container(
                       width: 284.w,

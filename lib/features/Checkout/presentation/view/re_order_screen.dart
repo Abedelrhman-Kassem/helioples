@@ -42,8 +42,8 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
     for (var value in tableValues) {
       itemsArray.add(
         Item(
-          productId: value[cartItemId] as int,
-          number: value[cartItemQty] as int,
+          productId: value[cartItemId] as String,
+          number: (value[cartItemQty] as num).toInt(),
         ),
       );
     }
@@ -231,6 +231,7 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                         ),
                       ),
                       TimeScheduleContainer(
+                        isDelivery: true,
                         title: LocaleKeys.re_order_screen_delivery_time.tr(),
                         createOrderModel: createOrderModel,
                       ),

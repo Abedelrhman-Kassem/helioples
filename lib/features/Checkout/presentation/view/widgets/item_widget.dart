@@ -11,7 +11,10 @@ Widget itemWidget({
 }) {
   return Row(
     children: [
-      Text('x$quantity', style: Styles.styles12w300NormalBlack),
+      Text(
+        'x${quantity.toStringAsFixed(0)}',
+        style: Styles.styles12w300NormalBlack,
+      ),
       Container(
         margin: EdgeInsets.symmetric(horizontal: 10.w),
         width: 70.w,

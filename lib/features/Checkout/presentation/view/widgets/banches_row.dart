@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,13 +23,12 @@ class BranchesRow extends StatefulWidget {
 }
 
 class _BranchesRowState extends State<BranchesRow> {
-  late int selectedBranch;
+  late String selectedBranch;
   late List<Branches> branches;
   @override
   void initState() {
-    selectedBranch = widget.branchesModel.branches?[0].id ?? 0;
-    log(widget.branchesModel.branches.toString());
-    branches = widget.branchesModel.branches!;
+    selectedBranch = widget.branchesModel.data!.items.first.id!;
+    branches = widget.branchesModel.data!.items;
 
     super.initState();
   }
@@ -60,9 +57,7 @@ class _BranchesRowState extends State<BranchesRow> {
               color: const Color.fromRGBO(41, 41, 41, 1),
             ),
           ),
-          SizedBox(
-            height: 12.h,
-          ),
+          SizedBox(height: 12.h),
           GridView.builder(
             shrinkWrap: true,
             itemCount: branches.length,
@@ -109,10 +104,7 @@ class BranchItem extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Image.asset(
-            "assets/Icons_logos/bracnh_image.png",
-            width: 125.w,
-          ),
+          Image.asset("assets/Icons_logos/bracnh_image.png", width: 125.w),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -125,10 +117,7 @@ class BranchItem extends StatelessWidget {
                 height: 50.h,
               ),
               SizedBox(height: 5.h),
-              Text(
-                name,
-                style: Styles.styles11w600White,
-              ),
+              Text(name, style: Styles.styles11w600White),
             ],
           ),
         ],

@@ -3,11 +3,11 @@ class CreateOrderModel {
   String? paymentMethod;
   double? tips;
   String? alternativeProduct;
-  int? branchId;
+  String? branchId;
   String? addressId;
   bool? chooseForMe;
   String? promoCode;
-  int? deliverTimeId;
+  String? deliverTimeId;
   List<Item>? items;
 
   CreateOrderModel({
@@ -56,7 +56,7 @@ class CreateOrderModel {
 }
 
 class Item {
-  late int productId;
+  late String productId;
   late int number;
 
   Item({required this.productId, required this.number});

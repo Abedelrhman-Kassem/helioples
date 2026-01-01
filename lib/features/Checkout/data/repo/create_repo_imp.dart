@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
+import 'package:negmt_heliopolis/core/utlis/network/app_urls.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/branches_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/cancel_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
@@ -42,13 +43,16 @@ class CreateOrderImp extends CreateOrder {
   }
 
   @override
-  Future<Either<Failure, PromoCodeModel>> checkPromoCode(String code) async {
+  Future<Either<Failure, PromoCodeModel>> checkPromoCode(
+    String code,
+    double originalAmount,
+  ) async {
     PromoCodeModel promoCodeModel;
 
     try {
       var response = await apiService.post(
-        endPoints: 'api/protected/orders/check-promocode',
-        data: {'code': code},
+        endPoints: AppUrls.promoCodeUrl(),
+        data: {'code': code, 'original_amount': originalAmount},
       );
 
       promoCodeModel = PromoCodeModel.fromJson(response.data);
@@ -93,9 +97,7 @@ class CreateOrderImp extends CreateOrder {
     BranchesModel branchesModel;
 
     try {
-      var response = await apiService.get(
-        endpoint: 'api/protected/branches/get-all-branches',
-      );
+      var response = await apiService.get(endpoint: AppUrls.branchesUrl());
 
       branchesModel = BranchesModel.fromJson(response);
 
@@ -114,9 +116,26 @@ class CreateOrderImp extends CreateOrder {
     DeliveryTimeModel deliveryTimeModel;
 
     try {
-      var response = await apiService.get(
-        endpoint: 'api/protected/delivery/get-available-time',
-      );
+      var response = await apiService.get(endpoint: AppUrls.deliveryTimeUrl());
+
+      deliveryTimeModel = DeliveryTimeModel.fromJson(response);
+
+      return right(deliveryTimeModel);
+    } catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure.fromDioError(e));
+      }
+
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, DeliveryTimeModel>> getPickupTime() async {
+    DeliveryTimeModel deliveryTimeModel;
+
+    try {
+      var response = await apiService.get(endpoint: AppUrls.pickupTimeUrl());
 
       deliveryTimeModel = DeliveryTimeModel.fromJson(response);
 

@@ -61,9 +61,8 @@ class _ItemWidgetState extends State<ItemWidget> {
                         : product.id!,
                     child: Helper.loadNetworkImage(
                       url: product.thumbnailImage ?? '',
+
                       // assetsErrorPath: 'assets/test_images/white-toast.png',
-                      assetsErrorPath:
-                          'assets/ayman/—Pngtree—3d beauty cosmetics product design_6380191 (1).png',
                       fit: BoxFit.contain,
                     ),
                   ),
