@@ -20,10 +20,7 @@ class Tips {
 
 class DeliveryTipsContianer extends StatefulWidget {
   final CreateOrderModel createOrderModel;
-  const DeliveryTipsContianer({
-    super.key,
-    required this.createOrderModel,
-  });
+  const DeliveryTipsContianer({super.key, required this.createOrderModel});
 
   @override
   State<DeliveryTipsContianer> createState() => _DeliveryTipsContianerState();
@@ -107,28 +104,25 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
             child: Wrap(
               spacing: 10.w,
               children: [
-                ...List.generate(
-                  tipsList.length,
-                  (index) {
-                    return tipsWidget(
-                      text: tipsList[index].textValue,
-                      isChossen: tipsValue == tipsList[index].value,
-                      onTap: () {
-                        isCustomTips = false;
-                        setState(() {
-                          tipsValue = tipsList[index].value;
-                          createOrderCubit.tipsToBottomSheet(tipsValue);
-                        });
-                      },
-                    );
-                  },
-                ),
+                ...List.generate(tipsList.length, (index) {
+                  return tipsWidget(
+                    text: tipsList[index].textValue,
+                    isChossen: tipsValue == tipsList[index].value,
+                    onTap: () {
+                      isCustomTips = false;
+                      setState(() {
+                        tipsValue = tipsList[index].value;
+                        createOrderCubit.tipsToBottomSheet(tipsValue);
+                      });
+                    },
+                  );
+                }),
                 tipsWidget(
                   text: customTipsController.text.isEmpty
                       ? LocaleKeys.delivery_tips_container_custom.tr()
                       : '${customTipsController.text} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
                   onTap: () {
-                    isCustomTips = true;
+                    isCustomTips = !isCustomTips;
                     tipsValue = customTipsController.text.isEmpty
                         ? 0
                         : double.parse(customTipsController.text);
@@ -185,8 +179,8 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
                         horizontal: 10.w,
                         vertical: 15.h,
                       ),
-                      hintText:
-                          LocaleKeys.delivery_tips_container_enter_amount.tr(),
+                      hintText: LocaleKeys.delivery_tips_container_enter_amount
+                          .tr(),
                       border: InputBorder.none,
                       hintStyle: Styles.styles17w400interFamily.copyWith(
                         color: const Color.fromRGBO(181, 185, 190, 1),

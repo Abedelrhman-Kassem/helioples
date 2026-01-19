@@ -40,11 +40,16 @@ class AddressControllerImpl extends AddressController {
   Result? resultDetails;
 
   bool isSearch = false;
+  bool _isDisposed = false;
 
   late LocationServisess locationServisess;
   late CameraPosition initialCameraPosition;
-  late GoogleMapController mapController;
+  GoogleMapController? _mapController;
   late CameraPosition cameraPosition;
+
+  GoogleMapController get mapController => _mapController!;
+  set mapController(GoogleMapController controller) =>
+      _mapController = controller;
   String country = '';
   String city = '';
   String administrativeArea = '';
@@ -58,10 +63,11 @@ class AddressControllerImpl extends AddressController {
 
   @override
   void onClose() {
-    super.onClose();
+    _isDisposed = true;
     searchController.dispose();
     searchFocusNode.dispose();
-    mapController.dispose();
+    _mapController?.dispose();
+    _mapController = null;
     newmarker.clear();
     predictions.clear();
     resultDetails = null;
@@ -70,6 +76,7 @@ class AddressControllerImpl extends AddressController {
     administrativeArea = '';
     street = '';
     sessionToken = null;
+    super.onClose();
   }
 
   @override
@@ -116,9 +123,11 @@ class AddressControllerImpl extends AddressController {
       newmarker.add(marker);
 
       cameraPosition = CameraPosition(zoom: 12, target: latLng);
-      mapController.animateCamera(
-        CameraUpdate.newCameraPosition(cameraPosition),
-      );
+      if (!_isDisposed && _mapController != null) {
+        _mapController!.animateCamera(
+          CameraUpdate.newCameraPosition(cameraPosition),
+        );
+      }
       if (!skipGeocoding) {
         try {
           List<Placemark> placemarks = await placemarkFromCoordinates(

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_item.dart';
@@ -7,10 +9,7 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/car
 
 class DeliveryPaymentContianer extends StatefulWidget {
   final CreateOrderModel createOrderModel;
-  const DeliveryPaymentContianer({
-    super.key,
-    required this.createOrderModel,
-  });
+  const DeliveryPaymentContianer({super.key, required this.createOrderModel});
 
   @override
   State<DeliveryPaymentContianer> createState() =>
@@ -18,7 +17,7 @@ class DeliveryPaymentContianer extends StatefulWidget {
 }
 
 class _DeliveryPaymentContianerState extends State<DeliveryPaymentContianer> {
-  String radioValue = 'cashOnDelivery';
+  OrderPaymentMethod radioValue = OrderPaymentMethod.cashOnDelivery;
 
   @override
   Widget build(BuildContext context) {
@@ -35,40 +34,40 @@ class _DeliveryPaymentContianerState extends State<DeliveryPaymentContianer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Payment',
+            LocaleKeys.checkout_delivery_screen_payment.tr(),
             style: Styles.styles17w700Black,
           ),
           SizedBox(height: 20.h),
           radioItem(
-            title: 'Cash on delivery',
+            title: LocaleKeys.checkout_delivery_screen_cash_on_delivery.tr(),
             iconPath: 'cash-on-delivery',
             index: 'cashOnDelivery',
-            radioValue: radioValue,
+            radioValue: radioValue.toApiString(),
             onTap: () {
               setState(() {
-                radioValue = 'cashOnDelivery';
+                radioValue = OrderPaymentMethod.cashOnDelivery;
               });
             },
           ),
           radioItem(
-            title: 'Card on delivery',
+            title: LocaleKeys.checkout_delivery_screen_card_on_delivery.tr(),
             iconPath: 'card-on-delivery',
             index: 'cardOnDelivery',
-            radioValue: radioValue,
+            radioValue: radioValue.toApiString(),
             onTap: () {
               setState(() {
-                radioValue = 'cardOnDelivery';
+                radioValue = OrderPaymentMethod.cardOnDelivery;
               });
             },
           ),
           radioItem(
-            title: 'Credit/Debit card',
+            title: LocaleKeys.checkout_delivery_screen_credit_debit_card.tr(),
             iconPath: 'credit-or-debit-card',
             index: 'card',
-            radioValue: radioValue,
+            radioValue: radioValue.toApiString(),
             onTap: () async {
               setState(() {
-                radioValue = 'card';
+                radioValue = OrderPaymentMethod.card;
               });
 
               return showModalBottomSheet(

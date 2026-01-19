@@ -21,10 +21,12 @@ class PromoCodeContainer extends StatefulWidget {
 class _PromoCodeContainerState extends State<PromoCodeContainer> {
   TextEditingController promoCodeController = .new();
   final DbChangeNotifier dbChangeNotifier = DbChangeNotifier();
+  final FocusNode focusNode = .new();
 
   @override
   void dispose() {
     promoCodeController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -37,8 +39,8 @@ class _PromoCodeContainerState extends State<PromoCodeContainer> {
         }
 
         if (state is CheckPromoCodeSuccess) {
-          widget.createOrderModel.promoCode =
-              state.promoCodeModel.promoCode!.code;
+          widget.createOrderModel.promoCodeId = state.promoCodeModel.data!.id;
+          focusNode.unfocus();
         }
       },
       builder: (context, state) {
@@ -69,6 +71,7 @@ class _PromoCodeContainerState extends State<PromoCodeContainer> {
                   ),
                 ),
                 child: TextField(
+                  focusNode: focusNode,
                   controller: promoCodeController,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(

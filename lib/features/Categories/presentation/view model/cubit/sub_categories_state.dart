@@ -9,7 +9,12 @@ class LoadingMainSubCategories extends SubCategoriesState {}
 class GetMainSubCategoriesSuccess extends SubCategoriesState {
   final List<SubCatByCatidData> subCategories;
   final List<FeaturData> features;
-  GetMainSubCategoriesSuccess(this.subCategories, {this.features = const []});
+  final CategoryModel? category;
+  GetMainSubCategoriesSuccess(
+    this.subCategories, {
+    this.features = const [],
+    this.category,
+  });
 }
 
 class GetMainSubCategoriesFailed extends SubCategoriesState {

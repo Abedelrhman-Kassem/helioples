@@ -12,12 +12,17 @@ class LikedRepoImp extends LikedRepo {
   LikedRepoImp(this.apiService);
 
   @override
-  Future<Either<Failure, LikedModel>> getAllLikedProducts(int page) async {
+  Future<Either<Failure, LikedModel>> getAllLikedProducts({
+    required int page,
+    required int pageSize,
+  }) async {
     LikedModel likedModel = LikedModel.fromJson({});
 
     try {
       likedModel = LikedModel.fromJson(
-        await apiService.get(endpoint: 'api/protected/user/likes?page=$page'),
+        await apiService.get(
+          endpoint: AppUrls.getLikedProductUrl(page, pageSize),
+        ),
       );
 
       return right(likedModel);

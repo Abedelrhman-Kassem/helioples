@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/sub_categories_notifier.dart';
@@ -128,7 +130,8 @@ class _CustomAppbarState extends State<CustomAppbar> {
                                   Text("👑", style: TextStyle(fontSize: 20.sp)),
                                   SizedBox(width: 5.w),
                                   Text(
-                                    "Featured",
+                                    LocaleKeys.sub_categories_screen_featured
+                                        .tr(),
                                     style: Styles.styles15w500interFamily
                                         .copyWith(
                                           color: MyColors.mainColor,

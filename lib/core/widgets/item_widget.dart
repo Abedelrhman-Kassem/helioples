@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
+import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/notification_button_controlled.dart';
 import 'package:negmt_heliopolis/features/Liked/presentation/view/widgets/heart_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/item_counter_widget.dart';
+import 'package:negmt_heliopolis/features/Notification/data/repo/notification_repo_imp.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
+import 'package:negmt_heliopolis/core/utlis/notifiers/subscription_notifier.dart';
 import 'package:negmt_heliopolis/features/SpecialOffersItem/presentation/view/widgets/discount_widget.dart';
 
 class ItemWidget extends StatefulWidget {
@@ -60,9 +64,8 @@ class _ItemWidgetState extends State<ItemWidget> {
                         ? "${widget.heroTagPrefix}${product.id}"
                         : product.id!,
                     child: Helper.loadNetworkImage(
+                      imageHeight: 150.h,
                       url: product.thumbnailImage ?? '',
-
-                      // assetsErrorPath: 'assets/test_images/white-toast.png',
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -90,8 +93,38 @@ class _ItemWidgetState extends State<ItemWidget> {
                               ),
                             )
                           : NotificationButtonControlled(
-                              isnotification: false,
-                              addNotiOrRemoveNoti: () {},
+                              isnotification: product.isSubscribed ?? false,
+                              productId: product.id!,
+                              addNotiOrRemoveNoti: () async {
+                                final notificationRepo = NotificationRepoImp(
+                                  api: Get.find<ApiService>(),
+                                );
+                                if (product.isSubscribed == true) {
+                                  // Unsubscribe
+                                  await notificationRepo.unsubscribe(
+                                    eventType: '6',
+                                    targetId: product.id!,
+                                  );
+                                  product.isSubscribed = false;
+                                  SubscriptionNotifier().triggerNotification(
+                                    product.id!,
+                                    false,
+                                  );
+                                } else {
+                                  // Subscribe
+                                  await notificationRepo.subscribe(
+                                    eventType: "6",
+                                    targetType: 'Product',
+                                    targetId: product.id!,
+                                    route: 'Product',
+                                  );
+                                  product.isSubscribed = true;
+                                  SubscriptionNotifier().triggerNotification(
+                                    product.id!,
+                                    true,
+                                  );
+                                }
+                              },
                             ),
                     ),
                   ),
@@ -145,19 +178,19 @@ class _ItemWidgetState extends State<ItemWidget> {
                   constraints: const BoxConstraints(maxWidth: 74),
                   child: RichText(
                     text: TextSpan(
-                      text: '${product.price ?? product.price!.toInt()}',
+                      text: product.price!.toStringAsFixed(2),
                       style: Styles.styles16w800interFamily.copyWith(
-                        fontSize: 16,
+                        fontSize: 17.sp,
                       ),
-                      children: [
-                        TextSpan(
-                          text:
-                              '.${((product.price! - product.price!.toInt()) * 100).round()}',
-                          style: Styles.styles9w300interFamily.copyWith(
-                            fontSize: 9,
-                          ),
-                        ),
-                      ],
+                      // children: [
+                      //   TextSpan(
+                      //     text:
+                      //         '.${((product.price! - product.price!.toInt()) * 100).round()}',
+                      //     style: Styles.styles9w300interFamily.copyWith(
+                      //       fontSize: 9,
+                      //     ),
+                      //   ),
+                      // ],
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -178,11 +211,14 @@ class _ItemWidgetState extends State<ItemWidget> {
                   ),
               ],
             ),
-            Text(
-              product.name!,
-              style: Styles.styles10w300interFamily.copyWith(fontSize: 13),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            SizedBox(
+              height: 50.h,
+              child: Text(
+                product.name!,
+                style: Styles.styles10w300interFamily.copyWith(fontSize: 13),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ],
         ),

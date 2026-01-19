@@ -31,13 +31,10 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final TextEditingController firstNameController =
-      TextEditingController(text: 'mohamed');
-  final TextEditingController lastNameController =
-      TextEditingController(text: 'mohamed');
-  final TextEditingController phoneNumberController =
-      TextEditingController(text: '01201855485');
-  final TextEditingController birthdayDateController = TextEditingController();
+  final TextEditingController firstNameController = .new();
+  final TextEditingController lastNameController = .new();
+  final TextEditingController phoneNumberController = .new();
+  final TextEditingController birthdayDateController = .new();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -71,8 +68,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   children: [
                     SignUpAppBar(
                       title: StringTranslateExtension(
-                              LocaleKeys.signup_screen_register)
-                          .tr(),
+                        LocaleKeys.signup_screen_register,
+                      ).tr(),
                       onLanguageChange: (bool value) {
                         if (lang == 'ar') {
                           changeLocal(context, 'en');
@@ -97,36 +94,33 @@ class _SignupScreenState extends State<SignupScreen> {
                       padding: EdgeInsets.only(left: 10.w),
                       child: Text(
                         StringTranslateExtension(
-                                LocaleKeys.signup_screen_phone_number)
-                            .tr(),
+                          LocaleKeys.signup_screen_phone_number,
+                        ).tr(),
                         style: Styles.styles14w400NormalBlack,
                       ),
                     ),
                     SizedBox(height: 10.h),
                     PhoneNumberWidget(
-                        phoneNumberController: phoneNumberController),
+                      phoneNumberController: phoneNumberController,
+                    ),
                     SizedBox(height: 15.h),
                     Padding(
                       padding: EdgeInsets.only(left: 10.w),
                       child: Text(
                         StringTranslateExtension(
-                                LocaleKeys.signup_screen_birthday_date)
-                            .tr(),
+                          LocaleKeys.signup_screen_birthday_date,
+                        ).tr(),
                         style: Styles.styles14w400NormalBlack,
                       ),
                     ),
-                    SizedBox(
-                      height: 15.h,
-                    ),
+                    SizedBox(height: 15.h),
                     TextFormDate(
                       initialDate: dateTime,
                       onDateTimeChanged: (DateTime newDate) {
                         dateTime = newDate;
                       },
                     ),
-                    SizedBox(
-                      height: 15.h,
-                    ),
+                    SizedBox(height: 15.h),
                     BlocProvider(
                       create: (context) =>
                           SendOtpCubit(SendOtpRepoImpl(ApiService())),
@@ -135,24 +129,22 @@ class _SignupScreenState extends State<SignupScreen> {
                           // ignore: unused_local_variable
                           final cubit = BlocProvider.of<SendOtpCubit>(context);
                           if (state is SentOtpLoading) {
-                            return LoadingButton(
-                              height: 63.h,
-                              radius: 13.r,
-                            );
+                            return LoadingButton(height: 63.h, radius: 13.r);
                           } else {
                             return Center(
                               child: SignUpCustomButton(
                                 buttonText: StringTranslateExtension(
-                                        LocaleKeys.signup_screen_continue)
-                                    .tr(),
+                                  LocaleKeys.signup_screen_continue,
+                                ).tr(),
                                 onPressed: () {
                                   if (formKey.currentState!.validate()) {
                                     RegisterModel registerModel = RegisterModel(
                                       firstName: firstNameController.text,
                                       lastName: lastNameController.text,
                                       phone: phoneNumberController.text,
-                                      birthdate:
-                                          dateTime.toUtc().toIso8601String(),
+                                      birthdate: dateTime
+                                          .toUtc()
+                                          .toIso8601String(),
                                     );
                                     cubit.checkUser(registerModel);
                                   }
@@ -173,18 +165,17 @@ class _SignupScreenState extends State<SignupScreen> {
                             showCustomGetSnack(
                               duration: const Duration(minutes: 10),
                               isGreen: false,
-                              text: "failed send otp",
+                              text: LocaleKeys.signup_screen_failed_send_otp
+                                  .tr(),
                             );
                           } else if (state is SentOtpSuccess) {
                             showCustomGetSnack(
                               isGreen: true,
-                              text: "we have sent you a verification code",
+                              text: LocaleKeys.signup_screen_otp_sent.tr(),
                             );
                             Navigator.of(context).pushNamed(
                               verficationScreen,
-                              arguments: {
-                                'otpModel': state.otpModel,
-                              },
+                              arguments: {'otpModel': state.otpModel},
                             );
                           }
                         },

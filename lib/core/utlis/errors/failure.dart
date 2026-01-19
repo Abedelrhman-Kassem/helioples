@@ -18,17 +18,32 @@ class ServerFailure extends Failure {
       case DioExceptionType.receiveTimeout:
         return ServerFailure('Receive Timeout!');
       case DioExceptionType.badResponse:
-        if (dioError.response?.statusCode == 401 ||
-            dioError.response?.statusCode == 400 ||
-            // dioError.response?.statusCode == 404 ||
-            dioError.response?.statusCode == 403 ||
-            dioError.response?.statusCode == 405) {
-          // print(dioError.response!.data['message']);
+        final statusCode = dioError.response?.statusCode;
+        final data = dioError.response?.data;
+        if (statusCode == 401 ||
+            statusCode == 400 ||
+            statusCode == 403 ||
+            statusCode == 404 ||
+            statusCode == 405) {
+          if (statusCode == 401) {
+            return ServerFailure('Unauthorized, please login again');
+          }
 
-          return ServerFailure(
-            dioError.response!.data['message'] ??
-                dioError.response!.data['errors'],
-          );
+          if (statusCode == 404) {
+            return ServerFailure('Not Found!');
+          }
+
+          if (data is Map<String, dynamic>) {
+            return ServerFailure(
+              data['message'] ?? data['errors'] ?? 'Unexpected server response',
+            );
+          }
+
+          if (data is String) {
+            return ServerFailure(data);
+          }
+
+          return ServerFailure('Bad Response!');
         } else {
           return ServerFailure('Bad Request!');
         }

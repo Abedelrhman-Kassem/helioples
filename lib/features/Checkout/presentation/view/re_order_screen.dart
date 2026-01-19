@@ -36,7 +36,7 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
 
   @override
   void initState() {
-    tableValues = BlocProvider.of<MainCubit>(context).tableValues!;
+    tableValues = BlocProvider.of<MainCubit>(context).tableValues;
 
     List<Item> itemsArray = [];
     for (var value in tableValues) {
@@ -49,7 +49,7 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
     }
 
     createOrderModel = CreateOrderModel(
-      deliverMethod: 'Delivery',
+      deliverMethod: OrderDeliverMethod.delivery,
       items: itemsArray,
     );
 
@@ -72,8 +72,6 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
           }
 
           if (state is CreateOrderSuccess) {
-            await BlocProvider.of<MainCubit>(context).clearDb();
-
             Navigator.pushNamed(
               context,
               checkoutDetailsScreen,
@@ -156,6 +154,7 @@ class _ReOrderScreenState extends State<ReOrderScreen> {
                                 color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () {
+                                    if (state is CreateOrderLoading) return;
                                     BlocProvider.of<CreateOrderCubit>(
                                       context,
                                     ).createOrder(createOrderModel);

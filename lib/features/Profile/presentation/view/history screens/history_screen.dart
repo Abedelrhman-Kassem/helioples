@@ -6,6 +6,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/history%20screens/active_orders_screen.dart';
+import 'package:negmt_heliopolis/features/Profile/presentation/view/history%20screens/canceld_order_screen.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/history%20screens/completed_order_screen.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
@@ -15,11 +16,12 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(180.h),
-            child: Builder(builder: (context) {
+          preferredSize: Size.fromHeight(180.h),
+          child: Builder(
+            builder: (context) {
               return SizedBox(
                 height: 150.h,
                 width: double.infinity,
@@ -28,14 +30,16 @@ class HistoryScreen extends StatelessWidget {
                   elevation: 0,
                   backgroundColor: Colors.white,
                   leading: returnArrow(
-                      context: context,
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      }),
+                    context: context,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
                   title: Text(
                     LocaleKeys.history_screen_orders_history.tr(),
-                    style:
-                        Styles.styles16w400grey.copyWith(color: Colors.black),
+                    style: Styles.styles16w400grey.copyWith(
+                      color: Colors.black,
+                    ),
                   ),
                   bottom: PreferredSize(
                     preferredSize: Size.fromHeight(65.h),
@@ -45,8 +49,12 @@ class HistoryScreen extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: ButtonsTabBar(
                           borderColor: Colors.transparent,
-                          unselectedBorderColor:
-                              const Color.fromRGBO(238, 238, 238, 1),
+                          unselectedBorderColor: const Color.fromRGBO(
+                            238,
+                            238,
+                            238,
+                            1,
+                          ),
                           borderWidth: 1.sp,
                           radius: 25.r,
                           contentCenter: true,
@@ -56,20 +64,27 @@ class HistoryScreen extends StatelessWidget {
                           splashColor: MyColors.mainColor,
                           height: 65.h,
                           backgroundColor: MyColors.mainColor,
-                          unselectedBackgroundColor:
-                              const Color.fromRGBO(238, 238, 238, 1),
-                          labelStyle: Styles.styles16w400grey
-                              .copyWith(color: Colors.white),
+                          unselectedBackgroundColor: const Color.fromRGBO(
+                            238,
+                            238,
+                            238,
+                            1,
+                          ),
+                          labelStyle: Styles.styles16w400grey.copyWith(
+                            color: Colors.white,
+                          ),
                           unselectedLabelStyle: Styles.styles16w400grey
                               .copyWith(color: Colors.black),
                           tabs: [
                             Tab(
-                              text:
-                                  LocaleKeys.history_screen_active_orders.tr(),
+                              text: LocaleKeys.history_screen_active_orders
+                                  .tr(),
                             ),
                             Tab(
-                                text: LocaleKeys.history_screen_completed_orders
-                                    .tr()),
+                              text: LocaleKeys.history_screen_completed_orders
+                                  .tr(),
+                            ),
+                            Tab(text: LocaleKeys.history_screen_canceled.tr()),
                           ],
                         ),
                       ),
@@ -77,11 +92,16 @@ class HistoryScreen extends StatelessWidget {
                   ),
                 ),
               );
-            })),
-        body: const TabBarView(children: [
-          ActiveOrdersScreen(),
-          CompletedOrderScreen(),
-        ]),
+            },
+          ),
+        ),
+        body: const TabBarView(
+          children: [
+            ActiveOrdersScreen(),
+            CompletedOrderScreen(),
+            CanceldOrderScreen(),
+          ],
+        ),
       ),
     );
   }

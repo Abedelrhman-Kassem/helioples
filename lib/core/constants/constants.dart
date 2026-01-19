@@ -65,3 +65,10 @@ const String profileEmptyScreen = '/profile_empty_screen';
 const String historyEmptyScreen = '/historyEmpty_screen';
 const String alertsEmptyScreen = '/alertsEmpty_screen';
 const String serverUnavailable = '/server_unavailable_screen';
+// local storage keys
+const String tokenKey = 'token';
+
+// Topic Names
+const String customers = 'customers';
+const String unsubscribedCustomers = 'unsubscribedCustomers';
+const String subscribedCustomers = 'subscribedCustomers';

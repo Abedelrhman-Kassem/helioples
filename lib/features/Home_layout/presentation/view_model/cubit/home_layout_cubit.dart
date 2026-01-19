@@ -57,10 +57,14 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
   }
 
   void returnIndex(BuildContext context) {
-    previousIndexList.removeLast();
-    previousIndex = previousIndexList.removeLast();
+    if (previousIndexList.length >= 2) {
+      previousIndexList.removeLast();
+      previousIndex = previousIndexList.removeLast();
 
-    changeCurrentIndex(context, previousIndex);
+      changeCurrentIndex(context, previousIndex);
+    } else {
+      changeCurrentIndex(context, 0);
+    }
   }
 
   // home screen things
@@ -101,22 +105,19 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
   }) async {
     emit(FetchCategoriesLoading());
 
-    Either<Failure, AllCategoriesModel> res =
-        await homeScreenImp.getAllCategories(
-      homeScreen: homeScreen,
-      page: page,
-      pageSize: pageSize,
-    );
+    Either<Failure, AllCategoriesModel> res = await homeScreenImp
+        .getAllCategories(
+          homeScreen: homeScreen,
+          page: page,
+          pageSize: pageSize,
+        );
 
-    res.fold(
-      (failure) => emit(
-        FetchCategoriesFailure(failure.errorMessage),
-      ),
-      (categories) {
-        gettingCategories = true;
-        emit(FetchCategoriesSuccess(categories));
-      },
-    );
+    res.fold((failure) => emit(FetchCategoriesFailure(failure.errorMessage)), (
+      categories,
+    ) {
+      gettingCategories = true;
+      emit(FetchCategoriesSuccess(categories));
+    });
   }
 
   Future<void> getConfigs() async {
@@ -124,41 +125,29 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
 
     Either<Failure, HomeSliderModel> res = await homeScreenImp.getConfigs();
 
-    res.fold(
-      (failure) => emit(
-        FetchConfigsFailed(failure.errorMessage),
-      ),
-      (homeSliderModel) {
-        gettingConfigs = true;
-        emit(
-          FetchConfigsSuccess(homeSliderModel),
-        );
-      },
-    );
+    res.fold((failure) => emit(FetchConfigsFailed(failure.errorMessage)), (
+      homeSliderModel,
+    ) {
+      gettingConfigs = true;
+      emit(FetchConfigsSuccess(homeSliderModel));
+    });
   }
 
   int page = 1;
   bool isLoading = false;
   bool isLastPage = false;
-  Future<void> getSpecialOffers({
-    required bool homeScreen,
-  }) async {
+  Future<void> getSpecialOffers({required bool homeScreen}) async {
     if (isLastPage) return;
     isLoading = true;
     emit(FetchOffersLoading());
 
-    Either<Failure, SpecialOfferModel> res =
-        await homeScreenImp.getSpecialOffers(
-      homeScreen: homeScreen,
-      page: page,
-    );
+    Either<Failure, SpecialOfferModel> res = await homeScreenImp
+        .getSpecialOffers(homeScreen: homeScreen, page: page);
 
     res.fold(
       (failure) {
         isLoading = false;
-        emit(
-          FetchOffersFailed(failure.errorMessage),
-        );
+        emit(FetchOffersFailed(failure.errorMessage));
       },
       (offersModel) {
         isLoading = false;

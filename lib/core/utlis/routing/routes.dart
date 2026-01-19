@@ -169,19 +169,27 @@ class AppRouter {
         fromRight = true;
         break;
       case addAddressScreen:
-        page = const MapScreen();
+        final args = settings.arguments as Map<String, dynamic>? ?? {};
+        final isUsOne = args['isUsOne'] as bool?;
+        page = MapScreen(isUsOne: isUsOne);
         fromRight = true;
         break;
 
       case categoriesScreen:
         final args = settings.arguments as Map<String, dynamic>;
-        final category = args['category'] as CategoryModel;
+        final String? categoryId = args['categoryId'];
+        final CategoryModel? category = args['category'];
+
+        final String effectiveId = categoryId ?? category?.id ?? "";
 
         page = BlocProvider(
           create: (context) => SubCategoriesCubit(
             repo: SubCategoriesRepoImp(api: Get.find<ApiService>()),
-          )..fetchSubCategories(category.id!),
-          child: SubCategoriesScreen(category: args['category']),
+          )..fetchSubCategories(effectiveId, categoryModel: category),
+          child: SubCategoriesScreen(
+            category: category,
+            categoryId: effectiveId,
+          ),
         );
         fromRight = true;
         break;
@@ -191,6 +199,7 @@ class AppRouter {
         page = ProductScreen(
           productId: args['productId'],
           product: args['product'],
+          isFromNoti: args['isFromNoti'] ?? false,
         );
         fromRight = false;
         break;
@@ -213,7 +222,7 @@ class AppRouter {
 
       case orderDetailsScreen:
         final args = settings.arguments as Map<String, dynamic>;
-        page = OrderDetailsScreen(order: args['order']);
+        page = OrderDetailsScreen(id: args['id']);
         fromRight = true;
         break;
 

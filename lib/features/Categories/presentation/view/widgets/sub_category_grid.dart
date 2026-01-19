@@ -35,11 +35,13 @@ class _SubCategoryGridState extends State<SubCategoryGrid> {
       return;
     }
 
-    products.addAll(notifier.subCategoriesProducts[widget.subCategory.id!]!);
+    products.addAll(
+      notifier.subCategoriesProducts[widget.subCategory.id!] ?? [],
+    );
     setState(() {});
     notifier.subCategoriesProducts[widget.subCategory.id!] = [];
 
-    endFetching = notifier.endFetching[widget.subCategory.id!]!;
+    endFetching = notifier.endFetching[widget.subCategory.id!] ?? false;
   }
 
   @override
@@ -59,8 +61,9 @@ class _SubCategoryGridState extends State<SubCategoryGrid> {
   @override
   Widget build(BuildContext context) {
     int modules = products.length % 3 == 0 ? 6 : products.length % 3;
-    int addedQty =
-        modules == 6 ? products.length + 6 : products.length - modules + 6;
+    int addedQty = modules == 6
+        ? products.length + 6
+        : products.length - modules + 6;
 
     int itemCount = (notifier.isFetching[widget.subCategory.id!] ?? false)
         ? addedQty
@@ -72,10 +75,7 @@ class _SubCategoryGridState extends State<SubCategoryGrid> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(
-              top: 40.h,
-              bottom: 20.h,
-            ),
+            margin: EdgeInsets.only(top: 40.h, bottom: 20.h),
             child: Text(
               widget.subCategory.name ?? '',
               style: Styles.styles21w700black,
@@ -96,9 +96,7 @@ class _SubCategoryGridState extends State<SubCategoryGrid> {
               if (gridIndex < products.length) {
                 var product = products[gridIndex];
 
-                return ItemWidget(
-                  relatedProductsModel: product,
-                );
+                return ItemWidget(relatedProductsModel: product);
               }
 
               return loadingProduct();

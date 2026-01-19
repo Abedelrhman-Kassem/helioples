@@ -48,7 +48,8 @@ class DataSlider {
       itemSlider: json["items"] == null
           ? []
           : List<ItemSlider>.from(
-              json["items"]!.map((x) => ItemSlider.fromJson(x))),
+              json["items"]!.map((x) => ItemSlider.fromJson(x)),
+            ),
     );
   }
 }
@@ -67,7 +68,7 @@ class ItemSlider {
   final bool? active;
   final String? imageUrl;
   final int? sortOrder;
-  final int? actionType;
+  final String? actionType;
   final dynamic targetId;
 
   factory ItemSlider.fromJson(Map<String, dynamic> json) {
@@ -76,7 +77,7 @@ class ItemSlider {
       active: json["active"],
       imageUrl: json["imageUrl"],
       sortOrder: json["sortOrder"],
-      actionType: json["actionType"],
+      actionType: json["actionType"].toString(),
       targetId: json["targetId"],
     );
   }

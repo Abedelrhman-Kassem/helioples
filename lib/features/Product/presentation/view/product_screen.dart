@@ -19,11 +19,13 @@ import 'package:easy_localization/easy_localization.dart';
 
 class ProductScreen extends StatefulWidget {
   final String productId;
-  final Products product;
+  final Products? product;
+  final bool isFromNoti;
   const ProductScreen({
     super.key,
     required this.productId,
-    required this.product,
+    this.product,
+    this.isFromNoti = false,
   });
 
   @override
@@ -32,6 +34,14 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   String title = '';
+  Products? currentProduct;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    currentProduct = widget.product;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +53,10 @@ class _ProductScreenState extends State<ProductScreen> {
 
           if (state is GetProductSuccess && cubit.isFirstFetch) {
             log("دخل هنا");
-            widget.product.isLiked = state.productModel.data!.isLiked!;
-            widget.product.state = state.productModel.data!.state!;
-            setState(() {});
+            currentProduct = state.productModel.data;
+            setState(() {
+              isLoading = false;
+            });
           }
         },
         builder: (context, state) {
@@ -63,90 +74,102 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
             body: Column(
               children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: ProductWidget(product: widget.product),
-                        ),
-                        SizedBox(height: 30.h),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            LocaleKeys.product_screen_related_products.tr(),
-                            style: Styles.styles16w600NormalBlack,
-                          ),
-                        ),
-                        SizedBox(height: 10.h),
-                        if (cubit.products.isNotEmpty)
-                          SizedBox(
-                            height: 210,
-                            child: PaginationListener(
-                              scrollDirection: Axis.horizontal,
-                              isLoading: cubit.isLoading,
-                              onLoadMore: () {
-                                cubit.getProductDetails(widget.productId);
-                              },
-                              child: CustomScrollView(
-                                physics: const BouncingScrollPhysics(),
-                                scrollDirection: Axis.horizontal,
-                                slivers: [
-                                  const SliverToBoxAdapter(
-                                    child: SizedBox(width: 20),
-                                  ),
-                                  SliverList.separated(
-                                    itemBuilder: (context, index) => ItemWidget(
-                                      relatedProductsModel:
-                                          cubit.products[index],
-                                    ),
-                                    separatorBuilder: (context, index) =>
-                                        SizedBox(width: 10.w),
-                                    itemCount: cubit.products.length,
-                                  ),
-                                  // const SliverToBoxAdapter(
-                                  //   child: SizedBox(width: 20),
-                                  // ),
-                                  if (state is GetProductLoading)
-                                    const SliverToBoxAdapter(
-                                      child: SizedBox(
-                                        width: 1000,
-                                        child: RelatedProdLoading(),
-                                      ),
-                                    ),
-                                ],
-                              ),
+                if (currentProduct != null)
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: ProductWidget(
+                              product: currentProduct!,
+                              isload: isLoading,
                             ),
-                          )
-                        else if (state is GetProductLoading)
-                          const RelatedProdLoading(),
-                        SizedBox(height: 100.h),
-                      ],
-                    ),
-                  ),
-                ),
-                if (state is GetProductFailure)
-                  Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          state.error,
-                        ), // This is a variable, not a hardcoded string
-                        TextButton(
-                          onPressed: () {
-                            BlocProvider.of<ProductCubit>(
-                              context,
-                            ).getProductDetails(widget.productId);
-                          },
-                          child: Text(
-                            LocaleKeys.product_screen_tap_to_try_again.tr(),
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 30.h),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                            ),
+                            child: Text(
+                              LocaleKeys.product_screen_related_products.tr(),
+                              style: Styles.styles16w600NormalBlack,
+                            ),
+                          ),
+                          SizedBox(height: 10.h),
+                          if (cubit.products.isNotEmpty)
+                            SizedBox(
+                              height: 210,
+                              child: PaginationListener(
+                                scrollDirection: Axis.horizontal,
+                                isLoading: cubit.isLoading,
+                                onLoadMore: () {
+                                  cubit.getProductDetails(widget.productId);
+                                },
+                                child: CustomScrollView(
+                                  physics: const BouncingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  slivers: [
+                                    const SliverToBoxAdapter(
+                                      child: SizedBox(width: 20),
+                                    ),
+                                    SliverList.separated(
+                                      itemBuilder: (context, index) =>
+                                          ItemWidget(
+                                            relatedProductsModel:
+                                                cubit.products[index],
+                                          ),
+                                      separatorBuilder: (context, index) =>
+                                          SizedBox(width: 10.w),
+                                      itemCount: cubit.products.length,
+                                    ),
+                                    if (state is GetProductLoading)
+                                      const SliverToBoxAdapter(
+                                        child: SizedBox(
+                                          width: 1000,
+                                          child: RelatedProdLoading(),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          else if (state is GetProductLoading)
+                            const RelatedProdLoading(),
+                          SizedBox(height: 100.h),
+                        ],
+                      ),
+                    ),
+                  )
+                else if (state is GetProductLoading)
+                  const Expanded(
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                if (state is GetProductFailure)
+                  Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            state.error,
+                            style: Styles.styles16w600NormalBlack,
+                            textAlign: TextAlign.center,
+                          ), // This is a variable, not a hardcoded string
+                          TextButton(
+                            onPressed: () {
+                              BlocProvider.of<ProductCubit>(
+                                context,
+                              ).getProductDetails(widget.productId);
+                            },
+                            child: Text(
+                              LocaleKeys.product_screen_tap_to_try_again.tr(),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
               ],

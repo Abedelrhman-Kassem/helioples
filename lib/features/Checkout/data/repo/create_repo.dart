@@ -14,10 +14,18 @@ abstract class CreateOrder {
     double originalAmount,
   );
 
-  Future<Either<Failure, CancelOrderModel>> cancelOrder(int id, String reason);
+  Future<Either<Failure, CancelOrderModel>> cancelOrder(
+    String id,
+    String reason,
+  );
 
   Future<Either<Failure, BranchesModel>> getAllBranches();
 
   Future<Either<Failure, DeliveryTimeModel>> getDeliveryTime();
   Future<Either<Failure, DeliveryTimeModel>> getPickupTime();
+  Future<Either<Failure, double>> calculateDeliveryFee({
+    String? addressId,
+    double? lat,
+    double? long,
+  });
 }

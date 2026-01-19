@@ -48,6 +48,8 @@ class _HeartWidgetState extends State<HeartWidget>
     postLikedModel = PostLikedModel.fromJson({});
     postLikedModel.data = widget.isFavorite;
 
+    likedNotifier.addListener(_likedListener);
+
     _favoriteAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 100),
@@ -61,6 +63,23 @@ class _HeartWidgetState extends State<HeartWidget>
     );
   }
 
+  void _likedListener() {
+    if (likedNotifier.productId == widget.productId) {
+      if (postLikedModel.data != likedNotifier.isLikedStatus) {
+        setState(() {
+          postLikedModel.data = likedNotifier.isLikedStatus;
+          if (postLikedModel.data!) {
+            _favoriteAnimationController.forward().then(
+              (_) => _favoriteAnimationController.reverse(),
+            );
+          } else {
+            _favoriteAnimationController.reverse();
+          }
+        });
+      }
+    }
+  }
+
   void postLike() async {
     try {
       var res = await likedRepoImp.postLikedProduct(widget.productId);
@@ -68,16 +87,19 @@ class _HeartWidgetState extends State<HeartWidget>
 
       if (res.statusCode! < 400) {
         postLikedModel = PostLikedModel.fromJson(res.data);
-        likedNotifier.productValue = widget.productId;
-        likedNotifier.triggerNotification();
+        likedNotifier.triggerNotification(
+          widget.productId,
+          postLikedModel.data!,
+        );
       }
     } catch (e) {
       postLikedModel.data = !postLikedModel.data!;
       if (e is DioException) {
         showCustomGetSnack(
-            duration: const Duration(seconds: 10),
-            isGreen: false,
-            text: ServerFailure.fromDioError(e).errorMessage);
+          duration: const Duration(seconds: 10),
+          isGreen: false,
+          text: ServerFailure.fromDioError(e).errorMessage,
+        );
 
         // CustomSnackBar.show(
         //   context: context,
@@ -88,9 +110,10 @@ class _HeartWidgetState extends State<HeartWidget>
         return;
       }
       showCustomGetSnack(
-          duration: const Duration(seconds: 10),
-          isGreen: false,
-          text: ServerFailure(e.toString()).errorMessage);
+        duration: const Duration(seconds: 10),
+        isGreen: false,
+        text: ServerFailure(e.toString()).errorMessage,
+      );
 
       // CustomSnackBar.show(
       //   context: context,
@@ -103,17 +126,18 @@ class _HeartWidgetState extends State<HeartWidget>
 
   @override
   void dispose() {
-    super.dispose();
+    likedNotifier.removeListener(_likedListener);
     _favoriteAnimationController.dispose();
+    super.dispose();
   }
 
   void _toggleFavorite() {
     postLikedModel.data = !postLikedModel.data!;
 
     if (postLikedModel.data!) {
-      _favoriteAnimationController
-          .forward()
-          .then((_) => _favoriteAnimationController.reverse());
+      _favoriteAnimationController.forward().then(
+        (_) => _favoriteAnimationController.reverse(),
+      );
     } else {
       _favoriteAnimationController.reverse();
     }

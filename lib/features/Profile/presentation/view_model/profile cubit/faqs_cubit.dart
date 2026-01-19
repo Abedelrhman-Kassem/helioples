@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 
 import 'package:negmt_heliopolis/features/Profile/data/repo/profile%20repo/profile_repo_imp.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view_model/profile%20cubit/faqs_states.dart';
@@ -9,9 +10,11 @@ class FaqsCubit extends Cubit<FetchFaqsState> {
 
   Future<void> fetchFaqs() async {
     emit(FetchFaqsLoading());
-    var result = await repo.getFaqs();
+    var result = await repo.getFaqs(isArabic());
 
-    result.fold((failure) => emit(FetchFaqsFailure(failure.errorMessage)),
-        (faqs) => emit(FetchFaqsSuccess(faqs)));
+    result.fold(
+      (failure) => emit(FetchFaqsFailure(failure.errorMessage)),
+      (response) => emit(FetchFaqsSuccess(response.data!)),
+    );
   }
 }

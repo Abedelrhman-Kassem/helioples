@@ -68,3 +68,15 @@ final class GetDeliveryTimeFailed extends CreateOrderState {
   String error;
   GetDeliveryTimeFailed(this.error);
 }
+
+final class CalculateFeeLoading extends CreateOrderState {}
+
+final class CalculateFeeSuccess extends CreateOrderState {
+  double fee;
+  CalculateFeeSuccess(this.fee);
+}
+
+final class CalculateFeeFailed extends CreateOrderState {
+  String error;
+  CalculateFeeFailed(this.error);
+}

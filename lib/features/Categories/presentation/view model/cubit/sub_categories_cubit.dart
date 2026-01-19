@@ -10,6 +10,8 @@ import 'package:negmt_heliopolis/features/Categories/data/model/featur_model.dar
 import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 import 'package:negmt_heliopolis/features/Categories/data/repo/sub_categories_repo_imp.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
+import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
+import 'package:negmt_heliopolis/core/utlis/network/app_urls.dart';
 
 part 'sub_categories_state.dart';
 
@@ -20,9 +22,30 @@ class SubCategoriesCubit extends Cubit<SubCategoriesState> {
   final SubCategoriesNotifier notifier = SubCategoriesNotifier();
   List<FeaturData> featuresList = [];
   List<Products> productsListFeatured = [];
+  CategoryModel? category;
 
-  Future<void> fetchSubCategories(String categoryId) async {
+  Future<void> fetchSubCategories(
+    String categoryId, {
+    CategoryModel? categoryModel,
+  }) async {
     emit(LoadingMainSubCategories());
+
+    if (categoryModel != null) {
+      category = categoryModel;
+    } else {
+      // Fetch category if not provided (from notification)
+      try {
+        final allCategoriesResult = await repo.api.get(
+          endpoint: AppUrls.getCategoriesUrl(page: 1, pageSize: 100),
+        );
+        final allCategories = AllCategoriesModel.fromJson(allCategoriesResult);
+        category = allCategories.categories.firstWhere(
+          (c) => c.id == categoryId,
+        );
+      } catch (e) {
+        log("Error fetching category details: $e");
+      }
+    }
 
     // Fetch both requests concurrently
     final results = await Future.wait([
@@ -50,7 +73,11 @@ class SubCategoriesCubit extends Cubit<SubCategoriesState> {
         );
 
         emit(
-          GetMainSubCategoriesSuccess(subCategories, features: featuresList),
+          GetMainSubCategoriesSuccess(
+            subCategories,
+            features: featuresList,
+            category: category,
+          ),
         );
       },
     );

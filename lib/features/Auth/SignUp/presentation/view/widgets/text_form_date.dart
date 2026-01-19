@@ -7,12 +7,16 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 
 class TextFormDate extends StatefulWidget {
   final DateTime initialDate;
-
   final void Function(DateTime) onDateTimeChanged;
+  final TextEditingController? controller;
+  final bool isEnabled;
+
   const TextFormDate({
     super.key,
     required this.initialDate,
     required this.onDateTimeChanged,
+    this.controller,
+    this.isEnabled = true,
   });
 
   @override
@@ -30,12 +34,28 @@ class _TextFormDateState extends State<TextFormDate> {
   void initState() {
     super.initState();
     _selectedDate = widget.initialDate;
-    _controller = TextEditingController(text: _format(_selectedDate));
+    _controller =
+        widget.controller ??
+        TextEditingController(text: _format(_selectedDate));
+    if (widget.controller != null && widget.controller!.text.isEmpty) {
+      widget.controller!.text = _format(widget.initialDate);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant TextFormDate oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialDate != widget.initialDate) {
+      _selectedDate = widget.initialDate;
+      _controller.text = _format(_selectedDate);
+    }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    if (widget.controller == null) {
+      _controller.dispose();
+    }
     super.dispose();
   }
 
@@ -83,6 +103,7 @@ class _TextFormDateState extends State<TextFormDate> {
       ),
       style: Styles.styles17w500NormalBlack,
       readOnly: true,
+      enabled: widget.isEnabled,
       onTap: () {
         showCupertinoModalPopup(
           context: context,

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/services/checkinternet.dart';
 
 class ApiService {
@@ -15,9 +16,7 @@ class ApiService {
   final Dio _dio = Dio();
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
-  final _defaultHeaders = {
-    'Content-Type': 'application/json',
-  };
+  final _defaultHeaders = {'Content-Type': 'application/json'};
 
   void _initDio() {
     _dio.options = BaseOptions(
@@ -32,6 +31,7 @@ class ApiService {
         onRequest: (options, handler) async {
           try {
             final token = await _storage.read(key: 'token');
+            options.headers['Accept-Language'] = getLanguage();
             if (token != null && token.isNotEmpty) {
               options.headers['Authorization'] = 'Bearer $token';
             }
@@ -91,8 +91,10 @@ class ApiService {
     return response.data as Map<String, dynamic>;
   }
 
-  Future<Response> delete(
-      {required String endPoints, Map<String, String>? extraHeaders}) async {
+  Future<Response> delete({
+    required String endPoints,
+    Map<String, String>? extraHeaders,
+  }) async {
     if (!await checkInternet()) {
       throw Exception('No internet connection');
     }
@@ -101,10 +103,7 @@ class ApiService {
     try {
       var response = await _dio.delete(
         endPoints,
-        options: Options(
-          method: 'DELETE',
-          headers: headers,
-        ),
+        options: Options(method: 'DELETE', headers: headers),
       );
       return response;
     } catch (error) {
@@ -127,14 +126,34 @@ class ApiService {
       var response = await _dio.put(
         endPoints,
         data: data,
-        options: Options(
-          method: 'PUT',
-          headers: headers,
-        ),
+        options: Options(method: 'PUT', headers: headers),
       );
       return response;
     } catch (error) {
       debugPrint('Put error: $error');
+      rethrow;
+    }
+  }
+
+  Future<Response> patch({
+    required String endPoints,
+    Object? data,
+    Map<String, String>? extraHeaders,
+  }) async {
+    if (!await checkInternet()) {
+      throw Exception('No internet connection');
+    }
+    final headers = Map<String, dynamic>.from(_defaultHeaders);
+    if (extraHeaders != null) headers.addAll(extraHeaders);
+    try {
+      var response = await _dio.patch(
+        endPoints,
+        data: data,
+        options: Options(method: 'PATCH', headers: headers),
+      );
+      return response;
+    } catch (error) {
+      debugPrint('Patch error: $error');
       rethrow;
     }
   }

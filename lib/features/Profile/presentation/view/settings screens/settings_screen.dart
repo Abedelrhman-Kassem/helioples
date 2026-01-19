@@ -26,28 +26,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsetsDirectional.only(
-            start: 16.w, end: 16.w, top: 60.h, bottom: 10.h),
+          start: 16.w,
+          end: 16.w,
+          top: 60.h,
+          bottom: 10.h,
+        ),
         child: Column(
           children: [
             Row(
               children: [
                 returnArrow(
-                    context: context,
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    }),
-                SizedBox(
-                  width: 100.w,
+                  context: context,
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
                 ),
+                SizedBox(width: 100.w),
                 Text(
                   LocaleKeys.settings_screen_app_settings.tr(),
                   style: Styles.styles16w400Black,
                 ),
               ],
             ),
-            SizedBox(
-              height: 20.h,
-            ),
+            SizedBox(height: 20.h),
             SettingsItem(
               leadingIconPath: "assets/svg_icons/change_language_icon.svg",
               title: LocaleKeys.settings_screen_change_language.tr(),
@@ -66,10 +67,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         return Theme(
                           data: Theme.of(context).copyWith(
                             radioTheme: RadioThemeData(
-                              fillColor: WidgetStateProperty.all(MyColors
-                                  .mainColor), // Customize the radio button color
+                              fillColor: WidgetStateProperty.all(
+                                MyColors.mainColor,
+                              ), // Customize the radio button color
                               overlayColor: WidgetStateProperty.all(
-                                  const Color.fromRGBO(110, 110, 110, 1)),
+                                const Color.fromRGBO(110, 110, 110, 1),
+                              ),
                             ),
                           ),
                           child: Container(
@@ -84,7 +87,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 10.w, vertical: 25.h),
+                                horizontal: 10.w,
+                                vertical: 25.h,
+                              ),
                               child: SingleChildScrollView(
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
@@ -94,7 +99,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       children: [
                                         Padding(
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 15.w),
+                                            horizontal: 15.w,
+                                          ),
                                           child: Text(
                                             LocaleKeys
                                                 .settings_screen_change_language
@@ -108,8 +114,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                             Navigator.of(context).pop();
                                           },
                                           child: Image.asset(
-                                              "assets/Icons_logos/x.png"),
-                                        )
+                                            "assets/Icons_logos/x.png",
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     RadioMenuButton<String>(
@@ -146,9 +153,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         style: Styles.styles15w400Black,
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
+                                    SizedBox(height: 10.h),
                                     SignUpCustomButton(
                                       buttonText: LocaleKeys
                                           .settings_screen_update_language
@@ -176,159 +181,162 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
               trailingIconPath: "assets/svg_icons/sittengs_arrow_icon.svg",
             ),
-            SizedBox(
-              height: 20.h,
-            ),
-            SettingsItem(
-              leadingIconPath: "assets/svg_icons/dark_mode_icon.svg",
-              title: LocaleKeys.settings_screen_app_mode.tr(),
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30.r),
-                    ),
-                  ),
-                  builder: (context) {
-                    return StatefulBuilder(
-                      builder: (context, setState) {
-                        return Theme(
-                          data: Theme.of(context).copyWith(
-                            radioTheme: RadioThemeData(
-                              fillColor:
-                                  WidgetStateProperty.all(MyColors.mainColor),
-                              overlayColor: WidgetStateProperty.all(
-                                  const Color.fromRGBO(110, 110, 110, 1)),
-                            ),
-                          ),
-                          child: Container(
-                            width: double.infinity,
-                            // height: MediaQuery.of(context).size.height * 0.32,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30.r),
-                                topRight: Radius.circular(30.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10.w, vertical: 25.h),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15.w),
-                                          child: Text(
-                                            LocaleKeys.settings_screen_app_mode
-                                                .tr(),
-                                            style: Styles.styles15w400Black,
-                                          ),
-                                        ),
-                                        const Spacer(),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Image.asset(
-                                              "assets/Icons_logos/x.png"),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        RadioMenuButton<String>(
-                                          value: LocaleKeys
-                                              .settings_screen_light_mode
-                                              .tr(),
-                                          groupValue: selectedMode,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedMode = value!;
-                                            });
+            SizedBox(height: 20.h),
+            // SettingsItem(
+            //   leadingIconPath: "assets/svg_icons/dark_mode_icon.svg",
+            //   title: LocaleKeys.settings_screen_app_mode.tr(),
+            //   onTap: () {
+            //     showModalBottomSheet(
+            //       context: context,
+            //       isScrollControlled: true,
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.vertical(
+            //           top: Radius.circular(30.r),
+            //         ),
+            //       ),
+            //       builder: (context) {
+            //         return StatefulBuilder(
+            //           builder: (context, setState) {
+            //             return Theme(
+            //               data: Theme.of(context).copyWith(
+            //                 radioTheme: RadioThemeData(
+            //                   fillColor: WidgetStateProperty.all(
+            //                     MyColors.mainColor,
+            //                   ),
+            //                   overlayColor: WidgetStateProperty.all(
+            //                     const Color.fromRGBO(110, 110, 110, 1),
+            //                   ),
+            //                 ),
+            //               ),
+            //               child: Container(
+            //                 width: double.infinity,
+            //                 // height: MediaQuery.of(context).size.height * 0.32,
+            //                 decoration: BoxDecoration(
+            //                   color: Colors.white,
+            //                   borderRadius: BorderRadius.only(
+            //                     topLeft: Radius.circular(30.r),
+            //                     topRight: Radius.circular(30.r),
+            //                   ),
+            //                 ),
+            //                 child: Padding(
+            //                   padding: EdgeInsets.symmetric(
+            //                     horizontal: 10.w,
+            //                     vertical: 25.h,
+            //                   ),
+            //                   child: SingleChildScrollView(
+            //                     child: Column(
+            //                       mainAxisSize: MainAxisSize.min,
+            //                       mainAxisAlignment: MainAxisAlignment.start,
+            //                       children: [
+            //                         Row(
+            //                           children: [
+            //                             Padding(
+            //                               padding: EdgeInsets.symmetric(
+            //                                 horizontal: 15.w,
+            //                               ),
+            //                               child: Text(
+            //                                 LocaleKeys.settings_screen_app_mode
+            //                                     .tr(),
+            //                                 style: Styles.styles15w400Black,
+            //                               ),
+            //                             ),
+            //                             const Spacer(),
+            //                             GestureDetector(
+            //                               onTap: () {
+            //                                 Navigator.of(context).pop();
+            //                               },
+            //                               child: Image.asset(
+            //                                 "assets/Icons_logos/x.png",
+            //                               ),
+            //                             ),
+            //                           ],
+            //                         ),
+            //                         Row(
+            //                           children: [
+            //                             RadioMenuButton<String>(
+            //                               value: LocaleKeys
+            //                                   .settings_screen_light_mode
+            //                                   .tr(),
+            //                               groupValue: selectedMode,
+            //                               onChanged: (value) {
+            //                                 setState(() {
+            //                                   selectedMode = value!;
+            //                                 });
 
-                                            this.setState(() {
-                                              selectedMode = value!;
-                                            });
-                                          },
-                                          child: Text(
-                                            LocaleKeys
-                                                .settings_screen_light_mode
-                                                .tr(),
-                                            style: Styles.styles15w400Black,
-                                          ),
-                                        ),
-                                        const Spacer(),
-                                        Image.asset(
-                                            "assets/Icons_logos/white_circle.png"),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        RadioMenuButton<String>(
-                                          value: LocaleKeys
-                                              .settings_screen_dark_mode
-                                              .tr(),
-                                          groupValue: selectedMode,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedMode = value!;
-                                            });
+            //                                 this.setState(() {
+            //                                   selectedMode = value!;
+            //                                 });
+            //                               },
+            //                               child: Text(
+            //                                 LocaleKeys
+            //                                     .settings_screen_light_mode
+            //                                     .tr(),
+            //                                 style: Styles.styles15w400Black,
+            //                               ),
+            //                             ),
+            //                             const Spacer(),
+            //                             Image.asset(
+            //                               "assets/Icons_logos/white_circle.png",
+            //                             ),
+            //                           ],
+            //                         ),
+            //                         Row(
+            //                           children: [
+            //                             RadioMenuButton<String>(
+            //                               value: LocaleKeys
+            //                                   .settings_screen_dark_mode
+            //                                   .tr(),
+            //                               groupValue: selectedMode,
+            //                               onChanged: (value) {
+            //                                 setState(() {
+            //                                   selectedMode = value!;
+            //                                 });
 
-                                            this.setState(() {
-                                              selectedMode = value!;
-                                            });
-                                          },
-                                          child: Text(
-                                            LocaleKeys.settings_screen_dark_mode
-                                                .tr(),
-                                            style: Styles.styles15w400Black,
-                                          ),
-                                        ),
-                                        const Spacer(),
-                                        Image.asset(
-                                            "assets/Icons_logos/black_circle.png"),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    SignUpCustomButton(
-                                        buttonText: LocaleKeys
-                                            .settings_screen_update_mode
-                                            .tr(),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        }),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                );
-              },
-              trailingIconPath: "assets/svg_icons/sittengs_arrow_icon.svg",
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            SettingsItem(
-              leadingIconPath: "assets/svg_icons/delete_acc_icon.svg",
-              title: LocaleKeys.settings_screen_delete_account.tr(),
-              onTap: () {},
-              trailingIconPath: "assets/svg_icons/sittengs_arrow_icon.svg",
-            ),
+            //                                 this.setState(() {
+            //                                   selectedMode = value!;
+            //                                 });
+            //                               },
+            //                               child: Text(
+            //                                 LocaleKeys.settings_screen_dark_mode
+            //                                     .tr(),
+            //                                 style: Styles.styles15w400Black,
+            //                               ),
+            //                             ),
+            //                             const Spacer(),
+            //                             Image.asset(
+            //                               "assets/Icons_logos/black_circle.png",
+            //                             ),
+            //                           ],
+            //                         ),
+            //                         SizedBox(height: 10.h),
+            //                         SignUpCustomButton(
+            //                           buttonText: LocaleKeys
+            //                               .settings_screen_update_mode
+            //                               .tr(),
+            //                           onPressed: () {
+            //                             Navigator.of(context).pop();
+            //                           },
+            //                         ),
+            //                       ],
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ),
+            //             );
+            //           },
+            //         );
+            //       },
+            //     );
+            //   },
+            //   trailingIconPath: "assets/svg_icons/sittengs_arrow_icon.svg",
+            // ),
+            SizedBox(height: 20.h),
+            // SettingsItem(
+            //   leadingIconPath: "assets/svg_icons/delete_acc_icon.svg",
+            //   title: LocaleKeys.settings_screen_delete_account.tr(),
+            //   onTap: () {},
+            //   trailingIconPath: "assets/svg_icons/sittengs_arrow_icon.svg",
+            // ),
           ],
         ),
       ),

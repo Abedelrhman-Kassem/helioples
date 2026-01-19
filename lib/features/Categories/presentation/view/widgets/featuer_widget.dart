@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/sub_categories_notifier.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
@@ -31,14 +30,6 @@ class _FeaturedProductsWidgetState extends State<FeaturedProductsWidget> {
 
   // Local map to store products for each feature ID
   final Map<String, List<Products>> _featureProductsMap = {};
-
-  final List<Color> _cardColors = [
-    const Color(0xFFD36E28), // Orange
-    const Color(0xFF28D36E), // Green
-    const Color(0xFF6E28D3), // Purple
-    const Color(0xFFE91E63), // Pink
-    const Color(0xFF2196F3), // Blue
-  ];
 
   @override
   void initState() {
@@ -153,8 +144,9 @@ class _FeaturedProductsWidgetState extends State<FeaturedProductsWidget> {
                     Text(
                       "Our Best Products From Best Partners",
                       style: Styles.styles12w400interFamily.copyWith(
-                        color: Colors.grey,
-                        fontSize: 10.sp,
+                        color: Colors.black54,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
@@ -191,24 +183,10 @@ class _FeaturedProductsWidgetState extends State<FeaturedProductsWidget> {
                     itemCount: widget.features.length,
                     itemBuilder: (context, index) {
                       final feature = widget.features[index];
-                      log("image url: ${widget.features[index].bannerImage}");
-                      // Use modulo to cycle through colors
-                      final color = _cardColors[index % _cardColors.length];
-
-                      return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 5.w),
-                        decoration: BoxDecoration(
-                          color: color,
-                          borderRadius: BorderRadius.circular(15.r),
-                          image:
-                              (feature.bannerImage != null &&
-                                  feature.bannerImage!.isNotEmpty)
-                              ? DecorationImage(
-                                  image: NetworkImage(feature.bannerImage!),
-                                  fit: BoxFit.cover,
-                                  opacity: 0.2, // Subtle texture
-                                )
-                              : null,
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(15.r),
+                        child: Helper.loadNetworkImage(
+                          url: feature.bannerImage!,
                         ),
                       );
                     },

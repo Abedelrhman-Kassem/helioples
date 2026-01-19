@@ -25,10 +25,7 @@ Widget addWidget({
             color: mainColor ?? MyColors.mainColor,
           ),
           SizedBox(width: 5.w),
-          Text(
-            text,
-            style: style ?? Styles.styles12w400MainColor,
-          ),
+          Text(text, style: style ?? Styles.styles12w800MainColor),
         ],
       ),
     ),

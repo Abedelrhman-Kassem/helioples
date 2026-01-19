@@ -37,7 +37,7 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
 
   @override
   void initState() {
-    tableValues = BlocProvider.of<MainCubit>(context).tableValues!;
+    tableValues = BlocProvider.of<MainCubit>(context).tableValues;
 
     List<Item> itemsArray = [];
     for (var value in tableValues) {
@@ -50,13 +50,13 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
     }
 
     createOrderModel = CreateOrderModel(
-      deliverMethod: 'OnBranch',
-      // deliverTimeId: 2,
-      paymentMethod: 'cashOnDelivery',
+      deliverMethod: OrderDeliverMethod.onBranch,
+      paymentMethod: OrderPaymentMethod.cashOnDelivery,
       chooseForMe: true,
-      alternativeProduct: 'call',
+      alternativeProduct: AlternativeProductType.call,
       items: itemsArray,
     );
+    branchesModel = BranchesModel.fromJson({});
 
     super.initState();
   }
@@ -81,8 +81,6 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
               );
               return;
             }
-
-            await BlocProvider.of<MainCubit>(context).clearDb();
 
             Navigator.pushNamed(
               context,
@@ -300,7 +298,7 @@ class _PickupReorderScreenState extends State<PickupReorderScreen> {
                         Helper.loadingWidget()
                       else if (state is BranchesFailed)
                         Text(state.error)
-                      else
+                      else if (branchesModel.data != null)
                         BranchesRow(
                           branchesModel: branchesModel,
                           createOrderModel: createOrderModel,

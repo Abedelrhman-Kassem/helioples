@@ -10,10 +10,7 @@ import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class PaymentDetails extends StatefulWidget {
   final CreateOrderModel createOrderModel;
-  const PaymentDetails({
-    super.key,
-    required this.createOrderModel,
-  });
+  const PaymentDetails({super.key, required this.createOrderModel});
 
   @override
   State<PaymentDetails> createState() => _PaymentDetailsState();
@@ -25,6 +22,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
   late CreateOrderCubit createOrderCubit;
   late double promoCodeValue;
   late bool isPercentage;
+  double deliveryFee = 0;
 
   @override
   void initState() {
@@ -52,8 +50,8 @@ class _PaymentDetailsState extends State<PaymentDetails> {
         }
 
         if (state is CheckPromoCodeSuccess) {
-          promoCodeValue = state.promoCodeModel.promoCode!.amount!;
-          isPercentage = state.promoCodeModel.promoCode!.isPercentage!;
+          promoCodeValue = state.promoCodeModel.data!.discount!;
+          isPercentage = state.promoCodeModel.data!.isPercentage!;
 
           if (isPercentage) {
             promoCodeValue = createOrderCubit.calcPromoCode(
@@ -62,8 +60,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
             );
           }
 
-          widget.createOrderModel.promoCode =
-              state.promoCodeModel.promoCode!.code!;
+          widget.createOrderModel.promoCodeId = state.promoCodeModel.data!.id!;
+        }
+
+        if (state is CalculateFeeSuccess) {
+          deliveryFee = state.fee;
         }
       },
       builder: (context, state) {
@@ -127,12 +128,12 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                       style: Styles.styles14w400Black,
                     ),
                     Text(
-                      '120 ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
+                      '$deliveryFee ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
                       style: Styles.styles15w600NormalBlack,
                     ),
                   ],
                 ),
-              ]
+              ],
             ],
           ),
         );

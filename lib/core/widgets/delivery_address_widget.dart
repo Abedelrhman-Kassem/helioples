@@ -8,9 +8,10 @@ import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 Widget deliveryAddressWidget({
   required String title,
   required bool isChossen,
-  required String location,
-  required void Function() onTap,
-  required void Function() onEdit,
+  String? location,
+  void Function()? onTap,
+  void Function()? onEdit,
+  bool isUsOne = false,
 }) {
   return Material(
     color: Colors.transparent,
@@ -37,7 +38,7 @@ Widget deliveryAddressWidget({
                 children: [
                   Text(title, style: Styles.styles16w400NormalBlack),
                   Text(
-                    location,
+                    location ?? "",
                     style: Styles.styles12w400black,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -45,10 +46,13 @@ Widget deliveryAddressWidget({
               ),
             ),
             const Spacer(),
-            IconButton(
-              onPressed: onEdit,
-              icon: Icon(Icons.edit, color: MyColors.mainColor, size: 25.r),
-            ),
+            if (onEdit != null)
+              IconButton(
+                onPressed: onEdit,
+                icon: isUsOne
+                    ? Icon(Icons.delete, color: Colors.red, size: 23.r)
+                    : Icon(Icons.edit, color: MyColors.mainColor, size: 25.r),
+              ),
             SizedBox(width: 10.w),
             radioAnimatedWidget(isChossen),
           ],

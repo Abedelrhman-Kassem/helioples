@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,8 +31,13 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
     );
 
     res.fold(
-      (failure) => emit(CreateOrderFailed(failure.errorMessage)),
-      (orderDetailsModel) => emit(CreateOrderSuccess(orderDetailsModel)),
+      (failure) {
+        log(failure.errorMessage);
+        emit(CreateOrderFailed(failure.errorMessage));
+      },
+      (orderDetailsModel) {
+        emit(CreateOrderSuccess(orderDetailsModel));
+      },
     );
   }
 
@@ -58,7 +65,7 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
     emit(TipsToBottomSheet(tips));
   }
 
-  void cancelOrder(String reason, int orderId) async {
+  void cancelOrder(String reason, String orderId) async {
     emit(CancelOrderLoading());
 
     Either<Failure, CancelOrderModel> res = await createOrderImp.cancelOrder(
@@ -85,16 +92,15 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
   }
 
   DbChangeNotifierModel getDBChangeNotifierModel(BuildContext context) {
-    var items = BlocProvider.of<MainCubit>(context).tableValues!;
+    var items = BlocProvider.of<MainCubit>(context).tableValues;
 
     double totalPrice = 0;
     double totalDiscount = 0;
 
     for (var item in items) {
-      int qty = item[cartItemQty] as int;
-      double price = item[cartItemPrice] as double;
-      double discount = item[cartItemDiscount] as double;
-
+      double qty = (item[cartItemQty] as num).toDouble();
+      double price = (item[cartItemPrice] as num).toDouble();
+      double discount = (item[cartItemDiscount] as num).toDouble();
       totalPrice += qty * price;
       totalDiscount += qty * discount;
     }
@@ -108,6 +114,33 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
   }
 
   AvailableTime? availableTime;
+  double deliveryFee = 0;
+
+  Future<void> calculateFee({
+    String? addressId,
+    double? lat,
+    double? long,
+  }) async {
+    emit(CalculateFeeLoading());
+
+    Either<Failure, double> res = await createOrderImp.calculateDeliveryFee(
+      addressId: addressId,
+      lat: lat,
+      long: long,
+    );
+
+    res.fold(
+      (failure) {
+        deliveryFee = 0;
+        emit(CalculateFeeFailed(failure.errorMessage));
+      },
+      (fee) {
+        deliveryFee = fee;
+        emit(CalculateFeeSuccess(fee));
+      },
+    );
+  }
+
   Future<void> getDeliveryTime() async {
     emit(LoadingDeliveryTime());
 
@@ -122,6 +155,8 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
         return;
       }
       availableTime = deliveryTimeModel.availableTime.first;
+      log("---------------------------");
+      log(deliveryTimeModel.availableTime.first.id.toString());
       emit(GetDeliveryTimeSuccess(deliveryTimeModel));
     });
   }

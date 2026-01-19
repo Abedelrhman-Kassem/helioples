@@ -1,47 +1,25 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:negmt_heliopolis/features/Profile/data/model/order_details.dart';
 import 'package:negmt_heliopolis/features/Profile/data/model/order_history.dart';
 
-abstract class FetchHistoryState extends Equatable
-{
-  const FetchHistoryState() ; 
-   @override
-  List<Object> get props => [];
+part 'history_states.freezed.dart';
+
+@freezed
+class HistoryState with _$HistoryState {
+  const factory HistoryState.initial() = HistoryInitial;
+  const factory HistoryState.loading() = HistoryLoading;
+  const factory HistoryState.loadingMore(List<ItemHistory> history) =
+      HistoryLoadingMore;
+  const factory HistoryState.success(List<ItemHistory> history) =
+      HistorySuccess;
+  const factory HistoryState.failure(String msg) = HistoryFailure;
 }
 
-class FetchHistoryInitial extends FetchHistoryState {}
-
-class FetchHistoryLoading extends FetchHistoryState {}
-
-class FetchHistorySuccess extends FetchHistoryState{
-    final List<OrderHistory> history ; 
-    const FetchHistorySuccess(this.history);
-
+@freezed
+class OrderDetailsState with _$OrderDetailsState {
+  const factory OrderDetailsState.initial() = OrderDetailsInitial;
+  const factory OrderDetailsState.loading() = OrderDetailsLoading;
+  const factory OrderDetailsState.success(OrderDetails orderDetails) =
+      OrderDetailsSuccess;
+  const factory OrderDetailsState.failure(String msg) = OrderDetailsFailure;
 }
-
-class FetchHistoryFailure extends FetchHistoryState {
-  final String msg ; 
-  const FetchHistoryFailure(this.msg) ; 
-
-  
-}
-
-abstract class FetchOrderState extends Equatable
-{
-  const FetchOrderState() ;
-  @override
-  List<Object> get props => [];
-}
-
-class FetchOrderInitial extends FetchOrderState {}
-class FetchOrderLoading extends FetchOrderState {}
-class FetchOrderSuccess extends FetchOrderState { 
-  final OrderDetails orderDetails ;
-  const FetchOrderSuccess(this.orderDetails);
-}
-class FetchOrderFailure extends FetchOrderState 
-{
-  final String msg ; 
-  const FetchOrderFailure(this.msg);
-}
-

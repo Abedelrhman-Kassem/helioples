@@ -10,7 +10,7 @@ class FetchFaqsInitial extends FetchFaqsState {}
 class FetchFaqsLoading extends FetchFaqsState {}
 
 class FetchFaqsSuccess extends FetchFaqsState {
-  final List<Faqs> faqs;
+  final List<FaqsData> faqs;
   const FetchFaqsSuccess(this.faqs);
 }
 

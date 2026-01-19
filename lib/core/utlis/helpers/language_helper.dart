@@ -11,8 +11,16 @@ String getLocale(BuildContext context) {
   return context.locale.languageCode;
 }
 
+String getLanguage() {
+  return Get.locale?.languageCode ?? 'ar';
+}
+
 bool isRtl(BuildContext context) {
   return getLocale(context) == 'ar';
+}
+
+bool isArabic() {
+  return Get.locale?.languageCode == 'ar';
 }
 
 String detectLangFromQuery(String query) {

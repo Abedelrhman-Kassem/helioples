@@ -67,7 +67,6 @@ class _AllSpecialOffersScreenState extends State<AllSpecialOffersScreen> {
                       allSpecialOffersCubit.getSpecialOffers();
                     },
                     child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
                       child: Column(
                         children: [
                           Stack(
@@ -75,8 +74,10 @@ class _AllSpecialOffersScreenState extends State<AllSpecialOffersScreen> {
                               if (allSpecialOffersCubit.isLoading &&
                                   allSpecialOffersCubit.offers.isEmpty)
                                 LoadingOffers(
-                                    crossAxisCount:
-                                        allSpecialOffersCubit.isGrid ? 2 : 1),
+                                  crossAxisCount: allSpecialOffersCubit.isGrid
+                                      ? 2
+                                      : 1,
+                                ),
                               if (allSpecialOffersCubit.offers.isNotEmpty) ...[
                                 LargeOffersGrid(
                                   allSpecialOffersCubit: allSpecialOffersCubit,
@@ -84,14 +85,16 @@ class _AllSpecialOffersScreenState extends State<AllSpecialOffersScreen> {
                                 SmallOffersGrid(
                                   allSpecialOffersCubit: allSpecialOffersCubit,
                                 ),
-                              ]
+                              ],
                             ],
                           ),
                           if (allSpecialOffersCubit.isLoading &&
                               allSpecialOffersCubit.offers.isNotEmpty)
                             LoadingOffers(
-                                crossAxisCount:
-                                    allSpecialOffersCubit.isGrid ? 2 : 1),
+                              crossAxisCount: allSpecialOffersCubit.isGrid
+                                  ? 2
+                                  : 1,
+                            ),
                           SizedBox(height: 20.h),
                         ],
                       ),

@@ -22,8 +22,13 @@ import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart'
 import 'package:negmt_heliopolis/core/widgets/pagination_listener.dart';
 
 class SubCategoriesScreen extends StatefulWidget {
-  final CategoryModel category;
-  const SubCategoriesScreen({super.key, required this.category});
+  final CategoryModel? category;
+  final String categoryId;
+  const SubCategoriesScreen({
+    super.key,
+    this.category,
+    required this.categoryId,
+  });
 
   @override
   State<SubCategoriesScreen> createState() => _SubCategoriesScreenState();
@@ -31,6 +36,7 @@ class SubCategoriesScreen extends StatefulWidget {
 
 class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
   late SubCategoriesCubit subCategoriesCubit;
+  CategoryModel? currentCategory;
 
   final SubCategoriesNotifier notifier = SubCategoriesNotifier();
 
@@ -47,9 +53,8 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
   @override
   void initState() {
     subCategoriesCubit = BlocProvider.of<SubCategoriesCubit>(context);
-    notifier.subCategoriesIds.addAll({
-      widget.category.id!: subCategoriesIdsList,
-    });
+    currentCategory = widget.category;
+    notifier.subCategoriesIds.addAll({widget.categoryId: subCategoriesIdsList});
 
     super.initState();
     _scrollController.addListener(_calculateListHeights);
@@ -66,6 +71,10 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
       notifier.subCategoriesProducts.remove(subCategory.id);
       notifier.subCategoriesIds.remove(subCategory.id);
       subCategoriesCubit.subCategoriesPages.remove(subCategory.id);
+    }
+
+    if (currentCategory != null) {
+      notifier.subCategoriesIds.remove(currentCategory!.id);
     }
 
     for (var feature in features) {
@@ -153,8 +162,8 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
       //
       if (!notifier.allowFetch) return;
       log("fetching more");
-      String subCategoryId = notifier
-          .subCategoriesIds[widget.category.id]![notifier.activeSection];
+      String subCategoryId =
+          notifier.subCategoriesIds[widget.categoryId]![notifier.activeSection];
       subCategoriesCubit.fetchProductsInSubCategory(subCategoryId, context);
     }
   }
@@ -169,6 +178,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
           log("state: ${state.subCategories}");
           subCategories = state.subCategories;
           features = state.features;
+          currentCategory = state.category;
 
           listKeys.clear();
           if (features.isNotEmpty) {
@@ -184,23 +194,18 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
 
             listKeys.add(GlobalKey());
           }
-
-          // for (var subCategory in subCategories) {
-          //   subCategroiesCubit.fetchProductsInSubCategory(
-          //       subCategory.id!, context);
-          // }
         }
       },
       builder: (context, state) {
         // Show loading if we are loading main categories OR features (only if no content yet)
         // Show loading if we are loading main categories
-        if (state is LoadingMainSubCategories) {
+        if (state is LoadingMainSubCategories || currentCategory == null) {
           return Scaffold(
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(150.h),
               child: Skeletonizer(
                 child: CustomAppbar(
-                  categoryName: widget.category.name!,
+                  categoryName: currentCategory?.name ?? "Loading...",
                   subCategories: subCategories,
                   listKeys: listKeys,
                   sectionBtnWidth: sectionBtnWidth,
@@ -214,12 +219,13 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
         }
 
         // Show content if main categories are loaded OR if we have data and state is something else (like features success/loading)
-        if (state is GetMainSubCategoriesSuccess || subCategories.isNotEmpty) {
+        if (state is GetMainSubCategoriesSuccess ||
+            (subCategories.isNotEmpty && currentCategory != null)) {
           return Scaffold(
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(150.h),
               child: CustomAppbar(
-                categoryName: widget.category.name!,
+                categoryName: currentCategory!.name!,
                 subCategories: subCategories,
                 listKeys: listKeys,
                 sectionBtnWidth: sectionBtnWidth,

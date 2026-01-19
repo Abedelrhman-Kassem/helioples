@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 class AppUrls {
-  static const String _baseUrl = 'http://144.172.109.90:5000/api/v1';
+  static const String _baseUrl = 'http://167.88.169.140:5000/api/v1';
   //                         Auth
   static const String register = '$_baseUrl/Auth/register';
   static const String login = '$_baseUrl/Auth/login';
@@ -55,6 +55,8 @@ class AppUrls {
 
   //                         Liked
   static const String postLikedProductUrl = '$_baseUrl/Likes/toggle';
+  static String getLikedProductUrl(int page, int pageSize) =>
+      '$_baseUrl/Product/favourites?pageSize=$pageSize&page=$page';
 
   //                         Offers
   static String getOffersUrl(int page, bool? homeScreen, int pageSize) {
@@ -99,13 +101,49 @@ class AppUrls {
   static String updateCartUrl() => '$_baseUrl/Product/update-cart';
 
   //                         Time
-  static String deliveryTimeUrl() =>
-      'http://144.172.109.90:5000/api/DeliveryTime';
-  static String pickupTimeUrl() => 'http://144.172.109.90:5000/api/PickupTime';
+  static String deliveryTimeUrl() => '$_baseUrl/DeliveryTime';
+  static String pickupTimeUrl() => '$_baseUrl/PickupTime';
 
   //                         promo code
-  static String promoCodeUrl() => 'http://144.172.109.90:5000/api/PromoCode';
+  static String promoCodeUrl() => '$_baseUrl/PromoCode';
 
   //                         branches
-  static String branchesUrl() => 'http://144.172.109.90:5000/api/Branch';
+  static String branchesUrl() => '$_baseUrl/Branch';
+
+  //                               Order
+  static String orderDetailsUrl(String id) => '$_baseUrl/Order/$id';
+  static String getOrdersHistory({
+    required int page,
+    required int pageSize,
+    String? status,
+    bool? isActive,
+    bool? includeCanceled,
+  }) =>
+      '$_baseUrl/Order/my-orders?page=$page&pageSize=$pageSize&isActive=$isActive&includeCanceled=$includeCanceled&status=$status';
+
+  static String createOrderUrl = '$_baseUrl/Order/create';
+  static String calculateFeeUrl = '$_baseUrl/Order/calculate-fee';
+  static String cancelOrderUrl(String id) => '$_baseUrl/Order/cancel/$id';
+
+  //                         Notification
+  static const String saveDeviceTokenUrl =
+      '$_baseUrl/Notification/device-token';
+  static String deleteDeviceTokenUrl(String token) =>
+      '$_baseUrl/Notification/device-token/$token';
+  static const String subscribeUrl = '$_baseUrl/Notification/subscribe';
+  static const String unsubscribeUrl = '$_baseUrl/Notification/unsubscribe';
+  static String getNotificationsUrl(int page, int pageSize) =>
+      '$_baseUrl/Notification?page=$page&pageSize=$pageSize';
+  static String markAsReadUrl(String id) => '$_baseUrl/Notification/read/$id';
+  static const String markAllAsReadUrl = '$_baseUrl/Notification/read-all';
+
+  //                         Customer
+  static const String updateCustomer = '$_baseUrl/Customer';
+  static const String getProfileUrl = '$_baseUrl/Customer';
+
+  //                         Faqs
+  static String faqsUrl(bool arabic) => '$_baseUrl/FAQ?arabic=$arabic';
+
+  //                        IssueReport
+  static String issueReportUrl() => '$_baseUrl/IssueReport';
 }

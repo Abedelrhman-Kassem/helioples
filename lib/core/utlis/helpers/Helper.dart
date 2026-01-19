@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
@@ -292,6 +293,16 @@ class Helper {
 
   static Size size(BuildContext context) => MediaQuery.of(context).size;
 
-  static Widget loadingWidget() =>
-      Center(child: CircularProgressIndicator(color: MyColors.mainColor));
+  static Widget loadingWidget({Color? color, double? height, double? width}) =>
+      Center(
+        child: SizedBox(
+          height: height ?? 23.h,
+          width: width ?? 23.w,
+          child: CircularProgressIndicator(
+            color: color ?? MyColors.mainColor,
+            strokeWidth: 3,
+            strokeCap: StrokeCap.round,
+          ),
+        ),
+      );
 }

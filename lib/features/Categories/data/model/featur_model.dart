@@ -22,7 +22,8 @@ class FeaturMdel {
       features: json["data"] == null
           ? []
           : List<FeaturData>.from(
-              json["data"]!.map((x) => FeaturData.fromJson(x))),
+              json["data"]!.map((x) => FeaturData.fromJson(x)),
+            ),
       statusCode: json["statusCode"],
       errors: json["errors"],
     );
@@ -67,7 +68,8 @@ class FeaturData {
       products: json["products"] == null
           ? []
           : List<Products>.from(
-              json["products"]!.map((x) => Products.fromJson(x))),
+              json["products"]!.map((x) => Products.fromJson(x)),
+            ),
       pagedProducts: json["pagedProducts"],
     );
   }

@@ -51,8 +51,8 @@ class Address {
 
   final String? id;
   String? locationStr;
-  final double? latitude;
-  final double? longitude;
+  double? latitude;
+  double? longitude;
   String? buildingNo;
   String? floor;
   String? street;

@@ -21,18 +21,22 @@ class FaqsScreen extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: EdgeInsetsDirectional.only(
-            start: 16.w, end: 16.w, top: 60.h, bottom: 10.h),
+          start: 16.w,
+          end: 16.w,
+          top: 60.h,
+          bottom: 10.h,
+        ),
         child: BlocProvider(
-            create: (context) =>
-                FaqsCubit(ProfileRepoImp(api: ApiService()))..fetchFaqs(),
-            child: BlocBuilder<FaqsCubit, FetchFaqsState>(
-                builder: (context, state) {
+          create: (context) =>
+              FaqsCubit(ProfileRepoImp(api: ApiService()))..fetchFaqs(),
+          child: BlocBuilder<FaqsCubit, FetchFaqsState>(
+            builder: (context, state) {
               if (state is FetchFaqsLoading) {
                 return buildFaqsShimmer();
               } else if (state is FetchFaqsFailure) {
                 return Center(child: Text(state.msg));
               } else if (state is FetchFaqsSuccess) {
-                List<Faqs> faqs = state.faqs;
+                List<FaqsData> faqs = state.faqs;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -44,9 +48,7 @@ class FaqsScreen extends StatelessWidget {
                             Navigator.of(context).pop();
                           },
                         ),
-                        SizedBox(
-                          width: 125.w,
-                        ),
+                        SizedBox(width: 125.w),
                         Text(
                           LocaleKeys.help_center_screen_faqs.tr(),
                           style: Styles.styles16w400Black,
@@ -73,7 +75,9 @@ class FaqsScreen extends StatelessWidget {
               } else {
                 return Container();
               }
-            })),
+            },
+          ),
+        ),
       ),
     );
   }
@@ -90,9 +94,7 @@ Widget buildFaqsShimmer() {
           Row(
             children: [
               const CircleAvatar(),
-              SizedBox(
-                width: 125.w,
-              ),
+              SizedBox(width: 125.w),
               // Container(
               //   width: 10.w,
               //   height: 5.h,
@@ -102,18 +104,23 @@ Widget buildFaqsShimmer() {
           ),
           SizedBox(height: 40.h),
           Column(
-              children: List.generate(10, (index) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 5.h),
-              child: Container(
+            children: List.generate(10, (index) {
+              return Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 10.0.w,
+                  vertical: 5.h,
+                ),
+                child: Container(
                   width: double.infinity,
                   height: 70.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20.r),
-                  )),
-            );
-          }))
+                  ),
+                ),
+              );
+            }),
+          ),
         ],
       ),
     ),

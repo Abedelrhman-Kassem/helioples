@@ -66,6 +66,7 @@ class Products {
     this.state,
     this.discount,
     this.isLiked,
+    this.isSubscribed,
     required this.quantity,
     this.relatedProducts,
   });
@@ -83,6 +84,7 @@ class Products {
   String? state;
   final double? discount;
   bool? isLiked;
+  bool? isSubscribed;
   double quantity;
   final RelatedProducts? relatedProducts;
 
@@ -101,6 +103,7 @@ class Products {
       state: json["state"].toString(),
       discount: json["discount"]?.toDouble(),
       isLiked: json["isLiked"],
+      isSubscribed: json["isSubscribed"],
       quantity: (json["quantity"] as num?)?.toDouble() ?? 0.0,
       relatedProducts: json["relatedProducts"] == null
           ? null

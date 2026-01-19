@@ -7,21 +7,18 @@ import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/cho
 
 class AlternativeContainer extends StatefulWidget {
   final CreateOrderModel createOrderModel;
-  const AlternativeContainer({
-    super.key,
-    required this.createOrderModel,
-  });
+  const AlternativeContainer({super.key, required this.createOrderModel});
 
   @override
   State<AlternativeContainer> createState() => _AlternativeContainerState();
 }
 
 class _AlternativeContainerState extends State<AlternativeContainer> {
-  late String radioValue;
+  late AlternativeProductType radioValue;
 
   @override
   void initState() {
-    radioValue = 'call';
+    radioValue = AlternativeProductType.call;
     super.initState();
   }
 
@@ -40,10 +37,7 @@ class _AlternativeContainerState extends State<AlternativeContainer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Alternative Products',
-            style: Styles.styles17w700Black,
-          ),
+          Text('Alternative Products', style: Styles.styles17w700Black),
           SizedBox(height: 10.h),
           Text(
             'In case we missed one or more of chosen products, how could we reach you?',
@@ -56,10 +50,10 @@ class _AlternativeContainerState extends State<AlternativeContainer> {
             title: 'Give me a call',
             iconPath: 'call',
             index: 'call',
-            radioValue: radioValue,
+            radioValue: radioValue.toApiString(),
             onTap: () async {
               setState(() {
-                radioValue = 'call';
+                radioValue = AlternativeProductType.call;
               });
               return showModalBottomSheet(
                 context: context,
@@ -70,13 +64,13 @@ class _AlternativeContainerState extends State<AlternativeContainer> {
             },
           ),
           radioItem(
-            title: 'WhatsApp me',
-            iconPath: 'whatsapp',
-            index: 'whatsapp',
-            radioValue: radioValue,
+            title: 'Remove item',
+            iconPath: 'trash',
+            index: 'remove',
+            radioValue: radioValue.toApiString(),
             onTap: () async {
               setState(() {
-                radioValue = 'whatsapp';
+                radioValue = AlternativeProductType.remove;
               });
               return showModalBottomSheet(
                 context: context,

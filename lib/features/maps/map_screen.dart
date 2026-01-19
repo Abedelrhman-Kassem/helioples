@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +17,8 @@ import 'package:negmt_heliopolis/features/maps/widget/add_location.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
+  final bool? isUsOne;
+  const MapScreen({super.key, this.isUsOne});
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -26,6 +29,7 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void initState() {
+    log("isUsOne ${widget.isUsOne}");
     super.initState();
     _loadMapStyle();
   }
@@ -230,12 +234,13 @@ class _MapScreenState extends State<MapScreen> {
                           SizedBox(height: 16.h),
                           Center(
                             child: SignUpCustomButton(
-                              buttonText: StringTranslateExtension(
-                                LocaleKeys.set_location_screen_continue,
-                              ).tr(),
+                              buttonText: "Confirm Location",
                               onPressed: () async {
                                 blurDilog(
-                                  Addlocattion(latLngg: getxcontroller.latLng),
+                                  Addlocattion(
+                                    latLngg: getxcontroller.latLng,
+                                    isUsOne: widget.isUsOne ?? false,
+                                  ),
                                   context,
                                 );
                               },

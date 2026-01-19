@@ -8,6 +8,7 @@ import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
+import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/maps/model/address_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/repo/address_repo_imp.dart';
 
@@ -31,6 +32,8 @@ class AddressesControllerImpl extends AddressesController {
   String? errorMessage;
   String? addressId;
   Statusrequest updateAddressesstatusrequest = Statusrequest.none;
+
+  UseOnceAddress? usOneAddress;
 
   @override
   void onInit() {

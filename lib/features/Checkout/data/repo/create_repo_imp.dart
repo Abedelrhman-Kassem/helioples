@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
@@ -21,13 +23,16 @@ class CreateOrderImp extends CreateOrder {
     CreateOrderModel data,
   ) async {
     OrderDetailsModel orderDetailsModel;
+    log(
+      data.isDelivery
+          ? data.toDeliveryJson().toString()
+          : data.toPickUpJson().toString(),
+    );
 
     try {
       var response = await apiService.post(
-        endPoints: 'api/protected/orders/create',
-        data: data.deliverMethod == 'Delivery'
-            ? data.toDeliveryJson()
-            : data.toPickUpJson(),
+        endPoints: AppUrls.createOrderUrl,
+        data: data.isDelivery ? data.toDeliveryJson() : data.toPickUpJson(),
       );
 
       orderDetailsModel = OrderDetailsModel.fromJson(response.data);
@@ -35,9 +40,10 @@ class CreateOrderImp extends CreateOrder {
       return right(orderDetailsModel);
     } catch (e) {
       if (e is DioException) {
+        log(e.response?.data.toString() ?? '');
         return left(ServerFailure.fromDioError(e));
       }
-
+      log("e $e");
       return left(ServerFailure(e.toString()));
     }
   }
@@ -69,17 +75,17 @@ class CreateOrderImp extends CreateOrder {
 
   @override
   Future<Either<Failure, CancelOrderModel>> cancelOrder(
-    int id,
+    String id,
     String reason,
   ) async {
     CancelOrderModel cancelOrderModel;
 
     try {
       var response = await apiService.post(
-        endPoints: 'api/protected/orders/$id/cancel',
-        data: {"reason": reason},
+        endPoints: AppUrls.cancelOrderUrl(id),
+        data: {"cancelReason": reason},
       );
-
+      log(response.data.toString());
       cancelOrderModel = CancelOrderModel.fromJson(response.data);
 
       return right(cancelOrderModel);
@@ -98,7 +104,6 @@ class CreateOrderImp extends CreateOrder {
 
     try {
       var response = await apiService.get(endpoint: AppUrls.branchesUrl());
-
       branchesModel = BranchesModel.fromJson(response);
 
       return right(branchesModel);
@@ -145,6 +150,35 @@ class CreateOrderImp extends CreateOrder {
         return left(ServerFailure.fromDioError(e));
       }
 
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, double>> calculateDeliveryFee({
+    String? addressId,
+    double? lat,
+    double? long,
+  }) async {
+    try {
+      final Map<String, dynamic> data = {};
+      if (addressId != null) {
+        data['addressId'] = addressId;
+      } else if (lat != null && long != null) {
+        data['latitude'] = lat;
+        data['longitude'] = long;
+      }
+
+      var response = await apiService.post(
+        endPoints: AppUrls.calculateFeeUrl,
+        data: data,
+      );
+
+      return right((response.data['data'] as num).toDouble());
+    } catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure.fromDioError(e));
+      }
       return left(ServerFailure(e.toString()));
     }
   }

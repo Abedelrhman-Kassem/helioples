@@ -1,34 +1,38 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
+import 'package:negmt_heliopolis/core/utlis/network/app_urls.dart';
 import 'package:negmt_heliopolis/features/Profile/data/model/order_details.dart';
 import 'package:negmt_heliopolis/features/Profile/data/model/order_history.dart';
 import 'package:negmt_heliopolis/features/Profile/data/repo/order%20history%20repo/order_history_repo.dart';
 
 class OrderHistoryRepoImp extends OrderHistoryRepo {
   final ApiService api;
-  List<OrderHistory> history = [];
+  // List<ItemHistory> history = [];
   OrderHistoryRepoImp({required this.api});
 
   @override
-  Future<Either<Failure, List<OrderHistory>>> getOrdersHistory(
-      int page, String status) async {
+  Future<Either<Failure, List<ItemHistory>>> getOrdersHistory(
+    int page,
+    String status,
+    bool isActive,
+    bool includeCanceled,
+    int pageSize,
+  ) async {
     try {
       var response = await api.get(
-        endpoint: "api/protected/orders/history?page=0&status=Pending",
+        endpoint: AppUrls.getOrdersHistory(
+          page: page,
+          status: status,
+          isActive: isActive,
+          includeCanceled: includeCanceled,
+          pageSize: pageSize,
+        ),
       );
-      log("response : ${response}");
+      OrderHistory orderHistory = OrderHistory.fromJson(response);
 
-      for (var item in response['orders']) {
-        var h = OrderHistory.fromJson(item);
-
-        history.add(h);
-      }
-
-      return right(history);
+      return right(orderHistory.data!.items);
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
@@ -39,17 +43,11 @@ class OrderHistoryRepoImp extends OrderHistoryRepo {
   }
 
   @override
-  Future<Either<Failure, OrderDetails>> getOrderDetails(int id) async {
+  Future<Either<Failure, OrderDetails>> getOrderDetails(String id) async {
     try {
-      print("b3d el token");
-      print("id : $id");
-
-      var response = await api.get(endpoint: "api/protected/orders/$id/get");
-      print("b3d el response");
-
-      if (response['order'] != null && response['order'].isNotEmpty) {
-        var item = response['order'];
-        OrderDetails order = OrderDetails.fromJson(item);
+      var response = await api.get(endpoint: AppUrls.orderDetailsUrl(id));
+      if (response['success'] == true) {
+        OrderDetails order = OrderDetails.fromJson(response);
         return right(order);
       } else {
         return left(ServerFailure('Order not found.'));

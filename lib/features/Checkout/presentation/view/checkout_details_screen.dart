@@ -33,7 +33,7 @@ class _CheckoutDetailsScreenState extends State<CheckoutDetailsScreen> {
   void initState() {
     order = widget.orderDetailsModel;
 
-    tableValues = BlocProvider.of<MainCubit>(context).tableValues!;
+    tableValues = BlocProvider.of<MainCubit>(context).tableValues;
 
     super.initState();
   }
@@ -43,11 +43,14 @@ class _CheckoutDetailsScreenState extends State<CheckoutDetailsScreen> {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          homeLayout,
-          (route) => false,
-        );
+        if (context.mounted) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            homeLayout,
+            (route) => false,
+          );
+        }
+        BlocProvider.of<MainCubit>(context).clearDb();
       },
       // onPopInvoked: (didPop) {
       //   Navigator.pushNamedAndRemoveUntil(
@@ -61,11 +64,14 @@ class _CheckoutDetailsScreenState extends State<CheckoutDetailsScreen> {
           leading: returnArrow(
             context: context,
             onTap: () {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                homeLayout,
-                (route) => false,
-              );
+              if (context.mounted) {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  homeLayout,
+                  (route) => false,
+                );
+              }
+              BlocProvider.of<MainCubit>(context).clearDb();
             },
           ),
           title: Text(LocaleKeys.checkout_details_screen_order_details.tr()),
@@ -117,7 +123,7 @@ class _CheckoutDetailsScreenState extends State<CheckoutDetailsScreen> {
                   ),
                 ),
                 addressContainer(),
-                paymentContainer(order.order!.paymentMethod!),
+                paymentContainer(order.data!.paymentMethod!),
                 scheduleContainer(),
                 paymentDetails(context, order),
                 SizedBox(height: 160.h),
@@ -219,13 +225,13 @@ Widget paymentContainer(String paymentMethod) {
   PaymentClass payment = PaymentClass(title: '', path: '');
 
   if (paymentMethod == 'cashOnDelivery') {
-    payment.title = 'Cash On Delivery';
+    payment.title = LocaleKeys.checkout_delivery_screen_cash_on_delivery.tr();
     payment.path = 'cash-on-delivery';
   } else if (paymentMethod == 'cardOnDelivery') {
-    payment.title = 'Card On Delivery';
+    payment.title = LocaleKeys.checkout_delivery_screen_card_on_delivery.tr();
     payment.path = 'card-on-delivery';
   } else {
-    payment.title = 'Credit/Debit Card';
+    payment.title = LocaleKeys.checkout_delivery_screen_credit_debit_card.tr();
     payment.path = 'credit-or-debit-card';
   }
 
@@ -386,7 +392,7 @@ Widget scheduleContainer() {
 
 Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
   void copyToClipboard(BuildContext context) {
-    Clipboard.setData(ClipboardData(text: '${order.order!.id}')).then((_) {
+    Clipboard.setData(ClipboardData(text: '${order.data!.id}')).then((_) {
       CustomSnackBar.show(
         context: context,
         duration: const Duration(seconds: 5),
@@ -434,7 +440,10 @@ Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
               ),
             ),
             SizedBox(width: 10.w),
-            Text('${order.order!.id}', style: Styles.styles15w600NormalBlack),
+            Text(
+              '${order.data!.orderNumber}',
+              style: Styles.styles15w600NormalBlack,
+            ),
           ],
         ),
         SizedBox(height: 15.h),
@@ -446,7 +455,7 @@ Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
               style: Styles.styles14w400Black,
             ),
             Text(
-              '${order.order!.subTotal!.toStringAsFixed(2)} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
+              '${order.data!.subTotal!.toStringAsFixed(2)} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
               style: Styles.styles15w600NormalBlack,
             ),
           ],
@@ -460,7 +469,7 @@ Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
               style: Styles.styles14w400Black,
             ),
             Text(
-              '${order.order!.promoCodeDiscount!.toStringAsFixed(2)} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
+              '${order.data!.promoCodeDiscount!.toStringAsFixed(2)} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
               style: Styles.styles15w600NormalBlack,
             ),
           ],
@@ -474,7 +483,7 @@ Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
               style: Styles.styles14w400Black,
             ),
             Text(
-              '${order.order!.deliveryFees} EGP',
+              '${order.data!.deliveryFees} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
               style: Styles.styles15w600NormalBlack,
             ),
           ],
@@ -510,7 +519,7 @@ Widget bottomSheet(BuildContext context, OrderDetailsModel order) {
                 style: Styles.styles18w500BlackWhite,
               ),
               Text(
-                '${order.order!.total!.toStringAsFixed(2)} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
+                '${order.data!.total!.toStringAsFixed(2)} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
                 style: Styles.styles18w800Black,
               ),
             ],

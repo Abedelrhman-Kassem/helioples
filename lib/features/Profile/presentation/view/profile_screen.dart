@@ -105,7 +105,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   CustButtonProfail(
-                    title: "Logout Now",
+                    title: trKey(
+                      LocaleKeys.profile_screen_logout_now_dialog_title,
+                    ),
                     onPressed: () async {
                       ServicesHelper.removeLocal('token');
                       final addressesCtrl = Get.find<AddressesControllerImpl>();
@@ -115,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                   ),
                   CustButtonProfail(
-                    title: "Cancel",
+                    title: trKey(LocaleKeys.profile_screen_logout_cancel),
                     onPressed: () {
                       Navigator.pop(context);
                     },

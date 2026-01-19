@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
@@ -33,11 +32,10 @@ class _PickUpScreenState extends State<PickUpScreen> {
   List<Map<String, Object?>> tableValues = [];
 
   CreateOrderModel createOrderModel = CreateOrderModel(
-    deliverMethod: 'OnBranch',
-    // deliverTimeId: 2,
-    paymentMethod: 'cashOnDelivery',
+    deliverMethod: OrderDeliverMethod.onBranch,
+    paymentMethod: OrderPaymentMethod.cashOnDelivery,
     chooseForMe: true,
-    alternativeProduct: 'call',
+    alternativeProduct: AlternativeProductType.call,
   );
 
   late BranchesModel branchesModel;
@@ -86,8 +84,6 @@ class _PickUpScreenState extends State<PickUpScreen> {
               );
               return;
             }
-
-            await BlocProvider.of<MainCubit>(context).clearDb();
 
             Navigator.pushNamed(
               context,

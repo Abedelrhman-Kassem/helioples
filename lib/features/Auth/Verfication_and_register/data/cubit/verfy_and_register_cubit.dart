@@ -48,7 +48,11 @@ class VerfyAndRegisterCubit extends Cubit<VerfAndRegisterStates> {
           emit(VerfAndRegisterStates.registerFailure(failure.errorMessage)),
       (result) async {
         emit(VerfAndRegisterStates.registerSuccess(result));
-        ServicesHelper.saveLocal('token', result.data);
+        if (result.data != null) {
+          if (result.data!.token != null) {
+            ServicesHelper.saveLocal('token', result.data!.token!);
+          }
+        }
         final addressesCtrl = Get.find<AddressesControllerImpl>();
         final authC = Get.find<AuthController>();
         await addressesCtrl.fetchAddresses();

@@ -16,17 +16,18 @@ Widget shippingDetailsContainer(OrderDetailsModel order) {
         shippingDetailsItem(
           text: 'Preparing',
           iconPath: 'assets/svg_icons/box.svg',
-          isLoading: order.order!.clientOrderState! == 'Pending',
-          isSuccess: order.order!.clientOrderState! == 'OnWay' ||
-              order.order!.clientOrderState! == 'Shipped',
+          isLoading: order.data!.clientOrderState! == 'Pending',
+          isSuccess:
+              order.data!.clientOrderState! == 'OnWay' ||
+              order.data!.clientOrderState! == 'Shipped',
           date: '10 Dec 04:25 PM, ',
         ),
         SizedBox(height: 20.h),
         shippingDetailsItem(
           text: 'Arrived To Drop Location',
           iconPath: 'assets/svg_icons/truck-tick.svg',
-          isLoading: order.order!.clientOrderState! == 'OnWay',
-          isSuccess: order.order!.clientOrderState! == 'Shipped',
+          isLoading: order.data!.clientOrderState! == 'OnWay',
+          isSuccess: order.data!.clientOrderState! == 'Shipped',
           date: '10 Dec 04:25 PM, ',
         ),
         SizedBox(height: 20.h),
@@ -34,7 +35,7 @@ Widget shippingDetailsContainer(OrderDetailsModel order) {
           text: 'Delivered',
           iconPath: 'assets/svg_icons/box-tick.svg',
           isLoading: false,
-          isSuccess: order.order!.clientOrderState! == 'Shipped',
+          isSuccess: order.data!.clientOrderState! == 'Shipped',
           date: '10 Dec 04:25 PM, ',
         ),
       ],

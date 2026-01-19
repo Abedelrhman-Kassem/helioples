@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
-import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
+import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/cart_item_widget.dart';
 import 'package:negmt_heliopolis/features/Cart/presentation/view/widgets/floating_button_widget.dart';
@@ -30,21 +32,92 @@ class _CartScreenState extends State<CartScreen> {
       create: (context) => CartCubit()..getCartProducts(),
       child: BlocConsumer<CartCubit, CartState>(
         listener: (context, state) {
-          CartCubit cartCubit = BlocProvider.of<CartCubit>(context);
           if (state is CartSuccessState) {
-            if (cartCubit.lengthBeforeUpdate !=
-                state.updateCartModel.products.length) {
-              String message = state.updateCartModel.message ?? "";
-              List<String> st = message.split(".");
-              for (String mass in st) {
-                if (mass.trim().isNotEmpty) {
-                  showCustomGetSnack(
-                    isGreen: false,
-                    text: mass,
-                    isSnackOpen: false,
-                    duration: const Duration(seconds: 3),
-                  );
-                }
+            String message = state.updateCartModel.message ?? "";
+            log(message);
+            if (message.isNotEmpty) {
+              String formattedMessage = message.replaceAllMapped(
+                RegExp(r'\)(?=\s*Product)'),
+                (match) => ').',
+              );
+
+              List<String> st = formattedMessage.split(".");
+              List<String> validMessages = st
+                  .where((element) => element.trim().isNotEmpty)
+                  .toList();
+              log(validMessages.toString());
+
+              if (validMessages.isNotEmpty) {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                    title: Row(
+                      children: [
+                        Icon(
+                          Icons.info_outline_rounded,
+                          color: MyColors.mainColor,
+                          size: 28.sp,
+                        ),
+                        SizedBox(width: 10.w),
+                        Text(
+                          LocaleKeys.cart_screen_update
+                              .tr(), // You might want to localize this
+                          style: Styles.styles16w700interFamily.copyWith(
+                            fontSize: 18.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: validMessages
+                          .map(
+                            (e) => Container(
+                              margin: EdgeInsets.only(bottom: 12.h),
+                              padding: EdgeInsets.all(12.r),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade50,
+                                borderRadius: BorderRadius.circular(12.r),
+                                border: Border.all(color: Colors.grey.shade200),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.circle,
+                                    size: 8.sp,
+                                    color: MyColors.mainColor,
+                                  ),
+                                  SizedBox(width: 10.w),
+                                  Expanded(
+                                    child: Text(
+                                      e,
+                                      style: Styles.styles14w400Black.copyWith(
+                                        height: 1.4,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: TextButton.styleFrom(
+                          foregroundColor: MyColors.mainColor,
+                          textStyle: Styles.styles16w700interFamily,
+                        ),
+                        child: Text(LocaleKeys.cart_screen_ok.tr()),
+                      ),
+                    ],
+                  ),
+                );
               }
             }
           }

@@ -62,6 +62,13 @@ class _TimeScheduleContainerState extends State<TimeScheduleContainer> {
 
         if (state is GetDeliveryTimeSuccess) {
           deliveryTimeModel = state.deliveryTimeModel;
+          if (widget.isDelivery) {
+            widget.createOrderModel.deliverTimeIntervalId =
+                createOrderCubit.availableTime!.id;
+          } else {
+            widget.createOrderModel.pickupTimeId =
+                createOrderCubit.availableTime!.id;
+          }
         }
       },
       builder: (context, state) {
@@ -97,12 +104,14 @@ class _TimeScheduleContainerState extends State<TimeScheduleContainer> {
                             RichText(
                               overflow: TextOverflow.ellipsis,
                               text: TextSpan(
-                                text: "Instant,",
+                                text: LocaleKeys
+                                    .checkout_delivery_screen_instant
+                                    .tr(),
                                 style: Styles.styles12w400black,
                                 children: [
                                   TextSpan(
                                     text:
-                                        ' ${widget.isDelivery ? 'Arrive at' : 'Receive at'} ${createOrderCubit.availableTime?.to != null ? DateFormat('h:mm a').format(createOrderCubit.availableTime!.to!) : ''}',
+                                        ' ${widget.isDelivery ? LocaleKeys.checkout_delivery_screen_arrive_at.tr() : LocaleKeys.checkout_delivery_screen_receive_at.tr()} ${createOrderCubit.availableTime?.to != null ? DateFormat('h:mm a').format(createOrderCubit.availableTime!.to!) : ''}',
                                     style: Styles.styles12w400Gold,
                                   ),
                                 ],
@@ -139,8 +148,13 @@ class _TimeScheduleContainerState extends State<TimeScheduleContainer> {
                             },
                           );
                           setState(() {
-                            widget.createOrderModel.deliverTimeId =
-                                createOrderCubit.availableTime!.id;
+                            if (widget.isDelivery) {
+                              widget.createOrderModel.deliverTimeIntervalId =
+                                  createOrderCubit.availableTime!.id;
+                            } else {
+                              widget.createOrderModel.pickupTimeId =
+                                  createOrderCubit.availableTime!.id;
+                            }
                           });
                         },
                         child: Row(
@@ -309,7 +323,8 @@ class _TimeContainerState extends State<TimeContainer> {
             Text(
               widget.isDelivery
                   ? LocaleKeys.schedule_screen_schedule_delivery_time.tr()
-                  : "Schedule pickup time",
+                  : LocaleKeys.checkout_delivery_screen_schedule_pickup_time
+                        .tr(),
               style: Styles.styles12w300NormalBlack.copyWith(
                 color: const Color.fromRGBO(120, 120, 120, 1),
               ),

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_animated_widget.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
@@ -18,9 +20,7 @@ Widget cancelOrderBottomSheet(BuildContext context, OrderDetailsModel order) {
       Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30.r),
-        ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.r)),
         child: Column(
           children: [
             Text(
@@ -40,9 +40,7 @@ Widget cancelOrderBottomSheet(BuildContext context, OrderDetailsModel order) {
                 Expanded(
                   child: buttonWidget(
                     color: MyColors.mainColor,
-                    padding: EdgeInsets.symmetric(
-                      vertical: 20.h,
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: 20.h),
                     borderRadius: 53.r,
                     child: Text(
                       LocaleKeys.cancel_order_bottom_sheet_cancel_order.tr(),
@@ -61,14 +59,9 @@ Widget cancelOrderBottomSheet(BuildContext context, OrderDetailsModel order) {
                 SizedBox(width: 10.w),
                 Expanded(
                   child: buttonWidget(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 20.h,
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: 20.h),
                     borderRadius: 53.r,
-                    border: Border.all(
-                      color: MyColors.mainColor,
-                      width: 1.5.r,
-                    ),
+                    border: Border.all(color: MyColors.mainColor, width: 1.5.r),
                     child: Text(
                       LocaleKeys.cancel_order_bottom_sheet_dont_cancel.tr(),
                       style: Styles.styles17w600White.copyWith(
@@ -92,10 +85,7 @@ Widget cancelOrderBottomSheet(BuildContext context, OrderDetailsModel order) {
 // ignore: must_be_immutable
 class ReasonBottomSheet extends StatefulWidget {
   final OrderDetailsModel order;
-  const ReasonBottomSheet({
-    super.key,
-    required this.order,
-  });
+  const ReasonBottomSheet({super.key, required this.order});
 
   @override
   State<ReasonBottomSheet> createState() => _ReasonBottomSheetState();
@@ -138,16 +128,14 @@ class _ReasonBottomSheetState extends State<ReasonBottomSheet> {
           }
 
           if (state is CancelOrderSuccess) {
-            if (widget.order.order!.deliverMethod == 'Delivery') {
-              Navigator.pushNamed(
-                context,
-                reOrderScreen,
-              );
+            // showCustomGetSnack(
+            //   isGreen: true,
+            //   text: state.cancelOrderModel.msg!,
+            // );
+            if (widget.order.data!.deliverMethod == 'Delivery') {
+              Navigator.pushNamed(context, reOrderScreen);
             } else {
-              Navigator.pushNamed(
-                context,
-                pickupReorderScreen,
-              );
+              Navigator.pushNamed(context, pickupReorderScreen);
             }
           }
         },
@@ -170,35 +158,46 @@ class _ReasonBottomSheetState extends State<ReasonBottomSheet> {
                     ),
                     SizedBox(height: 20.h),
                     Column(
-                      children: List.generate(
-                        reasonsList!.length,
-                        (index) {
-                          return reasonItem(
-                            radioValue: radioValue,
-                            itemText: reasonsList![index],
+                      children: List.generate(reasonsList!.length, (index) {
+                        return reasonItem(
+                          radioValue: radioValue,
+                          itemText: reasonsList![index],
+                          onTap: () {
+                            setState(() {
+                              radioValue = reasonsList![index];
+                            });
+                          },
+                        );
+                      }),
+                    ),
+                    state is CancelOrderLoading
+                        ? Container(
+                            height: 60.h,
+                            width: double.infinity,
+                            margin: EdgeInsets.only(top: 20.h),
+                            decoration: BoxDecoration(
+                              color: MyColors.mainColor,
+                              borderRadius: BorderRadius.circular(37.r),
+                            ),
+                            child: Center(
+                              child: Helper.loadingWidget(color: Colors.white),
+                            ),
+                          )
+                        : buttonWidget(
+                            color: MyColors.mainColor,
+                            padding: EdgeInsets.symmetric(vertical: 20.h),
+                            margin: EdgeInsets.only(top: 20.h),
+                            borderRadius: 37.r,
+                            child: Text(
+                              LocaleKeys.cancel_order_bottom_sheet_submit.tr(),
+                              style: Styles.styles17w500NormalWhite,
+                            ),
                             onTap: () {
-                              setState(() {
-                                radioValue = reasonsList![index];
-                              });
+                              BlocProvider.of<CreateOrderCubit>(
+                                context,
+                              ).cancelOrder(radioValue, widget.order.data!.id!);
                             },
-                          );
-                        },
-                      ),
-                    ),
-                    buttonWidget(
-                      color: MyColors.mainColor,
-                      padding: EdgeInsets.symmetric(vertical: 20.h),
-                      margin: EdgeInsets.only(top: 20.h),
-                      borderRadius: 37.r,
-                      child: Text(
-                        LocaleKeys.cancel_order_bottom_sheet_submit.tr(),
-                        style: Styles.styles17w500NormalWhite,
-                      ),
-                      onTap: () {
-                        BlocProvider.of<CreateOrderCubit>(context)
-                            .cancelOrder(radioValue, widget.order.order!.id!);
-                      },
-                    ),
+                          ),
                   ],
                 ),
               ),
@@ -223,10 +222,7 @@ Widget reasonItem({
         children: [
           radioAnimatedWidget(radioValue == itemText),
           SizedBox(width: 5.w),
-          Text(
-            itemText,
-            style: Styles.styles16w400Black41,
-          ),
+          Text(itemText, style: Styles.styles16w400Black41),
         ],
       ),
     ),

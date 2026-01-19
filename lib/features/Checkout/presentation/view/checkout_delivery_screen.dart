@@ -1,10 +1,10 @@
 import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
-import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/db_change_notifier.dart';
@@ -34,7 +34,7 @@ class CheckoutScreen extends StatefulWidget {
 class _CheckoutScreenState extends State<CheckoutScreen> {
   List<Map<String, Object?>> tableValues = [];
   CreateOrderModel createOrderModel = CreateOrderModel(
-    deliverMethod: 'Delivery',
+    deliverMethod: OrderDeliverMethod.delivery,
   );
 
   @override
@@ -66,8 +66,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       child: BlocConsumer<CreateOrderCubit, CreateOrderState>(
         listener: (context, state) async {
           if (state is CreateOrderSuccess) {
-            await BlocProvider.of<MainCubit>(context).clearDb();
-
             Navigator.pushNamed(
               context,
               checkoutDetailsScreen,
@@ -76,6 +74,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           }
 
           if (state is CreateOrderFailed) {
+            showCustomGetSnack(
+              isGreen: false,
+              text: state.error,
+              isSnackOpen: false,
+              duration: const Duration(seconds: 3),
+            );
+          }
+
+          if (state is CalculateFeeFailed) {
             showCustomGetSnack(
               isGreen: false,
               text: state.error,
@@ -118,7 +125,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Order Items', style: Styles.styles17w700Black),
+                          Text(
+                            LocaleKeys.checkout_delivery_screen_order_items
+                                .tr(),
+                            style: Styles.styles17w700Black,
+                          ),
                           SizedBox(height: 20.h),
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
@@ -190,6 +201,7 @@ class _CheckOutBottomSheetState extends State<CheckOutBottomSheet> {
   final DbChangeNotifier dbChangeNotifier = DbChangeNotifier();
 
   late double tips;
+  double deliveryFee = 0;
 
   double promoCodeValue = 0;
   bool isPercentage = false;
@@ -215,8 +227,12 @@ class _CheckOutBottomSheetState extends State<CheckOutBottomSheet> {
         }
 
         if (state is CheckPromoCodeSuccess) {
-          promoCodeValue = state.promoCodeModel.promoCode!.amount!;
-          isPercentage = state.promoCodeModel.promoCode!.isPercentage!;
+          showCustomGetSnack(
+            isGreen: true,
+            text: state.promoCodeModel.message ?? '',
+          );
+          promoCodeValue = state.promoCodeModel.data!.discount!;
+          isPercentage = state.promoCodeModel.data!.isPercentage!;
 
           if (isPercentage) {
             promoCodeValue = createOrderCubit.calcPromoCode(
@@ -225,11 +241,20 @@ class _CheckOutBottomSheetState extends State<CheckOutBottomSheet> {
             );
           }
         }
+        if (state is CalculateFeeSuccess) {
+          deliveryFee = state.fee;
+        }
+
+        if (state is CalculateFeeLoading) {
+          // We could set deliveryFee to 0 or keep previous, but total price might be inaccurate while loading.
+          // For now, let's keep previous or 0.
+        }
       },
       builder: (context, state) {
         double totalPrice =
             tips +
-            dbChangeNotifier.dbData.totalPrice -
+            dbChangeNotifier.dbData.totalPrice +
+            deliveryFee -
             (dbChangeNotifier.dbData.totalDiscount + promoCodeValue);
 
         totalPrice = double.parse(totalPrice.toStringAsFixed(2));
@@ -274,8 +299,14 @@ class _CheckOutBottomSheetState extends State<CheckOutBottomSheet> {
                     borderRadius: BorderRadius.circular(36.77.r),
                     splashColor: MyColors.mainColor,
                     onTap: () {
-                      log(widget.createOrderModel.deliverTimeId.toString());
-                      // createOrderCubit.createOrder(widget.createOrderModel);
+                      log(
+                        widget.createOrderModel.isDelivery
+                            ? widget.createOrderModel
+                                  .toDeliveryJson()
+                                  .toString()
+                            : widget.createOrderModel.toPickUpJson().toString(),
+                      );
+                      createOrderCubit.createOrder(widget.createOrderModel);
                     },
                     child: Container(
                       width: 284.w,

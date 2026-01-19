@@ -14,7 +14,9 @@ class ReportCubit extends Cubit<SubmitReportState> {
 
     var result = await repo.sendReport(report);
 
-    result.fold((failure) => emit(SubmitReportFailure(failure.errorMessage)),
-        (status) => emit(SubmitReportSuccess(status)));
+    result.fold(
+      (failure) => emit(SubmitReportFailure(failure.errorMessage)),
+      (status) => emit(SubmitReportSuccess(status)),
+    );
   }
 }

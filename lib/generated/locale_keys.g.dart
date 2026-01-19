@@ -23,6 +23,8 @@ abstract class  LocaleKeys {
   static const verification_screen_verify_now = 'verification_screen.verify_now';
   static const verification_screen_didnt_receive_code = 'verification_screen.didnt_receive_code';
   static const verification_screen_resend_code = 'verification_screen.resend_code';
+  static const verification_screen_success_creating_account = 'verification_screen.success_creating_account';
+  static const verification_screen_success_verification_creating_account = 'verification_screen.success_verification_creating_account';
   static const verification_screen = 'verification_screen';
   static const signup_screen_register = 'signup_screen.register';
   static const signup_screen_first_name = 'signup_screen.first_name';
@@ -33,6 +35,8 @@ abstract class  LocaleKeys {
   static const signup_screen_already_have_account = 'signup_screen.already_have_account';
   static const signup_screen_login_now = 'signup_screen.login_now';
   static const signup_screen_please_enter_validation_code = 'signup_screen.please_enter_validation_code';
+  static const signup_screen_failed_send_otp = 'signup_screen.failed_send_otp';
+  static const signup_screen_otp_sent = 'signup_screen.otp_sent';
   static const signup_screen = 'signup_screen';
   static const set_location_screen_skip = 'set_location_screen.skip';
   static const set_location_screen_choose_delivery_location = 'set_location_screen.choose_delivery_location';
@@ -78,9 +82,12 @@ abstract class  LocaleKeys {
   static const cart_screen_cart_item_cant_add_more = 'cart_screen.cart_item_cant_add_more';
   static const cart_screen_cart_item_pcs = 'cart_screen.cart_item_pcs';
   static const cart_screen_cart_item_egp = 'cart_screen.cart_item_egp';
+  static const cart_screen_update = 'cart_screen.update';
+  static const cart_screen_ok = 'cart_screen.ok';
   static const cart_screen = 'cart_screen';
   static const sub_categories_screen_loading = 'sub_categories_screen.loading';
   static const sub_categories_screen_No_Products_Found = 'sub_categories_screen.No_Products_Found';
+  static const sub_categories_screen_featured = 'sub_categories_screen.featured';
   static const sub_categories_screen = 'sub_categories_screen';
   static const home_screen_categories = 'home_screen_categories';
   static const re_order_screen_checkout = 're_order_screen.checkout';
@@ -131,6 +138,14 @@ abstract class  LocaleKeys {
   static const checkout_delivery_screen_delivery_time = 'checkout_delivery_screen.delivery_time';
   static const checkout_delivery_screen_total_price = 'checkout_delivery_screen.total_price';
   static const checkout_delivery_screen_place_order = 'checkout_delivery_screen.place_order';
+  static const checkout_delivery_screen_payment = 'checkout_delivery_screen.payment';
+  static const checkout_delivery_screen_cash_on_delivery = 'checkout_delivery_screen.cash_on_delivery';
+  static const checkout_delivery_screen_card_on_delivery = 'checkout_delivery_screen.card_on_delivery';
+  static const checkout_delivery_screen_credit_debit_card = 'checkout_delivery_screen.credit_debit_card';
+  static const checkout_delivery_screen_instant = 'checkout_delivery_screen.instant';
+  static const checkout_delivery_screen_arrive_at = 'checkout_delivery_screen.arrive_at';
+  static const checkout_delivery_screen_receive_at = 'checkout_delivery_screen.receive_at';
+  static const checkout_delivery_screen_schedule_pickup_time = 'checkout_delivery_screen.schedule_pickup_time';
   static const checkout_delivery_screen = 'checkout_delivery_screen';
   static const card_screen_add_payment_card = 'card_screen.add_payment_card';
   static const card_screen_card_number = 'card_screen.card_number';
@@ -176,6 +191,8 @@ abstract class  LocaleKeys {
   static const profile_screen_chat_with_us = 'profile_screen.chat_with_us';
   static const profile_screen_logout = 'profile_screen.logout';
   static const profile_screen_user_profile = 'profile_screen.user_profile';
+  static const profile_screen_logout_now_dialog_title = 'profile_screen.logout_now_dialog_title';
+  static const profile_screen_logout_cancel = 'profile_screen.logout_cancel';
   static const profile_screen = 'profile_screen';
   static const settings_screen_app_settings = 'settings_screen.app_settings';
   static const settings_screen_change_language = 'settings_screen.change_language';
@@ -195,6 +212,7 @@ abstract class  LocaleKeys {
   static const change_information_screen_phone_number = 'change_information_screen.phone_number';
   static const change_information_screen_birthday_date = 'change_information_screen.birthday_date';
   static const change_information_screen_save = 'change_information_screen.save';
+  static const change_information_screen_invalid_date_format = 'change_information_screen.invalid_date_format';
   static const change_information_screen = 'change_information_screen';
   static const verification_changes_screen_profile_information = 'verification_changes_screen.profile_information';
   static const verification_changes_screen_verify_phone_number = 'verification_changes_screen.verify_phone_number';
@@ -225,6 +243,8 @@ abstract class  LocaleKeys {
   static const history_screen_active_orders = 'history_screen.active_orders';
   static const history_screen_completed_orders = 'history_screen.completed_orders';
   static const history_screen_Active = 'history_screen.Active';
+  static const history_screen_no_orders_found = 'history_screen.no_orders_found';
+  static const history_screen_canceled = 'history_screen.canceled';
   static const history_screen = 'history_screen';
   static const report_screen_choose_image_source = 'report_screen.choose_image_source';
   static const report_screen_camera = 'report_screen.camera';
@@ -248,6 +268,7 @@ abstract class  LocaleKeys {
   static const faqs_screen = 'faqs_screen';
   static const alerts_screen_Alerts = 'alerts_screen.Alerts';
   static const alerts_screen_Today = 'alerts_screen.Today';
+  static const alerts_screen_Yesterday = 'alerts_screen.Yesterday';
   static const alerts_screen_Order_Confirmed_Successfully = 'alerts_screen.Order_Confirmed_Successfully';
   static const alerts_screen_Lorem_ipsum = 'alerts_screen.Lorem_ipsum';
   static const alerts_screen = 'alerts_screen';
@@ -361,5 +382,9 @@ abstract class  LocaleKeys {
   static const validation_too_short = 'validation.too_short';
   static const validation_too_long = 'validation.too_long';
   static const validation = 'validation';
+  static const product_widget_pcs = 'product_widget.pcs';
+  static const product_widget_egp = 'product_widget.egp';
+  static const product_widget_off = 'product_widget.off';
+  static const product_widget = 'product_widget';
 
 }

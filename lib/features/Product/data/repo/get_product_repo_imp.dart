@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
@@ -17,14 +19,19 @@ class GetProductImp extends GetProduct {
     int page,
     int pageSize,
   ) async {
+    log(productId);
     ProductDetailsModel productModel;
 
     try {
-      productModel = ProductDetailsModel.fromJson(
-        await apiService.get(
-            endpoint: AppUrls.getProductDetailsUrl(
-                id: productId, page: page, pageSize: pageSize)),
+      final response = await apiService.get(
+        endpoint: AppUrls.getProductDetailsUrl(
+          id: productId,
+          page: page,
+          pageSize: pageSize,
+        ),
       );
+      log(response.toString());
+      productModel = ProductDetailsModel.fromJson(response);
 
       return right(productModel);
     } catch (e) {

@@ -329,9 +329,7 @@ class Styles {
     color: const Color.fromRGBO(40, 40, 40, 1),
   );
 
-  static TextStyle styles10w700interFamily = TextStyle(
-    fontSize: 10.sp,
-  );
+  static TextStyle styles10w700interFamily = TextStyle(fontSize: 10.sp);
 
   static TextStyle styles11w600Black = TextStyle(
     fontSize: 11.sp,
@@ -602,6 +600,12 @@ class Styles {
     fontSize: 12.sp,
     fontFamily: interFamily,
     fontWeight: FontWeight.w400,
+    color: MyColors.mainColor,
+  );
+  static TextStyle styles12w800MainColor = TextStyle(
+    fontSize: 12.sp,
+    fontFamily: interFamily,
+    fontWeight: FontWeight.w800,
     color: MyColors.mainColor,
   );
 }

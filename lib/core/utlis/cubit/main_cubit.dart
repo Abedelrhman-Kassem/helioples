@@ -15,9 +15,13 @@ part 'main_state.dart';
 class MainCubit extends Cubit<MainState> {
   MainCubit() : super(MainInitial());
 
-  List<Map<String, Object?>>? tableValues;
+  List<Map<String, Object?>> tableValues = [];
   Future<void> clearDb() async {
-    tableValues = await DBHelper.queryData(table: cartTable);
+    var items = await DBHelper.queryData(table: cartTable);
+
+    if (items.isNotEmpty) {
+      tableValues = items;
+    }
 
     await DBHelper.deleteData(table: cartTable);
   }

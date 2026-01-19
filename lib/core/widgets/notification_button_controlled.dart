@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
+import 'package:negmt_heliopolis/core/utlis/notifiers/subscription_notifier.dart';
+
 class NotificationButtonControlled extends StatefulWidget {
   final bool isnotification;
+  final String productId;
   final void Function() addNotiOrRemoveNoti;
-  const NotificationButtonControlled(
-      {super.key,
-      required this.isnotification,
-      required this.addNotiOrRemoveNoti});
+  const NotificationButtonControlled({
+    super.key,
+    required this.isnotification,
+    required this.productId,
+    required this.addNotiOrRemoveNoti,
+  });
 
   @override
   NotificationButtonControlledState createState() =>
@@ -22,26 +27,46 @@ class NotificationButtonControlledState
   late final Animation<double> _offsetAnim;
 
   final double moveDistance = 20.0;
+  final SubscriptionNotifier _subscriptionNotifier = SubscriptionNotifier();
 
   @override
   void initState() {
     super.initState();
+    _subscriptionNotifier.addListener(_subscriptionListener);
     _controller = AnimationController(
       duration: const Duration(milliseconds: 150),
       vsync: this,
     );
 
-    _offsetAnim = Tween<double>(begin: 0.0, end: -moveDistance).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _offsetAnim = Tween<double>(
+      begin: 0.0,
+      end: -moveDistance,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     if (widget.isnotification) {
       _controller.forward();
     }
   }
 
+  void _subscriptionListener() {
+    if (_subscriptionNotifier.productId == widget.productId) {
+      if (_subscriptionNotifier.isSubscribed) {
+        if (_controller.status != AnimationStatus.completed &&
+            _controller.status != AnimationStatus.forward) {
+          _controller.forward();
+        }
+      } else {
+        if (_controller.status != AnimationStatus.dismissed &&
+            _controller.status != AnimationStatus.reverse) {
+          _controller.reverse();
+        }
+      }
+    }
+  }
+
   @override
   void dispose() {
+    _subscriptionNotifier.removeListener(_subscriptionListener);
     _controller.dispose();
     super.dispose();
   }
@@ -72,18 +97,20 @@ class NotificationButtonControlledState
           child: Transform.translate(
             offset: Offset(_offsetAnim.value, 0),
             child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: MyColors.mainColor.withValues(alpha: filled ? 0.1 : 0),
-                ),
-                padding: const EdgeInsets.all(5),
-                child: svgIcon(
-                    path: !filled
-                        ? 'assets/svg_icons/notification2.svg'
-                        : 'assets/svg_icons/notification3.svg',
-                    width: !filled ? 31 : 35,
-                    height: !filled ? 31 : 35,
-                    color: MyColors.mainColor)),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: MyColors.mainColor.withValues(alpha: filled ? 0.1 : 0),
+              ),
+              padding: const EdgeInsets.all(5),
+              child: svgIcon(
+                path: !filled
+                    ? 'assets/svg_icons/notification2.svg'
+                    : 'assets/svg_icons/notification3.svg',
+                width: !filled ? 31 : 35,
+                height: !filled ? 31 : 35,
+                color: MyColors.mainColor,
+              ),
+            ),
           ),
         );
       },

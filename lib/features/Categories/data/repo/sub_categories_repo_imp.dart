@@ -30,8 +30,9 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
 
       final List<dynamic> rawList = response['data'] ?? [];
 
-      final List<SubCatByCatidData> subCategories =
-          rawList.map((item) => SubCatByCatidData.fromJson(item)).toList();
+      final List<SubCatByCatidData> subCategories = rawList
+          .map((item) => SubCatByCatidData.fromJson(item))
+          .toList();
 
       mainId = id;
 
@@ -47,13 +48,17 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
 
   @override
   Future<Either<Failure, List<Products>>> getProductsInSubCategory(
-      String subCategoryId, int page,
-      {int include = 10}) async {
+    String subCategoryId,
+    int page, {
+    int include = 10,
+  }) async {
     log("page $page");
     try {
       var response = await api.get(
-        endpoint:
-            AppUrls.getProductsInSubCategoryUrl(id: subCategoryId, page: page),
+        endpoint: AppUrls.getProductsInSubCategoryUrl(
+          id: subCategoryId,
+          page: page,
+        ),
       );
       List<Products> products = [];
 
@@ -78,10 +83,12 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
 
   @override
   Future<Either<Failure, List<Products>>> getAllProductsOfSubCategory(
-      int subCategoryId) async {
+    int subCategoryId,
+  ) async {
     try {
-      var response =
-          await api.get(endpoint: AppUrls.getSubCategoriesUrl(id: mainId));
+      var response = await api.get(
+        endpoint: AppUrls.getSubCategoriesUrl(id: mainId),
+      );
       List<Products> products = [];
 
       for (var item in response['data']['products']) {
@@ -127,12 +134,15 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
 
   @override
   Future<Either<Failure, List<Products>>> getProductsFeatured(
-      String featureId, int page, int pageSize) async {
+    String featureId,
+    int page,
+    int pageSize,
+  ) async {
     try {
       var response = await api.get(
         endpoint: AppUrls.getProductsFeaturedUrl(featureId, page, pageSize),
       );
-      log("${AppUrls.getProductsFeaturedUrl(featureId, page, pageSize)}");
+      log(AppUrls.getProductsFeaturedUrl(featureId, page, pageSize));
       // log("success loading products featured $response");
       List<Products> products = [];
       if (response['data'] != null &&

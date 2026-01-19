@@ -35,7 +35,7 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
   void initState() {
     order = widget.orderDetailsModel;
 
-    tableValues = BlocProvider.of<MainCubit>(context).tableValues!;
+    tableValues = BlocProvider.of<MainCubit>(context).tableValues;
 
     super.initState();
   }
@@ -45,29 +45,28 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          homeLayout,
-          (route) => false,
-        );
+        if (context.mounted) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            homeLayout,
+            (route) => false,
+          );
+        }
+        BlocProvider.of<MainCubit>(context).clearDb();
       },
-      // onPopInvoked: (didPop) {
-      //   Navigator.pushNamedAndRemoveUntil(
-      //     context,
-      //     homeLayout,
-      //     (route) => false,
-      //   );
-      // },
       child: Scaffold(
         appBar: AppBar(
           leading: returnArrow(
             context: context,
             onTap: () {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                homeLayout,
-                (route) => false,
-              );
+              if (context.mounted) {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  homeLayout,
+                  (route) => false,
+                );
+              }
+              BlocProvider.of<MainCubit>(context).clearDb();
             },
           ),
           title: Text(
@@ -135,62 +134,62 @@ class _PickupOrderDetailsState extends State<PickupOrderDetails> {
                             .tr(),
                         style: Styles.styles17w700Black,
                       ),
-                      SizedBox(
-                        child: ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          leading: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              svgIcon(
-                                path: 'assets/svg_icons/location.svg',
-                                width: 21.w,
-                                height: 21.h,
-                                color: const Color.fromRGBO(71, 71, 71, 1),
-                              ),
-                              SizedBox(width: 10.w),
-                              SizedBox(
-                                height: 240.h,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      widget.branch.name!,
-                                      style: Styles.styles16w400NormalBlack,
-                                    ),
-                                    Text(
-                                      LocaleKeys
-                                          .pickup_order_details_screen_address_sample
-                                          .tr(),
-                                      style: Styles.styles12w400black,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          trailing: Container(
-                            width: 17.w,
-                            height: 17.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: const Color.fromRGBO(248, 147, 31, 1),
-                                width: 0.88.r,
+                      SizedBox(height: 10.h),
+                      Container(
+                        padding: EdgeInsets.all(15.r),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            svgIcon(
+                              path: 'assets/svg_icons/location.svg',
+                              width: 21.w,
+                              height: 21.h,
+                              color: const Color.fromRGBO(71, 71, 71, 1),
+                            ),
+                            SizedBox(width: 10.w),
+                            SizedBox(
+                              width: 240.w,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    widget.branch.name!,
+                                    style: Styles.styles16w400NormalBlack,
+                                  ),
+                                  Text(
+                                    LocaleKeys
+                                        .pickup_order_details_screen_address_sample
+                                        .tr(),
+                                    style: Styles.styles12w400black,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
                               ),
                             ),
-                            child: Align(
-                              child: Container(
-                                width: 6.38.w,
-                                height: 6.38.h,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color.fromRGBO(248, 147, 31, 1),
+                            const Spacer(),
+                            Container(
+                              width: 17.w,
+                              height: 17.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color.fromRGBO(248, 147, 31, 1),
+                                  width: 0.88.r,
+                                ),
+                              ),
+                              child: Align(
+                                child: Container(
+                                  width: 6.38.w,
+                                  height: 6.38.h,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color.fromRGBO(248, 147, 31, 1),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
                     ],
