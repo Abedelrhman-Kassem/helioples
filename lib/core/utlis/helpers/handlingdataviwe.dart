@@ -17,7 +17,7 @@ class Handlingdataviwe extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (statusrequest) {
       case Statusrequest.loading:
-        return shimmer;
+        return Center(child: shimmer);
       // case Statusrequest.noData:
       //   return Center(
       //     child: Lottie.asset(

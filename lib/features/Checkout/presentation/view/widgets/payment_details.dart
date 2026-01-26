@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/db_change_notifier.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
@@ -66,6 +68,13 @@ class _PaymentDetailsState extends State<PaymentDetails> {
         if (state is CalculateFeeSuccess) {
           deliveryFee = state.fee;
         }
+        if (state is CalculateFeeFailed) {
+          showCustomGetSnack(
+            isGreen: false,
+            text: state.error,
+            duration: const Duration(minutes: 5),
+          );
+        }
       },
       builder: (context, state) {
         return Container(
@@ -84,9 +93,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                     '${LocaleKeys.order_summary_screen_sub_total.tr()} (${dbChangeNotifier.count} ${LocaleKeys.order_summary_screen_items.tr()})',
                     style: Styles.styles14w400Black,
                   ),
-                  Text(
-                    '${dbChangeNotifier.totalPrice} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
-                    style: Styles.styles15w600NormalBlack,
+                  RichText(
+                    text: Helper.priceSpan(
+                      dbChangeNotifier.totalPrice,
+                      Styles.styles15w600NormalBlack,
+                    ),
                   ),
                 ],
               ),
@@ -98,9 +109,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                     LocaleKeys.order_summary_screen_discount.tr(),
                     style: Styles.styles14w400Black,
                   ),
-                  Text(
-                    '${dbChangeNotifier.totalDiscount} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
-                    style: Styles.styles15w600NormalBlack,
+                  RichText(
+                    text: Helper.priceSpan(
+                      dbChangeNotifier.totalDiscount,
+                      Styles.styles15w600NormalBlack,
+                    ),
                   ),
                 ],
               ),
@@ -112,9 +125,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                     LocaleKeys.order_summary_screen_promocode_discount.tr(),
                     style: Styles.styles14w400Black,
                   ),
-                  Text(
-                    '$promoCodeValue ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
-                    style: Styles.styles15w600NormalBlack,
+                  RichText(
+                    text: Helper.priceSpan(
+                      promoCodeValue,
+                      Styles.styles15w600NormalBlack,
+                    ),
                   ),
                 ],
               ),
@@ -127,9 +142,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                       LocaleKeys.order_summary_screen_delivery_fees.tr(),
                       style: Styles.styles14w400Black,
                     ),
-                    Text(
-                      '$deliveryFee ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
-                      style: Styles.styles15w600NormalBlack,
+                    RichText(
+                      text: Helper.priceSpan(
+                        deliveryFee,
+                        Styles.styles15w600NormalBlack,
+                      ),
                     ),
                   ],
                 ),

@@ -120,7 +120,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                 maxWidth: MediaQuery.of(context).size.width - 170.w,
               ),
               child: Text(
-                widget.product.description ?? '',
+                widget.product.displayDescription,
                 style: Styles.styles18w500BlackWhite,
               ),
             ),
@@ -185,34 +185,30 @@ class _ProductWidgetState extends State<ProductWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${widget.product.availableQuantity!} ${StringTranslateExtension(LocaleKeys.product_widget_pcs).tr()}',
-                  style: Styles.styles14w400NormalBlack,
-                ),
-                Text('Damfi', style: Styles.styles14w400NormalBlack),
-              ],
-            ),
+            if (widget.product.availableQuantity! > 0)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${widget.product.availableQuantity!} ${StringTranslateExtension(LocaleKeys.product_widget_pcs).tr()}',
+                    style: Styles.styles14w400NormalBlack,
+                  ),
+                  // TODO
+                  // Text('Damfi', style: Styles.styles14w400NormalBlack),
+                ],
+              ),
+            if (widget.product.availableQuantity! == 0) const SizedBox(),
             Column(
               children: [
                 RichText(
-                  text: TextSpan(
-                    text:
-                        '${widget.product.afterDiscount ?? widget.product.price}',
-                    style: Styles.styles25w900MainColor,
-                    children: [
-                      TextSpan(
-                        text:
-                            ' ${StringTranslateExtension(LocaleKeys.product_widget_egp).tr()}',
-                        style: Styles.styles25w500MainColor,
-                      ),
-                    ],
+                  text: Helper.priceSpan(
+                    widget.product.afterDiscount ?? widget.product.price!,
+                    Styles.styles25w900MainColor,
                   ),
                 ),
                 SizedBox(height: 10.h),
-                if (widget.product.afterDiscount != null)
+                if (widget.product.afterDiscount != null &&
+                    widget.product.afterDiscount != widget.product.price)
                   Row(
                     children: [
                       Container(
@@ -224,19 +220,17 @@ class _ProductWidgetState extends State<ProductWidget> {
                           borderRadius: BorderRadius.circular(20.r),
                           color: const Color.fromRGBO(254, 237, 229, 1),
                         ),
-                        //  TODO
                         child: Text(
-                          '12${StringTranslateExtension(LocaleKeys.product_widget_off).tr()}',
+                          '${Helper.calculateDiscountPercentage(widget.product.price!, widget.product.afterDiscount!)}${StringTranslateExtension(LocaleKeys.product_widget_off).tr()}',
                           style: Styles.styles12w600Gold,
                         ),
                       ),
                       SizedBox(width: 10.w),
                       Text(
-                        '${widget.product.price}',
+                        Helper.formatPrice(widget.product.price!),
                         style: Styles.styles12w600Black.copyWith(
                           decoration: TextDecoration.lineThrough,
                         ),
-                        // selectionColor: Colors.red,
                       ),
                     ],
                   ),

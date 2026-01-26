@@ -9,6 +9,7 @@ import 'package:negmt_heliopolis/core/widgets/cart_counter.dart';
 import 'package:negmt_heliopolis/core/widgets/categories_bottom_sheet.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
+import 'package:negmt_heliopolis/core/widgets/skeletonizer_loading.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 import 'package:negmt_heliopolis/features/Product/presentation/view/widgets/product_widget.dart';
 import 'package:negmt_heliopolis/features/Product/presentation/view/widgets/related_prod_loading.dart';
@@ -77,7 +78,6 @@ class _ProductScreenState extends State<ProductScreen> {
                 if (currentProduct != null)
                   Expanded(
                     child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -144,9 +144,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                   )
                 else if (state is GetProductLoading)
-                  const Expanded(
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
+                  Expanded(child: productScreenLoading()),
                 if (state is GetProductFailure)
                   Expanded(
                     child: Center(

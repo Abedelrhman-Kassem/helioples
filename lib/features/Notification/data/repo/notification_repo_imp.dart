@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/network/app_urls.dart';
+import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
 import 'package:negmt_heliopolis/features/Notification/data/repo/notification_repo.dart';
 
 class NotificationRepoImp extends NotificationRepo {
@@ -17,10 +18,16 @@ class NotificationRepoImp extends NotificationRepo {
     required String platform,
   }) async {
     try {
+      var authToken = await ServicesHelper.getLocal('token');
+      if (authToken == null) {
+        return left(ServerFailure('Token not found'));
+      }
+
       await api.post(
         endPoints: AppUrls.saveDeviceTokenUrl,
         data: {'token': token, 'platform': platform},
       );
+      await ServicesHelper.saveLocal('fcm_token', token);
       log('Device token saved successfully');
       return right(true);
     } catch (e) {
@@ -36,6 +43,7 @@ class NotificationRepoImp extends NotificationRepo {
   Future<Either<Failure, bool>> deleteDeviceToken(String token) async {
     try {
       await api.delete(endPoints: AppUrls.deleteDeviceTokenUrl(token));
+      await ServicesHelper.removeLocal('fcm_token');
       log('Device token deleted successfully');
       return right(true);
     } catch (e) {

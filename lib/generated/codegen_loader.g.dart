@@ -28,7 +28,9 @@ class CodegenLoader extends AssetLoader{
     "shop_now": "تسوق الآن",
     "permission_granted": "تم منح الإذن من قبل المستخدم",
     "permission_provisional": "تم منح إذن مؤقت من قبل المستخدم",
-    "permission_declined": "رفض المستخدم أو لم يقبل الإذن"
+    "permission_declined": "رفض المستخدم أو لم يقبل الإذن",
+    "logged_in_successfully": "تم تسجيل الدخول بنجاح",
+    "verification_code_sent": "تم ارسال كود التحقق"
   },
   "verification_screen": {
     "verify_phone_number": "تأكيد رقم الهاتف",
@@ -36,7 +38,9 @@ class CodegenLoader extends AssetLoader{
     "please_enter_code": "يرجى إدخال الرمز المرسل",
     "verify_now": "تأكيد الآن",
     "didnt_receive_code": "لم تستلم رمز التحقق؟",
-    "resend_code": "إعادة إرسال الرمز"
+    "resend_code": "إعادة إرسال الرمز",
+    "success_creating_account": "تم إنشاء الحساب بنجاح",
+    "success_verification": "تم التأكد من الرمز بنجاح"
   },
   "signup_screen": {
     "register": "تسجيل جديد",
@@ -47,7 +51,9 @@ class CodegenLoader extends AssetLoader{
     "continue": "استمرار",
     "already_have_account": "لديك حساب بالفعل؟",
     "login_now": "تسجيل الدخول الآن",
-    "please_enter_validation_code": "يرجى إدخال رمز التحقق"
+    "please_enter_validation_code": "يرجى إدخال رمز التحقق",
+    "failed_send_otp": "فشل إرسال رمز التحقق",
+    "otp_sent": "لقد أرسلنا لك رمز التحقق"
   },
   "set_location_screen": {
     "skip": "تخطي",
@@ -98,11 +104,14 @@ class CodegenLoader extends AssetLoader{
     "initial_widget": "عنصر مبدئي",
     "cart_item_cant_add_more": "لا يمكنك إضافة أكثر من {pieces} قطعة",
     "cart_item_pcs": "قطعة",
-    "cart_item_egp": "ج.م"
+    "cart_item_egp": "ج.م",
+    "update": "تحديث",
+    "ok": "موافق"
   },
   "sub_categories_screen": {
     "loading": "جاري التحميل...",
-    "No_Products_Found": "لم يتم العثور على منتجات"
+    "No_Products_Found": "لم يتم العثور على منتجات",
+    "featured": "مميز"
   },
   "home_screen_categories": "الفئات",
   "re_order_screen": {
@@ -158,7 +167,16 @@ class CodegenLoader extends AssetLoader{
     "order_items": "عناصر الطلب",
     "delivery_time": "وقت التوصيل",
     "total_price": "السعر الإجمالي",
-    "place_order": "تأكيد الطلب"
+    "place_order": "تأكيد الطلب",
+    "payment": "الدفع",
+    "cash_on_delivery": "الدفع عند الاستلام (كاش)",
+    "card_on_delivery": "الدفع عند الاستلام (بطاقة)",
+    "credit_debit_card": "بطاقة ائتمان / خصم مباشر",
+    "instant": "فوري، ",
+    "arrive_at": "يصل في",
+    "receive_at": "استلام في",
+    "schedule_pickup_time": "جدولة وقت الاستلام",
+    "please_select_address": "برجاء اختيار عنوان أو إضافة عنوان للمرة الواحدة"
   },
   "card_screen": {
     "add_payment_card": "إضافة بطاقة دفع",
@@ -211,7 +229,9 @@ class CodegenLoader extends AssetLoader{
     "help_center": "مركز المساعدة",
     "chat_with_us": "الدردشة معنا",
     "logout": "تسجيل الخروج",
-    "user_profile": "الملف الشخصي"
+    "user_profile": "الملف الشخصي",
+    "logout_now_dialog_title": "تسجيل الخروج الآن",
+    "logout_cancel": "إلغاء"
   },
   "settings_screen": {
     "app_settings": "إعدادات التطبيق",
@@ -232,7 +252,8 @@ class CodegenLoader extends AssetLoader{
     "last_name": "اسم العائلة",
     "phone_number": "رقم الهاتف",
     "birthday_date": "تاريخ الميلاد",
-    "save": "حفظ"
+    "save": "حفظ",
+    "invalid_date_format": "تنسيق التاريخ غير صحيح"
   },
   "verification_changes_screen": {
     "profile_information": "معلومات الحساب",
@@ -265,7 +286,9 @@ class CodegenLoader extends AssetLoader{
     "orders_history": "سجل الطلبات",
     "active_orders": "الطلبات النشطة",
     "completed_orders": "الطلبات المكتملة",
-    "Active": "نشط"
+    "Active": "نشط",
+    "no_orders_found": "لا توجد طلبات",
+    "canceled": "ملغى"
   },
   "report_screen": {
     "choose_image_source": "اختر مصدر الصورة",
@@ -293,6 +316,7 @@ class CodegenLoader extends AssetLoader{
   "alerts_screen": {
     "Alerts": "التنبيهات",
     "Today": "اليوم",
+    "Yesterday": "أمس",
     "Order_Confirmed_Successfully": "تم تأكيد الطلب بنجاح",
     "Lorem_ipsum": "هذا نص تجريبي يستخدم في التصميم، سيتم استبداله بمحتوى حقيقي لاحقًا."
   },
@@ -389,27 +413,11 @@ class CodegenLoader extends AssetLoader{
     "delivery_time": "٣٥ دقيقة",
     "delivery_address": "عنوان التوصيل",
     "add_address": "إضافة عنوان",
-    "done": "تم"
-  },
-  "change_information": {
-    "profile_information": "معلومات الملف الشخصي",
-    "edit_your_personal_information": "تعديل معلوماتك الشخصية",
-    "first_name": "الاسم الأول",
-    "last_name": "اسم العائلة",
-    "phone_number": "رقم الهاتف",
-    "birthday_date": "تاريخ الميلاد",
-    "save": "حفظ"
-  },
-  "verfication_changes_screen": {
-    "profile_information": "معلومات الملف الشخصي",
-    "verify_phone_number": "تأكيد رقم الهاتف",
-    "code_sent_message": "تم إرسال رمز إلى رقمك",
-    "enter_code_prompt": "يرجى إدخال الرمز المرسل",
-    "verify_now": "تحقق الآن",
-    "update_success": "تم تحديث معلومات ملفك الشخصي بنجاح",
     "done": "تم",
-    "no_code_received": "لم تستلم رمز التحقق؟",
-    "resend_code": "إعادة إرسال الرمز"
+    "please_login": "يرجى تسجيل الدخول لتحديد العنوان",
+    "tap_to_add_address": "اضغط لإضافة عنوان",
+    "no_address_found": "لم يتم العثور على عنوان",
+    "no_address": "لا يوجد عنوان"
   },
   "validation": {
     "empty_error": "لا يمكن أن يكون الحقل فارغًا",
@@ -418,6 +426,42 @@ class CodegenLoader extends AssetLoader{
     "invalid_phone": "رقم الهاتف غير صالح",
     "too_short": "يجب ألا يقل عن {min} أحرف",
     "too_long": "يجب ألا يزيد عن {max} أحرف"
+  },
+  "product_widget": {
+    "pcs": "قطعة",
+    "egp": "ج.م",
+    "off": "% خصم"
+  },
+  "alternative_container": {
+    "alternative_products": "المنتجات البديلة",
+    "alternative_description": "في حالة عدم توفر منتج أو أكثر من المنتجات المختارة، كيف يمكننا التواصل معك؟",
+    "give_me_a_call": "اتصل بي",
+    "remove_item": "إزالة المنتج"
+  },
+  "error_messages": {
+    "failed_calculate_delivery_fee": "فشل في حساب رسوم التوصيل"
+  },
+  "add_location": {
+    "address_title": "عنوان الموقع",
+    "street": "الشارع",
+    "floor": "الدور",
+    "building_number": "رقم المبنى",
+    "department": "الشقة",
+    "save_address": "حفظ العنوان",
+    "use_once": "استخدام مرة واحدة",
+    "title_required": "العنوان مطلوب",
+    "edit": "تعديل",
+    "confirm_location": "تأكيد الموقع"
+  },
+  "maintenance_screen": {
+    "server_unavailable": "الخدمة غير متوفرة",
+    "notify_me": "أبلغني عندما تعود الخدمة",
+    "default_maintenance_msg": "خوادمنا متوقفة حاليًا أو تخضع للصيانة. يرجى المحاولة مرة أخرى لاحقًا.",
+    "service_temporarily_unavailable": "الخدمة غير متوفرة مؤقتاً"
+  },
+  "connectivity": {
+    "no_internet": "الإنترنت غير متوفر الآن",
+    "connection_restored": "تم استعادة الاتصال بالإنترنت"
   }
 };
 static const Map<String,dynamic> _en = {
@@ -435,7 +479,9 @@ static const Map<String,dynamic> _en = {
     "shop_now": "Shop Now",
     "permission_granted": "User granted permission",
     "permission_provisional": "User granted provisional permission",
-    "permission_declined": "User declined or has not accepted permission"
+    "permission_declined": "User declined or has not accepted permission",
+    "logged_in_successfully": "Logged in successfully",
+    "verification_code_sent": "Verification code sent"
   },
   "verification_screen": {
     "verify_phone_number": "Verify Phone Number",
@@ -443,7 +489,9 @@ static const Map<String,dynamic> _en = {
     "please_enter_code": "Please enter the code sent",
     "verify_now": "Verify Now",
     "didnt_receive_code": "Didn’t receive verification Code?",
-    "resend_code": "Resend Code"
+    "resend_code": "Resend Code",
+    "success_creating_account": " success creating account",
+    "success_verification": "OTP verified successfully"
   },
   "signup_screen": {
     "register": "Register",
@@ -454,7 +502,9 @@ static const Map<String,dynamic> _en = {
     "continue": "Continue",
     "already_have_account": "Already Have An Account?",
     "login_now": "Login Now",
-    "please_enter_validation_code": "Please Enter Validation code"
+    "please_enter_validation_code": "Please Enter Validation code",
+    "failed_send_otp": "Failed to send OTP",
+    "otp_sent": "We have sent you a verification code"
   },
   "set_location_screen": {
     "skip": "Skip",
@@ -505,11 +555,14 @@ static const Map<String,dynamic> _en = {
     "initial_widget": "Initial Widget",
     "cart_item_cant_add_more": "You can't add more than {pieces} pieces",
     "cart_item_pcs": "Pcs",
-    "cart_item_egp": "EGP"
+    "cart_item_egp": "EGP",
+    "update": "Update",
+    "ok": "OK"
   },
   "sub_categories_screen": {
     "loading": "Loading...",
-    "No_Products_Found": "No Products Found"
+    "No_Products_Found": "No Products Found",
+    "featured": "Featured"
   },
   "re_order_screen": {
     "checkout": "Checkout",
@@ -564,7 +617,16 @@ static const Map<String,dynamic> _en = {
     "order_items": "Order Items",
     "delivery_time": "Delivery Time",
     "total_price": "Total Price",
-    "place_order": "Place Order"
+    "place_order": "Place Order",
+    "payment": "Payment",
+    "cash_on_delivery": "Cash on delivery",
+    "card_on_delivery": "Card on delivery",
+    "credit_debit_card": "Credit/Debit card",
+    "instant": "Instant, ",
+    "arrive_at": "Arrive at",
+    "receive_at": "Receive at",
+    "schedule_pickup_time": "Schedule pickup time",
+    "please_select_address": "Please select an address or add a once-use address"
   },
   "card_screen": {
     "add_payment_card": "Add Payment Card",
@@ -619,7 +681,9 @@ static const Map<String,dynamic> _en = {
     "help_center": "Help Center",
     "chat_with_us": "Chat with Us",
     "logout": "Logout",
-    "user_profile": "User Profile"
+    "user_profile": "User Profile",
+    "logout_now_dialog_title": "Logout Now",
+    "logout_cancel": "Cancel"
   },
   "settings_screen": {
     "app_settings": "App Settings",
@@ -640,7 +704,8 @@ static const Map<String,dynamic> _en = {
     "last_name": "Last Name",
     "phone_number": "Phone Number",
     "birthday_date": "Birthday Date",
-    "save": "Save"
+    "save": "Save",
+    "invalid_date_format": "Invalid date format"
   },
   "verification_changes_screen": {
     "profile_information": "Profile Information",
@@ -673,7 +738,9 @@ static const Map<String,dynamic> _en = {
     "orders_history": "Orders History",
     "active_orders": "Active Orders",
     "completed_orders": "Completed Orders",
-    "Active": "Active"
+    "Active": "Active",
+    "no_orders_found": "No Orders Found",
+    "canceled": "Canceled"
   },
   "report_screen": {
     "choose_image_source": "Choose Image Source",
@@ -701,6 +768,7 @@ static const Map<String,dynamic> _en = {
   "alerts_screen": {
     "Alerts": "Alerts",
     "Today": "Today",
+    "Yesterday": "Yesterday",
     "Order_Confirmed_Successfully": "Order Confirmed Successfully",
     "Lorem_ipsum": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   },
@@ -794,30 +862,14 @@ static const Map<String,dynamic> _en = {
   },
   "location_widget": {
     "delivery_duration": "Delivery Duration:",
-    "delivery_time": " min",
+    "delivery_time": "35 min",
     "delivery_address": "Delivery Address",
     "add_address": "Add Address",
-    "done": "Done"
-  },
-  "change_information": {
-    "profile_information": "Profile Information",
-    "edit_your_personal_information": "Edit Your Personal Information",
-    "first_name": "First Name",
-    "last_name": "Last Name",
-    "phone_number": "Phone Number",
-    "birthday_date": "Birthday Date",
-    "save": "Save"
-  },
-  "verfication_changes_screen": {
-    "profile_information": "Profile Information",
-    "verify_phone_number": "Verify Phone Number",
-    "code_sent_message": "We have sent a code to your number",
-    "enter_code_prompt": "Please enter the code sent",
-    "verify_now": "Verify Now",
-    "update_success": "Your Profile Information Updated Successfully",
     "done": "Done",
-    "no_code_received": "Didn’t receive verification code?",
-    "resend_code": "Resend Code"
+    "please_login": "Please login to set address",
+    "tap_to_add_address": "Tap to add address",
+    "no_address_found": "No Address Found",
+    "no_address": "No Address"
   },
   "validation": {
     "empty_error": "Can't be empty",
@@ -826,6 +878,42 @@ static const Map<String,dynamic> _en = {
     "invalid_phone": "Not a valid phone number",
     "too_short": "Can't be less than {min} characters",
     "too_long": "Can't be more than {max} characters"
+  },
+  "product_widget": {
+    "pcs": "Pcs",
+    "egp": "EGP",
+    "off": "% off"
+  },
+  "alternative_container": {
+    "alternative_products": "Alternative Products",
+    "alternative_description": "In case we missed one or more of chosen products, how could we reach you?",
+    "give_me_a_call": "Give me a call",
+    "remove_item": "Remove item"
+  },
+  "error_messages": {
+    "failed_calculate_delivery_fee": "Failed to calculate delivery fee"
+  },
+  "add_location": {
+    "address_title": "Address title",
+    "street": "Street",
+    "floor": "Floor",
+    "building_number": "Building number",
+    "department": "Apartment",
+    "save_address": "Save Address",
+    "use_once": "Use Once",
+    "title_required": "Title is required",
+    "edit": "Edit",
+    "confirm_location": "Confirm Location"
+  },
+  "maintenance_screen": {
+    "server_unavailable": "Server Unavailable",
+    "notify_me": "Notify me when the service is back",
+    "default_maintenance_msg": "Our servers are currently down or undergoing maintenance. Please try again later.",
+    "service_temporarily_unavailable": "Service Temporarily Unavailable"
+  },
+  "connectivity": {
+    "no_internet": "No internet connection",
+    "connection_restored": "Internet connection restored"
   }
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};

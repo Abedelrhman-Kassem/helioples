@@ -67,7 +67,9 @@ class _PickUpScreenState extends State<PickUpScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CreateOrderCubit()..getBranches(),
+      create: (context) => CreateOrderCubit()
+        ..getBranches()
+        ..checkPaymentGateway(),
       child: BlocConsumer<CreateOrderCubit, CreateOrderState>(
         listener: (context, state) async {
           CreateOrderCubit createOrderCubit = BlocProvider.of<CreateOrderCubit>(

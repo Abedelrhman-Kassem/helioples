@@ -40,6 +40,11 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
   ];
 
   List<int> previousIndexList = [0];
+  Future<void> fetchAllData() async {
+    await getConfigs();
+    await getSpecialOffers(homeScreen: true);
+    await getAllCategories(homeScreen: true, page: 1, pageSize: 10);
+  }
 
   void changeCurrentIndex(BuildContext context, int index) {
     if (selectedIndex != index) {

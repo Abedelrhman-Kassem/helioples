@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
 
 class AuthController extends GetxController {
@@ -17,8 +19,9 @@ class AuthController extends GetxController {
     isLogged.value = true;
   }
 
-  void logout() {
+  Future<void> logout() async {
     isLogged.value = false;
+    await DBHelper.deleteData(table: cartTable);
   }
 
   void setLogged(bool v) => isLogged.value = v;

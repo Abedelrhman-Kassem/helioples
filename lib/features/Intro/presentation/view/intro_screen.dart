@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/services/helpers/topic_manager.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
@@ -15,30 +16,14 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-//   Future<void> getInit() async {
-//   try {
-//     RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-//     log("Received initial message: ${initialMessage?.messageId}");
-
-//     if (initialMessage != null && navigatorKey.currentContext != null) {
-//       // Delay navigation to ensure the context is ready
-//       WidgetsBinding.instance.addPostFrameCallback((_) {
-//         Navigator.pushNamed(
-//           navigatorKey.currentContext!,
-//           homeLayout, // Replace with your desired route
-//         );
-//       });
-//     } else {
-//       log("Navigator context is not ready or no initial message.");
-//     }
-//   } catch (e) {
-//     log("Error handling initial message: $e");
-//   }
-// }
   @override
   void initState() {
-// getInit();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      TopicManager.requestPermission();
+
+      // await LocationManager.handlePermissionFlow(context);
+    });
   }
 
   @override
@@ -97,9 +82,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     offset: value,
                     child: Stack(
                       alignment: Alignment.topCenter,
-                      children: [
-                        child!,
-                      ],
+                      children: [child!],
                     ),
                   );
                 },
@@ -132,14 +115,14 @@ class _IntroScreenState extends State<IntroScreen> {
                               textAlign: TextAlign.center,
                               text: TextSpan(
                                 text: StringTranslateExtension(
-                                        LocaleKeys.intro_screen_better)
-                                    .tr(),
+                                  LocaleKeys.intro_screen_better,
+                                ).tr(),
                                 style: Styles.styles40w800NormalWhite,
                                 children: [
                                   TextSpan(
                                     text: StringTranslateExtension(
-                                            LocaleKeys.intro_screen_prices)
-                                        .tr(),
+                                      LocaleKeys.intro_screen_prices,
+                                    ).tr(),
                                     style: Styles.styles40w400NormalWhite,
                                   ),
                                   TextSpan(
@@ -148,14 +131,14 @@ class _IntroScreenState extends State<IntroScreen> {
                                   ),
                                   TextSpan(
                                     text: StringTranslateExtension(
-                                            LocaleKeys.intro_screen_faster)
-                                        .tr(),
+                                      LocaleKeys.intro_screen_faster,
+                                    ).tr(),
                                     style: Styles.styles40w400NormalWhite,
                                   ),
                                   TextSpan(
                                     text: StringTranslateExtension(
-                                            LocaleKeys.intro_screen_delivery)
-                                        .tr(),
+                                      LocaleKeys.intro_screen_delivery,
+                                    ).tr(),
                                     style: Styles.styles40w800NormalWhite,
                                   ),
                                 ],
@@ -180,9 +163,9 @@ class _IntroScreenState extends State<IntroScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      StringTranslateExtension(LocaleKeys
-                                              .intro_screen_start_shopping)
-                                          .tr(),
+                                      StringTranslateExtension(
+                                        LocaleKeys.intro_screen_start_shopping,
+                                      ).tr(),
                                       style: Styles.styles20w500NormalWhite,
                                     ),
                                     SizedBox(width: 10.w),
@@ -195,7 +178,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                         height: 24.16.h,
                                         color: Colors.white,
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -204,9 +187,10 @@ class _IntroScreenState extends State<IntroScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  StringTranslateExtension(LocaleKeys
-                                          .intro_screen_already_have_account)
-                                      .tr(),
+                                  StringTranslateExtension(
+                                    LocaleKeys
+                                        .intro_screen_already_have_account,
+                                  ).tr(),
                                   style: Styles.styles16w400White,
                                 ),
                                 TextButton(
@@ -215,8 +199,8 @@ class _IntroScreenState extends State<IntroScreen> {
                                   },
                                   child: Text(
                                     StringTranslateExtension(
-                                            LocaleKeys.intro_screen_sign_in)
-                                        .tr(),
+                                      LocaleKeys.intro_screen_sign_in,
+                                    ).tr(),
                                     style: Styles.styles16w500NormalWhite,
                                   ),
                                 ),

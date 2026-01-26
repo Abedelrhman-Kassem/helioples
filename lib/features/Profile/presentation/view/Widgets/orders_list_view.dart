@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/constants/svg_path.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/features/Profile/data/model/order_history.dart';
 import 'package:negmt_heliopolis/features/Profile/presentation/view/Widgets/get_formatted_date.dart';
@@ -165,9 +166,11 @@ class OrdersListView extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                        Text(
-                                          "${orderHistory.total!.toStringAsFixed(2)} ${LocaleKeys.comleted_order_screen_completed_order_screen_egp.tr()}",
-                                          style: Styles.styles17w700interFamily,
+                                        RichText(
+                                          text: Helper.priceSpan(
+                                            orderHistory.total!,
+                                            Styles.styles17w700interFamily,
+                                          ),
                                         ),
                                       ],
                                     ),

@@ -7,6 +7,10 @@ Future<void> changeLocal(BuildContext context, String langCode) async {
   Get.updateLocale(Locale(langCode));
 }
 
+Widget translateData(Widget column, Widget column2) {
+  return isArabic() ? column : column2;
+}
+
 String getLocale(BuildContext context) {
   return context.locale.languageCode;
 }

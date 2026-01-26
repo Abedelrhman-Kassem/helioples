@@ -178,4 +178,18 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
       emit(GetDeliveryTimeSuccess(deliveryTimeModel));
     });
   }
+
+  bool isPaymentGatewayAvailable = false;
+  void checkPaymentGateway() async {
+    emit(PaymentGatewayLoading());
+
+    Either<Failure, bool> res = await createOrderImp.checkPaymentGateway();
+
+    res.fold((failure) => emit(PaymentGatewayFailed(failure.errorMessage)), (
+      isAvailable,
+    ) {
+      isPaymentGatewayAvailable = isAvailable;
+      emit(PaymentGatewaySuccess(isAvailable));
+    });
+  }
 }

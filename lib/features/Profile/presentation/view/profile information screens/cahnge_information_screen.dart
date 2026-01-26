@@ -75,10 +75,7 @@ class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
                       }
                     }
                   } else if (state is UpdateProfileSuccess) {
-                    showCustomGetSnack(
-                      isGreen: true,
-                      text: LocaleKeys.change_information_save.tr(),
-                    );
+                    showCustomGetSnack(isGreen: true, text: state.message);
                     Navigator.of(context).pop();
                   } else if (state is UpdateProfileFailure) {
                     showCustomGetSnack(
@@ -121,7 +118,7 @@ class _CahngeInformationScreenState extends State<CahngeInformationScreen> {
       return Helper.loadingWidget();
     }
     return SignUpCustomButton(
-      buttonText: LocaleKeys.change_information_save.tr(),
+      buttonText: LocaleKeys.change_information_screen_save.tr(),
       onPressed: state is FetchProfileLoading
           ? () {}
           : () {

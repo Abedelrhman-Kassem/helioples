@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_button.dart';
 import 'package:shimmer/shimmer.dart';
@@ -12,6 +13,33 @@ import 'package:shimmer/shimmer.dart';
 import 'Loading.dart';
 
 class Helper {
+  static String formatPrice(double price, {bool showCurrency = true}) {
+    String formattedPrice = NumberFormat('#,###.00').format(price);
+    return showCurrency ? '$formattedPrice EGP' : formattedPrice;
+  }
+
+  static TextSpan priceSpan(
+    double price,
+    TextStyle style, {
+    TextStyle? currencyStyle,
+  }) {
+    String formattedPrice = NumberFormat('#,###.00').format(price);
+    return TextSpan(
+      children: [
+        TextSpan(text: formattedPrice, style: style),
+        TextSpan(
+          text: ' EGP',
+          style:
+              currencyStyle ??
+              style.copyWith(
+                fontSize: (style.fontSize ?? 14) * 0.7,
+                fontWeight: FontWeight.normal,
+              ),
+        ),
+      ],
+    );
+  }
+
   static ImageProvider loadImageProvider(String url, String assetsPath) {
     if (url.isNotEmpty) {
       bool validUrl = Uri.parse(url).isAbsolute;
@@ -305,4 +333,13 @@ class Helper {
           ),
         ),
       );
+
+  static String calculateDiscountPercentage(
+    double price,
+    double afterDiscount,
+  ) {
+    if (price == 0) return '0';
+    double discount = ((price - afterDiscount) / price) * 100;
+    return discount.round().toString();
+  }
 }

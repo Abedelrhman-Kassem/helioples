@@ -15,13 +15,17 @@ class DBHelper {
     String path = join(databasesPath, DB_Name);
     database = await openDatabase(
       path,
-      version: 2,
+      version: 3,
       onCreate: _onCreate,
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
           await db.execute("DROP TABLE IF EXISTS $cartTable");
           await db.execute("DROP TABLE IF EXISTS $searchTable");
           await _onCreate(db, newVersion);
+        } else if (oldVersion < 3) {
+          await db.execute(
+            "ALTER TABLE $searchTable ADD COLUMN $searchItemImage TEXT",
+          );
         }
       },
       onOpen: (db) {
@@ -49,7 +53,8 @@ class DBHelper {
       await db.execute('''
               CREATE TABLE $searchTable (
               $searchItemId INTEGER PRIMARY KEY,
-              $searchItemName TEXT NOT NULL UNIQUE
+              $searchItemName TEXT NOT NULL UNIQUE,
+              $searchItemImage TEXT
               )
             ''');
 

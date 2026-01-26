@@ -24,7 +24,6 @@ class VerfyAndRegisterCubit extends Cubit<VerfAndRegisterStates> {
 
   Future<void> verifyOtpAndRegister(String smsCode) async {
     emit(const VerfAndRegisterStates.verfOtpLoading());
-    log('verificationId: ${otpModel.verificationId}');
 
     final result = await verifyAndRegisterRepo.verifayCode(
       otpModel.verificationId,

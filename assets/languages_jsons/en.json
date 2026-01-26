@@ -13,7 +13,9 @@
     "shop_now": "Shop Now",
     "permission_granted": "User granted permission",
     "permission_provisional": "User granted provisional permission",
-    "permission_declined": "User declined or has not accepted permission"
+    "permission_declined": "User declined or has not accepted permission",
+    "logged_in_successfully": "Logged in successfully",
+    "verification_code_sent": "Verification code sent"
   },
   "verification_screen": {
     "verify_phone_number": "Verify Phone Number",
@@ -23,7 +25,7 @@
     "didnt_receive_code": "Didn’t receive verification Code?",
     "resend_code": "Resend Code",
     "success_creating_account": " success creating account",
-    "success_verification_creating_account": "success verification creating account"
+    "success_verification": "OTP verified successfully"
   },
   "signup_screen": {
     "register": "Register",
@@ -157,7 +159,8 @@
     "instant": "Instant, ",
     "arrive_at": "Arrive at",
     "receive_at": "Receive at",
-    "schedule_pickup_time": "Schedule pickup time"
+    "schedule_pickup_time": "Schedule pickup time",
+    "please_select_address": "Please select an address or add a once-use address"
   },
   "card_screen": {
     "add_payment_card": "Add Payment Card",
@@ -393,30 +396,14 @@
   },
   "location_widget": {
     "delivery_duration": "Delivery Duration:",
-    "delivery_time": " min",
+    "delivery_time": "35 min",
     "delivery_address": "Delivery Address",
     "add_address": "Add Address",
-    "done": "Done"
-  },
-  "change_information": {
-    "profile_information": "Profile Information",
-    "edit_your_personal_information": "Edit Your Personal Information",
-    "first_name": "First Name",
-    "last_name": "Last Name",
-    "phone_number": "Phone Number",
-    "birthday_date": "Birthday Date",
-    "save": "Save"
-  },
-  "verfication_changes_screen": {
-    "profile_information": "Profile Information",
-    "verify_phone_number": "Verify Phone Number",
-    "code_sent_message": "We have sent a code to your number",
-    "enter_code_prompt": "Please enter the code sent",
-    "verify_now": "Verify Now",
-    "update_success": "Your Profile Information Updated Successfully",
     "done": "Done",
-    "no_code_received": "Didn’t receive verification code?",
-    "resend_code": "Resend Code"
+    "please_login": "Please login to set address",
+    "tap_to_add_address": "Tap to add address",
+    "no_address_found": "No Address Found",
+    "no_address": "No Address"
   },
   "validation": {
     "empty_error": "Can't be empty",
@@ -430,5 +417,36 @@
     "pcs": "Pcs",
     "egp": "EGP",
     "off": "% off"
+  },
+  "alternative_container": {
+    "alternative_products": "Alternative Products",
+    "alternative_description": "In case we missed one or more of chosen products, how could we reach you?",
+    "give_me_a_call": "Give me a call",
+    "remove_item": "Remove item"
+  },
+  "error_messages": {
+    "failed_calculate_delivery_fee": "Failed to calculate delivery fee"
+  },
+  "add_location": {
+    "address_title": "Address title",
+    "street": "Street",
+    "floor": "Floor",
+    "building_number": "Building number",
+    "department": "Apartment",
+    "save_address": "Save Address",
+    "use_once": "Use Once",
+    "title_required": "Title is required",
+    "edit": "Edit",
+    "confirm_location": "Confirm Location"
+  },
+  "maintenance_screen": {
+    "server_unavailable": "Server Unavailable",
+    "notify_me": "Notify me when the service is back",
+    "default_maintenance_msg": "Our servers are currently down or undergoing maintenance. Please try again later.",
+    "service_temporarily_unavailable": "Service Temporarily Unavailable"
+  },
+  "connectivity": {
+    "no_internet": "No internet connection",
+    "connection_restored": "Internet connection restored"
   }
 }

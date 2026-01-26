@@ -25,7 +25,7 @@ class ExploreScreen extends StatefulWidget {
 
 class _ExploreScreenState extends State<ExploreScreen> {
   late HomeLayoutCubit homeLayoutCubit;
-  List<String> searchHistoryValues = [];
+  List<Map<String, String>> searchHistoryValues = [];
 
   @override
   void initState() {
@@ -38,12 +38,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   void getSearchHistory() {
     DBHelper.queryData(table: searchTable).then((value) {
-      searchHistoryValues = [];
-      setState(() {
-        for (var item in value) {
-          searchHistoryValues.add(item[searchItemName] as String);
-        }
-      });
+      if (mounted) {
+        setState(() {
+          searchHistoryValues = [];
+          for (var item in value) {
+            searchHistoryValues.add({
+              'name': item[searchItemName] as String,
+              'image': (item[searchItemImage] as String?) ?? '',
+            });
+          }
+        });
+      }
     });
   }
 
@@ -82,9 +87,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 ),
               ),
               titleSpacing: 0,
-              actions: [
-                SizedBox(width: 20.w),
-              ],
+              actions: [SizedBox(width: 20.w)],
               title: InkWell(
                 onTap: () async {
                   await showSearch(
@@ -123,7 +126,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
               ),
             ),
             body: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
               child: Container(
                 margin: EdgeInsets.only(top: 10.h),
                 padding: EdgeInsets.all(15.r),
@@ -165,16 +167,15 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       child: Wrap(
                         spacing: 10.w,
                         runSpacing: 10.h,
-                        children: List.generate(
-                          searchHistoryValues.length,
-                          (index) {
-                            return searchHistoryWidget(
-                              context: context,
-                              text: searchHistoryValues[index],
-                              getSearchHistory: getSearchHistory,
-                            );
-                          },
-                        ),
+                        children: List.generate(searchHistoryValues.length, (
+                          index,
+                        ) {
+                          return searchHistoryWidget(
+                            context: context,
+                            data: searchHistoryValues[index],
+                            getSearchHistory: getSearchHistory,
+                          );
+                        }),
                       ),
                     ),
                   ],

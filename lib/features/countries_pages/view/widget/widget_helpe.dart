@@ -9,20 +9,20 @@ class WidgetHelpe extends StatelessWidget {
   final String title;
   final String svgpath;
   final String titlebody;
-  final String subtitlebody;
+  final String? subtitlebody;
   final String buttontext;
   final bool showBackArrow;
 
-  final void Function() onPressed;
+  final void Function()? onPressed;
 
   const WidgetHelpe({
     super.key,
     required this.title,
     required this.svgpath,
     required this.titlebody,
-    required this.subtitlebody,
+    this.subtitlebody,
     required this.buttontext,
-    required this.onPressed,
+    this.onPressed,
     this.showBackArrow = true,
   });
 
@@ -38,15 +38,13 @@ class WidgetHelpe extends StatelessWidget {
               children: [
                 if (showBackArrow)
                   returnArrow(
-                      context: context,
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      }),
-                if (showBackArrow)
-                  SizedBox(
-                    width: 100.w,
+                    context: context,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
-                Text(title)
+                if (showBackArrow) SizedBox(width: 100.w),
+                Text(title),
               ],
             ),
             SizedBox(height: 100.h),
@@ -56,18 +54,15 @@ class WidgetHelpe extends StatelessWidget {
             SizedBox(height: 30.h),
             Text(
               titlebody,
-              style: Styles.styles24w400Black
-                  .copyWith(fontWeight: FontWeight.w800),
+              style: Styles.styles24w400Black.copyWith(
+                fontWeight: FontWeight.w800,
+              ),
             ),
-            Text(
-              subtitlebody,
-              textAlign: TextAlign.center,
-            ),
+            if (subtitlebody != null && subtitlebody!.isNotEmpty)
+              Text(subtitlebody!, textAlign: TextAlign.center),
             SizedBox(height: 40.h),
-            SignUpCustomButton(
-              buttonText: buttontext,
-              onPressed: onPressed,
-            ),
+            if (onPressed != null)
+              SignUpCustomButton(buttonText: buttontext, onPressed: onPressed),
           ],
         ),
       ),

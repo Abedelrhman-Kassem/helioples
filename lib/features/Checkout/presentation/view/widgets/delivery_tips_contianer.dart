@@ -7,6 +7,7 @@ import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/tips_widget.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
@@ -30,10 +31,10 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
   double tipsValue = 0;
 
   List<Tips> tipsList = [
-    Tips('10 EGP', 10),
-    Tips('20 EGP', 20),
-    Tips('30 EGP', 30),
-    Tips('40 EGP', 40),
+    Tips(Helper.formatPrice(10), 10),
+    Tips(Helper.formatPrice(20), 20),
+    Tips(Helper.formatPrice(30), 30),
+    Tips(Helper.formatPrice(40), 40),
   ];
 
   TextEditingController customTipsController = TextEditingController();
@@ -120,7 +121,9 @@ class _DeliveryTipsContianerState extends State<DeliveryTipsContianer> {
                 tipsWidget(
                   text: customTipsController.text.isEmpty
                       ? LocaleKeys.delivery_tips_container_custom.tr()
-                      : '${customTipsController.text} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
+                      : Helper.formatPrice(
+                          double.parse(customTipsController.text),
+                        ),
                   onTap: () {
                     isCustomTips = !isCustomTips;
                     tipsValue = customTipsController.text.isEmpty

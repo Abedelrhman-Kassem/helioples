@@ -7,6 +7,7 @@ import 'package:get/route_manager.dart';
 
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/trkey_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
@@ -31,44 +32,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // getToken() async {
-  //   String? myToken = await FirebaseMessaging.instance.getToken();
-  //   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-
-  //   log("token : $myToken");
-  // }
-
-  // myRequestPermission() async {
-  //   FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-  //   NotificationSettings settings = await messaging.requestPermission(
-  //     alert: true,
-  //     announcement: false,
-  //     badge: true,
-  //     carPlay: true,
-  //     criticalAlert: false,
-  //     provisional: false,
-  //     sound: true,
-  //   );
-
-  //   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-  //     print('User granted permission');
-  //   } else if (settings.authorizationStatus ==
-  //       AuthorizationStatus.provisional) {
-  //     print('User granted provisional permission');
-  //   } else {
-  //     print('User declined or has not accepted permission');
-  //   }
-  // }
-
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TextEditingController phoneNumberController =
-      TextEditingController(text: "01");
+  TextEditingController phoneNumberController = TextEditingController(
+    text: "01",
+  );
 
   @override
   void initState() {
-    // myRequestPermission();
-    // getToken();
     super.initState();
   }
 
@@ -98,18 +68,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SignUpAppBar(
-                      title: LocaleKeys.login_screen_login.tr(),
-                      // isEn: true,
-                      onLanguageChange: (bool value) {
-                        if (lang == 'ar') {
-                          changeLocal(context, 'en');
-                        } else {
-                          changeLocal(context, 'ar');
-                        }
-                        // setState(() {
-                        //   // isEn = value;
-                        // });
-                      }),
+                    title: LocaleKeys.login_screen_login.tr(),
+                    // isEn: true,
+                    onLanguageChange: (bool value) {
+                      if (lang == 'ar') {
+                        changeLocal(context, 'en');
+                      } else {
+                        changeLocal(context, 'ar');
+                      }
+                    },
+                  ),
                   SizedBox(height: 5.h),
                   const LogoWidget(),
                   SizedBox(height: 15.h),
@@ -119,75 +87,74 @@ class _LoginScreenState extends State<LoginScreen> {
                       labelText: LocaleKeys.login_screen_phone_number.tr(),
                     ),
                   ),
-                  SizedBox(
-                    height: 12.h,
-                  ),
+                  SizedBox(height: 12.h),
                   Center(
                     child: Text(
                       LocaleKeys.login_screen_verification_info.tr(),
-                      style: Styles.styles15w400Black
-                          .copyWith(color: const Color.fromRGBO(80, 80, 80, 1)),
+                      style: Styles.styles15w400Black.copyWith(
+                        color: const Color.fromRGBO(80, 80, 80, 1),
+                      ),
                     ),
                   ),
-                  SizedBox(
-                    height: 14.h,
-                  ),
+                  SizedBox(height: 14.h),
                   BlocProvider(
                     create: (context) => SignInCubit(
-                        (LogInRepoImp(apiService: Get.find<ApiService>()))),
+                      (LogInRepoImp(apiService: Get.find<ApiService>())),
+                    ),
                     child: BlocConsumer<SignInCubit, SignInStates>(
-                        builder: (context, state) {
-                      var cubit = BlocProvider.of<SignInCubit>(context);
+                      builder: (context, state) {
+                        var cubit = BlocProvider.of<SignInCubit>(context);
 
-                      return state.maybeWhen(
-                        orElse: () => Center(
-                          child: SignUpCustomButton(
-                            buttonText: LocaleKeys.login_screen_continue.tr(),
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                cubit.signIn(
-                                  phoneNumberController.text,
-                                );
-                              }
-                            },
+                        return state.maybeWhen(
+                          orElse: () => Center(
+                            child: SignUpCustomButton(
+                              buttonText: LocaleKeys.login_screen_continue.tr(),
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  cubit.signIn(phoneNumberController.text);
+                                }
+                              },
+                            ),
                           ),
-                        ),
-                        loading: () => const LoadingButton(
-                          height: 60,
-                          radius: 10,
-                        ),
-                      );
-                    }, listener: (context, state) {
-                      state.maybeWhen(
-                        orElse: () {},
-                        success: (LoginModel result) {
-                          showCustomGetSnack(
-                              isGreen: true, text: result.message);
+                          loading: () =>
+                              const LoadingButton(height: 60, radius: 10),
+                        );
+                      },
+                      listener: (context, state) {
+                        state.maybeWhen(
+                          orElse: () {},
+                          success: (LoginModel result) {
+                            showCustomGetSnack(
+                              isGreen: true,
+                              text: trKey(
+                                LocaleKeys.login_screen_verification_code_sent,
+                              ),
+                            );
 
-                          Navigator.of(context).pushNamed(
-                            verficationLoginScreen,
-                            arguments: {
-                              'loginModel': result,
-                            },
-                          );
-                        },
-                        failure: (String errorMessage) {
-                          showCustomGetSnack(
-                              isGreen: false, text: errorMessage);
-                        },
-                      );
-                    }),
+                            Navigator.of(context).pushNamed(
+                              verficationLoginScreen,
+                              arguments: {'loginModel': result},
+                            );
+                          },
+                          failure: (String errorMessage) {
+                            showCustomGetSnack(
+                              isGreen: false,
+                              text: errorMessage,
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
-                  SizedBox(
-                    height: 16.h,
-                  ),
+                  SizedBox(height: 16.h),
                   Center(
                     child: RichText(
                       text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                              text: LocaleKeys.login_screen_no_account.tr(),
-                              style: Styles.styles15w400Black),
+                            text: LocaleKeys.login_screen_no_account.tr(),
+                            style: Styles.styles15w400Black,
+                          ),
                           TextSpan(
                             text: LocaleKeys.login_screen_register_now.tr(),
                             style: Styles.styles15w700Gold,
@@ -200,26 +167,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 26.h,
-                  ),
+                  SizedBox(height: 26.h),
                   Center(
                     child: Text(
                       LocaleKeys.login_screen_or.tr(),
                       style: Styles.styles16w600NormalBlack,
                     ),
                   ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
+                  SizedBox(height: 10.h),
                   Center(
                     child: Container(
                       height: 52.h,
                       width: 194.w,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(43.r),
-                          border: Border.all(
-                              color: MyColors.mainColor, width: 2.5.w)),
+                        borderRadius: BorderRadius.circular(43.r),
+                        border: Border.all(
+                          color: MyColors.mainColor,
+                          width: 2.5.w,
+                        ),
+                      ),
                       child: GestureDetector(
                         onTap: () {
                           Navigator.of(context).pushNamed(homeLayout);
@@ -229,19 +195,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Text(
                               LocaleKeys.login_screen_shop_now.tr(),
-                              style: Styles.styles17w500MainColor
-                                  .copyWith(fontWeight: FontWeight.bold),
+                              style: Styles.styles17w500MainColor.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            SizedBox(
-                              width: 8.w,
-                            ),
+                            SizedBox(width: 8.w),
                             Image.asset(
-                                "assets/Icons_logos/arrow-circle-right.png")
+                              "assets/Icons_logos/arrow-circle-right.png",
+                            ),
                           ],
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -251,119 +217,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-// import 'package:flutter_bloc/flutter_bloc.dart';
-
-// class SettingsPage extends StatelessWidget {
-//   const SettingsPage({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("settings"),
-//       ),
-//       body: Center(
-//         child: Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: BlocConsumer<LocaleCubit, ChangeLocaleState>(
-//               listener: (context, state) {
-//                 Navigator.of(context).pop();
-//               },
-//               builder: (context, state) {
-//                 return DropdownButton<String>(
-//                   value: state.locale.languageCode,
-//                   icon: const Icon(Icons.keyboard_arrow_down),
-//                   items: ['ar', 'en'].map((String items) {
-//                     return DropdownMenuItem<String>(
-//                       value: items,
-//                       child: Text(items),
-//                     );
-//                   }).toList(),
-//                   onChanged: (String? newValue) {
-//                     if (newValue != null) {
-//                       context.read<LocaleCubit>().changeLanguage(newValue);
-//                     }
-//                   },
-//                 );
-//               },
-//             )),
-//       ),
-//     );
-//   }
-// }
-
-// class CustomSnackBar {
-//   static void show(BuildContext context, String message, String iconPath) {
-//     // Animation Controller
-//     final animationController = AnimationController(
-//       duration: const Duration(milliseconds: 300),
-//       vsync: Scaffold.of(context), // Ensure this uses a TickerProvider
-//     );
-
-//     final animation = Tween<Offset>(
-//       begin: const Offset(0, 1), // Start off the screen at the bottom
-//       end: Offset.zero, // Move to original position
-//     ).animate(CurvedAnimation(
-//       parent: animationController,
-//       curve: Curves.easeOut,
-//     ));
-
-//     // Create the overlay entry
-//     final overlayEntry = OverlayEntry(
-//       builder: (context) {
-//         return SlideTransition(
-//           position: animation,
-//           child: Material(
-//             color: Colors.transparent,
-//             child: Container(
-//               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//               padding: const EdgeInsets.all(16),
-//               decoration: BoxDecoration(
-//                 color: const Color.fromRGBO(213, 255, 236, 1),
-//                 borderRadius: BorderRadius.circular(60),
-//                 boxShadow: [
-//                   BoxShadow(
-//                     color: Colors.black.withOpacity(0.1),
-//                     blurRadius: 10,
-//                   ),
-//                 ],
-//               ),
-//               child: Row(
-//                 mainAxisSize: MainAxisSize.min,
-//                 children: [
-//                   Image.asset(
-//                     iconPath,
-//                     height: 24,
-//                     width: 24,
-//                   ),
-//                   const SizedBox(width: 8),
-//                   Text(
-//                     message,
-//                     style: const TextStyle(
-//                       color: Color.fromRGBO(59, 183, 126, 1),
-//                       fontSize: 13,
-//                       fontWeight: FontWeight.w400,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         );
-//       },
-//     );
-
-//     // Insert the overlay entry
-//     Overlay.of(context).insert(overlayEntry);
-//     animationController.forward();
-
-//     // Remove after delay with animation
-//     Future.delayed(const Duration(milliseconds: 5000), () {
-//       animationController.reverse().then((_) {
-//         overlayEntry.remove();
-//         animationController.dispose();
-//       });
-//     });
-//   }
-// }

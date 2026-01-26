@@ -62,7 +62,7 @@ class NotifcationService {
 
   /// Initialize all notification services
   static Future<void> initializeNotifications() async {
-    await TopicManager.requestPermission();
+    // await TopicManager.requestPermission();
 
     // Handle foreground messages
     FirebaseMessaging.onMessage.listen(_handleForegroundMessage);

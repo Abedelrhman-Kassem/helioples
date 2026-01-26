@@ -5,12 +5,12 @@ import 'package:negmt_heliopolis/features/Auth/auth_controller.dart';
 
 class Initialbinding extends Bindings {
   @override
-  void dependencies() async {
-    Get.put(AddressesControllerImpl(), permanent: true);
+  void dependencies() {
+    // Get.put(ApiService(), permanent: true);
+    // Get.put(CheckMaintenance());
     Get.put(ConnectivityController(), permanent: true);
-    // Get.lazyPut<ApiService>(() => ApiService(), fenix: true);
+    Get.put(AddressesControllerImpl(), permanent: true);
 
-    final authC = Get.put(AuthController());
-    await authC.checkAuth();
+    Get.put(AuthController()).checkAuth();
   }
 }

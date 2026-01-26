@@ -35,10 +35,16 @@ Widget itemWidget({
           overflow: TextOverflow.ellipsis,
         ),
       ),
-      const Spacer(),
-      Text(
-        (price * quantity).toStringAsFixed(2),
-        style: Styles.styles21w400NormalBlack,
+      // const Spacer(),
+      Flexible(
+        // flex: 2,
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: AlignmentDirectional.centerEnd,
+          child: RichText(
+            text: Helper.priceSpan(price * quantity, Styles.styles21w700black),
+          ),
+        ),
       ),
     ],
   );

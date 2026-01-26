@@ -9,8 +9,10 @@ Widget radioItem({
   required String iconPath,
   required String index,
   required String radioValue,
-  required Function() onTap,
+  Function()? onTap,
 }) {
+  bool isDisabled = onTap == null;
+
   return Padding(
     padding: EdgeInsets.all(8.0.r),
     child: Material(
@@ -23,13 +25,17 @@ Widget radioItem({
           // margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.h),
           decoration: BoxDecoration(
-            color: radioValue == index
+            color: isDisabled
+                ? Colors.grey.withValues(alpha: 0.1)
+                : radioValue == index
                 ? const Color.fromRGBO(248, 147, 31, 0.1)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(8.r),
             border: Border.all(
               width: 0.5,
-              color: radioValue == index
+              color: isDisabled
+                  ? Colors.grey
+                  : radioValue == index
                   ? const Color.fromRGBO(248, 147, 31, 1)
                   : const Color.fromRGBO(150, 150, 150, 1),
             ),
@@ -41,15 +47,19 @@ Widget radioItem({
                 path: 'assets/svg_icons/$iconPath.svg',
                 width: 32.12.w,
                 height: 32.12.h,
-                color: const Color.fromRGBO(41, 41, 41, 1),
+                color: isDisabled
+                    ? Colors.grey
+                    : const Color.fromRGBO(41, 41, 41, 1),
               ),
               SizedBox(width: 20.w),
               Text(
                 title,
-                style: Styles.styles15w400Black,
+                style: isDisabled
+                    ? Styles.styles15w400Black.copyWith(color: Colors.grey)
+                    : Styles.styles15w400Black,
               ),
               const Spacer(),
-              radioAnimatedWidget(radioValue == index),
+              if (!isDisabled) radioAnimatedWidget(radioValue == index),
             ],
           ),
         ),

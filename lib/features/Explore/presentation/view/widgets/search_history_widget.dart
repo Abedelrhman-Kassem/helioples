@@ -4,13 +4,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/features/Explore/presentation/view/widgets/search_delegate.dart';
 import 'package:negmt_heliopolis/features/Explore/presentation/view_model/cubit/explore_cubit.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 
 Widget searchHistoryWidget({
   required BuildContext context,
-  required String text,
+  required Map<String, String> data,
   required void Function() getSearchHistory,
 }) {
   ExploreCubit exploreCubit = BlocProvider.of<ExploreCubit>(context);
+  String text = data['name'] ?? '';
+  String image = data['image'] ?? '';
 
   return InkWell(
     onTap: () async {
@@ -22,10 +25,7 @@ Widget searchHistoryWidget({
       getSearchHistory();
     },
     child: Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 13.w,
-        vertical: 10.h,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 10.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5.r),
         border: Border.all(
@@ -33,9 +33,20 @@ Widget searchHistoryWidget({
           color: const Color.fromRGBO(170, 170, 170, 1),
         ),
       ),
-      child: Text(
-        text,
-        style: Styles.styles11w300NormalBlack,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (image.isNotEmpty) ...[
+            Helper.loadNetworkImage(
+              url: image,
+              width: 25.w,
+              imageHeight: 25.h,
+              fit: BoxFit.contain,
+            ),
+            SizedBox(width: 8.w),
+          ],
+          Text(text, style: Styles.styles11w300NormalBlack),
+        ],
       ),
     ),
   );

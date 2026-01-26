@@ -12,6 +12,7 @@ class Custtextfeld extends StatelessWidget {
   final void Function(String)? onChanged;
   final void Function()? onTap;
   final FocusNode? focusNode;
+  final TextInputType? keyboardType;
 
   const Custtextfeld({
     super.key,
@@ -25,6 +26,7 @@ class Custtextfeld extends StatelessWidget {
     this.maxLines,
     this.minLines,
     this.focusNode,
+    this.keyboardType,
   });
 
   @override
@@ -34,6 +36,7 @@ class Custtextfeld extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 50),
         child: TextFormField(
+          keyboardType: keyboardType,
           autofocus: false,
           focusNode: focusNode,
           onTap: onTap,

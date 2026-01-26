@@ -5,14 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/controller/Binding/initialbinding.dart';
+import 'package:negmt_heliopolis/controller/getx_service/check_mainte_nance.dart';
 import 'package:negmt_heliopolis/core/bloc_observer.dart';
 import 'package:negmt_heliopolis/core/utlis/cubit/main_cubit.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/app_scroll_behavior.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/routing/routes.dart';
 import 'package:negmt_heliopolis/core/utlis/services/notifcation_service.dart';
 import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
@@ -25,18 +28,14 @@ import 'package:negmt_heliopolis/core/utlis/helpers/keys_helper.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  // FirebaseApi firebaseApi = FirebaseApi();
-  // await firebaseApi.initNotification();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-
   await NotifcationService.initializeNotifications();
   await EasyLocalization.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
 
   CacheHelper.init();
   // await DBHelper.deleteDB();
-  DBHelper.init();
+  await DBHelper.init();
   // AppRouter appRouter = AppRouter();
   Bloc.observer = MyBlocObserver();
 
@@ -54,12 +53,16 @@ void main() async {
   );
   // ServicesHelper.saveLocal(
   //   'token',
-  //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImQ5ZDk4OGMyLTZkNmItNGMxNC1hZTIyLTQ3NTQ0NWEwMWQ2ZiIsImZpcnN0TmFtZSI6ImFobWVkIiwibGFzdE5hbWUiOiJtb25laW0iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9kYXRlb2ZiaXJ0aCI6IjAxLzA2LzIwMjYgMTI6MTA6NDMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9tb2JpbGVwaG9uZSI6IjAxMjAxODU1NDg1IiwiaW1hZ2UiOiJzdHJpbmciLCJleHAiOjE3OTk3ODg2MjUsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE0NSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE0NSJ9.04g8DqBAKC-ldW_OWUOMDn-Jk22CVaMVpHvVzPGwnm0',
+  //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjZlOGFmYzZiLTVhMWMtNDNkNi1iYzQ3LTZlOTg1ZjQyYjlhNyIsImZpcnN0TmFtZSI6IkgiLCJsYXN0TmFtZSI6IkgiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9kYXRlb2ZiaXJ0aCI6IjEyLzcvMjAyNSAxMjo0MDoxNlx1MjAyRlBNIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIwMTIwMTU1NTQ4NSIsImV4cCI6MTgwMDU4MzA0NCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ1In0.8Xa2fSF0glNHtZ49vQ9iDDUESyEqTKimt18ZOi7_JYo',
   // );
   // check if user is logged in
+  MaintenanceModel checkMaintenance = await Get.put(
+    CheckMaintenance(api: Get.find<ApiService>()),
+  ).checkMaintenance();
+  // checkMaintenance = MaintenanceModel(avilbal: false, massege: 'Maintenance');
   final String? token = await ServicesHelper.getLocal('token');
   final bool isLoggedIn = token != null;
-  bool serverError = false;
+  bool serverError = checkMaintenance.avilbal!;
   final appRouter = AppRouter(isLoggedIn: isLoggedIn, serverError: serverError);
   // ----------------------------------------------------------------------
 

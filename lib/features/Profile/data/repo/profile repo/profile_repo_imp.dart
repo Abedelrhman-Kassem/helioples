@@ -96,9 +96,7 @@ class ProfileRepoImp extends ProfileRepo {
   // }
 
   @override
-  Future<Either<Failure, ApiResponse<CustomerModel>>> updateProfile(
-    CustomerModel customer,
-  ) async {
+  Future<Either<Failure, String>> updateProfile(CustomerModel customer) async {
     try {
       var response = await api.put(
         endPoints: AppUrls.updateCustomer,
@@ -106,12 +104,7 @@ class ProfileRepoImp extends ProfileRepo {
       );
 
       if (response.statusCode == 200) {
-        return right(
-          ApiResponse.fromJson(
-            response.data,
-            (json) => CustomerModel.fromJson(json as Map<String, dynamic>),
-          ),
-        );
+        return right(response.data['message'] ?? 'Failed to update profile');
       } else {
         return left(
           ServerFailure(response.data['message'] ?? 'Failed to update profile'),

@@ -14,7 +14,12 @@ class ApiService {
   factory ApiService() => _instance;
 
   final Dio _dio = Dio();
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  final FlutterSecureStorage _storage = const FlutterSecureStorage(
+    aOptions: AndroidOptions(
+      encryptedSharedPreferences: true,
+      resetOnError: true,
+    ),
+  );
 
   final _defaultHeaders = {'Content-Type': 'application/json'};
 

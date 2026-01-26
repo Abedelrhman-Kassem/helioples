@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/network/app_urls.dart';
@@ -12,6 +13,7 @@ import 'package:negmt_heliopolis/features/Checkout/data/model/delivery_time_mode
 import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/promocode_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/repo/create_repo.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class CreateOrderImp extends CreateOrder {
   final ApiService apiService;
@@ -175,6 +177,26 @@ class CreateOrderImp extends CreateOrder {
       );
 
       return right((response.data['data'] as num).toDouble());
+    } catch (e) {
+      // if (e is DioException) {
+
+      //   return left(ServerFailure.fromDioError());
+      // }
+      return left(
+        ServerFailure(
+          LocaleKeys.error_messages_failed_calculate_delivery_fee.tr(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> checkPaymentGateway() async {
+    try {
+      var response = await apiService.get(
+        endpoint: AppUrls.checkPaymentGatewayUrl(),
+      );
+      return right(response['avilbal'] ?? false);
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioError(e));

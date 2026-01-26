@@ -46,10 +46,26 @@ class AvailableTime {
   factory AvailableTime.fromJson(Map<String, dynamic> json) {
     return AvailableTime(
       id: json["id"],
-      from: DateTime.tryParse(json["from"] ?? ""),
-      to: DateTime.tryParse(json["to"] ?? ""),
+      from: _parseTime(json["from"]),
+      to: _parseTime(json["to"]),
       active: json["active"],
       maxCapacity: json["maxCapacity"],
     );
+  }
+
+  /// Parses time string in format "HH:mm:ss" to DateTime
+  static DateTime? _parseTime(String? timeStr) {
+    if (timeStr == null || timeStr.isEmpty) return null;
+    try {
+      final parts = timeStr.split(':');
+      if (parts.length >= 2) {
+        final hour = int.parse(parts[0]);
+        final minute = int.parse(parts[1]);
+        final second = parts.length >= 3 ? int.parse(parts[2]) : 0;
+        // Use a fixed date, only time matters
+        return DateTime(2000, 1, 1, hour, minute, second);
+      }
+    } catch (_) {}
+    return null;
   }
 }

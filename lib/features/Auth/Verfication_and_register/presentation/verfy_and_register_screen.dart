@@ -162,7 +162,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                               showCustomGetSnack(
                                 isGreen: true,
                                 text: LocaleKeys
-                                    .verification_screen_success_verification_creating_account
+                                    .verification_screen_success_verification
                                     .tr(),
                               );
                             },

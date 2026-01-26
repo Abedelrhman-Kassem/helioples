@@ -4,6 +4,7 @@ import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/db_change_notifier.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 
 class CartContainer extends StatefulWidget {
@@ -68,9 +69,7 @@ class _CartContainerState extends State<CartContainer> {
                 SizedBox(width: 8.w),
                 Text(
                   'Go to Cart',
-                  style: Styles.styles12w500Black.copyWith(
-                    color: Colors.white,
-                  ),
+                  style: Styles.styles12w500Black.copyWith(color: Colors.white),
                 ),
                 const Spacer(),
                 RichText(
@@ -102,24 +101,13 @@ class _CartContainerState extends State<CartContainer> {
                   endIndent: 20.h,
                 ),
                 RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: '${_dbChangeNotifier.dbData.totalPrice} ',
-                        style: Styles.styles12w500Black.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'EGP',
-                        style: Styles.styles12w400black.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                    ],
+                  text: Helper.priceSpan(
+                    _dbChangeNotifier.dbData.totalPrice,
+                    Styles.styles12w500Black.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14.sp,
+                    ),
                   ),
                 ),
               ],

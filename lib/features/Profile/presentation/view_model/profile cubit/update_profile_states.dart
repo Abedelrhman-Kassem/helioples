@@ -9,8 +9,8 @@ class UpdateProfileInitial extends UpdateProfileState {}
 class UpdateProfileLoading extends UpdateProfileState {}
 
 class UpdateProfileSuccess extends UpdateProfileState {
-  final CustomerModel customer;
-  const UpdateProfileSuccess(this.customer);
+  final String message;
+  const UpdateProfileSuccess(this.message);
 }
 
 class UpdateProfileFailure extends UpdateProfileState {

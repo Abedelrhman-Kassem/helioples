@@ -8,10 +8,15 @@ import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 class CustBodyRegister extends StatelessWidget {
   final TextEditingController firstNameController;
   final TextEditingController lastNameController;
+  final FocusNode? nameFocusNode;
+  final FocusNode? lastNameFocusNode;
+
   const CustBodyRegister({
     super.key,
     required this.firstNameController,
     required this.lastNameController,
+    this.nameFocusNode,
+    this.lastNameFocusNode,
   });
 
   @override
@@ -21,26 +26,36 @@ class CustBodyRegister extends StatelessWidget {
       children: [
         Expanded(
           child: NameTextField(
+            focusNode: nameFocusNode,
             validator: (val) {
               return vlidateInPut(
-                  val: val!, min: 5, max: 30, type: ValidateInput.username);
+                val: val!,
+                min: 5,
+                max: 30,
+                type: ValidateInput.username,
+              );
             },
-            labelText:
-                StringTranslateExtension(LocaleKeys.signup_screen_first_name)
-                    .tr(),
+            labelText: StringTranslateExtension(
+              LocaleKeys.signup_screen_first_name,
+            ).tr(),
             controller: firstNameController,
           ),
         ),
         SizedBox(width: 20.w),
         Expanded(
           child: NameTextField(
+            focusNode: lastNameFocusNode,
             validator: (val) {
               return vlidateInPut(
-                  val: val!, min: 2, max: 30, type: ValidateInput.username);
+                val: val!,
+                min: 2,
+                max: 30,
+                type: ValidateInput.username,
+              );
             },
-            labelText:
-                StringTranslateExtension(LocaleKeys.signup_screen_last_name)
-                    .tr(),
+            labelText: StringTranslateExtension(
+              LocaleKeys.signup_screen_last_name,
+            ).tr(),
             controller: lastNameController,
           ),
         ),

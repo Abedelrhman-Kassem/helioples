@@ -15,19 +15,14 @@ Widget loadingWidget() {
         height: 100,
         child: Row(
           children: [
-            Image.asset(
-              'assets/screens_background/home-category.png',
-            ),
+            Image.asset('assets/screens_background/home-category.png'),
             const SizedBox(width: 30),
             const Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text('hello there'),
-                Text('hello there'),
-              ],
+              children: [Text('hello there'), Text('hello there')],
             ),
             const Spacer(),
-            const Text('4832795')
+            const Text('4832795'),
           ],
         ),
       ),

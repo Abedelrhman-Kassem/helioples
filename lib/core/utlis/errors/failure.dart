@@ -34,9 +34,26 @@ class ServerFailure extends Failure {
           }
 
           if (data is Map<String, dynamic>) {
-            return ServerFailure(
-              data['message'] ?? data['errors'] ?? 'Unexpected server response',
-            );
+            String? errorMessage;
+
+            if (data['errors'] != null && data['errors'] is Map) {
+              final Map<String, dynamic> errors = data['errors'];
+              final List<String> allErrors = [];
+              errors.forEach((key, value) {
+                if (value is List) {
+                  allErrors.addAll(value.map((e) => e.toString()));
+                } else if (value != null) {
+                  allErrors.add(value.toString());
+                }
+              });
+              if (allErrors.isNotEmpty) {
+                errorMessage = allErrors.join('. ');
+              }
+            }
+
+            errorMessage ??= data['message']?.toString();
+
+            return ServerFailure(errorMessage ?? 'Unexpected server response');
           }
 
           if (data is String) {
@@ -57,9 +74,30 @@ class ServerFailure extends Failure {
   }
 
   factory ServerFailure.fromResponse(int? statusCode, dynamic response) {
+    String? errorMessage;
+
+    if (response is Map<String, dynamic> &&
+        response['errors'] != null &&
+        response['errors'] is Map) {
+      final Map<String, dynamic> errors = response['errors'];
+      final List<String> allErrors = [];
+      errors.forEach((key, value) {
+        if (value is List) {
+          allErrors.addAll(value.map((e) => e.toString()));
+        } else if (value != null) {
+          allErrors.add(value.toString());
+        }
+      });
+      if (allErrors.isNotEmpty) {
+        errorMessage = allErrors.join('. ');
+      }
+    }
+
     switch (statusCode) {
       case 400:
-        return ServerFailure(response['message'] ?? 'Bad Request!');
+        return ServerFailure(
+          errorMessage ?? response['message'] ?? 'Bad Request!',
+        );
       case 401:
         return ServerFailure('Unauthorized!');
       case 403:

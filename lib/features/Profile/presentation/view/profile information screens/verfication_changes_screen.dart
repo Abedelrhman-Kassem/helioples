@@ -35,8 +35,9 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
   final FocusNode _focusNode2 = FocusNode();
   final FocusNode _focusNode3 = FocusNode();
   final FocusNode _focusNode4 = FocusNode();
-  final CountdownController _countdownController =
-      CountdownController(autoStart: true);
+  final CountdownController _countdownController = CountdownController(
+    autoStart: true,
+  );
 
   bool isPlaying = false;
   final confetti = ConfettiController();
@@ -91,33 +92,29 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                     Row(
                       children: [
                         returnArrow(
-                            context: context,
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            }),
-                        SizedBox(
-                          width: 65.w,
+                          context: context,
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
                         ),
+                        SizedBox(width: 65.w),
                         Text(
                           LocaleKeys
                               .verification_changes_screen_profile_information
                               .tr(),
-                          style: Styles.styles16w400grey
-                              .copyWith(color: Colors.black),
+                          style: Styles.styles16w400grey.copyWith(
+                            color: Colors.black,
+                          ),
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
+                    SizedBox(height: 20.h),
                     Text(
                       LocaleKeys.verification_changes_screen_verify_phone_number
                           .tr(),
                       style: Styles.styles25w600black,
                     ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
+                    SizedBox(height: 30.h),
                     Text(
                       "${LocaleKeys.verification_changes_screen_sent_code_to.tr()} +2${widget.phoneNumber}",
                       style: Styles.styles15w400Black,
@@ -171,102 +168,113 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                     Center(
                       child: SignUpCustomButton(
                         buttonText: LocaleKeys
-                            .verfication_changes_screen_verify_now
+                            .verification_changes_screen_verify_now
                             .tr(),
                         onPressed: () {
                           showModalBottomSheet(
-                              context: context,
-                              // shape: RoundedRectangleBorder(
-                              //   borderRadius: BorderRadius.vertical( top : Radius.circular(30.r)) ,
-                              // ),
-                              builder: (context) {
-                                confetti.play();
-                                return Stack(
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.4,
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(30.r),
-                                              topRight: Radius.circular(30.r))),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 30.h,
+                            context: context,
+                            // shape: RoundedRectangleBorder(
+                            //   borderRadius: BorderRadius.vertical( top : Radius.circular(30.r)) ,
+                            // ),
+                            builder: (context) {
+                              confetti.play();
+                              return Stack(
+                                children: [
+                                  Container(
+                                    height:
+                                        MediaQuery.of(context).size.height *
+                                        0.4,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(30.r),
+                                        topRight: Radius.circular(30.r),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 30.h),
+                                        TweenAnimationBuilder(
+                                          tween: Tween<double>(
+                                            begin: 10,
+                                            end: 150,
                                           ),
-                                          TweenAnimationBuilder(
-                                              tween: Tween<double>(
-                                                  begin: 10, end: 150),
-                                              duration: const Duration(
-                                                  milliseconds: 2500),
-                                              curve: Curves.elasticOut,
-                                              child: Center(
-                                                child: Image.asset(
-                                                    "assets/Icons_logos/Property 1=Group 13.png"),
-                                              ),
-                                              builder: (BuildContext context,
-                                                  double value, Widget? child) {
+                                          duration: const Duration(
+                                            milliseconds: 2500,
+                                          ),
+                                          curve: Curves.elasticOut,
+                                          child: Center(
+                                            child: Image.asset(
+                                              "assets/Icons_logos/Property 1=Group 13.png",
+                                            ),
+                                          ),
+                                          builder:
+                                              (
+                                                BuildContext context,
+                                                double value,
+                                                Widget? child,
+                                              ) {
                                                 return SizedBox(
                                                   width: value,
                                                   height: value,
                                                   child: child,
                                                 );
-                                              }),
-                                          const Spacer(),
-                                          Center(
-                                            child: SizedBox(
-                                              width: 340.w,
-                                              child: Text(
-                                                LocaleKeys
-                                                    .verification_changes_screen_profile_updated_success
-                                                    .tr(),
-                                                style: Styles.styles21w700black
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: const Color
-                                                            .fromRGBO(
-                                                            36, 36, 36, 1)),
-                                                textAlign: TextAlign.center,
-                                              ),
+                                              },
+                                        ),
+                                        const Spacer(),
+                                        Center(
+                                          child: SizedBox(
+                                            width: 340.w,
+                                            child: Text(
+                                              LocaleKeys
+                                                  .verification_changes_screen_profile_updated_success
+                                                  .tr(),
+                                              style: Styles.styles21w700black
+                                                  .copyWith(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: const Color.fromRGBO(
+                                                      36,
+                                                      36,
+                                                      36,
+                                                      1,
+                                                    ),
+                                                  ),
+                                              textAlign: TextAlign.center,
                                             ),
                                           ),
-                                          SizedBox(
-                                            height: 20.h,
-                                          ),
-                                          SignUpCustomButton(
-                                              buttonText: LocaleKeys
-                                                  .verfication_changes_screen_done
-                                                  .tr(),
-                                              onPressed: () {
-                                                Navigator.of(context)
-                                                    .pushNamed(homeLayout);
-                                              }),
-                                          SizedBox(
-                                            height: 20.h,
-                                          )
-                                        ],
-                                      ),
+                                        ),
+                                        SizedBox(height: 20.h),
+                                        SignUpCustomButton(
+                                          buttonText: LocaleKeys
+                                              .verification_changes_screen_done
+                                              .tr(),
+                                          onPressed: () {
+                                            Navigator.of(
+                                              context,
+                                            ).pushNamed(homeLayout);
+                                          },
+                                        ),
+                                        SizedBox(height: 20.h),
+                                      ],
                                     ),
-                                    Positioned(
-                                      right: MediaQuery.of(context).size.width *
-                                          0.5,
-                                      top: 60.h,
-                                      child: ConfettiWidget(
-                                        confettiController: confetti,
-                                        blastDirectionality:
-                                            BlastDirectionality.explosive,
-                                        numberOfParticles: 12,
-                                        gravity: 0.4,
-                                      ),
+                                  ),
+                                  Positioned(
+                                    right:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                    top: 60.h,
+                                    child: ConfettiWidget(
+                                      confettiController: confetti,
+                                      blastDirectionality:
+                                          BlastDirectionality.explosive,
+                                      numberOfParticles: 12,
+                                      gravity: 0.4,
                                     ),
-                                  ],
-                                );
-                              });
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                       ),
                     ),
@@ -278,15 +286,18 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                         build: (BuildContext context, double time) {
                           final int minutes = (time / 60).floor();
                           final int seconds = (time % 60).toInt();
-                          final String formattedMinutes =
-                              minutes.toString().padLeft(2, '0');
-                          final String formattedSeconds =
-                              seconds.toString().padLeft(2, '0');
+                          final String formattedMinutes = minutes
+                              .toString()
+                              .padLeft(2, '0');
+                          final String formattedSeconds = seconds
+                              .toString()
+                              .padLeft(2, '0');
 
                           return Text(
                             '$formattedMinutes : $formattedSeconds',
-                            style:
-                                Styles.styles12w500Black.copyWith(fontSize: 15),
+                            style: Styles.styles12w500Black.copyWith(
+                              fontSize: 15,
+                            ),
                           );
                         },
                       ),
@@ -305,7 +316,7 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                       child: GestureDetector(
                         onTap: _resendCode,
                         child: Text(
-                          LocaleKeys.verfication_changes_screen_resend_code
+                          LocaleKeys.verification_changes_screen_resend_code
                               .tr(),
                           style: Styles.styles15w700Gold,
                         ),
@@ -316,7 +327,7 @@ class _VerficationChangesScreenState extends State<VerficationChangesScreen> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

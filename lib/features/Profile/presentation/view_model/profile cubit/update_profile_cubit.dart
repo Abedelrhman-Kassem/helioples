@@ -26,7 +26,7 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
 
     result.fold(
       (failure) => emit(UpdateProfileFailure(failure.errorMessage)),
-      (response) => emit(UpdateProfileSuccess(response.data!)),
+      (response) => emit(UpdateProfileSuccess(response)),
     );
   }
 

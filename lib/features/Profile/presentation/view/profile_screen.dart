@@ -110,10 +110,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     onPressed: () async {
                       ServicesHelper.removeLocal('token');
-                      final addressesCtrl = Get.find<AddressesControllerImpl>();
-                      await addressesCtrl.fetchAddresses();
+                      await Get.find<AddressesControllerImpl>()
+                          .fetchAddresses();
+                      await authC.logout();
                       Navigator.of(context).pushReplacementNamed(homeLayout);
-                      authC.logout();
                     },
                   ),
                   CustButtonProfail(

@@ -2,8 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
+import 'package:negmt_heliopolis/core/utlis/network/app_urls.dart';
 import 'package:negmt_heliopolis/features/Explore/data/models/search_model.dart';
 import 'package:negmt_heliopolis/features/Explore/data/repo/search_repo.dart';
+import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 class SearchRepoImp extends SearchRepo {
   final ApiService apiService;
@@ -12,9 +14,10 @@ class SearchRepoImp extends SearchRepo {
   SearchRepoImp(this.apiService);
 
   @override
-  Future<Either<Failure, SearchModel>> search({
+  Future<Either<Failure, List<Products>>> search({
     required String query,
     required int page,
+    required int pageSize,
   }) async {
     SearchModel searchModel;
 
@@ -23,12 +26,16 @@ class SearchRepoImp extends SearchRepo {
 
     try {
       var res = await apiService.get(
-        endpoint: 'api/products/search?q=$query&page=$page',
+        endpoint: AppUrls.searchUrl(
+          query: query,
+          page: page,
+          pageSize: pageSize,
+        ),
         cancelToken: _cancelToken,
       );
 
       searchModel = SearchModel.fromJson(res);
-      return right(searchModel);
+      return right(searchModel.data!.items);
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioError(e));

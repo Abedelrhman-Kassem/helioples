@@ -1,3 +1,5 @@
+import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
+
 class ProductDetailsModel {
   ProductDetailsModel({
     required this.success,
@@ -87,6 +89,11 @@ class Products {
   bool? isSubscribed;
   double quantity;
   final RelatedProducts? relatedProducts;
+  //  get display name
+  String get displayName => isArabic() ? (name ?? "") : (enName ?? name ?? "");
+  // get display description
+  String get displayDescription =>
+      isArabic() ? (description ?? "") : (enDescription ?? description ?? "");
 
   factory Products.fromJson(Map<String, dynamic> json) {
     return Products(

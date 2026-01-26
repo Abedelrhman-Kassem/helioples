@@ -16,8 +16,10 @@ class SendOtpRepoImpl implements SendOtpRepo {
   Future<Either<Failure, OtpModel>> sendOtp(RegisterModel registerModel) async {
     try {
       final res = await SendOtpHelper.verifyPhone('+2${registerModel.phone}');
-      return res.fold((err) => left(ServerFailure(err)),
-          (data) => right(OtpModel(registerModel, data.verificationId)));
+      return res.fold(
+        (err) => left(ServerFailure(err)),
+        (data) => right(OtpModel(registerModel, data.verificationId)),
+      );
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
@@ -29,16 +31,14 @@ class SendOtpRepoImpl implements SendOtpRepo {
 
   @override
   Future<Either<Failure, ApiResponse>> checkUser(
-      RegisterModel registerModel) async {
+    RegisterModel registerModel,
+  ) async {
     try {
       final res = await apiService.post(
         endPoints: AppUrls.check,
         data: {'phone': registerModel.phone},
       );
-      return right(ApiResponse.fromJson(
-        res.data,
-        (raw) {},
-      ));
+      return right(ApiResponse.fromJson(res.data, (raw) {}));
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioError(e));

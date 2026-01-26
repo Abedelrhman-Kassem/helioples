@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +9,6 @@ import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
-import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 import 'package:negmt_heliopolis/features/Explore/presentation/view_model/cubit/explore_cubit.dart';
 import 'package:negmt_heliopolis/core/widgets/skeletonizer_loading.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
@@ -27,30 +28,21 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   InputDecorationTheme? get searchFieldDecorationTheme => InputDecorationTheme(
-        fillColor: const Color.fromRGBO(239, 239, 239, 1),
-        filled: true,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(33.r),
-          borderSide: const BorderSide(
-            color: Colors.transparent,
-            width: 1.0,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(33.r),
-          borderSide: const BorderSide(
-            color: Colors.transparent,
-            width: 1.0,
-          ),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(33.r),
-          borderSide: const BorderSide(
-            color: Colors.transparent,
-            width: 1.0,
-          ),
-        ),
-      );
+    fillColor: const Color.fromRGBO(239, 239, 239, 1),
+    filled: true,
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(33.r),
+      borderSide: const BorderSide(color: Colors.transparent, width: 1.0),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(33.r),
+      borderSide: const BorderSide(color: Colors.transparent, width: 1.0),
+    ),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(33.r),
+      borderSide: const BorderSide(color: Colors.transparent, width: 1.0),
+    ),
+  );
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -70,7 +62,8 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     ScrollController scrollController = ScrollController();
-    int page = 0;
+    int page = 1;
+    int pageSize = 10;
     bool isLoading = false;
     bool endFetching = false;
 
@@ -81,7 +74,7 @@ class CustomSearchDelegate extends SearchDelegate {
 
       if (scrollController.position.pixels >=
           (scrollController.position.maxScrollExtent - 300)) {
-        exploreCubit.search(query, page);
+        exploreCubit.search(query, page, pageSize);
       }
     }
 
@@ -89,15 +82,7 @@ class CustomSearchDelegate extends SearchDelegate {
 
     List<Products> products = [];
     if (query.trim().length > 2) {
-      exploreCubit.search(query, page);
-      exploreCubit.insertSearchDbData(query.trim());
-    }
-
-    @override
-    dispose() {
-      scrollController.removeListener(getPages);
-      scrollController.dispose();
-      super.dispose();
+      exploreCubit.search(query, page, pageSize);
     }
 
     return BlocProvider.value(
@@ -113,10 +98,10 @@ class CustomSearchDelegate extends SearchDelegate {
           }
 
           if (state is ExploreSuccess) {
-            if (state.searchModel.products!.isEmpty) {
+            if (state.products.isEmpty) {
               endFetching = true;
             } else {
-              products.addAll(state.searchModel.products!);
+              products.addAll(state.products);
               page++;
             }
           }
@@ -124,7 +109,6 @@ class CustomSearchDelegate extends SearchDelegate {
         builder: (context, state) {
           return SingleChildScrollView(
             controller: scrollController,
-            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 if (state is ExploreLoading && products.isEmpty)
@@ -141,14 +125,20 @@ class CustomSearchDelegate extends SearchDelegate {
                     itemCount: products.length,
                     gridDelegate:
                         const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 150,
-                      crossAxisSpacing: 7,
-                      mainAxisSpacing: 10,
-                      mainAxisExtent: 220,
-                    ),
+                          maxCrossAxisExtent: 150,
+                          crossAxisSpacing: 7,
+                          mainAxisSpacing: 10,
+                          mainAxisExtent: 220,
+                        ),
                     itemBuilder: (context, index) => ItemWidget(
                       key: ValueKey(products[index].id),
                       relatedProductsModel: products[index],
+                      onTap: () {
+                        exploreCubit.insertSearchDbData(
+                          name: products[index].name!,
+                          image: products[index].thumbnailImage,
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -168,7 +158,7 @@ class CustomSearchDelegate extends SearchDelegate {
 
     List<Products> products = [];
     if (query.trim().length > 2) {
-      exploreCubit.search(query, 0);
+      exploreCubit.search(query, 1, 10);
     }
 
     return BlocProvider.value(
@@ -176,10 +166,31 @@ class CustomSearchDelegate extends SearchDelegate {
       child: BlocConsumer<ExploreCubit, ExploreState>(
         listener: (context, state) {
           if (state is ExploreSuccess) {
-            products = state.searchModel.products!;
+            products = state.products;
           }
         },
         builder: (context, state) {
+          if (state is ExploreLoading) {
+            return Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 10.h,
+                    horizontal: 20.w,
+                  ),
+                  margin: EdgeInsets.symmetric(vertical: 10.h),
+                  width: double.infinity,
+                  color: const Color.fromRGBO(239, 239, 239, 1),
+                  child: Text(
+                    LocaleKeys.search_delegate_all_suggestions.tr(),
+                    style: Styles.styles12w400black,
+                  ),
+                ),
+                Expanded(child: listProductsLoading(10)),
+              ],
+            );
+          }
+
           return Column(
             children: [
               InkWell(
@@ -191,9 +202,7 @@ class CustomSearchDelegate extends SearchDelegate {
                     vertical: 10.h,
                     horizontal: 20.w,
                   ),
-                  margin: EdgeInsets.symmetric(
-                    vertical: 10.h,
-                  ),
+                  margin: EdgeInsets.symmetric(vertical: 10.h),
                   width: double.infinity,
                   color: const Color.fromRGBO(239, 239, 239, 1),
                   child: Text(
@@ -206,21 +215,24 @@ class CustomSearchDelegate extends SearchDelegate {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: products.length,
                     itemBuilder: (context, index) => InkWell(
                       key: ValueKey(products[index].id),
                       onTap: () {
-                        Navigator.pushNamed(context, productScreen, arguments: {
-                          'productId': products[index].id,
-                        });
+                        exploreCubit.insertSearchDbData(
+                          name: products[index].name!,
+                          image: products[index].thumbnailImage,
+                        );
+                        Navigator.pushNamed(
+                          context,
+                          productScreen,
+                          arguments: {'productId': products[index].id},
+                        );
                       },
                       child: Container(
                         height: 40.h,
-                        margin: EdgeInsets.symmetric(
-                          vertical: 10.h,
-                        ),
+                        margin: EdgeInsets.symmetric(vertical: 10.h),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [

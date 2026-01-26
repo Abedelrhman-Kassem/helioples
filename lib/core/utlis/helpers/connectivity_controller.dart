@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/utlis/services/checkinternet.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class ConnectivityController extends GetxController {
   final RxBool isOnline = true.obs;
@@ -12,8 +15,10 @@ class ConnectivityController extends GetxController {
   void onInit() {
     super.onInit();
 
-    _timer =
-        Timer.periodic(const Duration(seconds: 5), (_) => _checkAndUpdate());
+    _timer = Timer.periodic(
+      const Duration(seconds: 5),
+      (_) => _checkAndUpdate(),
+    );
   }
 
   Future<void> _checkAndUpdate() async {
@@ -29,17 +34,29 @@ class ConnectivityController extends GetxController {
       if (!_snackShown) {
         _snackShown = true;
         showCustomGetSnack(
-            isGreen: false,
-            duration: const Duration(minutes: 10),
-            text: 'الإنترنت غير متوفر الآن');
+          isGreen: false,
+          duration: const Duration(minutes: 10),
+          text: StringTranslateExtension(
+            LocaleKeys.connectivity_no_internet,
+          ).tr(),
+        );
       }
     } else {
       if (_snackShown) {
         if (Get.isSnackbarOpen) {
-          Get.back();
+          try {
+            Get.back();
+          } catch (e) {
+            debugPrint('Error closing connectivity snackbar: $e');
+          }
         }
         _snackShown = false;
-        showCustomGetSnack(isGreen: true, text: 'تم استعادة الاتصال بالإنترنت');
+        showCustomGetSnack(
+          isGreen: true,
+          text: StringTranslateExtension(
+            LocaleKeys.connectivity_connection_restored,
+          ).tr(),
+        );
       }
     }
   }

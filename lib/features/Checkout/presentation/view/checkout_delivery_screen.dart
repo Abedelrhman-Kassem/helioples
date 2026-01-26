@@ -62,7 +62,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CreateOrderCubit(),
+      create: (context) => CreateOrderCubit()..checkPaymentGateway(),
       child: BlocConsumer<CreateOrderCubit, CreateOrderState>(
         listener: (context, state) async {
           if (state is CreateOrderSuccess) {
@@ -283,9 +283,17 @@ class _CheckOutBottomSheetState extends State<CheckOutBottomSheet> {
                       LocaleKeys.cart_modal_total_price.tr(),
                       style: Styles.styles18w500BlackWhite,
                     ),
-                    Text(
-                      '$totalPrice ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
-                      style: Styles.styles18w800Black,
+                    Flexible(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: RichText(
+                          text: Helper.priceSpan(
+                            totalPrice,
+                            Styles.styles18w800Black,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -299,6 +307,18 @@ class _CheckOutBottomSheetState extends State<CheckOutBottomSheet> {
                     borderRadius: BorderRadius.circular(36.77.r),
                     splashColor: MyColors.mainColor,
                     onTap: () {
+                      if (widget.createOrderModel.isDelivery &&
+                          widget.createOrderModel.addressId == null &&
+                          widget.createOrderModel.useOnceAddress == null) {
+                        showCustomGetSnack(
+                          isGreen: false,
+                          text: LocaleKeys
+                              .checkout_delivery_screen_please_select_address
+                              .tr(),
+                        );
+                        return;
+                      }
+
                       log(
                         widget.createOrderModel.isDelivery
                             ? widget.createOrderModel

@@ -80,3 +80,15 @@ final class CalculateFeeFailed extends CreateOrderState {
   String error;
   CalculateFeeFailed(this.error);
 }
+
+final class PaymentGatewayLoading extends CreateOrderState {}
+
+final class PaymentGatewaySuccess extends CreateOrderState {
+  bool isAvailable;
+  PaymentGatewaySuccess(this.isAvailable);
+}
+
+final class PaymentGatewayFailed extends CreateOrderState {
+  String error;
+  PaymentGatewayFailed(this.error);
+}

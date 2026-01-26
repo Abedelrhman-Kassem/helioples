@@ -1,10 +1,11 @@
 import 'dart:developer';
-
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/controller/map/addresse_controller.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/trkey_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
@@ -56,7 +57,7 @@ class LocationWidgetWithGetX extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(context, signInScreen);
             },
-            locationStr: "Please login to set address",
+            locationStr: trKey(LocaleKeys.location_widget_please_login),
             isErorr: controller.errorMessage!,
           );
         } else if (controller.address == null) {
@@ -69,8 +70,8 @@ class LocationWidgetWithGetX extends StatelessWidget {
                 builder: (context) => const AddressModalBottomSheet(),
               );
             },
-            locationStr: "Tap to add address",
-            isErorr: "No Address Found",
+            locationStr: trKey(LocaleKeys.location_widget_tap_to_add_address),
+            isErorr: trKey(LocaleKeys.location_widget_no_address_found),
             showIcon: false,
           );
         } else {
@@ -82,7 +83,9 @@ class LocationWidgetWithGetX extends StatelessWidget {
                 builder: (context) => const AddressModalBottomSheet(),
               );
             },
-            locationStr: controller.address?.locationStr ?? 'No Address',
+            locationStr:
+                controller.address?.locationStr ??
+                trKey(LocaleKeys.location_widget_no_address),
             street: controller.address?.street ?? '',
           );
         }
@@ -113,9 +116,12 @@ class AddressModalBottomSheet extends GetView<AddressesControllerImpl> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Delivery Address', style: Styles.styles17w700Black),
+                  Text(
+                    trKey(LocaleKeys.location_widget_delivery_address),
+                    style: Styles.styles17w700Black,
+                  ),
                   addWidget(
-                    text: 'Add Address',
+                    text: trKey(LocaleKeys.location_widget_add_address),
                     onTap: () {
                       // Get.toNamed(setLocationScreen);
                       Navigator.pushNamed(context, addAddressScreen);
@@ -166,7 +172,10 @@ class AddressModalBottomSheet extends GetView<AddressesControllerImpl> {
                 color: MyColors.mainColor,
                 padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
                 borderRadius: 53.r,
-                child: Text('Done', style: Styles.styles17w600White),
+                child: Text(
+                  trKey(LocaleKeys.location_widget_done),
+                  style: Styles.styles17w600White,
+                ),
                 onTap: () async {
                   await controller.setChossenAddress(
                     controller.addressId ?? '',
@@ -203,7 +212,9 @@ class CustWidgetaddress extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+
       child: Container(
+        alignment: Alignment.center,
         width: 375.w,
         padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 49.w),
         decoration: BoxDecoration(
@@ -212,9 +223,12 @@ class CustWidgetaddress extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(20.r)),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             isErorr != null
                 ? RichText(
+                    textAlign: TextAlign.center,
                     text: TextSpan(
                       text: '$isErorr ',
                       style: Styles.styles12w400Gold,
@@ -230,19 +244,23 @@ class CustWidgetaddress extends StatelessWidget {
                         height: 18,
                         color: MyColors.mainColor,
                       ),
-                      RichText(
-                        text: TextSpan(
-                          text: 'Delivery Duration:',
-                          style: Styles.styles13w300interFamily,
-                          children: [
-                            TextSpan(
-                              text: '35 min',
-                              style: Styles.styles13w400interFamily,
-                            ),
-                          ],
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      // RichText(
+                      //   text: TextSpan(
+                      //     text: trKey(
+                      //       LocaleKeys.location_widget_delivery_duration,
+                      //     ),
+                      //     style: Styles.styles13w300interFamily,
+                      //     children: [
+                      //       TextSpan(
+                      //         text: trKey(
+                      //           LocaleKeys.location_widget_delivery_time,
+                      //         ),
+                      //         style: Styles.styles13w400interFamily,
+                      //       ),
+                      //     ],
+                      //   ),
+                      //   overflow: TextOverflow.ellipsis,
+                      // ),
                     ],
                   ),
             SizedBox(height: 4.h),
@@ -276,7 +294,7 @@ class CustWidgetaddress extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: 250.w,
+                        // width: 250.w,
                         child: RichText(
                           text: TextSpan(
                             text: locationStr ?? '',
@@ -294,7 +312,7 @@ class CustWidgetaddress extends StatelessWidget {
                       SizedBox(width: 4.w),
                       svgIcon(
                         path: 'assets/svg_icons/arrow-bottom.svg',
-                        width: 13.w,
+                        width: 10.w,
                         height: 6.h,
                         color: const Color.fromRGBO(115, 115, 115, 1),
                       ),

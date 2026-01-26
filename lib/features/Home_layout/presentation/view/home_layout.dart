@@ -24,10 +24,7 @@ class _HomeLayoutState extends State<HomeLayout> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeLayoutCubit()
-        ..getAllCategories(homeScreen: true, page: 1, pageSize: 20)
-        ..getConfigs()
-        ..getSpecialOffers(homeScreen: true),
+      create: (context) => HomeLayoutCubit()..fetchAllData(),
       child: BlocConsumer<HomeLayoutCubit, HomeLayoutState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -48,13 +45,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                 color: MyColors.mainColor,
                 backgroundColor: Colors.transparent,
                 onRefresh: () async {
-                  homeLayoutCubit.getAllCategories(
-                    homeScreen: true,
-                    page: 1,
-                    pageSize: 20,
-                  );
-                  homeLayoutCubit.getConfigs();
-                  homeLayoutCubit.getSpecialOffers(homeScreen: true);
+                  homeLayoutCubit.fetchAllData();
                   Get.find<AddressesControllerImpl>().fetchAddresses();
                 },
                 child: PageTransitionSwitcher(

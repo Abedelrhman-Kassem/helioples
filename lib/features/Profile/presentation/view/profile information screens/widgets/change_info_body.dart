@@ -47,14 +47,16 @@ class ChangeInfoBody extends StatelessWidget {
                 ),
                 SizedBox(width: 70.w),
                 Text(
-                  LocaleKeys.change_information_profile_information.tr(),
+                  LocaleKeys.change_information_screen_profile_information.tr(),
                   style: Styles.styles16w400grey.copyWith(color: Colors.black),
                 ),
               ],
             ),
             SizedBox(height: 20.h),
             Text(
-              LocaleKeys.change_information_edit_your_personal_information.tr(),
+              LocaleKeys
+                  .change_information_screen_edit_your_personal_information
+                  .tr(),
               style: Styles.styles25w600black,
             ),
             SizedBox(height: 30.h),
@@ -64,7 +66,8 @@ class ChangeInfoBody extends StatelessWidget {
                 Expanded(
                   child: NameTextField(
                     isPassword: false,
-                    labelText: LocaleKeys.change_information_first_name.tr(),
+                    labelText: LocaleKeys.change_information_screen_first_name
+                        .tr(),
                     controller: firstNameController,
                     isEnabled: !isLoading,
                   ),
@@ -73,7 +76,8 @@ class ChangeInfoBody extends StatelessWidget {
                 Expanded(
                   child: NameTextField(
                     isPassword: false,
-                    labelText: LocaleKeys.change_information_last_name.tr(),
+                    labelText: LocaleKeys.change_information_screen_last_name
+                        .tr(),
                     controller: lastNameController,
                     isEnabled: !isLoading,
                   ),
@@ -85,7 +89,7 @@ class ChangeInfoBody extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 10.w),
               child: Text(
-                LocaleKeys.change_information_birthday_date.tr(),
+                LocaleKeys.change_information_screen_birthday_date.tr(),
                 style: Styles.styles14w400NormalBlack,
               ),
             ),

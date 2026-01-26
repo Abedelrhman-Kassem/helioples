@@ -15,6 +15,7 @@ import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_mode
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/cancel_order_bottom_sheet.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/shipping_details_container.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view/widgets/item_widget.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class CheckoutDetailsScreen extends StatefulWidget {
@@ -454,9 +455,11 @@ Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
               '${LocaleKeys.checkout_details_screen_sub_total.tr()} (${dbChangeNotifier.dbData.count} ${LocaleKeys.checkout_details_screen_items.tr()})',
               style: Styles.styles14w400Black,
             ),
-            Text(
-              '${order.data!.subTotal!.toStringAsFixed(2)} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
-              style: Styles.styles15w600NormalBlack,
+            RichText(
+              text: Helper.priceSpan(
+                order.data!.subTotal!,
+                Styles.styles15w600NormalBlack,
+              ),
             ),
           ],
         ),
@@ -468,9 +471,11 @@ Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
               LocaleKeys.checkout_details_screen_promocode_discount.tr(),
               style: Styles.styles14w400Black,
             ),
-            Text(
-              '${order.data!.promoCodeDiscount!.toStringAsFixed(2)} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
-              style: Styles.styles15w600NormalBlack,
+            RichText(
+              text: Helper.priceSpan(
+                order.data!.promoCodeDiscount!,
+                Styles.styles15w600NormalBlack,
+              ),
             ),
           ],
         ),
@@ -482,9 +487,11 @@ Widget paymentDetails(BuildContext context, OrderDetailsModel order) {
               LocaleKeys.checkout_details_screen_delivery_fees.tr(),
               style: Styles.styles14w400Black,
             ),
-            Text(
-              '${order.data!.deliveryFees} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
-              style: Styles.styles15w600NormalBlack,
+            RichText(
+              text: Helper.priceSpan(
+                order.data!.deliveryFees ?? 0,
+                Styles.styles15w600NormalBlack,
+              ),
             ),
           ],
         ),
@@ -518,9 +525,17 @@ Widget bottomSheet(BuildContext context, OrderDetailsModel order) {
                 LocaleKeys.checkout_details_screen_total_price.tr(),
                 style: Styles.styles18w500BlackWhite,
               ),
-              Text(
-                '${order.data!.total!.toStringAsFixed(2)} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
-                style: Styles.styles18w800Black,
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: RichText(
+                    text: Helper.priceSpan(
+                      order.data!.total!,
+                      Styles.styles18w800Black,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

@@ -15,8 +15,9 @@ class SignInCubit extends Cubit<SignInStates> {
   Future<void> signIn(String phone) async {
     emit(const SignInStates.loading());
     Either<Failure, LoginModel> result = await signInRepo.signIn(phone);
-    result.fold((failure) => emit(SignInStates.failure(failure.errorMessage)),
-        (status) {
+    result.fold((failure) => emit(SignInStates.failure(failure.errorMessage)), (
+      status,
+    ) {
       // loginModel = status;
 
       emit(SignInStates.success(status));

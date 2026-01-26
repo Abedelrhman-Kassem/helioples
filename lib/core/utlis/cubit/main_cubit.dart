@@ -29,7 +29,7 @@ class MainCubit extends Cubit<MainState> {
   GetAddressessImp getAddressessImp = GetAddressessImp(ApiService());
 
   HomeScreenRepoImp homeScreenImp = HomeScreenRepoImp(
-    apiService: Get.put(ApiService(), permanent: true),
+    apiService: Get.find<ApiService>(),
   );
 
   bool loadingCategories = false;

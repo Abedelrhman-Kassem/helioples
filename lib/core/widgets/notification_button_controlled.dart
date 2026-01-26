@@ -26,7 +26,7 @@ class NotificationButtonControlledState
   late final AnimationController _controller;
   late final Animation<double> _offsetAnim;
 
-  final double moveDistance = 20.0;
+  final double moveDistance = 15.0;
   final SubscriptionNotifier _subscriptionNotifier = SubscriptionNotifier();
 
   @override
@@ -106,8 +106,8 @@ class NotificationButtonControlledState
                 path: !filled
                     ? 'assets/svg_icons/notification2.svg'
                     : 'assets/svg_icons/notification3.svg',
-                width: !filled ? 31 : 35,
-                height: !filled ? 31 : 35,
+                width: !filled ? 35 : 40,
+                height: !filled ? 35 : 40,
                 color: MyColors.mainColor,
               ),
             ),

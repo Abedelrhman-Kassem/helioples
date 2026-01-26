@@ -108,7 +108,7 @@ class _MapScreenState extends State<MapScreen> {
                             ),
                             TextButton(
                               onPressed: () {
-                                // Handle skip action
+                                Navigator.of(context).pop();
                               },
                               child: Text(
                                 StringTranslateExtension(
@@ -234,8 +234,10 @@ class _MapScreenState extends State<MapScreen> {
                           SizedBox(height: 16.h),
                           Center(
                             child: SignUpCustomButton(
-                              buttonText: "Confirm Location",
-                              onPressed: () async {
+                              buttonText: StringTranslateExtension(
+                                LocaleKeys.add_location_confirm_location,
+                              ).tr(),
+                              onPressed: () {
                                 blurDilog(
                                   Addlocattion(
                                     latLngg: getxcontroller.latLng,

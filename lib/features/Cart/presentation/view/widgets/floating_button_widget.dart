@@ -3,6 +3,7 @@ import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/db_change_notifier.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/boxshadow.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
@@ -59,9 +60,11 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
                     '${LocaleKeys.cart_modal_sub_total.tr()} (${_dbChangeNotifier.dbData.count} ${LocaleKeys.cart_modal_items.tr()})',
                     style: Styles.styles14w400NormalWhite,
                   ),
-                  Text(
-                    '${_dbChangeNotifier.dbData.totalPrice} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
-                    style: Styles.styles15w600NormalWhite,
+                  RichText(
+                    text: Helper.priceSpan(
+                      _dbChangeNotifier.dbData.totalPrice,
+                      Styles.styles15w600NormalWhite,
+                    ),
                   ),
                 ],
               ),
@@ -73,9 +76,11 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
                     LocaleKeys.cart_modal_discount.tr(),
                     style: Styles.styles14w400NormalWhite,
                   ),
-                  Text(
-                    '${_dbChangeNotifier.dbData.totalDiscount} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
-                    style: Styles.styles15w600NormalWhite,
+                  RichText(
+                    text: Helper.priceSpan(
+                      _dbChangeNotifier.dbData.totalDiscount,
+                      Styles.styles15w600NormalWhite,
+                    ),
                   ),
                 ],
               ),
@@ -92,9 +97,12 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
                     LocaleKeys.cart_modal_total_price.tr(),
                     style: Styles.styles14w400NormalWhite,
                   ),
-                  Text(
-                    '${_dbChangeNotifier.dbData.totalPrice - _dbChangeNotifier.dbData.totalDiscount} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
-                    style: Styles.styles18w800NormalWhite,
+                  RichText(
+                    text: Helper.priceSpan(
+                      _dbChangeNotifier.dbData.totalPrice -
+                          _dbChangeNotifier.dbData.totalDiscount,
+                      Styles.styles18w800NormalWhite,
+                    ),
                   ),
                 ],
               ),
@@ -117,9 +125,7 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
                   decoration: BoxDecoration(
                     color: const Color.fromRGBO(255, 255, 255, 1),
                     borderRadius: BorderRadius.circular(36.77.r),
-                    boxShadow: [
-                      MyBoxShadows.checkOutBoxShadow,
-                    ],
+                    boxShadow: [MyBoxShadows.checkOutBoxShadow],
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -137,8 +143,10 @@ class _FloatingButtonWidgetState extends State<FloatingButtonWidget> {
                           style: Styles.styles17w700MainColor,
                           children: [
                             TextSpan(
-                              text:
-                                  '${_dbChangeNotifier.dbData.totalPrice - _dbChangeNotifier.dbData.totalDiscount} ${LocaleKeys.cart_screen_cart_item_egp.tr()}',
+                              text: Helper.formatPrice(
+                                _dbChangeNotifier.dbData.totalPrice -
+                                    _dbChangeNotifier.dbData.totalDiscount,
+                              ),
                               style: Styles.styles17w700MainColor,
                             ),
                           ],

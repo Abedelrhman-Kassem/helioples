@@ -146,4 +146,16 @@ class AppUrls {
 
   //                        IssueReport
   static String issueReportUrl() => '$_baseUrl/IssueReport';
+
+  static String checkMaintenanceUrl() => '$_baseUrl/AppStatus';
+  static String checkPaymentGatewayUrl() =>
+      '$_baseUrl/AppStatus/payment-gateway';
+
+  //                         Search
+  static String searchUrl({
+    required String query,
+    required int page,
+    required int pageSize,
+  }) =>
+      'http://192.168.100.143:5000/api/v1/Search/products?query=$query&page=$page&pageSize=$pageSize';
 }

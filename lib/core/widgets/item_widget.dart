@@ -17,12 +17,14 @@ class ItemWidget extends StatefulWidget {
   final Color? color;
   final Products relatedProductsModel;
   final String? heroTagPrefix;
+  final void Function()? onTap;
 
   const ItemWidget({
     super.key,
     this.color,
     required this.relatedProductsModel,
     this.heroTagPrefix,
+    this.onTap,
   });
 
   @override
@@ -38,11 +40,11 @@ class _ItemWidgetState extends State<ItemWidget> {
 
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(
-          context,
-          productScreen,
-          arguments: {'productId': product.id, 'product': product},
-        );
+        // Navigator.pushNamed(
+        //   context,
+        //   productScreen,
+        //   arguments: {'productId': product.id, 'product': product},
+        // );
       },
       child: Container(
         width: 120,
@@ -59,14 +61,29 @@ class _ItemWidgetState extends State<ItemWidget> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  Hero(
-                    tag: widget.heroTagPrefix != null
-                        ? "${widget.heroTagPrefix}${product.id}"
-                        : product.id!,
-                    child: Helper.loadNetworkImage(
-                      imageHeight: 150.h,
-                      url: product.thumbnailImage ?? '',
-                      fit: BoxFit.contain,
+                  InkWell(
+                    onTap: () {
+                      if (widget.onTap != null) {
+                        widget.onTap!();
+                      }
+                      Navigator.pushNamed(
+                        context,
+                        productScreen,
+                        arguments: {
+                          'productId': product.id,
+                          'product': product,
+                        },
+                      );
+                    },
+                    child: Hero(
+                      tag: widget.heroTagPrefix != null
+                          ? "${widget.heroTagPrefix}${product.id}"
+                          : product.id!,
+                      child: Helper.loadNetworkImage(
+                        imageHeight: 150.h,
+                        url: product.thumbnailImage ?? '',
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                   Positioned.directional(
@@ -101,27 +118,27 @@ class _ItemWidgetState extends State<ItemWidget> {
                                 );
                                 if (product.isSubscribed == true) {
                                   // Unsubscribe
-                                  await notificationRepo.unsubscribe(
-                                    eventType: '6',
-                                    targetId: product.id!,
-                                  );
                                   product.isSubscribed = false;
                                   SubscriptionNotifier().triggerNotification(
                                     product.id!,
                                     false,
                                   );
+                                  await notificationRepo.unsubscribe(
+                                    eventType: '6',
+                                    targetId: product.id!,
+                                  );
                                 } else {
                                   // Subscribe
+                                  product.isSubscribed = true;
+                                  SubscriptionNotifier().triggerNotification(
+                                    product.id!,
+                                    true,
+                                  );
                                   await notificationRepo.subscribe(
                                     eventType: "6",
                                     targetType: 'Product',
                                     targetId: product.id!,
                                     route: 'Product',
-                                  );
-                                  product.isSubscribed = true;
-                                  SubscriptionNotifier().triggerNotification(
-                                    product.id!,
-                                    true,
                                   );
                                 }
                               },
@@ -174,31 +191,25 @@ class _ItemWidgetState extends State<ItemWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  constraints: const BoxConstraints(maxWidth: 74),
-                  child: RichText(
-                    text: TextSpan(
-                      text: product.price!.toStringAsFixed(2),
-                      style: Styles.styles16w800interFamily.copyWith(
-                        fontSize: 17.sp,
+                Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: AlignmentDirectional.centerStart,
+                    child: RichText(
+                      text: Helper.priceSpan(
+                        product.afterDiscount ?? product.price!,
+                        Styles.styles16w800interFamily.copyWith(
+                          fontSize: 17.sp,
+                        ),
                       ),
-                      // children: [
-                      //   TextSpan(
-                      //     text:
-                      //         '.${((product.price! - product.price!.toInt()) * 100).round()}',
-                      //     style: Styles.styles9w300interFamily.copyWith(
-                      //       fontSize: 9,
-                      //     ),
-                      //   ),
-                      // ],
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                if (product.discount != 0)
+                if (product.price != product.afterDiscount)
                   Expanded(
                     child: discountWidget(
-                      discount: '${product.price!}',
+                      discount: Helper.formatPrice(product.price!),
                       alignBottom: 6,
                       color: const Color.fromRGBO(204, 42, 40, 1),
                       textStyle: const TextStyle(
@@ -211,10 +222,11 @@ class _ItemWidgetState extends State<ItemWidget> {
                   ),
               ],
             ),
+
             SizedBox(
               height: 50.h,
               child: Text(
-                product.name!,
+                product.displayName,
                 style: Styles.styles10w300interFamily.copyWith(fontSize: 13),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -312,17 +324,6 @@ Widget _statusItem(String status) {
 //                       maxWidth: 74,
 //                     ),
 //                     child: RichText(
-//                       text: TextSpan(
-//                         text:
-//                             '${product.afterDiscount ?? product.price!.toInt()}',
-//                         style: Styles.styles16w800interFamily
-//                             .copyWith(fontSize: 16),
-//                         children: [
-//                           TextSpan(
-//                             text:
-//                                 '.${((product.price! - product.price!.toInt()) * 100).round()}',
-//                             style: Styles.styles9w300interFamily
-//                                 .copyWith(fontSize: 9),
 //                           ),
 //                         ],
 //                       ),

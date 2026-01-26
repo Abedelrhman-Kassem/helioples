@@ -33,10 +33,13 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController firstNameController = .new();
   final TextEditingController lastNameController = .new();
-  final TextEditingController phoneNumberController = .new();
+  final TextEditingController phoneNumberController = .new(text: "01");
   final TextEditingController birthdayDateController = .new();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  FocusNode nameFocusNode = FocusNode();
+  FocusNode lastNameFocusNode = FocusNode();
+  FocusNode phoneFocusNode = FocusNode();
 
   @override
   void dispose() {
@@ -86,6 +89,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     const LogoWidget(),
                     SizedBox(height: 15.h),
                     CustBodyRegister(
+                      nameFocusNode: nameFocusNode,
+                      lastNameFocusNode: lastNameFocusNode,
                       firstNameController: firstNameController,
                       lastNameController: lastNameController,
                     ),
@@ -101,6 +106,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     SizedBox(height: 10.h),
                     PhoneNumberWidget(
+                      phoneFocusNode: phoneFocusNode,
                       phoneNumberController: phoneNumberController,
                     ),
                     SizedBox(height: 15.h),
@@ -147,6 +153,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                           .toIso8601String(),
                                     );
                                     cubit.checkUser(registerModel);
+                                    nameFocusNode.unfocus();
+                                    lastNameFocusNode.unfocus();
+                                    phoneFocusNode.unfocus();
                                   }
                                 },
                               ),

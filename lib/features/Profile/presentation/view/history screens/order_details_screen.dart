@@ -262,38 +262,67 @@ class OrderDetailsScreen extends StatelessWidget {
                                         title: LocaleKeys
                                             .order_details_screen_sub_total
                                             .tr(),
-                                        value:
-                                            "\$${orderDetails.data!.subTotal}",
+                                        value: "",
+                                        trailing: RichText(
+                                          text: Helper.priceSpan(
+                                            orderDetails.data!.subTotal!,
+                                            Styles.styles16w500Black36,
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 8.h),
                                       InvoiceItem(
                                         title: LocaleKeys
                                             .order_details_screen_vat
                                             .tr(),
-                                        value: "\$${orderDetails.data!.vat}",
+                                        value: "",
+                                        trailing: RichText(
+                                          text: Helper.priceSpan(
+                                            orderDetails.data!.vat!,
+                                            Styles.styles16w500Black36,
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 8.h),
                                       InvoiceItem(
                                         title: LocaleKeys
                                             .order_details_screen_delivery_fees
                                             .tr(),
-                                        value:
-                                            "\$${orderDetails.data!.deliveryFees}",
+                                        value: "",
+                                        trailing: RichText(
+                                          text: Helper.priceSpan(
+                                            orderDetails.data!.deliveryFees!,
+                                            Styles.styles16w500Black36,
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 8.h),
                                       InvoiceItem(
                                         title: LocaleKeys
                                             .order_details_screen_promocode_discount
                                             .tr(),
-                                        value:
-                                            "\$${orderDetails.data!.promoCodeDiscount}",
+                                        value: "",
+                                        trailing: RichText(
+                                          text: Helper.priceSpan(
+                                            orderDetails
+                                                .data!
+                                                .promoCodeDiscount!,
+                                            Styles.styles16w500Black36,
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 8.h),
                                       InvoiceItem(
                                         title: LocaleKeys
                                             .order_details_screen_wallet
                                             .tr(),
-                                        value: "\$12.00",
+                                        value: "",
+                                        trailing: RichText(
+                                          text: Helper.priceSpan(
+                                            0,
+                                            Styles.styles16w500Black36,
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 8.h),
                                       const DottedLine(
@@ -307,7 +336,13 @@ class OrderDetailsScreen extends StatelessWidget {
                                         title: LocaleKeys
                                             .order_details_screen_total
                                             .tr(),
-                                        value: "\$${orderDetails.data!.total}",
+                                        value: "",
+                                        trailing: RichText(
+                                          text: Helper.priceSpan(
+                                            orderDetails.data!.total!,
+                                            Styles.styles17w700interFamily,
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),

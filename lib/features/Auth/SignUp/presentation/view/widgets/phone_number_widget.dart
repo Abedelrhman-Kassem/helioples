@@ -6,7 +6,12 @@ import 'package:negmt_heliopolis/features/Auth/Login/presentation/view/widgets/e
 
 class PhoneNumberWidget extends StatelessWidget {
   final TextEditingController phoneNumberController;
-  const PhoneNumberWidget({super.key, required this.phoneNumberController});
+  final FocusNode? phoneFocusNode;
+  const PhoneNumberWidget({
+    super.key,
+    required this.phoneNumberController,
+    this.phoneFocusNode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +21,14 @@ class PhoneNumberWidget extends StatelessWidget {
         SizedBox(width: 10.w),
         Expanded(
           child: TextFormField(
+            focusNode: phoneFocusNode,
             validator: (value) {
               return vlidateInPut(
-                  val: value!,
-                  min: 11,
-                  max: 11,
-                  type: ValidateInput.phoneNumber);
+                val: value!,
+                min: 11,
+                max: 11,
+                type: ValidateInput.phoneNumber,
+              );
             },
             controller: phoneNumberController,
             keyboardType: TextInputType.number,
@@ -49,8 +56,10 @@ class PhoneNumberWidget extends StatelessWidget {
                   width: 1.5,
                 ),
               ),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 14.h,
+              ),
             ),
             style: Styles.styles17w500NormalBlack,
           ),

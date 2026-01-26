@@ -59,6 +59,7 @@ const String cartItemDiscount = 'discount';
 const String searchTable = 'searchItems';
 const String searchItemId = 'id';
 const String searchItemName = 'name';
+const String searchItemImage = 'image';
 
 // countries pages
 const String profileEmptyScreen = '/profile_empty_screen';

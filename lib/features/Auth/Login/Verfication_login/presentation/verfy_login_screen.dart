@@ -18,9 +18,7 @@ import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class VerfyLoginScreen extends StatefulWidget {
-  const VerfyLoginScreen({
-    super.key,
-  });
+  const VerfyLoginScreen({super.key});
 
   @override
   State<VerfyLoginScreen> createState() => _VerificationScreenState();
@@ -35,145 +33,156 @@ class _VerificationScreenState extends State<VerfyLoginScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          const Positioned.fill(
-            child: BackgroundImage(),
-          ),
+          const Positioned.fill(child: BackgroundImage()),
           Padding(
             padding: EdgeInsets.only(top: 60.h),
             child: SingleChildScrollView(
-              child: Builder(builder: (context) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+              child: Builder(
+                builder: (context) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SignUpAppBar(
+                              title: "",
+                              isEn: isEn,
+                              onLanguageChange: (bool value) {
+                                setState(() {
+                                  isEn = value;
+                                });
+                              },
+                            ),
+                            SizedBox(height: 5.h),
+                            const LogoWidget(),
+                            SizedBox(height: 15.h),
+                            Text(
+                              StringTranslateExtension(
+                                LocaleKeys
+                                    .verification_screen_verify_phone_number,
+                              ).tr(),
+                              style: Styles.styles25w600Black,
+                            ),
+                            SizedBox(height: 15.h),
+                            Text(
+                              StringTranslateExtension(
+                                LocaleKeys
+                                    .verification_changes_screen_sent_code_to,
+                              ).tr(
+                                namedArgs: {
+                                  'phoneNumber':
+                                      cubit.loginModel?.phoneNumber ?? '',
+                                },
+                              ),
+                              style: Styles.styles15w400Black,
+                            ),
+                            Text(
+                              StringTranslateExtension(
+                                LocaleKeys
+                                    .verification_screen_please_enter_code,
+                              ).tr(),
+                              style: Styles.styles15w400Black,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20.h),
+                      Column(
                         children: [
-                          SignUpAppBar(
-                            title: "",
-                            isEn: isEn,
-                            onLanguageChange: (bool value) {
-                              setState(() {
-                                isEn = value;
-                              });
-                            },
-                          ),
-                          SizedBox(height: 5.h),
-                          const LogoWidget(),
-                          SizedBox(height: 15.h),
-                          Text(
-                            StringTranslateExtension(LocaleKeys
-                                    .verification_screen_verify_phone_number)
-                                .tr(),
-                            style: Styles.styles25w600Black,
-                          ),
-                          SizedBox(height: 15.h),
-                          Text(
-                            StringTranslateExtension(LocaleKeys
-                                    .verification_changes_screen_sent_code_to)
-                                .tr(namedArgs: {
-                              'phoneNumber': cubit.loginModel?.phoneNumber ?? ''
-                            }),
-                            style: Styles.styles15w400Black,
-                          ),
-                          Text(
-                            StringTranslateExtension(LocaleKeys
-                                    .verification_screen_please_enter_code)
-                                .tr(),
-                            style: Styles.styles15w400Black,
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                SizedBox(width: 5.w),
+                                BlocBuilder<VerfyLoginCubit, VerfyLoginStates>(
+                                  builder: (context, state) {
+                                    final cubit = context
+                                        .read<VerfyLoginCubit>();
+                                    return OtpTextField(
+                                      // key: ValueKey(cubit.clearText), // <- مهم: يجبر إعادة الإنشاء
+                                      clearText: cubit.clearText,
+                                      fieldWidth: 80.w,
+                                      fieldHeight: 50.h,
+                                      filled: true,
+                                      enabledBorderColor: Colors.grey.shade300,
+                                      focusedBorderColor: MyColors.mainColor,
+                                      fillColor: Colors.grey.shade100,
+                                      borderRadius: BorderRadius.circular(35.r),
+                                      numberOfFields: 6,
+                                      borderColor: Colors.grey,
+                                      showFieldAsBox: true,
+                                      onCodeChanged: (String code) {},
+                                      onSubmit: (String verificationCode) {
+                                        cubit.verifyOtpAndLogin(
+                                          verificationCode,
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(height: 20.h),
-                    Column(
-                      children: [
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 5.w,
-                              ),
-                              BlocBuilder<VerfyLoginCubit, VerfyLoginStates>(
-                                builder: (context, state) {
-                                  final cubit = context.read<VerfyLoginCubit>();
-                                  return OtpTextField(
-                                    // key: ValueKey(cubit.clearText), // <- مهم: يجبر إعادة الإنشاء
-                                    clearText: cubit.clearText,
-                                    fieldWidth: 90.w,
-                                    fieldHeight: 60.h,
-                                    filled: true,
-                                    enabledBorderColor: Colors.grey.shade300,
-                                    focusedBorderColor: MyColors.mainColor,
-                                    fillColor: Colors.grey.shade100,
-                                    borderRadius: BorderRadius.circular(35.r),
-                                    numberOfFields: 6,
-                                    borderColor: Colors.grey,
-                                    showFieldAsBox: true,
-                                    onCodeChanged: (String code) {},
-                                    onSubmit: (String verificationCode) {
-                                      cubit.verifyOtpAndLogin(verificationCode);
-                                    },
-                                  );
-                                },
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20.h),
-                    BlocConsumer<VerfyLoginCubit, VerfyLoginStates>(
-                      listener: (context, state) {
-                        state.maybeWhen(
-                          failure: (errorMessage) {
-                            showCustomGetSnack(
+                      SizedBox(height: 20.h),
+                      BlocConsumer<VerfyLoginCubit, VerfyLoginStates>(
+                        listener: (context, state) {
+                          state.maybeWhen(
+                            failure: (errorMessage) {
+                              showCustomGetSnack(
                                 duration: const Duration(minutes: 10),
                                 isGreen: false,
-                                text: errorMessage);
-                          },
-                          success: (result) {
-                            showCustomGetSnack(
-                                isGreen: true, text: "we send you a new code");
-                            Navigator.pushNamedAndRemoveUntil(
-                              context,
-                              homeLayout,
-                              (route) => false,
-                            );
-                          },
-                          orElse: () {},
-                        );
-                      },
-                      builder: (context, state) {
-                        return state.maybeWhen(
-                          loading: () => const LoadingButton(
-                            height: 60,
-                            radius: 10,
-                          ),
-                          orElse: () => Center(
-                            child: SignUpCustomButton(
-                              buttonText: StringTranslateExtension(
-                                LocaleKeys.verification_screen_verify_now,
-                              ).tr(),
-                              onPressed: () {
-                                // cubit.verifyOtpAndLogin(smsCode)
-                              },
+                                text: errorMessage,
+                              );
+                            },
+                            success: (result) {
+                              showCustomGetSnack(
+                                isGreen: true,
+                                text: LocaleKeys
+                                    .login_screen_logged_in_successfully
+                                    .tr(),
+                              );
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                homeLayout,
+                                (route) => false,
+                              );
+                            },
+                            orElse: () {},
+                          );
+                        },
+                        builder: (context, state) {
+                          return state.maybeWhen(
+                            loading: () =>
+                                const LoadingButton(height: 60, radius: 10),
+                            orElse: () => Center(
+                              child: SignUpCustomButton(
+                                buttonText: StringTranslateExtension(
+                                  LocaleKeys.verification_screen_verify_now,
+                                ).tr(),
+                                onPressed: () {
+                                  // cubit.verifyOtpAndLogin(smsCode)
+                                },
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    SizedBox(
+                          );
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      SizedBox(
                         height: 200.h,
                         width: 400.w,
-                        child: const TimerResendLogin()),
-                    SizedBox(height: 280.h),
-                  ],
-                );
-              }),
+                        child: const TimerResendLogin(),
+                      ),
+                      SizedBox(height: 280.h),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ],

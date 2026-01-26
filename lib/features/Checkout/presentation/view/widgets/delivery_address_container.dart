@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +13,7 @@ import 'package:negmt_heliopolis/core/widgets/delivery_address_widget.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/Checkout/presentation/view_model/create_order_cubit/create_order_cubit.dart';
 import 'package:negmt_heliopolis/features/maps/model/address_model.dart';
+import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
 class DeliveryAddressContainer extends StatefulWidget {
   final CreateOrderModel createOrderModel;
@@ -22,7 +26,7 @@ class DeliveryAddressContainer extends StatefulWidget {
 }
 
 class _DeliveryAddressContainerState extends State<DeliveryAddressContainer> {
-  late AddressModel addressModel;
+  AddressModel? addressModel;
   late AddressesControllerImpl addressesControllerImpl;
   bool isUsOne = false;
 
@@ -31,9 +35,18 @@ class _DeliveryAddressContainerState extends State<DeliveryAddressContainer> {
   @override
   void initState() {
     addressesControllerImpl = Get.find<AddressesControllerImpl>();
-    addressModel = addressesControllerImpl.mainAddressModel!;
-    widget.createOrderModel.addressId = addressesControllerImpl.address!.id!;
+    // if (addressesControllerImpl.mainAddressModel == addressModel) {
+    //   log("not equal");
+    // }
+    addressModel = addressesControllerImpl.mainAddressModel;
+    if (addressesControllerImpl.address?.id != null) {
+      widget.createOrderModel.addressId = addressesControllerImpl.address!.id!;
+    }
     super.initState();
+
+    // if (addressesControllerImpl.mainAddressModel == addressModel) {
+    //   log("gggggggggggggggggggggggg-----------0");
+    // }
   }
 
   @override
@@ -41,9 +54,11 @@ class _DeliveryAddressContainerState extends State<DeliveryAddressContainer> {
     super.didChangeDependencies();
     if (_isFirstBuild) {
       _isFirstBuild = false;
-      context.read<CreateOrderCubit>().calculateFee(
-        addressId: widget.createOrderModel.addressId,
-      );
+      if (widget.createOrderModel.addressId?.isNotEmpty ?? false) {
+        context.read<CreateOrderCubit>().calculateFee(
+          addressId: widget.createOrderModel.addressId,
+        );
+      }
     }
   }
 
@@ -63,19 +78,35 @@ class _DeliveryAddressContainerState extends State<DeliveryAddressContainer> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Delivery Address', style: Styles.styles17w700Black),
+                  Text(
+                    StringTranslateExtension(
+                      LocaleKeys.location_widget_delivery_address,
+                    ).tr(),
+                    style: Styles.styles17w700Black,
+                  ),
                   addWidget(
-                    text: 'Add Address',
+                    text: StringTranslateExtension(
+                      LocaleKeys.location_widget_add_address,
+                    ).tr(),
                     onTap: () async {
                       final result = await Navigator.pushNamed(
                         context,
                         addAddressScreen,
                         arguments: {'isUsOne': true},
                       );
+                      if (addressesControllerImpl.mainAddressModel !=
+                          addressModel) {
+                        setState(() {
+                          addressModel =
+                              addressesControllerImpl.mainAddressModel;
+                        });
+                      }
                       if (result != null && result is UseOnceAddress) {
                         setState(() {
                           isUsOne = true;
                           addressesControllerImpl.usOneAddress = result;
+                          widget.createOrderModel.useOnceAddress = result;
+                          widget.createOrderModel.addressId = null;
                           context.read<CreateOrderCubit>().calculateFee(
                             lat: result.latitude,
                             long: result.longitude,
@@ -99,33 +130,37 @@ class _DeliveryAddressContainerState extends State<DeliveryAddressContainer> {
                         setState(() {
                           isUsOne = false;
                           addressesControllerImpl.usOneAddress = null;
-                          widget.createOrderModel.addressId =
-                              addressesControllerImpl.address!.id!;
-                          context.read<CreateOrderCubit>().calculateFee(
-                            addressId: widget.createOrderModel.addressId,
-                          );
+                          widget.createOrderModel.useOnceAddress = null;
+                          if (addressesControllerImpl.address?.id != null) {
+                            widget.createOrderModel.addressId =
+                                addressesControllerImpl.address!.id!;
+                            context.read<CreateOrderCubit>().calculateFee(
+                              addressId: widget.createOrderModel.addressId,
+                            );
+                          }
                         });
                       },
                     )
                   : ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: addressModel.address.length,
+                      itemCount: addressModel?.address.length ?? 0,
                       itemBuilder: (context, index) => deliveryAddressWidget(
-                        title: addressModel.address[index].locationStr!,
-                        location: addressModel.address[index].street!,
+                        title: addressModel!.address[index].locationStr ?? '',
+                        location: addressModel!.address[index].street ?? '',
                         isChossen:
-                            addressesControllerImpl.address!.id ==
-                            addressModel.address[index].id,
+                            addressesControllerImpl.address?.id ==
+                            addressModel!.address[index].id,
                         onTap: () {
                           setState(() {
                             addressesControllerImpl.address =
-                                addressModel.address[index];
+                                addressModel!.address[index];
                             addressesControllerImpl.setChossenAddress(
                               addressesControllerImpl.address!.id!,
                             );
                             widget.createOrderModel.addressId =
                                 addressesControllerImpl.address!.id!;
+                            widget.createOrderModel.useOnceAddress = null;
                             context.read<CreateOrderCubit>().calculateFee(
                               addressId: widget.createOrderModel.addressId,
                             );

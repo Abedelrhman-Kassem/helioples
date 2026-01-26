@@ -39,7 +39,7 @@ class VerifyAndRegisterRepoImp extends VerifyAndRegisterRepo {
         endPoints: AppUrls.register,
         data: registerModel.toJson(),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return right(
           ApiResponse.fromJson(
             response.data,

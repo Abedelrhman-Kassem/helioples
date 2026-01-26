@@ -10,10 +10,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 class ModalBottomSheet extends StatefulWidget {
   final int items;
-  const ModalBottomSheet({
-    super.key,
-    required this.items,
-  });
+  const ModalBottomSheet({super.key, required this.items});
 
   @override
   State<ModalBottomSheet> createState() => _ModalBottomSheetState();
@@ -55,7 +52,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                       height: 27.52.h,
                       color: const Color.fromRGBO(93, 92, 100, 1),
                     ),
-                  )
+                  ),
                 ],
               ),
               SizedBox(height: 10.h),
@@ -75,26 +72,21 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                 iconPath: 'subway_bag',
                 index: 'OnBranch',
                 radioValue: paymentType,
-                onTap: () {
-                  setState(() {
-                    paymentType = 'OnBranch';
-                  });
-                },
+                // onTap:
+                //  () {
+                //   setState(() {
+                //     paymentType = 'OnBranch';
+                //   });
+                // },
               ),
               SizedBox(height: 10.h),
               InkWell(
                 borderRadius: BorderRadius.circular(36.77.r),
                 onTap: () {
                   if ('onDelivery' == paymentType) {
-                    Navigator.pushNamed(
-                      context,
-                      checkoutScreen,
-                    );
+                    Navigator.pushNamed(context, checkoutScreen);
                   } else {
-                    Navigator.pushNamed(
-                      context,
-                      pickUpScreen,
-                    );
+                    Navigator.pushNamed(context, pickUpScreen);
                   }
                 },
                 child: Container(
@@ -103,10 +95,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(36.77.r),
-                    border: Border.all(
-                      color: MyColors.mainColor,
-                      width: 2,
-                    ),
+                    border: Border.all(color: MyColors.mainColor, width: 2),
                   ),
                   child: Text(
                     LocaleKeys.cart_modal_continue.tr(),

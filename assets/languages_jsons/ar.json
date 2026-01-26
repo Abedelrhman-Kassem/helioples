@@ -12,7 +12,9 @@
     "shop_now": "تسوق الآن",
     "permission_granted": "تم منح الإذن من قبل المستخدم",
     "permission_provisional": "تم منح إذن مؤقت من قبل المستخدم",
-    "permission_declined": "رفض المستخدم أو لم يقبل الإذن"
+    "permission_declined": "رفض المستخدم أو لم يقبل الإذن",
+    "logged_in_successfully": "تم تسجيل الدخول بنجاح",
+    "verification_code_sent": "تم ارسال كود التحقق"
   },
   "verification_screen": {
     "verify_phone_number": "تأكيد رقم الهاتف",
@@ -22,7 +24,7 @@
     "didnt_receive_code": "لم تستلم رمز التحقق؟",
     "resend_code": "إعادة إرسال الرمز",
     "success_creating_account": "تم إنشاء الحساب بنجاح",
-    "success_verification_creating_account": "تم تأكيد الحساب وإنشاؤه بنجاح"
+    "success_verification": "تم التأكد من الرمز بنجاح"
   },
   "signup_screen": {
     "register": "تسجيل جديد",
@@ -157,7 +159,8 @@
     "instant": "فوري، ",
     "arrive_at": "يصل في",
     "receive_at": "استلام في",
-    "schedule_pickup_time": "جدولة وقت الاستلام"
+    "schedule_pickup_time": "جدولة وقت الاستلام",
+    "please_select_address": "برجاء اختيار عنوان أو إضافة عنوان للمرة الواحدة"
   },
   "card_screen": {
     "add_payment_card": "إضافة بطاقة دفع",
@@ -394,27 +397,11 @@
     "delivery_time": "٣٥ دقيقة",
     "delivery_address": "عنوان التوصيل",
     "add_address": "إضافة عنوان",
-    "done": "تم"
-  },
-  "change_information": {
-    "profile_information": "معلومات الملف الشخصي",
-    "edit_your_personal_information": "تعديل معلوماتك الشخصية",
-    "first_name": "الاسم الأول",
-    "last_name": "اسم العائلة",
-    "phone_number": "رقم الهاتف",
-    "birthday_date": "تاريخ الميلاد",
-    "save": "حفظ"
-  },
-  "verfication_changes_screen": {
-    "profile_information": "معلومات الملف الشخصي",
-    "verify_phone_number": "تأكيد رقم الهاتف",
-    "code_sent_message": "تم إرسال رمز إلى رقمك",
-    "enter_code_prompt": "يرجى إدخال الرمز المرسل",
-    "verify_now": "تحقق الآن",
-    "update_success": "تم تحديث معلومات ملفك الشخصي بنجاح",
     "done": "تم",
-    "no_code_received": "لم تستلم رمز التحقق؟",
-    "resend_code": "إعادة إرسال الرمز"
+    "please_login": "يرجى تسجيل الدخول لتحديد العنوان",
+    "tap_to_add_address": "اضغط لإضافة عنوان",
+    "no_address_found": "لم يتم العثور على عنوان",
+    "no_address": "لا يوجد عنوان"
   },
   "validation": {
     "empty_error": "لا يمكن أن يكون الحقل فارغًا",
@@ -428,5 +415,36 @@
     "pcs": "قطعة",
     "egp": "ج.م",
     "off": "% خصم"
+  },
+  "alternative_container": {
+    "alternative_products": "المنتجات البديلة",
+    "alternative_description": "في حالة عدم توفر منتج أو أكثر من المنتجات المختارة، كيف يمكننا التواصل معك؟",
+    "give_me_a_call": "اتصل بي",
+    "remove_item": "إزالة المنتج"
+  },
+  "error_messages": {
+    "failed_calculate_delivery_fee": "فشل في حساب رسوم التوصيل"
+  },
+  "add_location": {
+    "address_title": "عنوان الموقع",
+    "street": "الشارع",
+    "floor": "الدور",
+    "building_number": "رقم المبنى",
+    "department": "الشقة",
+    "save_address": "حفظ العنوان",
+    "use_once": "استخدام مرة واحدة",
+    "title_required": "العنوان مطلوب",
+    "edit": "تعديل",
+    "confirm_location": "تأكيد الموقع"
+  },
+  "maintenance_screen": {
+    "server_unavailable": "الخدمة غير متوفرة",
+    "notify_me": "أبلغني عندما تعود الخدمة",
+    "default_maintenance_msg": "خوادمنا متوقفة حاليًا أو تخضع للصيانة. يرجى المحاولة مرة أخرى لاحقًا.",
+    "service_temporarily_unavailable": "الخدمة غير متوفرة مؤقتاً"
+  },
+  "connectivity": {
+    "no_internet": "الإنترنت غير متوفر الآن",
+    "connection_restored": "تم استعادة الاتصال بالإنترنت"
   }
 }

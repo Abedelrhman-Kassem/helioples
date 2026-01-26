@@ -28,4 +28,5 @@ abstract class CreateOrder {
     double? lat,
     double? long,
   });
+  Future<Either<Failure, bool>> checkPaymentGateway();
 }

@@ -95,8 +95,20 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Text(
-                    '${product.availableQuantity} ${LocaleKeys.cart_screen_cart_item_pcs.tr()} (${product.price} ${LocaleKeys.cart_screen_cart_item_egp.tr()})',
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text:
+                              '${product.availableQuantity} ${LocaleKeys.cart_screen_cart_item_pcs.tr()} (',
+                        ),
+                        Helper.priceSpan(
+                          product.price!,
+                          Styles.styles10w400interFamily,
+                        ),
+                        const TextSpan(text: ')'),
+                      ],
+                    ),
                     style: Styles.styles10w400interFamily,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -173,16 +185,11 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                     ),
                   ),
                   RichText(
-                    text: TextSpan(
-                      text: '${(product.price! * product.quantity).toInt()}.',
-                      style: Styles.styles26w600NormalBlack,
-                      children: [
-                        TextSpan(
-                          text:
-                              '${(((product.price! * product.quantity) - (product.price! * product.quantity).toInt()) * 100).round()}',
-                          style: Styles.styles14w300NormalBlack,
-                        ),
-                      ],
+                    text: Helper.priceSpan(
+                      product.price! * product.quantity,
+                      Styles.styles14w400Black.copyWith(
+                        color: const Color.fromRGBO(50, 50, 50, 1),
+                      ),
                     ),
                   ),
                 ],

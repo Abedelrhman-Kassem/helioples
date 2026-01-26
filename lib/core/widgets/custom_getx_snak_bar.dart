@@ -10,7 +10,11 @@ void showCustomGetSnack({
   Duration duration = const Duration(seconds: 5),
 }) {
   if (isSnackOpen) {
-    if (Get.isSnackbarOpen) Get.closeCurrentSnackbar();
+    try {
+      if (Get.isSnackbarOpen) Get.closeCurrentSnackbar();
+    } catch (e) {
+      debugPrint('Error closing snackbar: $e');
+    }
   }
   Get.rawSnackbar(
     titleText: const SizedBox.shrink(),
@@ -67,7 +71,13 @@ void showCustomGetSnack({
             ),
           ),
           GestureDetector(
-            onTap: () => Get.closeCurrentSnackbar(),
+            onTap: () {
+              try {
+                Get.closeCurrentSnackbar();
+              } catch (e) {
+                debugPrint('Error closing snackbar: $e');
+              }
+            },
             child: const Icon(Icons.close, size: 18, color: Colors.black26),
           ),
         ],

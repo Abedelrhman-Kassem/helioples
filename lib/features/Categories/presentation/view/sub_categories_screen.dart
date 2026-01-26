@@ -161,9 +161,18 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
         _listHeights[notifier.activeSection]) {
       //
       if (!notifier.allowFetch) return;
+
+      // If features exist and we're on the featured section, don't fetch subcategory products
+      if (features.isNotEmpty && notifier.activeSection == 0) return;
+
       log("fetching more");
+      // Adjust index if features exist (because listKeys[0] is for features)
+      int subCategoryIndex = features.isNotEmpty
+          ? notifier.activeSection - 1
+          : notifier.activeSection;
+
       String subCategoryId =
-          notifier.subCategoriesIds[widget.categoryId]![notifier.activeSection];
+          notifier.subCategoriesIds[widget.categoryId]![subCategoryIndex];
       subCategoriesCubit.fetchProductsInSubCategory(subCategoryId, context);
     }
   }
