@@ -145,9 +145,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                 onPressed: () {
                                   if (formKey.currentState!.validate()) {
                                     RegisterModel registerModel = RegisterModel(
-                                      firstName: firstNameController.text,
-                                      lastName: lastNameController.text,
-                                      phone: phoneNumberController.text,
+                                      firstName: firstNameController.text
+                                          .trim(),
+                                      lastName: lastNameController.text.trim(),
+                                      phone: phoneNumberController.text.trim(),
                                       birthdate: dateTime
                                           .toUtc()
                                           .toIso8601String(),

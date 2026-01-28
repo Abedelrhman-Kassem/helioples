@@ -22,7 +22,6 @@ import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/themes.dart';
 import 'package:negmt_heliopolis/firebase_options.dart';
 import 'package:negmt_heliopolis/generated/codegen_loader.g.dart';
-
 import 'package:negmt_heliopolis/core/utlis/helpers/keys_helper.dart';
 
 void main() async {
@@ -32,7 +31,12 @@ void main() async {
   await NotifcationService.initializeNotifications();
   await EasyLocalization.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
-
+  // TODO: Re-enable App Check after fixing configuration
+  // await FirebaseAppCheck.instance.activate(
+  //   providerAndroid: kDebugMode
+  //       ? const AndroidDebugProvider()
+  //       : const AndroidPlayIntegrityProvider(),
+  // );
   CacheHelper.init();
   // await DBHelper.deleteDB();
   await DBHelper.init();

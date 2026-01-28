@@ -35,6 +35,22 @@ class CartCubit extends Cubit<CartState> {
       table: cartTable,
       columns: [cartItemId, cartItemQty],
     );
+
+    // If cart is empty, emit success with empty data
+    if (tableIdValues.isEmpty) {
+      tableValues = [];
+      updateCartModel = UpdateCartModel(
+        success: true,
+        message: null,
+        products: [],
+        statusCode: 200,
+      );
+      if (!isClosed) {
+        emit(CartSuccessState(updateCartModel: updateCartModel!));
+      }
+      return;
+    }
+
     for (var value in tableIdValues) {
       ids.add({
         "productId": value[cartItemId],

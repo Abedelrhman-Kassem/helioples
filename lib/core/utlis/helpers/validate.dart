@@ -3,7 +3,7 @@ import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/trkey_helper.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
-enum ValidateInput { username, email, phoneNumber }
+enum ValidateInput { username, phoneNumber }
 
 vlidateInPut({
   required String val,
@@ -17,11 +17,6 @@ vlidateInPut({
   if (type == ValidateInput.username) {
     if (!GetUtils.isUsername(val)) {
       return trKey(LocaleKeys.validation_invalid_username);
-    }
-  }
-  if (type == ValidateInput.email) {
-    if (!GetUtils.isEmail(val)) {
-      return trKey(LocaleKeys.validation_invalid_email);
     }
   }
 

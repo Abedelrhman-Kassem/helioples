@@ -24,7 +24,10 @@ class LoadingButton extends StatelessWidget {
           child: SizedBox(
             height: 20.sp,
             width: 20.sp,
-            child: const CircularProgressIndicator(color: Colors.white),
+            child: const CircularProgressIndicator(
+              color: Colors.white,
+              strokeCap: StrokeCap.round,
+            ),
           ),
         ),
       ),

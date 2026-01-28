@@ -29,8 +29,8 @@ class CustBodyRegister extends StatelessWidget {
             focusNode: nameFocusNode,
             validator: (val) {
               return vlidateInPut(
-                val: val!,
-                min: 5,
+                val: val!.trim(),
+                min: 3,
                 max: 30,
                 type: ValidateInput.username,
               );
@@ -47,8 +47,8 @@ class CustBodyRegister extends StatelessWidget {
             focusNode: lastNameFocusNode,
             validator: (val) {
               return vlidateInPut(
-                val: val!,
-                min: 2,
+                val: val!.trim(),
+                min: 3,
                 max: 30,
                 type: ValidateInput.username,
               );
