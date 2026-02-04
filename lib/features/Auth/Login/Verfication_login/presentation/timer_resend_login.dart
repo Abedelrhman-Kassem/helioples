@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/send_otp_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/Verfication_login/data/cubit/verfy_login_cubit.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';

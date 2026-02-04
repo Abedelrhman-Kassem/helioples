@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/send_otp_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/cubit/verfy_and_register_cubit.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -162,8 +162,8 @@ class _TimerResendState extends State<TimerResend> {
         Center(
           child: Text(
             StringTranslateExtension(
-                    LocaleKeys.verification_screen_didnt_receive_code)
-                .tr(),
+              LocaleKeys.verification_screen_didnt_receive_code,
+            ).tr(),
             style: Styles.styles15w400Black,
           ),
         ),
@@ -179,8 +179,8 @@ class _TimerResendState extends State<TimerResend> {
                   )
                 : Text(
                     StringTranslateExtension(
-                            LocaleKeys.verification_screen_resend_code)
-                        .tr(),
+                      LocaleKeys.verification_screen_resend_code,
+                    ).tr(),
                     style: _canResend
                         ? Styles.styles15w700Gold
                         : Styles.styles15w700Gold.copyWith(color: Colors.grey),

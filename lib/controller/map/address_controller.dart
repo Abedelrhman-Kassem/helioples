@@ -14,7 +14,7 @@ import 'package:negmt_heliopolis/features/maps/model/map_places_model.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/statusrequest.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
-import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/features/maps/model/address_model.dart';
 import 'package:negmt_heliopolis/features/maps/repo/add_address_repo.dart';
 import 'package:negmt_heliopolis/features/maps/repo/add_address_repo_impl.dart';

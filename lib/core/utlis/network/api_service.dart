@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
@@ -36,9 +37,19 @@ class ApiService {
         onRequest: (options, handler) async {
           try {
             final token = await _storage.read(key: 'token');
+
             options.headers['Accept-Language'] = getLanguage();
             if (token != null && token.isNotEmpty) {
+              log('Adding Authorization header with token: $token');
               options.headers['Authorization'] = 'Bearer $token';
+            }
+            final appCheckToken = await FirebaseAppCheck.instance.getToken(
+              false,
+            );
+            if (appCheckToken != null) {
+              log('App Check Token: $appCheckToken');
+
+              options.headers['X-Firebase-AppCheck'] = appCheckToken;
             }
           } catch (e) {
             log('Error reading token in interceptor: $e');

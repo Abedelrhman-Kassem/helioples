@@ -56,88 +56,91 @@ class _EditLocationState extends State<EditLocation> {
       builder: (controller) {
         return Form(
           key: formkey,
-          child: SingleChildScrollView(
-            child: Column(
-              spacing: 10.h,
-              children: [
-                Custtextfeld(
-                  hint: StringTranslateExtension(
-                    LocaleKeys.add_location_address_title,
-                  ).tr(),
-                  controller: addressTitle,
-                  validator: (val) {
-                    return vlidateInPut(val: val!, min: 3, max: 100);
-                  },
-                ),
-                Custtextfeld(
-                  hint: StringTranslateExtension(
-                    LocaleKeys.add_location_street,
-                  ).tr(),
-                  controller: street,
-                  validator: (val) {
-                    return vlidateInPut(val: val!, min: 2, max: 100);
-                  },
-                ),
-                Custtextfeld(
-                  hint: StringTranslateExtension(
-                    LocaleKeys.add_location_floor,
-                  ).tr(),
-                  controller: floor,
-                  validator: (val) {
-                    return vlidateInPut(val: val!, min: 1, max: 100);
-                  },
-                  keyboardType: const TextInputType.numberWithOptions(),
-                ),
-                Custtextfeld(
-                  hint: StringTranslateExtension(
-                    LocaleKeys.add_location_building_number,
-                  ).tr(),
-                  controller: buildingNumber,
-                  validator: (val) {
-                    return vlidateInPut(val: val!, min: 1, max: 100);
-                  },
-                  keyboardType: const TextInputType.numberWithOptions(),
-                ),
-                Custtextfeld(
-                  hint: StringTranslateExtension(
-                    LocaleKeys.add_location_department,
-                  ).tr(),
-                  controller: apartment,
-                  validator: (val) {
-                    return vlidateInPut(val: val!, min: 3, max: 100);
-                  },
-                ),
-                SizedBox(height: 20.h),
+          child: GestureDetector(
+            onTap: () => Get.back(),
+            child: SingleChildScrollView(
+              child: Column(
+                spacing: 10.h,
+                children: [
+                  Custtextfeld(
+                    hint: StringTranslateExtension(
+                      LocaleKeys.add_location_address_title,
+                    ).tr(),
+                    controller: addressTitle,
+                    validator: (val) {
+                      return vlidateInPut(val: val!, min: 3, max: 100);
+                    },
+                  ),
+                  Custtextfeld(
+                    hint: StringTranslateExtension(
+                      LocaleKeys.add_location_street,
+                    ).tr(),
+                    controller: street,
+                    validator: (val) {
+                      return vlidateInPut(val: val!, min: 2, max: 100);
+                    },
+                  ),
+                  Custtextfeld(
+                    hint: StringTranslateExtension(
+                      LocaleKeys.add_location_floor,
+                    ).tr(),
+                    controller: floor,
+                    validator: (val) {
+                      return vlidateInPut(val: val!, min: 1, max: 100);
+                    },
+                    keyboardType: const TextInputType.numberWithOptions(),
+                  ),
+                  Custtextfeld(
+                    hint: StringTranslateExtension(
+                      LocaleKeys.add_location_building_number,
+                    ).tr(),
+                    controller: buildingNumber,
+                    validator: (val) {
+                      return vlidateInPut(val: val!, min: 1, max: 100);
+                    },
+                    keyboardType: const TextInputType.numberWithOptions(),
+                  ),
+                  Custtextfeld(
+                    hint: StringTranslateExtension(
+                      LocaleKeys.add_location_department,
+                    ).tr(),
+                    controller: apartment,
+                    validator: (val) {
+                      return vlidateInPut(val: val!, min: 3, max: 100);
+                    },
+                  ),
+                  SizedBox(height: 20.h),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Handlingdataviwe(
-                    shimmer: Helper.loadingWidget(),
-                    statusrequest: controller.updateAddressesstatusrequest,
-                    widget: CustomButton(
-                      backgroundColor: MyColors.mainColor,
-                      textColor: Colors.white,
-                      text: StringTranslateExtension(
-                        LocaleKeys.add_location_edit,
-                      ).tr(),
-                      onTap: () async {
-                        if (formkey.currentState!.validate()) {
-                          Address address = Address(
-                            id: widget.address.id,
-                            locationStr: addressTitle.text,
-                            street: street.text,
-                            department: apartment.text,
-                            buildingNo: buildingNumber.text,
-                            floor: floor.text,
-                          );
-                          controller.updateAddress(address);
-                        }
-                      },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Handlingdataviwe(
+                      shimmer: Helper.loadingWidget(),
+                      statusrequest: controller.updateAddressesstatusrequest,
+                      widget: CustomButton(
+                        backgroundColor: MyColors.mainColor,
+                        textColor: Colors.white,
+                        text: StringTranslateExtension(
+                          LocaleKeys.add_location_edit,
+                        ).tr(),
+                        onTap: () async {
+                          if (formkey.currentState!.validate()) {
+                            Address address = Address(
+                              id: widget.address.id,
+                              locationStr: addressTitle.text,
+                              street: street.text,
+                              department: apartment.text,
+                              buildingNo: buildingNumber.text,
+                              floor: floor.text,
+                            );
+                            controller.updateAddress(address);
+                          }
+                        },
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 250.h),
-              ],
+                  SizedBox(height: 250.h),
+                ],
+              ),
             ),
           ),
         );

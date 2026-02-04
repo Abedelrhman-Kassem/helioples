@@ -11,7 +11,7 @@ buildscript {
         classpath "com.android.tools.build:gradle:8.9.1"
 
         // استخدم نسخة صريحة من kotlin-gradle-plugin
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.25"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.0"
 
         // يمكنك إبقاء google-services كما هي أو تحديثها لاحقًا إذا ظهرت مشاكل
         classpath 'com.google.gms:google-services:4.4.2'

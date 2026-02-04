@@ -22,10 +22,18 @@ class LocalNotificationHelper {
     String? payload,
     int? notificationId,
   }) async {
-    final details = await _buildNotificationDetails(imageUrl, title, body);
+    // Use a fixed notification ID to replace Firebase's automatic notification
+    final int finalNotificationId = notificationId ?? 0;
+
+    final details = await _buildNotificationDetails(
+      imageUrl,
+      title,
+      body,
+      finalNotificationId,
+    );
 
     await plugin.show(
-      notificationId ?? DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      finalNotificationId,
       title,
       body,
       details,
@@ -38,6 +46,7 @@ class LocalNotificationHelper {
     String? imageUrl,
     String title,
     String body,
+    int notificationId,
   ) async {
     AndroidNotificationDetails androidDetails;
     DarwinNotificationDetails iosDetails;
@@ -45,15 +54,20 @@ class LocalNotificationHelper {
     if (imageUrl != null && imageUrl.isNotEmpty) {
       try {
         final filePath = await _downloadImage(imageUrl);
-        androidDetails = _buildAndroidDetailsWithImage(title, body, filePath);
+        androidDetails = _buildAndroidDetailsWithImage(
+          title,
+          body,
+          filePath,
+          notificationId,
+        );
         iosDetails = _buildIOSDetailsWithImage(filePath);
       } catch (e) {
         log('Error downloading image: $e');
-        androidDetails = _buildDefaultAndroidDetails();
+        androidDetails = _buildDefaultAndroidDetails(notificationId);
         iosDetails = _buildDefaultIOSDetails();
       }
     } else {
-      androidDetails = _buildDefaultAndroidDetails();
+      androidDetails = _buildDefaultAndroidDetails(notificationId);
       iosDetails = _buildDefaultIOSDetails();
     }
 
@@ -64,6 +78,7 @@ class LocalNotificationHelper {
     String title,
     String body,
     String filePath,
+    int notificationId,
   ) {
     return AndroidNotificationDetails(
       channelId,
@@ -71,6 +86,8 @@ class LocalNotificationHelper {
       channelDescription: channelDescription,
       priority: Priority.high,
       importance: Importance.max,
+      tag:
+          'fcm_notification_$notificationId', // Use tag to replace Firebase notification
       largeIcon: FilePathAndroidBitmap(filePath), // Show image on the right
       styleInformation: BigPictureStyleInformation(
         FilePathAndroidBitmap(filePath),
@@ -92,13 +109,17 @@ class LocalNotificationHelper {
     );
   }
 
-  static AndroidNotificationDetails _buildDefaultAndroidDetails() {
-    return const AndroidNotificationDetails(
+  static AndroidNotificationDetails _buildDefaultAndroidDetails(
+    int notificationId,
+  ) {
+    return AndroidNotificationDetails(
       channelId,
       channelName,
       channelDescription: channelDescription,
       priority: Priority.high,
       importance: Importance.max,
+      tag:
+          'fcm_notification_$notificationId', // Use tag to replace Firebase notification
     );
   }
 

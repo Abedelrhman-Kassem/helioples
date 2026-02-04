@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,16 +29,18 @@ import 'package:negmt_heliopolis/core/utlis/helpers/keys_helper.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  await NotifcationService.initializeNotifications();
+  // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  // await NotifcationService.initializeNotifications();
   await EasyLocalization.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
-  // TODO: Re-enable App Check after fixing configuration
-  // await FirebaseAppCheck.instance.activate(
-  //   providerAndroid: kDebugMode
-  //       ? const AndroidDebugProvider()
-  //       : const AndroidPlayIntegrityProvider(),
-  // );
+  const bool isPreReleaseTesting = true;
+
+  await FirebaseAppCheck.instance.activate(
+    providerAndroid: (kDebugMode || isPreReleaseTesting)
+        ? const AndroidDebugProvider()
+        : const AndroidPlayIntegrityProvider(),
+    providerApple: const AppleDeviceCheckProvider(),
+  );
   CacheHelper.init();
   // await DBHelper.deleteDB();
   await DBHelper.init();
@@ -55,6 +59,11 @@ void main() async {
       statusBarBrightness: Brightness.dark,
     ),
   );
+
+  // ============ DEBUG: Check terminated notification ============
+
+  // ==============================================================
+
   // ServicesHelper.saveLocal(
   //   'token',
   //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjZlOGFmYzZiLTVhMWMtNDNkNi1iYzQ3LTZlOTg1ZjQyYjlhNyIsImZpcnN0TmFtZSI6IkgiLCJsYXN0TmFtZSI6IkgiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9kYXRlb2ZiaXJ0aCI6IjEyLzcvMjAyNSAxMjo0MDoxNlx1MjAyRlBNIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIwMTIwMTU1NTQ4NSIsImV4cCI6MTgwMDU4MzA0NCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ1In0.8Xa2fSF0glNHtZ49vQ9iDDUESyEqTKimt18ZOi7_JYo',

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
@@ -178,44 +179,59 @@ class OrderDetailsScreen extends StatelessWidget {
                                         itemCount:
                                             orderDetails.data!.items.length,
                                         itemBuilder: (context, index) {
-                                          return Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.only(
-                                                  start: 0,
-                                                  bottom: 12,
-                                                ),
-                                            child: Row(
-                                              children: [
-                                                Helper.loadNetworkImage(
-                                                  url:
-                                                      orderDetails
-                                                          .data!
-                                                          .items[index]
-                                                          .thumbnailImage ??
-                                                      "",
+                                          return GestureDetector(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                context,
+                                                productScreen,
+                                                arguments: {
+                                                  'productId': orderDetails
+                                                      .data!
+                                                      .items[index]
+                                                      .productId,
+                                                  'isFromNoti': true,
+                                                },
+                                              );
+                                            },
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsetsDirectional.only(
+                                                    start: 0,
+                                                    bottom: 12,
+                                                  ),
+                                              child: Row(
+                                                children: [
+                                                  Helper.loadNetworkImage(
+                                                    url:
+                                                        orderDetails
+                                                            .data!
+                                                            .items[index]
+                                                            .thumbnailImage ??
+                                                        "",
 
-                                                  assetsErrorPath:
-                                                      'assets/test_images/water-bottle.png',
-                                                  fit: BoxFit.contain,
-                                                  width: 50.w,
-                                                  imageHeight: 50.h,
-                                                ),
-                                                SizedBox(width: 12.w),
-                                                Text(
-                                                  "${orderDetails.data!.items[index].number}X",
-                                                  style: Styles
-                                                      .styles14w500interFamily,
-                                                ),
-                                                SizedBox(width: 6.w),
-                                                Text(
-                                                  "${orderDetails.data!.items[index].product}",
-                                                  style: Styles
-                                                      .styles14w500interBlack36
-                                                      .copyWith(
-                                                        fontSize: 15.sp,
-                                                      ),
-                                                ),
-                                              ],
+                                                    assetsErrorPath:
+                                                        'assets/test_images/water-bottle.png',
+                                                    fit: BoxFit.contain,
+                                                    width: 50.w,
+                                                    imageHeight: 50.h,
+                                                  ),
+                                                  SizedBox(width: 12.w),
+                                                  Text(
+                                                    "${orderDetails.data!.items[index].number}X",
+                                                    style: Styles
+                                                        .styles14w500interFamily,
+                                                  ),
+                                                  SizedBox(width: 6.w),
+                                                  Text(
+                                                    "${orderDetails.data!.items[index].product}",
+                                                    style: Styles
+                                                        .styles14w500interBlack36
+                                                        .copyWith(
+                                                          fontSize: 15.sp,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           );
                                         },

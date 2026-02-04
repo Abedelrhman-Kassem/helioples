@@ -6,7 +6,7 @@ import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/liked_notifier.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
-import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/svg_asset.dart';
 import 'package:negmt_heliopolis/features/Liked/data/models/liked_model.dart';
 import 'package:negmt_heliopolis/features/Liked/data/repo/liked_repo_imp.dart';

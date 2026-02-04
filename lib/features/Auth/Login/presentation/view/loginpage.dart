@@ -11,7 +11,7 @@ import 'package:negmt_heliopolis/core/utlis/helpers/trkey_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
-import 'package:negmt_heliopolis/core/widgets/custom_getx_snak_bar.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/loading_button.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/data/repo/log_in_repo_imp.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/models/login_model.dart';
