@@ -75,10 +75,16 @@ dependencies:
   # firebase_auth: ^5.3.4fl
   google_sign_in: ^6.2.2
   # firebase_analytics: ^11.3.6
+  
+  # Awesome Notifications for handling all notification states (foreground, background, terminated)
+  awesome_notifications: ^0.10.0
+  # Note: awesome_notifications_fcm is not compatible with firebase_core ^4.x
+  # We'll use firebase_messaging directly for FCM integration
+  
   awesome_dialog: ^3.2.1
   another_flushbar: ^1.12.30
   font_awesome_flutter: ^10.8.0
-  flutter_local_notifications: ^19.4.2
+  # flutter_local_notifications: ^19.4.2
   firebase_auth: ^6.1.1
   flutter_otp_text_field: ^1.5.1+1
   d_dialog: ^1.0.2

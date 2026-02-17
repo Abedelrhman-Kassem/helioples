@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
 
 class SubCategoriesNotifier with ChangeNotifier {

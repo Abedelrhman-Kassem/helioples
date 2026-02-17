@@ -5,6 +5,7 @@ import 'package:negmt_heliopolis/core/utlis/helpers/trkey_helper.dart';
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/controller/getx_service/check_mainte_nance.dart';
 import 'package:negmt_heliopolis/core/constants/svg_path.dart';
+import 'package:negmt_heliopolis/core/utlis/services/awesome/notification_controller.dart';
 import 'package:negmt_heliopolis/features/countries_pages/view/widget/widget_helpe.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 
@@ -15,6 +16,7 @@ class ServerUnavailable extends StatelessWidget {
   Widget build(BuildContext context) {
     String? maintenance = Get.find<CheckMaintenance>().massege;
     log(maintenance.toString());
+    NotificationController.initializeListeners();
     return PopScope(
       canPop: false,
       child: WidgetHelpe(

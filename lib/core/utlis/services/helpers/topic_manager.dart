@@ -66,7 +66,9 @@ class TopicManager {
       }
       final token = await getFcmToken();
       final platform = Platform.isAndroid ? 'Android' : 'iOS';
-      final repo = NotificationRepoImp(api: Get.find<ApiService>());
+      final repo = NotificationRepoImp(
+        api: Get.put(ApiService(), permanent: true),
+      );
       await repo.saveDeviceToken(token: token, platform: platform);
     } catch (e) {
       log('Error saving token to server: $e');

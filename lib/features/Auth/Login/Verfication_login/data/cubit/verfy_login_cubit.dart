@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/controller/map/addresse_controller.dart';
+import 'package:negmt_heliopolis/core/utlis/services/awesome/awesome_fcm_service.dart';
 import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
-import 'package:negmt_heliopolis/core/utlis/services/notifcation_service.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/Verfication_login/data/cubit/verfy_login_states.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/models/login_model.dart';
 import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/repo/verify_and_register_repo_imp.dart';
@@ -36,7 +36,7 @@ class VerfyLoginCubit extends Cubit<VerfyLoginStates> {
       final addressesCtrl = Get.find<AddressesControllerImpl>();
       final authC = Get.find<AuthController>();
       await addressesCtrl.fetchAddresses();
-      await NotifcationService.handleLoginTopicSwitch();
+      await AwesomeFcmService.handleLoginTopicSwitch();
       authC.login();
       emit(VerfyLoginStates.success(status));
     });

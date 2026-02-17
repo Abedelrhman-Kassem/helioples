@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,7 +18,9 @@ import 'package:negmt_heliopolis/core/utlis/helpers/db_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/language_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/core/utlis/routing/routes.dart';
-import 'package:negmt_heliopolis/core/utlis/services/notifcation_service.dart';
+import 'package:negmt_heliopolis/core/utlis/services/awesome/awesome_fcm_service.dart';
+import 'package:negmt_heliopolis/core/utlis/services/awesome/awesome_notification_service.dart';
+import 'package:negmt_heliopolis/core/utlis/services/awesome/notification_controller.dart';
 import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/themes.dart';
 import 'package:negmt_heliopolis/firebase_options.dart';
@@ -29,8 +30,17 @@ import 'package:negmt_heliopolis/core/utlis/helpers/keys_helper.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  // await NotifcationService.initializeNotifications();
+
+  // ============ Initialize Awesome Notifications ============
+  // Must be called before MaterialApp
+  await AwesomeNotificationService.initialize();
+  await AwesomeFcmService.initialize();
+
+  // Subscribe to default topics and save token
+  await AwesomeFcmService.subscribeToDefaultTopics();
+  await AwesomeFcmService.saveTokenToServer();
+  // ==========================================================
+
   await EasyLocalization.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
   const bool isPreReleaseTesting = true;
@@ -90,9 +100,45 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final AppRouter appRouter;
   const MyApp({super.key, required this.appRouter});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize notification listeners
+    // This must be called after the widget is created
+    NotificationController.initializeListeners();
+
+    // Request notification permission (shows dialog if needed)
+    AwesomeNotificationService.requestPermission();
+
+    // Subscribe to default topics
+    // _subscribeToTopics();
+  }
+
+  // Future<void> _subscribeToTopics() async {
+  //   // Subscribe to general topic
+  //   await AwesomeFcmService.subscribeToTopic('general');
+
+  //   // // Get and log the FCM token
+  //   // final token = await AwesomeFcmService.getToken();
+  //   // debugPrint('FCM Token: $token');
+  // }
+
+  @override
+  void dispose() {
+    NotificationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -108,7 +154,7 @@ class MyApp extends StatelessWidget {
             initialBinding: Initialbinding(),
             navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
-            onGenerateRoute: appRouter.generate,
+            onGenerateRoute: widget.appRouter.generate,
             theme: lightTheme,
             darkTheme: darkTheme,
             themeMode: ThemeMode.light,
