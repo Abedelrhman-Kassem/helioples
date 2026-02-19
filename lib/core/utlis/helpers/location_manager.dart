@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 
 class LocationManager {
   /// Orchestrates the entire permission flow:
@@ -96,8 +96,11 @@ class LocationManager {
       log('Location obtained: ${position.latitude}, ${position.longitude}');
 
       // Save to secure storage
-      await ServicesHelper.saveLocal('user_lat', position.latitude.toString());
-      await ServicesHelper.saveLocal(
+      await CacheHelper.instance.saveLocal(
+        'user_lat',
+        position.latitude.toString(),
+      );
+      await CacheHelper.instance.saveLocal(
         'user_long',
         position.longitude.toString(),
       );

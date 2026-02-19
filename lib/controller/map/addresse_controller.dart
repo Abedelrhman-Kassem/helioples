@@ -4,9 +4,8 @@ import 'package:dartz/dartz.dart';
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/statusrequest.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
-import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/create_order_model.dart';
 import 'package:negmt_heliopolis/features/maps/model/address_model.dart';
@@ -44,7 +43,7 @@ class AddressesControllerImpl extends AddressesController {
   @override
   fetchAddresses() async {
     loading = true;
-    final String? token = await ServicesHelper.getLocal('token');
+    final String? token = await CacheHelper.instance.getLocal('token');
     if (token == null) {
       errorMessage = 'No Address Found';
       loading = false;
@@ -105,15 +104,12 @@ class AddressesControllerImpl extends AddressesController {
 
   @override
   getChossenAddressId() async {
-    return await CacheHelper.getSharedPreferenceData(key: 'addressId');
+    return await CacheHelper.instance.getLocal('addressId');
   }
 
   @override
   setChossenAddress(String addressId) async {
-    await CacheHelper.saveSharedPreferencesData(
-      key: 'addressId',
-      value: addressId,
-    );
+    await CacheHelper.instance.saveLocal('addressId', addressId);
 
     getChossenAddress();
     update(['ChossenAddressId']);

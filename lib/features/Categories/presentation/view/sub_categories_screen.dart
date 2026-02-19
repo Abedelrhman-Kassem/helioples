@@ -5,9 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:negmt_heliopolis/core/utlis/notifiers/sub_categories_notifier.dart';
-import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 
-import 'package:negmt_heliopolis/core/widgets/item_widget.dart';
 import 'package:negmt_heliopolis/features/Categories/data/model/sub_categories.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view%20model/cubit/sub_categories_cubit.dart';
 import 'package:negmt_heliopolis/features/Categories/presentation/view/widgets/custom_appbar.dart';
@@ -18,8 +16,6 @@ import 'package:negmt_heliopolis/core/widgets/skeletonizer_loading.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:negmt_heliopolis/features/Categories/data/model/featur_model.dart';
-import 'package:negmt_heliopolis/features/Product/data/model/product_model.dart';
-import 'package:negmt_heliopolis/core/widgets/pagination_listener.dart';
 
 class SubCategoriesScreen extends StatefulWidget {
   final CategoryModel? category;

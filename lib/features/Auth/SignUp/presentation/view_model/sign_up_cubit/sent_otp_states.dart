@@ -37,7 +37,7 @@ final class SentOtpFailure extends SentOtpState {
   const SentOtpFailure(this.errorMessage);
 }
 
-final class OtpModel extends SentOtpState {
+final class OtpModel {
   final RegisterModel registerModel;
   String verificationId;
 

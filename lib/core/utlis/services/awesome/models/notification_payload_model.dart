@@ -40,9 +40,7 @@ class NotificationPayloadModel {
     _navigateToTarget();
   }
 
-  /// Navigate from terminated state - goes to home first then pushes target
   void navigateFromTerminated() {
-    // First go to home, replacing all previous routes
     navigatorKey.currentState?.pushNamedAndRemoveUntil(
       homeLayout,
       (route) => false,

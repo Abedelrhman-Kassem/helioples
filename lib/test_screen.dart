@@ -14,7 +14,7 @@ class _TestPageState extends State<TestPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController codeController = TextEditingController();
-// SendOtpHelper.
+  // SendOtpHelper.
   String? verificationId;
   bool codeSent = false;
   bool loading = false;
@@ -27,16 +27,16 @@ class _TestPageState extends State<TestPage> {
       verificationCompleted: (PhoneAuthCredential credential) async {
         await _auth.signInWithCredential(credential);
         setState(() => loading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('تم التحقق تلقائيًا! ✅')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('تم التحقق تلقائيًا! ✅')));
       },
       verificationFailed: (FirebaseAuthException e) {
         log('Verification failed: ${e.message}');
         setState(() => loading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('فشل التحقق: ${e.message}')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('فشل التحقق: ${e.message}')));
       },
       codeSent: (String verId, int? resendToken) {
         setState(() {
@@ -44,9 +44,9 @@ class _TestPageState extends State<TestPage> {
           codeSent = true;
           loading = false;
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('تم إرسال الكود ✅')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('تم إرسال الكود ✅')));
       },
       codeAutoRetrievalTimeout: (String verId) {
         verificationId = verId;
@@ -62,7 +62,9 @@ class _TestPageState extends State<TestPage> {
         smsCode: codeController.text.trim(),
       );
       await _auth.signInWithCredential(credential);
-    } catch (e) {}
+    } catch (e) {
+      log('Sign-in failed: $e');
+    }
   }
 
   @override

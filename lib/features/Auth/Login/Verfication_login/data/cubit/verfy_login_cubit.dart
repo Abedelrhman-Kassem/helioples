@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/controller/map/addresse_controller.dart';
 import 'package:negmt_heliopolis/core/utlis/services/awesome/awesome_fcm_service.dart';
-import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/Verfication_login/data/cubit/verfy_login_states.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/presentation/view_model/models/login_model.dart';
 import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/repo/verify_and_register_repo_imp.dart';
@@ -30,7 +30,7 @@ class VerfyLoginCubit extends Cubit<VerfyLoginStates> {
     ) async {
       if (loginModel?.data != null) {
         if (loginModel!.data!.token != null) {
-          ServicesHelper.saveLocal('token', loginModel!.data!.token!);
+          CacheHelper.instance.saveLocal('token', loginModel!.data!.token!);
         }
       }
       final addressesCtrl = Get.find<AddressesControllerImpl>();

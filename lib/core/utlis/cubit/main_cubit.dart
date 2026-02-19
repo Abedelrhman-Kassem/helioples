@@ -9,7 +9,6 @@ import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/model/all_categories_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/repo/address_repo_imp.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/repo/home_screen_imp.dart';
-
 part 'main_state.dart';
 
 class MainCubit extends Cubit<MainState> {

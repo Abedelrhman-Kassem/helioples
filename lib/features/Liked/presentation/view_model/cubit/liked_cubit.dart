@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/errors/failure.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
-import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 import 'package:negmt_heliopolis/features/Liked/data/models/liked_model.dart';
 import 'package:negmt_heliopolis/features/Liked/data/repo/liked_repo_imp.dart';
 
@@ -26,7 +26,7 @@ class LikedCubit extends Cubit<LikedState> {
   List<Products> products = [];
 
   Future<void> getLikedProducts() async {
-    String? token = await ServicesHelper.getLocal(tokenKey);
+    String? token = await CacheHelper.instance.getLocal(tokenKey);
 
     if (token == null) {
       emit(UnLoggedState());

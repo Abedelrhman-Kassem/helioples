@@ -18,7 +18,8 @@ class FeatureWidget extends StatelessWidget {
               color: Colors.white,
             ),
             padding: EdgeInsets.only(
-                bottom: 100.h), // Adjust the padding to ensure no overlap
+              bottom: 100.h,
+            ), // Adjust the padding to ensure no overlap
             child: Column(
               children: [
                 Padding(
@@ -30,16 +31,11 @@ class FeatureWidget extends StatelessWidget {
                         width: 40.w,
                         height: 40.h,
                       ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
+                      SizedBox(width: 10.w),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Featured",
-                            style: Styles.styles21w700black,
-                          ),
+                          Text("Featured", style: Styles.styles21w700black),
                           Text(
                             "Our Best Products From Best Partners",
                             style: Styles.styles12w400interFamily.copyWith(
@@ -57,12 +53,8 @@ class FeatureWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 12.h,
-                ),
-                Image.asset(
-                  "assets/Icons_logos/سبيرو سباتس مشروب مصري 1.png",
-                ),
+                SizedBox(height: 12.h),
+                Image.asset("assets/Icons_logos/سبيرو سباتس مشروب مصري 1.png"),
               ],
             ),
           ),
@@ -79,8 +71,10 @@ class FeatureWidget extends StatelessWidget {
                   itemCount: 3,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 10.h,
+                      ),
                       child: SizedBox(
                         height: 180.h,
                         width: 140.w,
@@ -89,9 +83,9 @@ class FeatureWidget extends StatelessWidget {
                             boxShadow: [
                               BoxShadow(
                                 offset: const Offset(0.0, 6.0),
-                                color: Colors.grey.withOpacity(0.3),
+                                color: Colors.grey.withValues(alpha: 0.3),
                                 blurRadius: 5.0.sp,
-                              )
+                              ),
                             ],
                           ),
                           // child: const ItemWidget(

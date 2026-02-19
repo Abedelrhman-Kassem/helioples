@@ -4,7 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/network/api_service.dart';
-import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 import 'package:negmt_heliopolis/features/Notification/data/repo/notification_repo_imp.dart';
 
 /// Helper class for managing Firebase topics and token
@@ -13,7 +13,7 @@ class TopicManager {
 
   /// Subscribe to default topics on app startup
   static Future<void> subscribeToDefaultTopics() async {
-    final isSubscribed = await ServicesHelper.getLocal(
+    final isSubscribed = await CacheHelper.instance.getLocal(
       'is_subscribed_to_default_topics',
     );
     if (isSubscribed == 'true') {
@@ -24,7 +24,10 @@ class TopicManager {
     try {
       await _messaging.subscribeToTopic(customers);
       await _messaging.subscribeToTopic(unsubscribedCustomers);
-      await ServicesHelper.saveLocal('is_subscribed_to_default_topics', 'true');
+      await CacheHelper.instance.saveLocal(
+        'is_subscribed_to_default_topics',
+        'true',
+      );
       log('Subscribed to default topics: $customers, $unsubscribedCustomers');
     } catch (e) {
       log('Error subscribing to default topics: $e');
@@ -60,7 +63,7 @@ class TopicManager {
   static Future<void> saveTokenToServer() async {
     Get.put(ApiService(), permanent: true);
     try {
-      String? res = await ServicesHelper.getLocal('fcm_token');
+      String? res = await CacheHelper.instance.getLocal('fcm_token');
       if (res != null) {
         return;
       }

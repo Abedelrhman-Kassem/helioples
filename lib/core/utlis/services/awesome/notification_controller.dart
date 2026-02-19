@@ -4,7 +4,7 @@ import 'dart:ui';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/keys_helper.dart';
-import 'package:negmt_heliopolis/core/utlis/services/models/notification_payload_model.dart';
+import 'package:negmt_heliopolis/core/utlis/services/awesome/models/notification_payload_model.dart';
 
 /// Notification Controller
 /// Contains static methods for handling notification events

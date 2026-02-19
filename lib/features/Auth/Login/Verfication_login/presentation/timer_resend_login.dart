@@ -8,7 +8,7 @@ import 'package:negmt_heliopolis/core/utlis/helpers/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/features/Auth/Login/Verfication_login/data/cubit/verfy_login_cubit.dart';
 import 'package:negmt_heliopolis/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 
 class TimerResendLogin extends StatefulWidget {
   const TimerResendLogin({super.key});
@@ -31,7 +31,9 @@ class _TimerResendLoginState extends State<TimerResendLogin> {
   }
 
   Future<void> _checkTimer() async {
-    final lastResendStr = await ServicesHelper.getLocal('last_resend_time');
+    final lastResendStr = await CacheHelper.instance.getLocal(
+      'last_resend_time',
+    );
     if (lastResendStr != null) {
       final lastResendData = DateTime.tryParse(lastResendStr);
       if (lastResendData != null) {
@@ -133,7 +135,7 @@ class _TimerResendLoginState extends State<TimerResendLogin> {
           }
 
           // Save timestamp
-          await ServicesHelper.saveLocal(
+          await CacheHelper.instance.saveLocal(
             'last_resend_time',
             DateTime.now().toIso8601String(),
           );

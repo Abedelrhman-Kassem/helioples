@@ -7,7 +7,6 @@ import 'package:negmt_heliopolis/core/utlis/helpers/helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/colors.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/button_widget.dart';
-import 'package:negmt_heliopolis/core/utlis/helpers/custom_getx_snak_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/custom_snack_bar.dart';
 import 'package:negmt_heliopolis/core/widgets/radio_animated_widget.dart';
 import 'package:negmt_heliopolis/features/Checkout/data/model/order_details_model.dart';

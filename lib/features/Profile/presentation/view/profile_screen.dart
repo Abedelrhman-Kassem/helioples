@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:negmt_heliopolis/controller/map/addresse_controller.dart';
 import 'package:negmt_heliopolis/core/constants/constants.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/trkey_helper.dart';
-import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 import 'package:negmt_heliopolis/core/utlis/theming/styles.dart';
 import 'package:negmt_heliopolis/core/widgets/return_arrow.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view/widgets/background_image.dart';
@@ -33,7 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void getislogin() async {
-    String? isLogin = await ServicesHelper.getLocal('token');
+    String? isLogin = await CacheHelper.instance.getLocal('token');
     token = isLogin;
   }
 
@@ -109,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       LocaleKeys.profile_screen_logout_now_dialog_title,
                     ),
                     onPressed: () async {
-                      ServicesHelper.removeLocal('token');
+                      CacheHelper.instance.removeLocal('token');
                       await Get.find<AddressesControllerImpl>()
                           .fetchAddresses();
                       await authC.logout();

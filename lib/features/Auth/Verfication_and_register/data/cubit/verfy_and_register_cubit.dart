@@ -1,9 +1,7 @@
-import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:negmt_heliopolis/controller/map/addresse_controller.dart';
-import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 import 'package:negmt_heliopolis/features/Auth/SignUp/presentation/view_model/sign_up_cubit/sent_otp_states.dart';
 import 'package:negmt_heliopolis/features/Auth/Verfication_and_register/data/repo/verify_and_register_repo.dart';
 import 'package:negmt_heliopolis/features/Auth/auth_controller.dart';
@@ -49,7 +47,7 @@ class VerfyAndRegisterCubit extends Cubit<VerfAndRegisterStates> {
         emit(VerfAndRegisterStates.registerSuccess(result));
         if (result.data != null) {
           if (result.data!.token != null) {
-            ServicesHelper.saveLocal('token', result.data!.token!);
+            CacheHelper.instance.saveLocal('token', result.data!.token!);
           }
         }
         final addressesCtrl = Get.find<AddressesControllerImpl>();

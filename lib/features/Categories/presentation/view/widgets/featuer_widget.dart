@@ -30,6 +30,7 @@ class _FeaturedProductsWidgetState extends State<FeaturedProductsWidget> {
 
   // Local map to store products for each feature ID
   final Map<String, List<Products>> _featureProductsMap = {};
+  bool productsUpdated = false;
 
   @override
   void initState() {
@@ -61,8 +62,6 @@ class _FeaturedProductsWidgetState extends State<FeaturedProductsWidget> {
   void _refreshState() {
     // Check if there are new products for current feature
     if (widget.features.isEmpty) return;
-
-    bool productsUpdated = false;
 
     // We iterate through features to check updates for any of them (as async calls might complete for non-current)
     // Or just check current? Ideally check all keys in notifier.productsFeatured

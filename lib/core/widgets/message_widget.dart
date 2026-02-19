@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MessageWidget extends StatelessWidget {
   const MessageWidget({
@@ -17,19 +17,14 @@ class MessageWidget extends StatelessWidget {
         children: [
           SizedBox.square(
             dimension: 150,
-            child: Image(
-              image: AssetImage('assets/images/$imageName'),
-            ),
+            child: Image(image: AssetImage('assets/images/$imageName')),
           ),
-          const Gap(20),
+          SizedBox(height: 20.h),
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          )
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
         ],
       ),
     );

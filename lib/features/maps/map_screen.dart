@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
-import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 import 'package:negmt_heliopolis/controller/map/address_controller.dart';
 import 'package:negmt_heliopolis/core/utlis/helpers/handlingdataviwe.dart';
 import 'package:negmt_heliopolis/features/maps/widget/shaimmer_botton_widget.dart';
@@ -30,16 +28,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeMapRenderer();
     _loadMapStyle();
-  }
-
-  void _initializeMapRenderer() {
-    final GoogleMapsFlutterPlatform mapsImplementation =
-        GoogleMapsFlutterPlatform.instance;
-    if (mapsImplementation is GoogleMapsFlutterAndroid) {
-      mapsImplementation.useAndroidViewSurface = true;
-    }
   }
 
   Future<void> _loadMapStyle() async {

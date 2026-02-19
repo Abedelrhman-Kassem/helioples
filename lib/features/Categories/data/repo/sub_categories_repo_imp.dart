@@ -24,7 +24,6 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
       final response = await api.get(
         endpoint: AppUrls.getSubCategoriesUrl(id: id),
       );
-      print(response);
 
       log("success loading sub categories");
 
@@ -95,14 +94,10 @@ class SubCategoriesRepoImp extends SubCategoriesRepo {
         try {
           products.add(Products.fromJson(item));
         } catch (e) {
-          print("Error parsing item: $e");
+          log("Error parsing item: $e");
         }
       }
-      // print("llllllllllllllll");
-      // print(products.length);
-      log("prinintg products in the repo ");
-      print(products);
-      log("after printing products in the repo");
+
       return right(products);
     } catch (e) {
       // log("error loading products in sub category");

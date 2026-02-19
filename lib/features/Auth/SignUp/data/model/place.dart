@@ -5,7 +5,6 @@ class Place {
     if (json['result'] != null) {
       result = Result.fromJson(json['result']);
     } else {
-      print("Received JSON: $json");
       throw Exception("Missing 'result' key in JSON.");
     }
   }

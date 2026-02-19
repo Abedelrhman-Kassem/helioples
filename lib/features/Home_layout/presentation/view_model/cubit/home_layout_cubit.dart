@@ -13,7 +13,7 @@ import 'package:negmt_heliopolis/features/homeScreen/data/model/home_slider_mode
 import 'package:negmt_heliopolis/features/homeScreen/data/model/special_offer_model.dart';
 import 'package:negmt_heliopolis/features/homeScreen/data/repo/home_screen_imp.dart';
 import 'package:negmt_heliopolis/features/homeScreen/presentation/view/home_screen.dart';
-import 'package:negmt_heliopolis/core/utlis/services/services_helper.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/cache_helper.dart';
 
 part 'home_layout_state.dart';
 
@@ -87,12 +87,14 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
 
   void changeCategory() {
     isCategoryRow = !isCategoryRow;
-    ServicesHelper.saveLocal('isCategoryRow', isCategoryRow.toString());
+    CacheHelper.instance.saveLocal('isCategoryRow', isCategoryRow.toString());
     emit(ChangeHomeScreenCategory());
   }
 
   void loadCategoryPreference() async {
-    final savedIsCategoryRow = await ServicesHelper.getLocal('isCategoryRow');
+    final savedIsCategoryRow = await CacheHelper.instance.getLocal(
+      'isCategoryRow',
+    );
     if (savedIsCategoryRow != null) {
       isCategoryRow = savedIsCategoryRow == 'true';
       emit(ChangeHomeScreenCategory());

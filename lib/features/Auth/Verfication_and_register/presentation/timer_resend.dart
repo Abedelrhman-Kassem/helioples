@@ -28,17 +28,7 @@ class _TimerResendState extends State<TimerResend> {
   void initState() {
     super.initState();
 
-    // نفحص الـ cubit: إذا فيه verificationId معناته الكود اتبعت من قبل -> نبدأ العداد
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final cubit = context.read<VerfyAndRegisterCubit>();
-      // if (cubit.otpModel.verificationId.isNotEmpty) {
-      // لو فيه قيمة نعتبر أن الكود سبق إرساله ونعطل زر resend ونبدأ العد
-      //   setState(() {
-      //     _canResend = false;
-      //   });
-      //   startCountdown(seconds: initialSeconds);
-      // } else {
-      // مفيش قيمة => اسمح بالارسال فورًا
       setState(() {
         _canResend = true;
         _remainingSeconds = 0;
@@ -104,16 +94,12 @@ class _TimerResendState extends State<TimerResend> {
           });
         },
         (data) {
-          // نجاح الإرسال
           showCustomGetSnack(
             isGreen: true,
             text: LocaleKeys.login_screen_verification_sent.tr(),
           );
 
-          // خزّن القيم في cubit بشكل صحيح
           cubit.otpModel.verificationId = data.verificationId;
-
-          // أعد تشغيل العدّ من البداية
           startCountdown(seconds: initialSeconds);
           cubit.changeClearText();
 
@@ -133,9 +119,6 @@ class _TimerResendState extends State<TimerResend> {
         _canResend = true;
       });
     }
-    // cubit.verificationId = "123456";
-    // cubit.changeClearText();
-    // startCountdown(seconds: initialSeconds);
 
     setState(() {
       _isLoading = false;
@@ -187,20 +170,6 @@ class _TimerResendState extends State<TimerResend> {
                   ),
           ),
         ),
-        // Center(
-        //   child: IconButton(
-        //     onPressed: () {
-        //       setState(() {
-        //         _canResend = true;
-        //         _remainingSeconds = 0;
-        //       });
-        //     },
-        //     icon: const Icon(
-        //       Icons.send,
-        //       color: Colors.black,
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }

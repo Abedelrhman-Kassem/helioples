@@ -28,16 +28,14 @@ class _AccordionItemState extends State<AccordionItem> {
           boxShadow: [
             BoxShadow(
               blurRadius: 2.sp,
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               spreadRadius: 2.sp,
               offset: const Offset(0, 1),
             ),
           ],
         ),
         child: Theme(
-          data: ThemeData(
-            dividerColor: Colors.transparent,
-          ),
+          data: ThemeData(dividerColor: Colors.transparent),
           child: ExpansionTile(
             trailing: _isExpanded
                 ? Image.asset(
@@ -67,11 +65,7 @@ class _AccordionItemState extends State<AccordionItem> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.content,
-                      style: Styles.styles16w400Black,
-                    ),
-           
+                    Text(widget.content, style: Styles.styles16w400Black),
                   ],
                 ),
               ),

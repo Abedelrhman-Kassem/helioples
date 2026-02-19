@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:negmt_heliopolis/core/utlis/services/helpers/topic_manager.dart';
+import 'package:negmt_heliopolis/core/utlis/helpers/topic_manager.dart';
 import 'package:negmt_heliopolis/firebase_options.dart';
 import 'package:negmt_heliopolis/core/utlis/services/awesome/awesome_notification_service.dart';
 
